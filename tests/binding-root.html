@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Binding Root Tests</title>
+		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.15.0.css">
+		<script src="http://code.jquery.com/qunit/qunit-1.15.0.js"></script>
+		<script src="../src/BindingRoot.js"></script>
+		<script src="../src/Binding.js"></script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+		<script>
+			query = function(query) {
+
+					return document.querySelector(query);
+			};
+
+			QUnit.test("Constructor", function(assert) {
+
+					var bindingRoot = new BindingRoot();
+
+					assert.expect(0);
+			});
+
+			QUnit.test("Construct subobject", function(assert) {
+
+					function Object() {
+
+							this.method = function() {};
+					}
+
+					Object.prototype = new BindingRoot();
+
+					var object = new Object();
+
+					assert.expect(0);
+			});
+		</script>
+		<div id="test-div" data-bind="test"></div>
+		<script>
+			QUnit.test("Bind text", function(assert) {
+
+					function Object() {
+		
+							this.test = new Binding({
+
+									text: "Hello World"
+							});
+
+							this.bind();
+					}
+
+					Object.prototype = new BindingRoot();
+
+					var object = new Object();
+
+					assert.strictEqual(query("#test-div").innerHTML, "Hello World");
+			});
+		</script>
+	</body>
+</html>
