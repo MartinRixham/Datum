@@ -7,8 +7,14 @@
 		<script src="http://code.jquery.com/qunit/qunit-1.15.0.js"></script>
 		<script src="../src/BindingRoot.js"></script>
 		<script src="../src/Binding.js"></script>
+		<script src="../src/Datum.js"></script>
 	</head>
 	<body>
+		<style>
+			#qunit ~ * {
+					display: none;
+			}
+		</style>
 		<div id="qunit"></div>
 		<div id="qunit-fixture"></div>
 		<script>
@@ -78,6 +84,34 @@
 					var input = new InputObject();
 
 					assert.strictEqual(query("#test-input").value, "Hello World");
+			});
+		</script>
+		<input type="text" id="value-input" data-bind="valueInput" />
+		<script>
+			QUnit.test("Update data from input", function(assert) {
+
+					function InputObject() {
+
+							this.datum = new Datum();
+
+							this.valueInput = new Binding({
+
+									value: this.datum
+							});
+
+							this.bind();
+					}
+
+					InputObject.prototype = new BindingRoot();
+
+					var input = new InputObject();
+
+					var element = query("#value-input");
+
+					element.value = "Hello World";
+					element.dispatchEvent(new Event("change"));
+
+					assert.strictEqual(input.datum(), "Hello World");
 			});
 		</script>
 	</body>
