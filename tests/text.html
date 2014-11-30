@@ -26,11 +26,13 @@
           return document.querySelector(query);
       };
 
+			scope = document.querySelector("body");
+
 			QUnit.test("Bind text", function(assert) {
 
 					var test = new Text("Hello World");
 
-					test.bind("test");
+					test.bind(scope, "test");
 
 					assert.strictEqual(query("#test-div").innerHTML, "Hello World");
 			});

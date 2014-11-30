@@ -85,5 +85,48 @@
 					assert.strictEqual(input.datum(), "Hello World");
 			});
 		</script>
+		<div data-bind="super">
+			<div id="sub" data-bind="sub"></div>
+		</div>
+		<script>
+			QUnit.test("Bind subobject", function(assert) {
+
+					function TextObject() {
+
+							this.super = {
+
+									sub: new Binding({
+
+											text: "Hello World"
+									})
+							};
+					}
+
+					new BindingRoot(new TextObject());
+
+					assert.strictEqual(query("#sub").innerHTML, "Hello World");
+			});
+		</script>
+		<div data-bind="nonSuper"></div>
+		<div id="non-sub" data-bind="nonSub"></div>
+		<script>
+			QUnit.test("Fail to bind subobject outside of scope", function(assert) {
+
+					function TextObject() {
+
+							this.super = {
+
+									sub: new Binding({
+
+											text: "Hello World"
+									})
+							};
+					}
+
+					new BindingRoot(new TextObject());
+
+					assert.notEqual(query("#non-sub").innerHTML, "Hello World");
+			});
+		</script>
 	</body>
 </html>

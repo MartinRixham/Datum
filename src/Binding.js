@@ -5,20 +5,20 @@ function Binding(bindings) {
 		return document.querySelector(query);
 	};
 
-	this.bind = function(name) {
+	this.bind = function(scope, name) {
 
 		if (bindings.text) {
 
 			var text = new Text(bindings.text);
 
-			text.bind(name);
+			text.bind(scope, name);
 		}
 		
 		if (bindings.value) {
 
 			var value = new Value(bindings.value);
 
-			value.bind(name);
+			value.bind(scope, name);
 		}
 	};
 }

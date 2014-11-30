@@ -1,7 +1,7 @@
 function Text(text) {
 
-	this.bind = function(name) {
+	this.bind = function(scope, name) {
 	
-		document.querySelector("[data-bind=" + name + "]").innerHTML = text;
+		scope.querySelector("[data-bind=" + name + "]").innerHTML = text;
 	};
 }

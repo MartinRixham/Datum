@@ -1,6 +1,6 @@
 function Value(value) {
 
-	this.bind = function(name) {
+	this.bind = function(scope, name) {
 
 		var accessor = function() {};
 
@@ -13,7 +13,7 @@ function Value(value) {
 			accessor = function() { return value; };
 		}
 
-		var elements = document.querySelectorAll("[data-bind=" + name + "]");
+		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 
 		for (var i = 0; i < elements.length; i++) {
 

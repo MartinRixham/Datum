@@ -26,6 +26,8 @@
           return document.querySelector(query);
       };
 
+			scope = document.querySelector("body");
+
 			QUnit.test("Bind text", function(assert) {
 
 					var test =
@@ -34,7 +36,7 @@
 									text: "Hello World"
 							});
 
-					test.bind("test");
+					test.bind(scope, "test");
 
 					assert.strictEqual(query("#test-div").innerHTML, "Hello World");
 			});
@@ -49,7 +51,7 @@
 									value: "Hello World"
 							});
 
-					input.bind("input");
+					input.bind(scope, "input");
 
 					assert.strictEqual(query("#test-input").value, "Hello World");
 			});
@@ -66,7 +68,7 @@
 									value: datum
 							});
 
-					valueInput.bind("valueInput");
+					valueInput.bind(scope, "valueInput");
 
 					var element = query("#value-input");
 
