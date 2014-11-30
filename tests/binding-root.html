@@ -24,27 +24,6 @@
 
 					return document.querySelector(query);
 			};
-
-			QUnit.test("Constructor", function(assert) {
-
-					var bindingRoot = new BindingRoot();
-
-					assert.expect(0);
-			});
-
-			QUnit.test("Construct subobject", function(assert) {
-
-					function SubObject() {
-
-							this.method = function() {};
-					}
-
-					SubObject.prototype = new BindingRoot();
-
-					var object = new SubObject();
-
-					assert.expect(0);
-			});
 		</script>
 		<div id="test-div" data-bind="test"></div>
 		<script>
@@ -56,13 +35,9 @@
 
 									text: "Hello World"
 							});
-
-							this.bind();
 					}
 
-					TextObject.prototype = new BindingRoot();
-
-					var object = new TextObject();
+					new BindingRoot(new TextObject());
 
 					assert.strictEqual(query("#test-div").innerHTML, "Hello World");
 			});
@@ -77,13 +52,9 @@
 
 									value: "Hello World"
 							});
-
-							this.bind();
 					}
 
-					InputObject.prototype = new BindingRoot();
-
-					var input = new InputObject();
+					new BindingRoot(new InputObject());
 
 					assert.strictEqual(query("#test-input").value, "Hello World");
 			});
@@ -100,13 +71,11 @@
 
 									value: this.datum
 							});
-
-							this.bind();
 					}
 
-					InputObject.prototype = new BindingRoot();
-
 					var input = new InputObject();
+
+					new BindingRoot(input);
 
 					var element = query("#value-input");
 

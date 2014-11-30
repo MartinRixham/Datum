@@ -1,15 +1,12 @@
-function BindingRoot() {
+function BindingRoot(model) {
 
-	this.bind = function() {
+	for(var key in model)
+	{
+		var property = model[key];
 
-		for(var key in this)
-		{
-			var property = this[key];
+		if (property.constructor == Binding) {
 
-			if (property.constructor == Binding) {
-	
-				property.bind(key);
-			}
+			property.bind(key);
 		}
-	};
+	}
 }
