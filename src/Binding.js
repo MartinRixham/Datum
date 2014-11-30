@@ -7,9 +7,14 @@ function Binding(bindings) {
 
 	this.bind = function(name) {
 
-		if(bindings.text) {
+		if (bindings.text) {
 
 			query("[data-bind=" + name + "]").innerHTML = bindings.text;
+		}
+		
+		if (bindings.value) {
+
+			query("[data-bind=" + name + "]").value = bindings.value;
 		}
 	};
 }

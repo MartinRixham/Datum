@@ -26,14 +26,14 @@
 
 			QUnit.test("Construct subobject", function(assert) {
 
-					function Object() {
+					function SubObject() {
 
 							this.method = function() {};
 					}
 
-					Object.prototype = new BindingRoot();
+					SubObject.prototype = new BindingRoot();
 
-					var object = new Object();
+					var object = new SubObject();
 
 					assert.expect(0);
 			});
@@ -42,7 +42,7 @@
 		<script>
 			QUnit.test("Bind text", function(assert) {
 
-					function Object() {
+					function TextObject() {
 		
 							this.test = new Binding({
 
@@ -52,11 +52,32 @@
 							this.bind();
 					}
 
-					Object.prototype = new BindingRoot();
+					TextObject.prototype = new BindingRoot();
 
-					var object = new Object();
+					var object = new TextObject();
 
 					assert.strictEqual(query("#test-div").innerHTML, "Hello World");
+			});
+		</script>
+		<input type="text" id="test-input" data-bind="input" />
+		<script>
+			QUnit.test("Bind value", function(assert) {
+
+					function InputObject() {
+
+							this.input = new Binding({
+
+									value: "Hello World"
+							});
+
+							this.bind();
+					}
+
+					InputObject.prototype = new BindingRoot();
+
+					var input = new InputObject();
+
+					assert.strictEqual(query("#test-input").value, "Hello World");
 			});
 		</script>
 	</body>
