@@ -1,15 +1,17 @@
 function Binding(bindings) {
 
-  var query = function(query) {
+	var query = function(query) {
 
-    return document.querySelector(query);
-  };
+		return document.querySelector(query);
+	};
 
 	this.bind = function(name) {
 
 		if (bindings.text) {
 
-			query("[data-bind=" + name + "]").innerHTML = bindings.text;
+			var text = new Text(bindings.text);
+
+			text.bind(name);
 		}
 		
 		if (bindings.value) {
