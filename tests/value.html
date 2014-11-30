@@ -94,5 +94,24 @@
 					assert.strictEqual(query("#input2").value, "Hello World");
 			});
 		</script>
+		<input type="text" id="send" data-bind="sync" />
+		<input type="text" id="receive" data-bind="sync" />
+		<script>
+			QUnit.test("Synchronise inputs", function(assert) {
+
+					var datum = new Datum();
+
+					var valueInput = new Value(datum);
+
+					valueInput.bind("sync");
+
+					var sender = query("#send");
+
+					sender.value = "Hello World";
+					sender.dispatchEvent(new Event("change"));
+
+					assert.strictEqual(query("#receive").value, "Hello World");
+			});
+		</script>
 	</body>
 </html>
