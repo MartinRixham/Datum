@@ -16,14 +16,9 @@ function Binding(bindings) {
 		
 		if (bindings.value) {
 
-			var element = query("[data-bind=" + name + "]");
+			var value = new Value(bindings.value);
 
-			element.value = bindings.value;
-
-			element.addEventListener("change", function(event) {
-
-				bindings.value(event.target.value);	
-			});
+			value.bind(name);
 		}
 	};
 }
