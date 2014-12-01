@@ -2,6 +2,8 @@ function Datum(datum) {
 
 	var updateCallbacks = [];
 
+	var self = this;
+
 	var provider = function(value) {
 
 		if (value) {
@@ -12,6 +14,13 @@ function Datum(datum) {
 
 				updateCallbacks[i](value);	
 			}
+		}
+		else if (self.registeringUpdates()) {
+
+			self.registerUpdaterAssigner(function(callback) {
+
+				updateCallbacks.push(callback);
+			});
 		}
 			
 		return datum;
@@ -26,3 +35,5 @@ function Datum(datum) {
 
 	return provider;
 }
+
+Datum.prototype = new Subscriber();

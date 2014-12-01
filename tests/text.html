@@ -5,6 +5,8 @@
 		<title>Text Tests</title>
 		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.15.0.css">
 		<script src="http://code.jquery.com/qunit/qunit-1.15.0.js"></script>
+		<script src="../src/Registry.js"></script>
+		<script src="../src/Subscriber.js"></script>
 		<script src="../src/BindingRoot.js"></script>
 		<script src="../src/Binding.js"></script>
 		<script src="../src/Datum.js"></script>
@@ -35,6 +37,38 @@
 					test.bind(scope, "test");
 
 					assert.strictEqual(query("#test-div").innerHTML, "Hello World");
+			});
+		</script>
+		<div id="text" data-bind="text"></div>
+		<script>
+			QUnit.test("Bind datum", function(assert) {
+
+					var datum = new Datum();
+
+					var text = new Text(datum);
+
+					text.bind(scope, "text");
+
+					datum("Hello World");
+
+					assert.strictEqual(query("#text").innerHTML, "Hello World");
+			});
+		</script>
+		<div id="function" data-bind="function"></div>
+		<script>
+			QUnit.test("Bind function", function(assert) {
+
+					var datum = new Datum();
+
+					var func = function() { return datum(); };
+
+					var text = new Text(func);
+
+					text.bind(scope, "function");
+
+					datum("Hello World");
+
+					assert.strictEqual(query("#function").innerHTML, "Hello World");
 			});
 		</script>
 	</body>
