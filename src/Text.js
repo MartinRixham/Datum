@@ -2,31 +2,35 @@ function Text(text) {
 
 	this.bind = function(scope, name) {
 
-		if (text.isDatum) {
+		if (typeof(text) == "function") {
 
-			scope.querySelector("[data-bind=" + name + "]").innerHTML = text();
+			if (text() && text().isDatum) {
 
-			text.update(function() {
+				text = text();
+			}
 
-				scope
-					.querySelector("[data-bind=" + name + "]")
-					.innerHTML =
+			if (text.isDatum) {
+
+				scope.querySelector("[data-bind=" + name + "]").innerHTML = text();
+
+				text.update(function() {
+
+					scope.querySelector("[data-bind=" + name + "]").innerHTML =
 						text();
-			});
-		}
-		else if (typeof(text) == "function") {
+				});
+			}
+			else {
 
-			this.requestRegistrations();
+				this.requestRegistrations();
 		
-			scope.querySelector("[data-bind=" + name + "]").innerHTML = text();
+				scope.querySelector("[data-bind=" + name + "]").innerHTML = text();
 
-			this.applyUpdaters(function() {
+				this.applyUpdaters(function() {
 		
-				scope
-					.querySelector("[data-bind=" + name + "]")
-					.innerHTML = 
+					scope.querySelector("[data-bind=" + name + "]").innerHTML = 
 						text();
-			});
+				});
+			}
 		}
 		else {
 

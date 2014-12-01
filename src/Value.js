@@ -7,6 +7,11 @@ function Value(value) {
 		if (typeof(value) == "function") {
 
 			accessor = value;
+
+			if (accessor() && accessor().isDatum) {
+
+				accessor = accessor();
+			}
 		}
 		else {
 
@@ -21,14 +26,14 @@ function Value(value) {
 
 			element.value = accessor();
 
-			if (value.isDatum) {
+			if (accessor.isDatum) {
 
 				element.addEventListener("change", function(event) {
 
 					accessor(event.target.value);
 				});
 
-				value.update(function(updatedValue) {
+				accessor.update(function(updatedValue) {
 
 					element.value = updatedValue;
 				});
