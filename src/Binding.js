@@ -7,6 +7,13 @@ function Binding(bindings) {
 
 	this.bind = function(scope, name) {
 
+		var element = scope.querySelector("[data-bind=" + name + "]");
+
+		if (!element) {
+
+			return;
+		}
+
 		if (bindings.text) {
 
 			var text = new Text(bindings.text);
