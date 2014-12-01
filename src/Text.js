@@ -9,28 +9,15 @@ function Text(text) {
 				text = text();
 			}
 
-			if (text.isDatum) {
-
-				scope.querySelector("[data-bind=" + name + "]").innerHTML = text();
-
-				text.update(function() {
-
-					scope.querySelector("[data-bind=" + name + "]").innerHTML =
-						text();
-				});
-			}
-			else {
-
-				this.requestRegistrations();
+			this.requestRegistrations();
 		
-				scope.querySelector("[data-bind=" + name + "]").innerHTML = text();
+			scope.querySelector("[data-bind=" + name + "]").innerHTML = text();
 
-				this.applyUpdaters(function() {
+			this.applyUpdaters(function() {
 		
-					scope.querySelector("[data-bind=" + name + "]").innerHTML = 
-						text();
-				});
-			}
+				scope.querySelector("[data-bind=" + name + "]").innerHTML = 
+					text();
+			});
 		}
 		else {
 

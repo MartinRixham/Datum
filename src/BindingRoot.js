@@ -4,13 +4,24 @@ function BindingRoot(model) {
 
 		for(var key in model)
 		{
+			var injectProperty = function(key, property) {
+
+				var datum = new Datum(property);
+
+				Object.defineProperty(model, key, {
+
+					get: function() { return datum(); },
+					set: function(value) { datum(value); }
+				});
+			};
+
 			var property = model[key];
 	
-			if (property.constructor == Binding) {
+			if (property && property.constructor == Binding) {
 	
 				property.bind(model._scope, key);
 			}
-			else if (typeof(property) == "object") {
+			else if (property && typeof(property) == "object") {
 
 				element = model._scope.querySelector("[data-bind=" + key + "]");
 
@@ -20,6 +31,10 @@ function BindingRoot(model) {
 
 					bindObject(property);
 				}
+			}
+			else if (typeof(property) != "function") {
+
+				injectProperty(key, property);
 			}
 		}
 	};
