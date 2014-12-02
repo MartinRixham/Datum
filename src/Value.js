@@ -6,33 +6,33 @@ function Value(value) {
 
 		if (typeof(value) == "function") {
 
-			for (var i = 0; i < elements.length; i++) {
-
-				var element = elements[i];
-
-				element.value = value();
-
-				element.addEventListener("change", function(event) {
-					
-					// There's no way to know if this is a setter or not
-					// so we'll have to call it in either case.
-					value(event.target.value);
-				});
-			}
-
 			this.requestRegistrations();
 
-			value();
+			var evaluated = value();
 
 			this.applyUpdaters(function() {
 
 				var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 
+				var evaluated = value();
+
 				for (var i = 0; i < elements.length; i++) {
 
-					elements[i].value = value();
+					elements[i].value = evaluated;
 				}
 			});
+
+			for (var i = 0; i < elements.length; i++) {
+
+				var element = elements[i];
+
+				element.value = evaluated;
+
+				element.addEventListener("change", function(event) {
+					
+					value(event.target.value);
+				});
+			}
 		}
 		else {
 

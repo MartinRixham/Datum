@@ -88,5 +88,53 @@
 					assert.strictEqual(query("#one").innerHTML, "Hello World");
 			});
 		</script>
+		<div data-bind="single"></div>
+		<div data-bind="single"></div>
+		<script>
+			QUnit.test("Callback called once on init", function(assert) {
+
+					var count = 0;
+
+					var datum = new Datum();
+
+					var text = 
+							new Text(function() {
+
+									count += 1;	
+
+									return datum();
+							});
+
+					text.bind(scope, "single");
+
+					assert.strictEqual(count, 1);
+			});
+		</script>
+		<div data-bind="twice"></div>
+		<div data-bind="twice"></div>
+		<script>
+			QUnit.test("Callback called once on update", function(assert) {
+
+					var count = 0;
+
+					var datum = new Datum();
+
+					var text = 
+							new Text(function() {
+
+									count += 1;	
+
+									return datum();
+							});
+
+					text.bind(scope, "twice");
+
+					count = 0;
+
+					datum("Hello World");
+
+					assert.strictEqual(count, 1);
+			});
+		</script>
 	</body>
 </html>

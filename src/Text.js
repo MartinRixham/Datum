@@ -6,24 +6,26 @@ function Text(text) {
 
 		if (typeof(text) == "function") {
 
-			for (var i = 0; i < elements.length; i++) {
-
-				elements[i].textContent = text();
-			}
-
 			this.requestRegistrations();
 		
-			text();
+			var evaluated = text();
 
 			this.applyUpdaters(function() {
 		
 				var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 
+				var evaluated = text();
+
 				for (var i = 0; i < elements.length; i++) {
 
-					elements[i].textContent = text();
+					elements[i].textContent = evaluated;
 				}
 			});
+
+			for (var i = 0; i < elements.length; i++) {
+
+				elements[i].textContent = evaluated;
+			}
 		}
 		else {
 
