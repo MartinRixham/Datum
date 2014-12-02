@@ -12,7 +12,7 @@ function UniqueRoot() {
 						"cannot be instantiated multiple times.",
 
 				name: "DatumException"
-			}
+			};
 		}
 		else {
 
@@ -20,3 +20,5 @@ function UniqueRoot() {
 		}
 	};
 }
+
+UniqueRoot.prototype = new Subscriber();

@@ -34,6 +34,12 @@
 
 					teardown: function() {
 
+							Subscriber.prototype = new Registry();
+							Binding.prototype = new Subscriber();
+							Datum.prototype = new Subscriber();
+							Text.prototype = new Subscriber();
+							Value.prototype = new Subscriber();
+							UniqueRoot.prototype = new Subscriber();
 							BindingRoot.prototype = new UniqueRoot();
 					}
 			});
@@ -252,5 +258,28 @@
 										"cannot be instantiated multiple times.");
 						});
 		</script>
+    <div id="after" data-bind="after"></div>
+    <script>
+      QUnit.test("Create binding after root", function(assert) {
+
+					function After() {
+
+          		this.datum = null;
+					}
+
+					after = new After();
+
+					new BindingRoot(after);
+
+					after.after = new Binding({
+
+							text: function() { return after.datum; }
+					});
+
+          after.datum = "Hello World";
+
+          assert.strictEqual(query("#after").innerHTML, "Hello World");
+      });
+    </script>
 	</body>
-</html>
+</htl>

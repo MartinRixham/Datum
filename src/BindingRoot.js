@@ -2,7 +2,14 @@ function BindingRoot(model) {
 
 	this.assertUniqueness();
 
-	var bindObject = function(model) {
+	var bindObject = function(scope, model) {
+
+		var newBinding = !model._scope;
+
+		if (newBinding) {
+
+			model._scope = scope;
+		}
 
 		for(var key in model)
 		{
@@ -19,36 +26,34 @@ function BindingRoot(model) {
 
 			var property = model[key];
 	
-			if (property && property.constructor == Binding) {
+			if (property && property.isBinding) {
 	
 				property.bind(model._scope, key);
 			}
 			else if (property && typeof(property) == "object") {
 
-				element = model._scope.querySelector("[data-bind=" + key + "]");
+				var element = model._scope.querySelector("[data-bind=" + key + "]");
 
 				if (element) {
 
-					property._scope = element;
-
-					bindObject(property);
+					bindObject(element, property);
 				}
 			}
-			else if (typeof(property) != "function") {
+			else if ((typeof(property) != "function") && newBinding) {
 
 				injectProperty(key, property);
 			}
 		}
 	};
 
-	model._scope = document.querySelector("body");
+	var scope = document.querySelector("body");
 
-	bindObject(model);
+	bindObject(scope, model);
 
-	this.rebind = function() {
+	this.rebind(function() {
 
-		bindObject(model);
-	};
+		bindObject(scope, model);
+	});
 }
 
 BindingRoot.prototype = new UniqueRoot();

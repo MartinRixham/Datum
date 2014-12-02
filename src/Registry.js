@@ -30,4 +30,30 @@ function Registry() {
 
 		registering = false;
 	};
+
+	var rebind = null;
+
+	var rebindRequested = false;
+
+	this.rebind = function(callback) {
+
+		if (callback && !rebind) {
+
+			rebind = callback;
+		}
+		else if (rebind && rebindRequested) {
+
+			rebindRequested = false;
+
+			rebind();
+		}
+	};
+
+	this.requestRebind = function() {
+
+		if (rebind) {
+
+			rebindRequested = true;
+		}
+	};
 }

@@ -1,9 +1,6 @@
 function Binding(bindings) {
 
-	var query = function(query) {
-
-		return document.querySelector(query);
-	};
+	this.requestRebind();
 
 	this.bind = function(scope, name) {
 
@@ -28,4 +25,8 @@ function Binding(bindings) {
 			value.bind(scope, name);
 		}
 	};
+
+	this.isBinding = true;
 }
+
+Binding.prototype = new Subscriber();

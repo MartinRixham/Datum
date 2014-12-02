@@ -6,6 +6,8 @@ function Datum(datum) {
 
 	var provider = function(value) {
 
+		self.rebind();
+
 		if (value) {
 
 			datum = value;
