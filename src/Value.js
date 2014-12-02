@@ -2,26 +2,28 @@ function Value(value) {
 
 	this.bind = function(scope, name) {
 
-		var accessor = function() {};
+		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 
 		if (typeof(value) == "function") {
 
-			accessor = value;
-		}
-		else {
+			for (var i = 0; i < elements.length; i++) {
 
-			accessor = function() { return value; };
-		}
+				var element = elements[i];
 
-		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
+				element.value = value();
 
-		for (var i = 0; i < elements.length; i++) {
+				if (value.isDatum) {
 
-			var element = elements[i];
+					element.addEventListener("change", function(event) {
+
+						value(event.target.value);
+					});
+				}
+			}
 
 			this.requestRegistrations();
 
-			element.value = accessor();
+			value();
 
 			this.applyUpdaters(function() {
 
@@ -29,18 +31,17 @@ function Value(value) {
 
 				for (var i = 0; i < elements.length; i++) {
 
-					elements[i].value = accessor();
+					elements[i].value = value();
 				}
 			});
-
-			if (accessor.isDatum) {
-
-				element.addEventListener("change", function(event) {
-
-					accessor(event.target.value);
-				});
-			}
 		}
+		else {
+
+			for (i = 0; i < elements.length; i++) {
+
+				elements[i].value = value;
+			}
+		}	
 	};
 }
 
