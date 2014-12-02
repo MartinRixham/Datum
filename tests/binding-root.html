@@ -155,5 +155,30 @@
           assert.strictEqual(query("#plain").innerHTML, "Hello World");
       });
     </script>
+    <input type="text" id="plainValue" data-bind="plainValue" />
+    <script>
+      QUnit.test("Update value from plain object", function(assert) {
+
+					function PlainObject() {
+
+          		this.datum = null;
+
+							var self = this;
+
+          		this.plain = new Binding({
+
+									value: function() { return self.datum; }
+							});
+					}
+
+					plainObject = new PlainObject();
+
+					new BindingRoot(plainObject);
+
+          plainObject.datum = "Hello World";
+
+          assert.strictEqual(query("#plain").value, "Hello World");
+      });
+    </script>
 	</body>
 </html>

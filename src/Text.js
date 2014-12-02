@@ -4,11 +4,6 @@ function Text(text) {
 
 		if (typeof(text) == "function") {
 
-			if (text() && text().isDatum) {
-
-				text = text();
-			}
-
 			this.requestRegistrations();
 		
 			scope.querySelector("[data-bind=" + name + "]").innerHTML = text();

@@ -117,22 +117,5 @@
 					assert.strictEqual(query("#receive").value, "Hello World");
 			});
 		</script>
-    <div id="wrap" data-bind="wrap"></div>
-    <script>
-      QUnit.test("Bind wrapped datum", function(assert) {
-
-          var datum = new Datum();
-
-          var func = function() { return datum; };
-
-          var value = new Value(func);
-
-          value.bind(scope, "wrap");
-
-          datum("Hello World");
-
-          assert.strictEqual(query("#wrap").value, "Hello World");
-      });
-    </script>
 	</body>
 </html>

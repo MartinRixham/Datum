@@ -7,11 +7,6 @@ function Value(value) {
 		if (typeof(value) == "function") {
 
 			accessor = value;
-
-			if (accessor() && accessor().isDatum) {
-
-				accessor = accessor();
-			}
 		}
 		else {
 
@@ -24,7 +19,19 @@ function Value(value) {
 
 			var element = elements[i];
 
+			this.requestRegistrations();
+
 			element.value = accessor();
+
+			this.applyUpdaters(function() {
+
+				var elements = scope.querySelectorAll("[data-bind=" + name + "]");
+
+				for (var i = 0; i < elements.length; i++) {
+
+					elements[i].value = accessor();
+				}
+			});
 
 			if (accessor.isDatum) {
 
@@ -32,12 +39,9 @@ function Value(value) {
 
 					accessor(event.target.value);
 				});
-
-				accessor.update(function(updatedValue) {
-
-					element.value = updatedValue;
-				});
 			}
 		}
 	};
 }
+
+Value.prototype = new Subscriber();

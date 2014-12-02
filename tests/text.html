@@ -71,22 +71,5 @@
 					assert.strictEqual(query("#function").innerHTML, "Hello World");
 			});
 		</script>
-		<div id="wrap" data-bind="wrap"></div>
-		<script>
-			QUnit.test("Bind wrapped datum", function(assert) {
-
-					var datum = new Datum();
-
-					var func = function() { return datum; };
-
-					var text = new Text(func);
-
-					text.bind(scope, "wrap");
-
-					datum("Hello World");
-
-					assert.strictEqual(query("#wrap").innerHTML, "Hello World");
-			});
-		</script>
 	</body>
 </html>
