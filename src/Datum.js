@@ -28,11 +28,6 @@ function Datum(datum) {
 
 	provider.isDatum = true;
 
-	provider.update = function(callback) {
-
-		updateCallbacks.push(callback);
-	};
-
 	return provider;
 }
 

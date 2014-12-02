@@ -165,7 +165,7 @@
 
 							var self = this;
 
-          		this.plain = new Binding({
+          		this.plainValue = new Binding({
 
 									value: function() { return self.datum; }
 							});
@@ -177,8 +177,44 @@
 
           plainObject.datum = "Hello World";
 
-          assert.strictEqual(query("#plain").value, "Hello World");
+          assert.strictEqual(query("#plainValue").value, "Hello World");
       });
     </script>
+		<input type="text" id="plain-change" data-bind="plainChange" />
+		<script>
+			QUnit.test("Update plain data from input", function(assert) {
+
+					function InputObject() {
+
+							this.datum = null;
+
+							var self = this;
+
+							this.plainChange = new Binding({
+
+									value: function(value) { 
+	
+											if (value) {
+
+													self.datum = value; 
+											}
+											
+											return self.datum;
+									}
+							});
+					}
+
+					var input = new InputObject();
+
+					new BindingRoot(input);
+
+					var element = query("#plain-change");
+
+					element.value = "Hello World";
+					element.dispatchEvent(new Event("change"));
+
+					assert.strictEqual(input.datum, "Hello World");
+			});
+		</script>
 	</body>
 </html>

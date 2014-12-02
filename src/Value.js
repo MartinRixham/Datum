@@ -12,13 +12,12 @@ function Value(value) {
 
 				element.value = value();
 
-				if (value.isDatum) {
-
-					element.addEventListener("change", function(event) {
-
-						value(event.target.value);
-					});
-				}
+				element.addEventListener("change", function(event) {
+					
+					// There's no way to know if this is a setter or not
+					// so we'll have to call it in either case.
+					value(event.target.value);
+				});
 			}
 
 			this.requestRegistrations();
