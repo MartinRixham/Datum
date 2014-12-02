@@ -1,5 +1,7 @@
 function BindingRoot(model) {
 
+	this.assertUniqueness();
+
 	var bindObject = function(model) {
 
 		for(var key in model)
@@ -48,3 +50,5 @@ function BindingRoot(model) {
 		bindObject(model);
 	};
 }
+
+BindingRoot.prototype = new UniqueRoot();

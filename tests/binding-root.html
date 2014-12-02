@@ -7,6 +7,7 @@
 		<script src="http://code.jquery.com/qunit/qunit-1.15.0.js"></script>
 		<script src="../src/Registry.js"></script>
 		<script src="../src/Subscriber.js"></script>
+		<script src="../src/UniqueRoot.js"></script>
 		<script src="../src/BindingRoot.js"></script>
 		<script src="../src/Binding.js"></script>
 		<script src="../src/Datum.js"></script>
@@ -26,6 +27,16 @@
 
 					return document.querySelector(query);
 			};
+
+			// To preserve atomicity prototypes must be 
+			// reassigned after each test.
+			QUnit.module("", {
+
+					teardown: function() {
+
+							BindingRoot.prototype = new UniqueRoot();
+					}
+			});
 		</script>
 		<div id="test-div" data-bind="test"></div>
 		<script>
@@ -215,6 +226,31 @@
 
 					assert.strictEqual(input.datum, "Hello World");
 			});
+		</script>
+		<script>
+			QUnit.test(
+					"Constructor can only be called once.",
+					 function(assert) {
+
+								var exception = null;
+
+								try {
+
+										new BindingRoot({});
+										new BindingRoot({});
+								}
+								catch(ex) {
+
+										exception = ex;
+								}
+
+								assert.ok(exception);
+
+								assert.strictEqual(
+										exception.message,
+										"The binding root is unique and " + 
+										"cannot be instantiated multiple times.");
+						});
 		</script>
 	</body>
 </html>
