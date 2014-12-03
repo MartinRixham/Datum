@@ -17,7 +17,7 @@ function Datum(datum) {
 				updateCallbacks[i](value);	
 			}
 		}
-		else if (self.registeringUpdates()) {
+		else if (self.registeringAssigners()) {
 
 			self.registerUpdaterAssigner(function(callback) {
 

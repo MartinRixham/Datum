@@ -10,7 +10,7 @@ function Text(text) {
 		
 			var evaluated = text();
 
-			this.applyUpdaters(function() {
+			this.assignUpdater(function() {
 		
 				var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 
