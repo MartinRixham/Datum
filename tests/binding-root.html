@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Binding Root Tests</title>
-		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.15.0.css">
-		<script src="http://code.jquery.com/qunit/qunit-1.15.0.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
+		<script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
 		<script src="../src/Registry.js"></script>
 		<script src="../src/Subscriber.js"></script>
 		<script src="../src/UniqueRoot.js"></script>
@@ -312,5 +312,43 @@
           assert.strictEqual(count, 1);
       });
     </script>
+		<div data-bind="afterObject">
+    	<div id="after-object" data-bind="after"></div>
+		</div>
+    <script>
+      QUnit.test("Bind subobject after root", function(assert) {
+
+					function After() {}
+
+					var after = new After();
+
+					new BindingRoot(after);
+
+					after.afterObject = {
+
+						datum: null,
+
+						after: new Binding({
+
+								text: function() { return after.afterObject.datum; }
+						})
+					};
+
+					after.afterObject.datum = "Hello World";
+
+					var done = assert.async();
+
+					// In this case the binding is done asynchronously
+					// so the test must be queued after the binding.
+					setTimeout(function() {
+          	
+							assert.strictEqual(
+									query("#after-object").innerHTML, 
+									"Hello World");
+
+							done();
+					});
+      });
+    </script>
 	</body>
-</htl>
+</html>

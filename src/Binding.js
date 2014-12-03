@@ -2,7 +2,9 @@ function Binding(bindings) {
 
 	this.requestRebind();
 
-	var element = null;
+	setTimeout(this.rebind);
+
+	var element = false;
 
 	this.bind = function(scope, name) {
 
@@ -11,7 +13,7 @@ function Binding(bindings) {
 				return;
 		}
 
-		element = scope.querySelector("[data-bind=" + name + "]");
+		element = !!scope.querySelector("[data-bind=" + name + "]");
 
 		if (!element) {
 
