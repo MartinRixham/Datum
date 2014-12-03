@@ -318,9 +318,9 @@
     <script>
       QUnit.test("Bind subobject after root", function(assert) {
 
-					function After() {}
+					function AfterObject() {}
 
-					var after = new After();
+					var after = new AfterObject();
 
 					new BindingRoot(after);
 
@@ -344,6 +344,52 @@
           	
 							assert.strictEqual(
 									query("#after-object").innerHTML, 
+									"Hello World");
+
+							done();
+					});
+      });
+    </script>
+    <input type="text" id="update-after" data-bind="updateAfter" />
+    <script>
+      QUnit.test("Update value bound after root", function(assert) {
+
+					function AfterUpdate() {
+
+          		this.datum = null;
+					}
+
+					var after = new AfterUpdate();
+
+					new BindingRoot(after);
+
+					after.updateAfter = new Binding({
+
+							value: function(value) { 
+
+									if (value) {
+
+											after.datum = value;
+									}
+
+									return after.datum; 
+							}
+					});
+
+					setTimeout(function() {
+
+							var element = query("#update-after");
+
+							element.value = "Hello World";
+							element.dispatchEvent(new Event("change"));
+					});
+
+					var done = assert.async();
+
+					setTimeout(function() {
+          	
+							assert.strictEqual(
+									after.datum, 
 									"Hello World");
 
 							done();
