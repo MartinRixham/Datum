@@ -32,7 +32,8 @@ function BindingRoot(model) {
 			}
 			else if (property && typeof(property) == "object") {
 
-				var element = model._scope.querySelector("[data-bind=" + key + "]");
+				var element = 
+					model._scope.querySelector("[data-bind=" + key + "]");
 
 				if (element) {
 

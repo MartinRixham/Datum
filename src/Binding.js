@@ -2,9 +2,16 @@ function Binding(bindings) {
 
 	this.requestRebind();
 
+	var element = null;
+
 	this.bind = function(scope, name) {
 
-		var element = scope.querySelector("[data-bind=" + name + "]");
+		if (element) {
+
+				return;
+		}
+
+		element = scope.querySelector("[data-bind=" + name + "]");
 
 		if (!element) {
 

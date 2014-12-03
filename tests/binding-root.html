@@ -104,7 +104,7 @@
 					assert.strictEqual(input.datum(), "Hello World");
 			});
 		</script>
-		<div data-bind="super">
+		<div id="super" data-bind="super">
 			<div id="sub" data-bind="sub"></div>
 		</div>
 		<script>
@@ -267,7 +267,7 @@
           		this.datum = null;
 					}
 
-					after = new After();
+					var after = new After();
 
 					new BindingRoot(after);
 
@@ -279,6 +279,37 @@
           after.datum = "Hello World";
 
           assert.strictEqual(query("#after").innerHTML, "Hello World");
+      });
+    </script>
+    <div data-bind="inner"></div>
+    <div data-bind="outer"></div>
+    <script>
+      QUnit.test("Old bindings are not reapplied.", function(assert) {
+
+					var count = 0;
+
+					function Only() {
+
+          		this.datum = null;
+
+							this.inner = new Binding({
+
+									text: function() { count += 1; }
+							});
+					}
+
+					var only = new Only();
+
+					new BindingRoot(only);
+
+					only.outer = new Binding({
+
+							text: function() { return only.datum; }
+					});
+
+          only.datum = "Hello World";
+
+          assert.strictEqual(count, 1);
       });
     </script>
 	</body>
