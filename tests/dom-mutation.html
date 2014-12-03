@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Dom Mutation Tests</title>
+		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
+		<script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
+		<script src="../src/Registry.js"></script>
+		<script src="../src/Subscriber.js"></script>
+		<script src="../src/UniqueRoot.js"></script>
+		<script src="../src/BindingRoot.js"></script>
+		<script src="../src/Binding.js"></script>
+		<script src="../src/Datum.js"></script>
+		<script src="../src/Text.js"></script>
+		<script src="../src/Value.js"></script>
+	</head>
+	<body>
+		<style>
+			#qunit ~ * {
+			}
+		</style>
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+		<script>
+			query = function(query) {
+
+					return document.querySelector(query);
+			};
+
+			fixture = query("#qunit-fixture");
+
+			// To preserve atomicity prototypes must be 
+			// reassigned after each test.
+			QUnit.module("", {
+
+					teardown: function() {
+
+							Subscriber.prototype = new Registry();
+							Binding.prototype = new Subscriber();
+							Datum.prototype = new Subscriber();
+							Text.prototype = new Subscriber();
+							Value.prototype = new Subscriber();
+							UniqueRoot.prototype = new Subscriber();
+							BindingRoot.prototype = new UniqueRoot();
+					}
+			});
+		</script>
+		<script>
+			QUnit.test("Bind to inserted element", function(assert) {
+
+					function TextObject() {
+		
+							this.test = new Binding({
+
+									text: function() { return "Hello World"; }
+							});
+					}
+
+					new BindingRoot(new TextObject());
+
+					var div = document.createElement("div");
+
+					div.id = "test-div";
+
+					div.setAttribute("data-bind", "test");
+
+					fixture.appendChild(div);
+
+					var done = assert.async();
+
+					setTimeout(function() {
+					
+							assert.strictEqual(
+									query("#test-div").innerHTML,
+									"Hello World");
+							done();
+					});
+			});
+		</script>
+	</body>
+</html>

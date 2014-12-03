@@ -11,19 +11,19 @@ function BindingRoot(model) {
 			model._scope = scope;
 		}
 
+		var injectProperty = function(key, property) {
+
+			var datum = new Datum(property);
+
+			Object.defineProperty(model, key, {
+
+				get: function() { return datum(); },
+				set: function(value) { datum(value); }
+			});
+		};
+
 		for(var key in model)
 		{
-			var injectProperty = function(key, property) {
-
-				var datum = new Datum(property);
-
-				Object.defineProperty(model, key, {
-
-					get: function() { return datum(); },
-					set: function(value) { datum(value); }
-				});
-			};
-
 			var property = model[key];
 	
 			if (property && property.isBinding) {
@@ -55,6 +55,13 @@ function BindingRoot(model) {
 
 		bindObject(scope, model);
 	});
+
+	var observer = new MutationObserver(function(mutations) {
+
+			bindObject(scope, model);
+	});
+
+	observer.observe(scope, { childList: true, subtree: true });
 }
 
 BindingRoot.prototype = new UniqueRoot();
