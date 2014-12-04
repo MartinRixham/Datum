@@ -2,6 +2,10 @@ function BindingRoot(model) {
 
 	this.assertUniqueness();
 
+	// This loop is responsible for binding the data structure
+	// both initially when the binding root is created and
+	// after a new binding is added.
+	// It only applies bindings that have not previously been bound.
 	var bindObject = function(scope, model) {
 
 		var newBinding = !model._scope;
@@ -56,9 +60,45 @@ function BindingRoot(model) {
 		bindObject(scope, model);
 	});
 
+	// This loop is responsible for rebinding the data structure
+	// after dom mutations.
+	// It reapplies every binding.
+	var forceRebind = function(model) {
+
+		for(var key in model)
+		{
+			var property = model[key];
+
+			if (property && property.isBinding) {
+	
+				property.rebind(model._scope, key);
+			}
+			else if (property && typeof(property) == "object") {
+
+				var element = model._scope.querySelector("[data-bind=" + key + "]");
+
+				if (element) {
+
+					property._scope = element;
+
+					forceRebind(property);
+				}
+			}
+		}
+	};
+
 	var observer = new MutationObserver(function(mutations) {
 
-			bindObject(scope, model);
+		var notTextMutation = 
+			mutations.some(function(mutation) { 
+
+				return mutation.target.children.length; 
+			});
+
+		if (notTextMutation) {
+
+			forceRebind(model);
+		}
 	});
 
 	observer.observe(scope, { childList: true, subtree: true });

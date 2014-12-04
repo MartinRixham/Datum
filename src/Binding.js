@@ -8,10 +8,13 @@ function Binding(bindings) {
 
 	this.bind = function(scope, name) {
 
-		if (element) {
+		if (!element) {
 
-				return;
-		}
+			this.rebind(scope, name);
+		}	
+	};
+
+	this.rebind = function(scope, name) {
 
 		element = !!scope.querySelector("[data-bind=" + name + "]");
 

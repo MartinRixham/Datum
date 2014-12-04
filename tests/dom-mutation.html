@@ -77,5 +77,85 @@
 					});
 			});
 		</script>
+		<script>
+			QUnit.test("Bind datum to inserted element", function(assert) {
+
+					function TextObject() {
+
+							this.datum = null;
+
+							var self = this;
+		
+							this.test = new Binding({
+
+									text: function() { return self.datum; }
+							});
+					}
+
+					var textObject = new TextObject();
+
+					new BindingRoot(textObject);
+
+					var div = document.createElement("div");
+
+					div.id = "test-div";
+
+					div.setAttribute("data-bind", "test");
+
+					fixture.appendChild(div);
+
+					textObject.datum = "Hello World";
+
+					var done = assert.async();
+
+					setTimeout(function() {
+					
+							assert.strictEqual(
+									query("#test-div").innerHTML,
+									"Hello World");
+							done();
+					});
+			});
+		</script>
+		<script>
+			QUnit.test("Bind to replaced element", function(assert) {
+
+					var firstDiv = document.createElement("div");
+
+					firstDiv.id = "first";
+
+					firstDiv.setAttribute("data-bind", "test");
+
+					fixture.appendChild(firstDiv);
+
+					function TextObject() {
+		
+							this.test = new Binding({
+
+									text: function() { return "Hello World"; }
+							});
+					}
+
+					new BindingRoot(new TextObject());
+
+					var div = document.createElement("div");
+
+					div.id = "test-div";
+
+					div.setAttribute("data-bind", "test");
+
+					fixture.appendChild(div);
+
+					var done = assert.async();
+
+					setTimeout(function() {
+					
+							assert.strictEqual(
+									query("#test-div").innerHTML,
+									"Hello World");
+							done();
+					});
+			});
+		</script>
 	</body>
 </html>
