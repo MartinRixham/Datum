@@ -60,5 +60,25 @@
 					assert.ok(!document.contains(element));
 			});
 		</script>
+		<div id="remove" data-bind="remove"></div>
+		<script>
+			QUnit.test("Remove element when object set to null", function(assert) {
+
+					function RemoveObject() {
+		
+							this.remove = {};
+					}
+
+					var element = query("#remove");
+
+					var remove = new RemoveObject();
+
+					new BindingRoot(remove);
+
+					remove.remove = null;
+
+					assert.ok(!document.contains(element));
+			});
+		</script>
 	</body>
 </html>

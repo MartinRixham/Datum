@@ -30,7 +30,7 @@ function BindingRoot(model) {
 			else if (property && typeof(property) == "object") {
 
 				var element =
-					model._scope.querySelector("[data-bind=" + key + "]");
+					scope.querySelector("[data-bind=" + key + "]");
 
 				if (element) {
 
@@ -48,6 +48,23 @@ function BindingRoot(model) {
 	
 			rebind(model);
 		};
+	};
+
+	var self = this;
+
+	var applyWithBinding = function(scope, model, key, element) {
+
+		self.requestRegistrations();
+
+		var object = model[key];
+
+		self.assignUpdater(function() {
+
+			if (!model[key]) {
+
+				scope.removeChild(element);
+			}
+		});
 	};
 
 	// This loop is responsible for binding the data structure
@@ -76,18 +93,20 @@ function BindingRoot(model) {
 	
 				property.bind(model._scope, key);
 			}
-			else if (property && typeof(property) == "object") {
-
-				if (element) {
-
-					bindObject(element, property);
-				}
-			}
 			else if ((typeof(property) != "function") && newBinding) {
 
 				injectProperty(key, property);
 
-				if (element && !property) {
+				if (property && typeof(property) == "object") {
+
+					if (element) {
+
+						bindObject(element, property);
+
+						applyWithBinding(scope, model, key, element);
+					}
+				}
+				else if(element && !property) {
 
 					scope.removeChild(element);
 				}

@@ -8,7 +8,7 @@ function Datum(datum) {
 
 		self.rebind();
 
-		if (value) {
+		if (typeof value != "undefined") {
 
 			datum = value;
 
