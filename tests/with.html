@@ -100,5 +100,31 @@
 					assert.ok(document.contains(element));
 			});
 		</script>
+		<div data-bind="bind">
+			<div id="text" data-bind="text"></div>
+		</div>
+		<script>
+			QUnit.test("Apply binding when object added", function(assert) {
+
+					function ReplaceObject() {
+		
+							this.replace = null;
+					}
+
+					replace = new ReplaceObject();
+
+					new BindingRoot(replace);
+
+					replace.replace = {
+
+							text: new Binding({
+
+									text: function() { return "Hello World" }
+							})
+					};
+
+					assert.ok(query("#text").innerHTML, "Hello World");
+			});
+		</script>
 	</body>
 </html>

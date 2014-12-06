@@ -65,13 +65,17 @@ function BindingRoot(model) {
 
 		self.assignUpdater(function() {
 
-			if (!model[key]) {
+			var object = model[key];
+
+			if (!object) {
 
 				scope.removeChild(element);
 			}
 			else if(!scope.contains(element)) {
 
 				scope.appendChild(element);
+
+				bindObject(scope, object);
 			}
 		});
 	};
