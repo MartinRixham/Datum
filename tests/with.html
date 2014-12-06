@@ -80,5 +80,25 @@
 					assert.ok(!document.contains(element));
 			});
 		</script>
+		<div id="replace" data-bind="replace"></div>
+		<script>
+			QUnit.test("Replace element when object added", function(assert) {
+
+					function ReplaceObject() {
+		
+							this.replace = null;
+					}
+
+					var element = query("#replace");
+
+					replace = new ReplaceObject();
+
+					new BindingRoot(replace);
+
+					replace.replace = {};
+
+					assert.ok(document.contains(element));
+			});
+		</script>
 	</body>
 </html>

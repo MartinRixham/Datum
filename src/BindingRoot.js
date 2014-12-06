@@ -58,11 +58,20 @@ function BindingRoot(model) {
 
 		var object = model[key];
 
+		if (!object) {
+
+			scope.removeChild(element);
+		}
+
 		self.assignUpdater(function() {
 
 			if (!model[key]) {
 
 				scope.removeChild(element);
+			}
+			else if(!scope.contains(element)) {
+
+				scope.appendChild(element);
 			}
 		});
 	};
@@ -97,18 +106,14 @@ function BindingRoot(model) {
 
 				injectProperty(key, property);
 
-				if (property && typeof(property) == "object") {
+				if (element && typeof(property) == "object") {
 
-					if (element) {
+					if (property) {
 
 						bindObject(element, property);
-
-						applyWithBinding(scope, model, key, element);
 					}
-				}
-				else if(element && !property) {
 
-					scope.removeChild(element);
+					applyWithBinding(scope, model, key, element);
 				}
 			}
 		}
