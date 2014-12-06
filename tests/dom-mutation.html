@@ -144,6 +144,8 @@
 
 					div.setAttribute("data-bind", "test");
 
+					fixture.removeChild(firstDiv);
+
 					fixture.appendChild(div);
 
 					var done = assert.async();
@@ -152,6 +154,74 @@
 					
 							assert.strictEqual(
 									query("#test-div").innerHTML,
+									"Hello World");
+							done();
+					});
+			});
+		</script>
+		<script>
+			QUnit.test("Bind value to replaced element", function(assert) {
+
+					var firstInput = document.createElement("input");
+
+					firstInput.id = "first";
+
+					firstInput.setAttribute("type", "text");
+
+					firstInput.setAttribute("data-bind", "test");
+
+					fixture.appendChild(firstInput);
+
+					function TextObject() {
+		
+							this.datum = null;
+
+							var self = this;
+		
+							this.test = new Binding({
+
+									value: function(value) { 
+
+											if (value) {
+
+													self.datum = value;
+											}
+
+											return self.datum; 
+									}
+							});
+					}
+
+					var textObject = new TextObject();
+
+					new BindingRoot(textObject);
+
+					var input = document.createElement("input");
+
+					input.id = "test-div";
+
+					input.setAttribute("type", "text");
+
+					input.setAttribute("data-bind", "test");
+
+					fixture.removeChild(firstInput);
+
+					fixture.appendChild(input);
+
+					setTimeout(function() {
+
+							var element = query("#test-div");
+
+          		element.value = "Hello World";
+          		element.dispatchEvent(new Event("change"));
+					});
+
+					var done = assert.async();
+
+					setTimeout(function() {
+					
+							assert.strictEqual(
+									textObject.datum,
 									"Hello World");
 							done();
 					});
