@@ -17,17 +17,18 @@
 	<body>
 		<style>
 			#qunit ~ * {
+					display: none;
 			}
 		</style>
 		<div id="qunit"></div>
 		<div id="qunit-fixture"></div>
 		<script>
-			query = function(query) {
+			var query = function(query) {
 
 					return document.querySelector(query);
 			};
 
-			fixture = query("#qunit-fixture");
+			var fixture = query("#qunit-fixture");
 
 			// To preserve atomicity prototypes must be 
 			// reassigned after each test.
@@ -56,7 +57,7 @@
 							});
 					}
 
-					new BindingRoot(new TextObject());
+					var root = new BindingRoot(new TextObject());
 
 					var div = document.createElement("div");
 
@@ -74,6 +75,8 @@
 									query("#test-div").innerHTML,
 									"Hello World");
 							done();
+
+							root.disconnect();
 					});
 			});
 		</script>
@@ -94,7 +97,7 @@
 
 					var textObject = new TextObject();
 
-					new BindingRoot(textObject);
+					var root = new BindingRoot(textObject);
 
 					var div = document.createElement("div");
 
@@ -114,6 +117,8 @@
 									query("#test-div").innerHTML,
 									"Hello World");
 							done();
+
+							root.disconnect();
 					});
 			});
 		</script>
@@ -136,7 +141,7 @@
 							});
 					}
 
-					new BindingRoot(new TextObject());
+					root = new BindingRoot(new TextObject());
 
 					var div = document.createElement("div");
 
@@ -156,6 +161,8 @@
 									query("#test-div").innerHTML,
 									"Hello World");
 							done();
+
+							root.disconnect();
 					});
 			});
 		</script>
@@ -194,7 +201,7 @@
 
 					var textObject = new TextObject();
 
-					new BindingRoot(textObject);
+					var root = new BindingRoot(textObject);
 
 					var input = document.createElement("input");
 
@@ -224,8 +231,70 @@
 									textObject.datum,
 									"Hello World");
 							done();
+
+							root.disconnect();
 					});
 			});
+		</script>
+		<div data-bind="first"></div>
+		<div id="inner" data-bind="inner">
+			<div id="second" data-bind="second"></div>
+		</div>
+		<script>
+			QUnit.test(
+					"Bindings outside of the mutation are not reapplied",
+					function(assert) {
+
+							var count = 0;
+
+							function OuterObject() {
+		
+									this.first = new Binding({
+
+											text: function() { 
+
+													count += 1;
+
+													return "Hello World"; 
+											}
+									});
+
+									this.inner = {
+
+											second: new Binding({
+
+													text: function() { return "Hello World"; }
+											})
+									};
+							}
+
+							var root = new BindingRoot(new OuterObject());
+
+							var div = document.createElement("div");
+
+							div.id = "third";
+
+							div.setAttribute("data-bind", "second");
+
+							var inner = query("#inner");
+
+							inner.appendChild(div);
+
+							var done = assert.async();
+
+							setTimeout(function() {
+
+									assert.strictEqual(count, 1);
+					
+									assert.strictEqual(
+											query("#third").innerHTML,
+											"Hello World");
+
+									done();
+
+									root.disconnect();
+							});
+					});
 		</script>
 	</body>
 </html>
