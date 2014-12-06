@@ -69,14 +69,14 @@ function BindingRoot(model) {
 		{
 			var property = model[key];
 	
+			var element = 
+				scope.querySelector("[data-bind=" + key + "]");
+
 			if (property && property.isBinding) {
 	
 				property.bind(model._scope, key);
 			}
 			else if (property && typeof(property) == "object") {
-
-				var element = 
-					model._scope.querySelector("[data-bind=" + key + "]");
 
 				if (element) {
 
@@ -86,6 +86,11 @@ function BindingRoot(model) {
 			else if ((typeof(property) != "function") && newBinding) {
 
 				injectProperty(key, property);
+
+				if (element && !property) {
+
+					scope.removeChild(element);
+				}
 			}
 		}
 	};

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>With Binding Tests</title>
+		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
+		<script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
+		<script src="../src/Registry.js"></script>
+		<script src="../src/Subscriber.js"></script>
+		<script src="../src/UniqueRoot.js"></script>
+		<script src="../src/BindingRoot.js"></script>
+		<script src="../src/Binding.js"></script>
+		<script src="../src/Datum.js"></script>
+		<script src="../src/Text.js"></script>
+		<script src="../src/Value.js"></script>
+	</head>
+	<body>
+		<style>
+			#qunit ~ * {
+					display: none;
+			}
+		</style>
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+		<script>
+			query = function(query) {
+
+					return document.querySelector(query);
+			};
+
+			// To preserve atomicity prototypes must be 
+			// reassigned after each test.
+			QUnit.module("", {
+
+					teardown: function() {
+
+							Subscriber.prototype = new Registry();
+							Binding.prototype = new Subscriber();
+							Datum.prototype = new Subscriber();
+							Text.prototype = new Subscriber();
+							Value.prototype = new Subscriber();
+							UniqueRoot.prototype = new Subscriber();
+							BindingRoot.prototype = new UniqueRoot();
+					}
+			});
+		</script>
+		<div id="with" data-bind="with"></div>
+		<script>
+			QUnit.test("Remove element bound to null", function(assert) {
+
+					function WithObject() {
+		
+							this.with = null;
+					}
+
+					var element = query("#with");
+
+					new BindingRoot(new WithObject());
+
+					assert.ok(!document.contains(element));
+			});
+		</script>
+	</body>
+</html>
