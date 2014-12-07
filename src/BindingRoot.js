@@ -134,31 +134,6 @@ function BindingRoot(model) {
 		bindObject(scope, model);
 	});
 
-	var forceRebind = function(model) {
-
-		for(var key in model) {
-
-			var property = model[key];
-
-			if (property && property.isBinding) {
-	
-				property.rebind(model._scope, key);
-			}
-			else if (property && typeof(property) == "object") {
-
-				var element =
-					model._scope.querySelector("[data-bind=" + key + "]");
-
-				if (element) {
-
-					property._scope = element;
-
-					forceRebind(property);
-				}
-			}
-		}
-	};
-
 	var observer = new MutationObserver(function(mutations) {
 
 		var mutation = mutations[0];
