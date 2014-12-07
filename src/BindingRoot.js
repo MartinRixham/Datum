@@ -54,13 +54,15 @@ function BindingRoot(model) {
 
 	var applyWithBinding = function(scope, model, key, element) {
 
+		var child = element.children[0];
+
 		self.requestRegistrations();
 
 		var object = model[key];
 
 		if (!object) {
 
-			scope.removeChild(element);
+			element.removeChild(child);
 		}
 
 		self.assignUpdater(function() {
@@ -69,11 +71,11 @@ function BindingRoot(model) {
 
 			if (!object) {
 
-				scope.removeChild(element);
+				element.removeChild(child);
 			}
-			else if(!scope.contains(element)) {
+			else if(!element.contains(child)) {
 
-				scope.appendChild(element);
+				element.appendChild(child);
 
 				bindObject(scope, object);
 			}

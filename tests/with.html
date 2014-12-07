@@ -44,7 +44,9 @@
 					}
 			});
 		</script>
-		<div id="with" data-bind="with"></div>
+		<div id="outer" data-bind="with">
+			<div id="with"></div>
+		</div>
 		<script>
 			QUnit.test("Remove element bound to null", function(assert) {
 
@@ -53,14 +55,18 @@
 							this.with = null;
 					}
 
+					var outer = query("#outer");
+
 					var element = query("#with");
 
 					new BindingRoot(new WithObject());
 
-					assert.ok(!document.contains(element));
+					assert.ok(!outer.contains(element));
 			});
 		</script>
-		<div id="remove" data-bind="remove"></div>
+		<div id="remove" data-bind="remove">
+			<div id="inner"></div>
+		</div>
 		<script>
 			QUnit.test("Remove element when object set to null", function(assert) {
 
@@ -71,16 +77,20 @@
 
 					var element = query("#remove");
 
+					var inner = query("#inner");
+
 					var remove = new RemoveObject();
 
 					new BindingRoot(remove);
 
 					remove.remove = null;
 
-					assert.ok(!document.contains(element));
+					assert.ok(!inner.contains(element));
 			});
 		</script>
-		<div id="replace" data-bind="replace"></div>
+		<div id="replace" data-bind="replace">
+			<div id="inner-replace"></div>
+		</div>
 		<script>
 			QUnit.test("Replace element when object added", function(assert) {
 
@@ -91,13 +101,15 @@
 
 					var element = query("#replace");
 
+					var inner = query("#inner-replace");
+
 					replace = new ReplaceObject();
 
 					new BindingRoot(replace);
 
 					replace.replace = {};
 
-					assert.ok(document.contains(element));
+					assert.ok(element.contains(inner));
 			});
 		</script>
 		<div data-bind="bind">
@@ -108,14 +120,14 @@
 
 					function ReplaceObject() {
 		
-							this.replace = null;
+							this.bind = null;
 					}
 
-					replace = new ReplaceObject();
+					bind = new ReplaceObject();
 
-					new BindingRoot(replace);
+					new BindingRoot(bind);
 
-					replace.replace = {
+					bind.bind = {
 
 							text: new Binding({
 
