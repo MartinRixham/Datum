@@ -99,15 +99,15 @@
 							this.replace = null;
 					}
 
-					var element = query("#replace");
-
-					var inner = query("#inner-replace");
-
 					replace = new ReplaceObject();
 
 					new BindingRoot(replace);
 
 					replace.replace = {};
+
+					var element = query("#replace");
+
+					var inner = query("#inner-replace");
 
 					assert.ok(element.contains(inner));
 			});

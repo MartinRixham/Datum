@@ -55,12 +55,13 @@ function BindingRoot(model) {
 	var applyWithBinding = function(scope, model, key, element) {
 
 		var child = element.children[0];
+		var clone = element.cloneNode(true);
 
 		self.requestRegistrations();
 
 		var object = model[key];
 
-		if (!object) {
+		if (!object && child) {
 
 			element.removeChild(child);
 		}
@@ -69,13 +70,13 @@ function BindingRoot(model) {
 
 			var object = model[key];
 
-			if (!object) {
+			if (!object && child) {
 
 				element.removeChild(child);
 			}
 			else if(!element.contains(child)) {
 
-				element.appendChild(child);
+				element.appendChild(clone);
 
 				bindObject(scope, object);
 			}
@@ -108,9 +109,12 @@ function BindingRoot(model) {
 	
 				property.bind(model._scope, key);
 			}
-			else if ((typeof(property) != "function") && newBinding) {
+			else if (typeof(property) != "function") {
 
-				injectProperty(key, property);
+				if (newBinding) {
+
+					injectProperty(key, property);
+				}
 
 				if (element && typeof(property) == "object") {
 
