@@ -24,12 +24,12 @@
 		<div id="qunit-fixture"></div>
 		<input type="text" id="test-input" data-bind="input" />
 		<script>
-      query = function(query) {
+			var query = function(query) {
 
-          return document.querySelector(query);
-      };
+					return document.querySelector(query);
+			};
 
-			scope = document.querySelector("body");
+			var scope = document.querySelector("body");
 	
 			QUnit.test("Bind value", function(assert) {
 
@@ -118,53 +118,53 @@
 					assert.strictEqual(query("#receive").value, "Hello World");
 			});
 		</script>
-    <input type="text" data-bind="single" />
-    <input type="text" data-bind="single" />
-    <script>
-      QUnit.test("Callback called once on init", function(assert) {
+		<input type="text" data-bind="single" />
+		<input type="text" data-bind="single" />
+		<script>
+			QUnit.test("Callback called once on init", function(assert) {
 
-          var count = 0;
+					var count = 0;
 
-          var datum = new Datum();
+					var datum = new Datum();
 
-          var value = 
-              new Value(function() {
+					var value = 
+							new Value(function() {
 
-                  count += 1; 
+									count += 1; 
 
-                  return datum();
-              });
+									return datum();
+							});
 
-          value.bind(scope, "single");
+					value.bind(scope, "single");
 
-          assert.strictEqual(count, 1);
-      });
-    </script>
-  	<div data-bind="twice"></div>
-    <div data-bind="twice"></div>
-    <script>
-      QUnit.test("Callback called once on update", function(assert) {
+					assert.strictEqual(count, 1);
+			});
+		</script>
+		<div data-bind="twice"></div>
+		<div data-bind="twice"></div>
+		<script>
+			QUnit.test("Callback called once on update", function(assert) {
 
-          var count = 0;
+					var count = 0;
 
-          var datum = new Datum();
+					var datum = new Datum();
 
-          var value = 
-              new Value(function() {
+					var value = 
+							new Value(function() {
 
-                  count += 1; 
+									count += 1; 
 
-                  return datum();
-              });
+									return datum();
+							});
 
-          value.bind(scope, "twice");
+					value.bind(scope, "twice");
 
-          count = 0;
+					count = 0;
 
-          datum("Hello World");
+					datum("Hello World");
 
-          assert.strictEqual(count, 1);
-      });
-    </script>
+					assert.strictEqual(count, 1);
+			});
+		</script>
 	</body>
 </html>

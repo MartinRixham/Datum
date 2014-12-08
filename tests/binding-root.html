@@ -147,56 +147,56 @@
 					assert.notEqual(query("#non-sub").innerHTML, "Hello World");
 			});
 		</script>
-    <div id="plain" data-bind="plain"></div>
-    <script>
-      QUnit.test("Update text from plain object", function(assert) {
+		<div id="plain" data-bind="plain"></div>
+		<script>
+			QUnit.test("Update text from plain object", function(assert) {
 
 					function PlainObject() {
 
-          		this.datum = null;
+							this.datum = null;
 
 							var self = this;
 
-          		this.plain = new Binding({
+							this.plain = new Binding({
 
 									text: function() { return self.datum; }
 							});
 					}
 
-					plainObject = new PlainObject();
+					var plainObject = new PlainObject();
 
 					new BindingRoot(plainObject);
 
-          plainObject.datum = "Hello World";
+					plainObject.datum = "Hello World";
 
-          assert.strictEqual(query("#plain").innerHTML, "Hello World");
-      });
-    </script>
-    <input type="text" id="plainValue" data-bind="plainValue" />
-    <script>
-      QUnit.test("Update value from plain object", function(assert) {
+					assert.strictEqual(query("#plain").innerHTML, "Hello World");
+			});
+		</script>
+		<input type="text" id="plainValue" data-bind="plainValue" />
+		<script>
+			QUnit.test("Update value from plain object", function(assert) {
 
 					function PlainObject() {
 
-          		this.datum = null;
+							this.datum = null;
 
 							var self = this;
 
-          		this.plainValue = new Binding({
+							this.plainValue = new Binding({
 
 									value: function() { return self.datum; }
 							});
 					}
 
-					plainObject = new PlainObject();
+					var plainObject = new PlainObject();
 
 					new BindingRoot(plainObject);
 
-          plainObject.datum = "Hello World";
+					plainObject.datum = "Hello World";
 
-          assert.strictEqual(query("#plainValue").value, "Hello World");
-      });
-    </script>
+					assert.strictEqual(query("#plainValue").value, "Hello World");
+			});
+		</script>
 		<input type="text" id="plain-change" data-bind="plainChange" />
 		<script>
 			QUnit.test("Update plain data from input", function(assert) {
@@ -258,13 +258,13 @@
 										"cannot be instantiated multiple times.");
 						});
 		</script>
-    <div id="after" data-bind="after"></div>
-    <script>
-      QUnit.test("Create binding after root", function(assert) {
+		<div id="after" data-bind="after"></div>
+		<script>
+ 			QUnit.test("Create binding after root", function(assert) {
 
 					function After() {
 
-          		this.datum = null;
+							this.datum = null;
 					}
 
 					var after = new After();
@@ -276,21 +276,21 @@
 							text: function() { return after.datum; }
 					});
 
-          after.datum = "Hello World";
+					after.datum = "Hello World";
 
-          assert.strictEqual(query("#after").innerHTML, "Hello World");
-      });
-    </script>
-    <div data-bind="inner"></div>
-    <div data-bind="outer"></div>
-    <script>
-      QUnit.test("Old bindings are not reapplied.", function(assert) {
+					assert.strictEqual(query("#after").innerHTML, "Hello World");
+			});
+		</script>
+		<div data-bind="inner"></div>	
+		<div data-bind="outer"></div>
+		<script>
+			QUnit.test("Old bindings are not reapplied.", function(assert) {
 
 					var count = 0;
 
 					function Only() {
 
-          		this.datum = null;
+							this.datum = null;
 
 							this.inner = new Binding({
 
@@ -307,16 +307,16 @@
 							text: function() { return only.datum; }
 					});
 
-          only.datum = "Hello World";
+					only.datum = "Hello World";
 
-          assert.strictEqual(count, 1);
-      });
-    </script>
+					assert.strictEqual(count, 1);
+			});
+		</script>
 		<div data-bind="afterObject">
-    	<div id="after-object" data-bind="after"></div>
+			<div id="after-object" data-bind="after"></div>
 		</div>
-    <script>
-      QUnit.test("Bind subobject after root", function(assert) {
+		<script>
+			QUnit.test("Bind subobject after root", function(assert) {
 
 					function AfterObject() {}
 
@@ -341,22 +341,22 @@
 					// In this case the binding is done asynchronously
 					// so the test must be queued after the binding.
 					setTimeout(function() {
-          	
+	
 							assert.strictEqual(
 									query("#after-object").innerHTML, 
 									"Hello World");
 
 							done();
 					});
-      });
-    </script>
-    <input type="text" id="update-after" data-bind="updateAfter" />
-    <script>
-      QUnit.test("Update value bound after root", function(assert) {
+			});
+		</script>
+		<input type="text" id="update-after" data-bind="updateAfter" />
+		<script>
+			QUnit.test("Update value bound after root", function(assert) {
 
 					function AfterUpdate() {
 
-          		this.datum = null;
+							this.datum = null;
 					}
 
 					var after = new AfterUpdate();
@@ -387,14 +387,14 @@
 					var done = assert.async();
 
 					setTimeout(function() {
-          	
+	
 							assert.strictEqual(
 									after.datum, 
 									"Hello World");
 
 							done();
 					});
-      });
-    </script>
+			});
+		</script>
 	</body>
 </html>

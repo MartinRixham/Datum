@@ -24,12 +24,12 @@
 		<div id="qunit-fixture"></div>
 		<div id="test-div" data-bind="test"></div>
 		<script>
-      query = function(query) {
+			var query = function(query) {
           
-          return document.querySelector(query);
-      };
+					return document.querySelector(query);
+			};
 
-			scope = document.querySelector("body");
+			var scope = document.querySelector("body");
 
 			QUnit.test("Bind text", function(assert) {
 
