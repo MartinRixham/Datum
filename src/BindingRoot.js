@@ -55,15 +55,26 @@ function BindingRoot(model) {
 	var applyWithBinding = function(scope, model, key, element) {
 
 		var child = element.children[0];
+	
+		var children = [];
+
+		for (var i = element.children.length - 1; i >= 0; i--) {
+
+			children[i] = element.children[i];
+		}
+
 		var clone = element.cloneNode(true);
 
 		self.requestRegistrations();
 
 		var object = model[key];
 
-		if (!object && child) {
+		if (!object) {
 
-			element.removeChild(child);
+			for (i = 0; i < children.length; i++) {
+
+				element.removeChild(children[i]);
+			}
 		}
 
 		self.assignUpdater(function() {

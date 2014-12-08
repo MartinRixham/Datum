@@ -135,7 +135,30 @@
 							})
 					};
 
-					assert.ok(query("#text").innerHTML, "Hello World");
+					assert.strictEqual(query("#text").innerHTML, "Hello World");
+			});
+		</script>
+		<div id="multi-outer" data-bind="multi">
+			<div id="one"></div>
+			<div id="two"></div>
+		</div>
+		<script>
+			QUnit.test("Remove all elements when bound to null", function(assert) {
+
+					function MultipleObject() {
+		
+							this.multi = null;
+					}
+
+					var outer = query("#multi-outer");
+
+					var one = query("#one");
+					var two = query("#two");
+
+					new BindingRoot(new MultipleObject());
+
+					assert.ok(!outer.contains(one));
+					assert.ok(!outer.contains(two));
 			});
 		</script>
 	</body>
