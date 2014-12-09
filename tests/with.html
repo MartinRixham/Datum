@@ -85,7 +85,7 @@
 
 					remove.remove = null;
 
-					assert.ok(!inner.contains(element));
+					assert.ok(!element.contains(inner));
 			});
 		</script>
 		<div id="replace" data-bind="replace">
@@ -159,6 +159,33 @@
 
 					assert.ok(!outer.contains(one));
 					assert.ok(!outer.contains(two));
+			});
+		</script>
+		<div id="multi-remove" data-bind="removeMulti">
+			<div id="remove-one"></div>
+			<div id="remove-two"></div>
+		</div>
+		<script>
+			QUnit.test("Remove all elements when object set to null", function(assert) {
+
+					function RemoveObject() {
+		
+							this.removeMulti = {};
+					}
+
+					var element = query("#multi-remove");
+
+					var one = query("#remove-one");
+					var two = query("#remove-two");
+
+					var remove = new RemoveObject();
+
+					new BindingRoot(remove);
+
+					remove.removeMulti = null;
+
+					assert.ok(!element.contains(one));
+					assert.ok(!element.contains(two));
 			});
 		</script>
 	</body>

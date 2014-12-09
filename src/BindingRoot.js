@@ -81,9 +81,12 @@ function BindingRoot(model) {
 
 			var object = model[key];
 
-			if (!object && child) {
+			if (!object) {
 
-				element.removeChild(child);
+				children.forEach(function(child) {
+
+					element.removeChild(child);
+				});
 			}
 			else if(!element.contains(child)) {
 
