@@ -54,20 +54,11 @@ function BindingRoot(model) {
 
 	var applyWithBinding = function(scope, model, key, element) {
 
-		var child = element.children[0];
-	
 		var children = [];
 
-		for (var i = element.children.length - 1; i >= 0; i--) {
+		for (var i = 0; i < element.children.length; i++) {
 
 			children[i] = element.children[i];
-		}
-
-		var clones = [];
-
-		for (i = 0; i < element.children.length; i++) {
-
-			clones[i] = element.children[i].cloneNode(true);
 		}
 
 		self.requestRegistrations();
@@ -76,31 +67,31 @@ function BindingRoot(model) {
 
 		if (!object) {
 
-			for (i = 0; i < children.length; i++) {
+			children.forEach(function(child) {
 
-				element.removeChild(children[i]);
-			}
+				element.removeChild(child);
+			});
 		}
 
 		self.assignUpdater(function() {
 
 			var object = model[key];
 
-			if (!object) {
+			if (object) {
+
+				children.forEach(function(child) {
+
+					element.appendChild(child);
+				});
+
+				bindObject(scope, object);
+			}
+			else {
 
 				children.forEach(function(child) {
 
 					element.removeChild(child);
 				});
-			}
-			else if(!element.contains(child)) {
-
-				clones.forEach(function(clone) {
-
-					element.appendChild(clone);
-				});
-
-				bindObject(scope, object);
 			}
 		});
 	};

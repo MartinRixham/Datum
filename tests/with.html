@@ -223,5 +223,31 @@
 					assert.ok(one.nextSibiling = two);
 			});
 		</script>
+		<div id="reremove" data-bind="reremove">
+			<div id="inner-reremove"></div>
+		</div>
+		<script>
+			QUnit.test("Reremove element", function(assert) {
+
+					function ReremoveObject() {
+		
+							this.reremove = null;
+					}
+
+					var reremove = new ReremoveObject();
+
+					new BindingRoot(reremove);
+
+					reremove.reremove = {};
+
+					var inner = query("#inner-reremove");
+
+					reremove.reremove = null;
+
+					var element = query("#reremove");
+
+					assert.ok(!element.contains(inner));
+			});
+		</script>
 	</body>
 </html>
