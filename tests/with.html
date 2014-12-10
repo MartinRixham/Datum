@@ -99,7 +99,7 @@
 							this.replace = null;
 					}
 
-					replace = new ReplaceObject();
+					var replace = new ReplaceObject();
 
 					new BindingRoot(replace);
 
@@ -123,7 +123,7 @@
 							this.bind = null;
 					}
 
-					bind = new ReplaceObject();
+					var bind = new ReplaceObject();
 
 					new BindingRoot(bind);
 
@@ -186,6 +186,41 @@
 
 					assert.ok(!element.contains(one));
 					assert.ok(!element.contains(two));
+			});
+		</script>
+		<div id="multi-replace" data-bind="Multireplace">
+			<div id="replace-one"></div>
+			<div id="replace-two"></div>
+		</div>
+		<script>
+			QUnit.test("Replace all elements when object added", function(assert) {
+
+					function ReplaceObject() {
+		
+							this.Multireplace = null;
+					}
+
+					var replace = new ReplaceObject();
+
+					new BindingRoot(replace);
+
+					replace.Multireplace = {};
+
+					var element = query("#multi-replace");
+
+					var one = query("#replace-one");
+					var two = query("#replace-two");
+
+					assert.ok(element.contains(one));
+					assert.ok(element.contains(two));
+
+					var elementCount =
+							document.querySelectorAll(
+									"[data-bind=Multireplace]").length;
+
+					assert.strictEqual(elementCount, 1);
+					
+					assert.ok(one.nextSibiling = two);
 			});
 		</script>
 	</body>

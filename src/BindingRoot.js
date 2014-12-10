@@ -63,7 +63,12 @@ function BindingRoot(model) {
 			children[i] = element.children[i];
 		}
 
-		var clone = element.cloneNode(true);
+		var clones = [];
+
+		for (i = 0; i < element.children.length; i++) {
+
+			clones[i] = element.children[i].cloneNode(true);
+		}
 
 		self.requestRegistrations();
 
@@ -90,7 +95,10 @@ function BindingRoot(model) {
 			}
 			else if(!element.contains(child)) {
 
-				element.appendChild(clone);
+				clones.forEach(function(clone) {
+
+					element.appendChild(clone);
+				});
 
 				bindObject(scope, object);
 			}
