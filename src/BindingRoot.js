@@ -42,14 +42,6 @@ function BindingRoot(model) {
 		}
 	};
 
-	var attachRebinder = function(element, model) {
-
-		element._rebind = function() {
-	
-			rebind(model);
-		};
-	};
-
 	var self = this;
 
 	var applyWithBinding = function(scope, model, key, element) {
@@ -108,11 +100,14 @@ function BindingRoot(model) {
 
 			model._scope = scope;
 
-			attachRebinder(scope, model);
+			scope._rebind = function() {
+	
+				rebind(model);
+			};
 		}
 
-		for(var key in model)
-		{
+		for(var key in model) {
+
 			var property = model[key];
 	
 			var element = 
