@@ -82,7 +82,10 @@ function BindingRoot(model) {
 
 				children.forEach(function(child) {
 
-					element.removeChild(child);
+					if (element.contains(child)) {
+
+						element.removeChild(child);
+					}
 				});
 			}
 		});

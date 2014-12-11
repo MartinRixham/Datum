@@ -249,5 +249,53 @@
 					assert.ok(!element.contains(inner));
 			});
 		</script>
+		<div id="renull" data-bind="renull">
+			<div id="inner-null"></div>
+		</div>
+		<script>
+			QUnit.test("Reset object to null", function(assert) {
+
+					function RenullObject() {
+		
+							this.renull = null;
+					}
+
+					var element = query("#renull");
+
+					var inner = query("#inner-renull");
+
+					var renull = new RenullObject();
+
+					new BindingRoot(renull);
+
+					renull.renull = null;
+
+					assert.ok(!element.contains(inner));
+			});
+		</script>
+		<div id="renew" data-bind="renew">
+			<div id="inner-renew"></div>
+		</div>
+		<script>
+			QUnit.test("Reassign object", function(assert) {
+
+					function RenewObject() {
+		
+							this.renew = {};
+					}
+
+					var element = query("#renew");
+
+					var inner = query("#inner-renew");
+
+					var renew = new RenewObject();
+
+					new BindingRoot(renew);
+
+					renew.renew = {};
+
+					assert.ok(element.children.length == 1);
+			});
+		</script>
 	</body>
 </html>
