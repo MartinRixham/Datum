@@ -79,7 +79,7 @@
 
 					var one = new OneObject();
 
-					root = new BindingRoot(one);
+					var root = new BindingRoot(one);
 
 					var element = query("#one");
 
@@ -103,13 +103,37 @@
 
 					var two = new TwoObject();
 
-					root = new BindingRoot(two);
+					var root = new BindingRoot(two);
 
 					var element = query("#two");
 
 					var childCount = element.querySelectorAll(".two").length;
 
 					assert.strictEqual(childCount, 2);
+
+					root.disconnect();
+			});
+		</script>
+		<div id="remove" data-bind="remove">
+			<div id="remove-one"></div>
+		</div>
+		<script>
+			QUnit.test("Remove elements when array set to null", function(assert) {
+
+					function RemoveObject() {
+		
+							this.remove = [{}];
+					}
+
+					var remove = new RemoveObject();
+
+					var element = query("#remove");
+
+					var root = new BindingRoot(remove);
+
+					remove.remove = null;
+
+					assert.strictEqual(element.children.length, 0);
 
 					root.disconnect();
 			});
