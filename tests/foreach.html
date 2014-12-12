@@ -59,9 +59,59 @@
 
 					var each = new ForeachObject();
 
-					new BindingRoot(each);
+					var root = new BindingRoot(each);
 
 					assert.ok(!element.contains(inner));
+
+					root.disconnect();
+			});
+		</script>
+		<div id="one" data-bind="one">
+			<div id="inner-one"></div>
+		</div>
+		<script>
+			QUnit.test("One element when array length one", function(assert) {
+
+					function OneObject() {
+		
+							this.one = [{}];
+					}
+
+					var one = new OneObject();
+
+					root = new BindingRoot(one);
+
+					var element = query("#one");
+
+					var inner = query("#inner-one");
+
+					assert.ok(element.contains(inner));
+
+					root.disconnect();
+			});
+		</script>
+		<div id="two" data-bind="two">
+			<div class="two"></div>
+		</div>
+		<script>
+			QUnit.test("Two elements when array length two", function(assert) {
+
+					function TwoObject() {
+		
+							this.two = [{}, {}];
+					}
+
+					var two = new TwoObject();
+
+					root = new BindingRoot(two);
+
+					var element = query("#two");
+
+					var childCount = element.querySelectorAll(".two").length;
+
+					assert.strictEqual(childCount, 2);
+
+					root.disconnect();
 			});
 		</script>
 	</body>

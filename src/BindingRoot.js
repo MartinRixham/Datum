@@ -93,7 +93,14 @@ function BindingRoot(model) {
 
 	var applyForeachBinding = function(scope, model) {
 
-		scope.removeChild(scope.children[0]);
+		var child = scope.children[0];
+
+		scope.removeChild(child);
+
+		model.forEach(function() {
+
+			scope.appendChild(child.cloneNode(true));
+		});
 	};
 
 	// This loop is responsible for binding the data structure
