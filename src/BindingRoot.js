@@ -91,11 +91,23 @@ function BindingRoot(model) {
 		});
 	};
 
+	var applyForeachBinding = function(scope, model) {
+
+		scope.removeChild(scope.children[0]);
+	};
+
 	// This loop is responsible for binding the data structure
 	// both initially when the binding root is created and
 	// after a new binding is added.
 	// It only applies bindings that have not previously been bound.
 	var bindObject = function(scope, model) {
+
+		if (model instanceof Array) {
+
+			applyForeachBinding(scope, model);
+
+			return;
+		}
 
 		var newBinding = !model._scope;
 

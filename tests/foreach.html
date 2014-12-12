@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>For Each Tests</title>
+		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
+		<script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
+		<script src="../src/Registry.js"></script>
+		<script src="../src/Subscriber.js"></script>
+		<script src="../src/UniqueRoot.js"></script>
+		<script src="../src/BindingRoot.js"></script>
+		<script src="../src/Binding.js"></script>
+		<script src="../src/Datum.js"></script>
+		<script src="../src/Text.js"></script>
+		<script src="../src/Value.js"></script>
+	</head>
+	<body>
+		<style>
+			#qunit ~ * {
+					display: none;
+			}
+		</style>
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+		<script>
+			var query = function(query) {
+
+					return document.querySelector(query);
+			};
+
+			QUnit.module("", {
+
+					teardown: function() {
+
+							Subscriber.prototype = new Registry();
+							Binding.prototype = new Subscriber();
+							Datum.prototype = new Subscriber();
+							Text.prototype = new Subscriber();
+							Value.prototype = new Subscriber();
+							UniqueRoot.prototype = new Subscriber();
+							BindingRoot.prototype = new UniqueRoot();
+					}
+			});
+		</script>
+		<div id="each" data-bind="each">
+			<div id="inner-each"></div>
+		</div>
+		<script>
+			QUnit.test("Remove element when bound to empty array", function(assert) {
+
+					function ForeachObject() {
+		
+							this.each = [];
+					}
+
+					var element = query("#each");
+
+					var inner = query("#inner-each");
+
+					var each = new ForeachObject();
+
+					new BindingRoot(each);
+
+					assert.ok(!element.contains(inner));
+			});
+		</script>
+	</body>
+</html>
