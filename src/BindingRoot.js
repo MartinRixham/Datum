@@ -27,7 +27,7 @@ function BindingRoot(model) {
 	
 				property.rebind(model._scope, key);
 			}
-			else if (property && typeof(property) == "object") {
+			else if (typeof(property) == "object") {
 
 				var element =
 					model._scope.querySelector("[data-bind=" + key + "]");
@@ -39,7 +39,12 @@ function BindingRoot(model) {
 						element._rebind = function() {};
 					}
 
-					property._scope = element;
+					applyWithBinding(model, key, element);
+
+					if (property) {
+
+						property._scope = element;
+					}
 
 					if (property instanceof Array) {
 
@@ -56,7 +61,7 @@ function BindingRoot(model) {
 
 	var self = this;
 
-	var applyWithBinding = function(scope, model, key, element) {
+	var applyWithBinding = function(model, key, element) {
 
 		var children = [];
 
@@ -157,7 +162,7 @@ function BindingRoot(model) {
 
 					if (newBinding) {
 
-						applyWithBinding(scope, model, key, element);
+						applyWithBinding(model, key, element);
 					}
 
 					if (property) {

@@ -334,5 +334,43 @@
 					});
 			});
 		</script>
+		<script>
+			QUnit.test("Bind null object to inserted element", function(assert) {
+
+					function NullObject() {
+		
+							this.thenull = null;
+					}
+
+					var root = new BindingRoot(new NullObject());
+
+					var element = document.createElement("div");
+
+					element.id = "null";
+
+					element.setAttribute("data-bind", "thenull");
+
+					var div = document.createElement("div");
+
+					div.className = "null";
+
+					element.appendChild(div);
+
+					fixture.appendChild(element);
+
+					var done = assert.async();
+
+					setTimeout(function() {
+
+							var childCount = document.querySelectorAll(".null").length;
+			
+							assert.strictEqual(childCount, 0);
+
+							done();
+
+							root.disconnect();
+					});
+			});
+		</script>
 	</body>
 </html>
