@@ -296,5 +296,43 @@
 							});
 					});
 		</script>
+		<script>
+			QUnit.test("Bind array to inserted element", function(assert) {
+
+					function ArrayObject() {
+		
+							this.thearray = [{}, {}];
+					}
+
+					var root = new BindingRoot(new ArrayObject());
+
+					var element = document.createElement("div");
+
+					element.id = "array";
+
+					element.setAttribute("data-bind", "thearray");
+
+					var div = document.createElement("div");
+
+					div.className = "array";
+
+					element.appendChild(div);
+
+					fixture.appendChild(element);
+
+					var done = assert.async();
+
+					setTimeout(function() {
+
+							var childCount = document.querySelectorAll(".array").length;
+			
+							assert.strictEqual(childCount, 2);
+
+							done();
+
+							root.disconnect();
+					});
+			});
+		</script>
 	</body>
 </html>

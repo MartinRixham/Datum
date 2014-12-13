@@ -30,13 +30,25 @@ function BindingRoot(model) {
 			else if (property && typeof(property) == "object") {
 
 				var element =
-					scope.querySelector("[data-bind=" + key + "]");
+					model._scope.querySelector("[data-bind=" + key + "]");
 
 				if (element) {
 
+					if (!element._rebind) {
+
+						element._rebind = function() {};
+					}
+
 					property._scope = element;
 
-					rebind(property);
+					if (property instanceof Array) {
+
+						applyForeachBinding(element, property);
+					}
+					else {
+
+						rebind(property);
+					}
 				}
 			}
 		}
