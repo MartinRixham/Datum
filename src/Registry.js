@@ -60,7 +60,7 @@ function Registry() {
 
 	var rebindRequested = false;
 
-	this.rebind = function(callback) {
+	this.rebindDataStructure = function(callback) {
 
 		if (callback && !rebind) {
 

@@ -135,7 +135,14 @@
 							})
 					};
 
-					assert.strictEqual(query("#text").innerHTML, "Hello World");
+					var done = assert.async();
+
+					setTimeout(function() {
+
+							assert.strictEqual(query("#text").innerHTML, "Hello World");
+
+							done();
+					});
 			});
 		</script>
 		<div id="multi-outer" data-bind="multi">

@@ -69,6 +69,11 @@ function BindingRoot(model) {
 
 			var object = model[key];
 
+			for (var i = element.children.length - 1; i >= 0; i--) {
+
+				element.removeChild(element.children[i]);
+			}
+
 			if (object) {
 
 				children.forEach(function(child) {
@@ -77,16 +82,6 @@ function BindingRoot(model) {
 				});
 
 				bindObject(element, object);
-			}
-			else {
-
-				children.forEach(function(child) {
-
-					if (element.contains(child)) {
-
-						element.removeChild(child);
-					}
-				});
 			}
 		});
 	};
@@ -148,12 +143,15 @@ function BindingRoot(model) {
 
 				if (element && typeof(property) == "object") {
 
+					if (newBinding) {
+
+						applyWithBinding(scope, model, key, element);
+					}
+
 					if (property) {
 
 						bindObject(element, property);
 					}
-
-					applyWithBinding(scope, model, key, element);
 				}
 			}
 		}
@@ -163,7 +161,7 @@ function BindingRoot(model) {
 
 	bindObject(scope, model);
 
-	this.rebind(function() {
+	this.rebindDataStructure(function() {
 
 		bindObject(scope, model);
 	});

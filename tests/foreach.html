@@ -164,5 +164,31 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="reassign" data-bind="reassign">
+			<div class="reassign"></div>
+		</div>
+		<script>
+			QUnit.test("Reassign array", function(assert) {
+
+					function ReassignObject() {
+		
+							this.reassign = [{}, {}];
+					}
+
+					var reassign = new ReassignObject();
+
+					var root = new BindingRoot(reassign);
+
+					reassign.reassign = [{}, {}];
+
+					var element = query("#reassign");
+
+					var childCount = element.querySelectorAll(".reassign").length;
+
+					assert.strictEqual(childCount, 2);
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>

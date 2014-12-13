@@ -6,7 +6,7 @@ function Datum(datum) {
 
 	var provider = function(value) {
 
-		self.rebind();
+		self.rebindDataStructure();
 
 		if (typeof value != "undefined") {
 

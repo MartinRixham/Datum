@@ -2,7 +2,7 @@ function Binding(bindings) {
 
 	this.requestRebind();
 
-	setTimeout(this.rebind);
+	setTimeout(this.rebindDataStructure);
 
 	var element = false;
 
