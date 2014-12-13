@@ -76,7 +76,7 @@ function BindingRoot(model) {
 					element.appendChild(child);
 				});
 
-				bindObject(scope, object);
+				bindObject(element, object);
 			}
 			else {
 

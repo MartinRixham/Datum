@@ -138,5 +138,31 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="after" data-bind="after">
+			<div class="after"></div>
+		</div>
+		<script>
+			QUnit.test("Bind array after root", function(assert) {
+
+					function AfterObject() {
+		
+							this.after = null;
+					}
+
+					var after = new AfterObject();
+
+					var root = new BindingRoot(after);
+
+					after.after = [{}, {}];
+
+					var element = query("#after");
+
+					var childCount = element.querySelectorAll(".after").length;
+
+					assert.strictEqual(childCount, 2);
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>
