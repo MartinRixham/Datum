@@ -142,6 +142,11 @@ function BindingRoot(model) {
 
 		for(var key in model) {
 
+			if (key == "_scope") {
+
+				continue;
+			}
+
 			var property = model[key];
 	
 			var element = 

@@ -104,6 +104,7 @@
 					assert.strictEqual(input.datum(), "Hello World");
 			});
 		</script>
+		<div id="super-bind" data-bind="bind"></div>
 		<div id="super" data-bind="super">
 			<div id="sub" data-bind="sub"></div>
 		</div>
@@ -111,6 +112,11 @@
 			QUnit.test("Bind subobject", function(assert) {
 
 					function TextObject() {
+
+							this.bind = new Binding({
+
+									text: "Eh Up Planet"
+							});
 
 							this.super = {
 
@@ -122,6 +128,10 @@
 					}
 
 					new BindingRoot(new TextObject());
+
+					assert.strictEqual(
+							query("#super-bind").innerHTML,
+							"Eh Up Planet");
 
 					assert.strictEqual(query("#sub").innerHTML, "Hello World");
 			});
