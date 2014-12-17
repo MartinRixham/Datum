@@ -17,18 +17,32 @@
 					background : green;
 			}
 
+			form {
+					max-width: 403px;
+					margin: auto;
+			}
+
+			legend {
+					margin: 3% 0%;
+			}
+
 			label {
 					display: inline-block;
 					min-width: 150px;
 					margin: 3%;
 			}
 
-			a {
-					margin-left: 70%;
+			.go {
+					float: right;
+					margin: 3%;
+			}
+
+			.go:hover {
+					color: slategrey;
 			}
 
 			.date input {
-					max-width: 57px;
+					max-width: 50px;
 			}
 		</style>
 	</head>
@@ -49,7 +63,16 @@
 				/ <input type="number" data-bind="month" />	
 				/ <input type="number" data-bind="year" />	
 			</div>
-			<a>GO</a>
+			<div data-bind="yesnos">
+				<label data-bind="question"></label>
+				<span>Yes</span>
+				<input type="radio" name="yesno" value="yes" data-bind="yesno" />
+				<span>No</span>
+				<input type="radio" name="yesno" value="no" data-bind="yesno" />
+				<span>Maybe</span>
+				<input type="radio" name="yesno" value="maybe" data-bind="yesno" />
+			</div>
+			<a class="go">GO</a>
 		</form>
 	</body>
 </html>

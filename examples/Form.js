@@ -6,6 +6,12 @@ function Form() {
 
 	this.date = new DatePicker();
 
+	this.yesnos = 
+		[
+			new YesNoQuestion("Question"),
+			new YesNoQuestion("Thingy")
+		];
+
 	var self = this;
 
 	this.input1 = new Binding({
@@ -109,6 +115,35 @@ function DatePicker() {
 		},
 
 		text: function() { return self.theyear; }
+	});
+}
+
+function YesNoQuestion(question) {
+
+	this.thequestion = question;
+
+	this.answer;
+
+	var self = this;
+
+	this.yesno = new Binding({
+
+		value: function(value) {
+
+			if (value) {
+
+				self.answer = value;
+			}
+
+			return self.answer;
+		},
+
+		text: function() { return self.answer; }
+	});
+
+	this.question = new Binding({
+
+		text: function() { return this.thequestion; }
 	});
 }
 

@@ -26,7 +26,10 @@ function Value(value) {
 
 				var element = elements[i];
 
-				element.value = evaluated;
+				if (typeof(evaluated) != "undefined") {
+
+					element.value = evaluated;
+				}
 
 				element.addEventListener("change", function(event) {
 					
