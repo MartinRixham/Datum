@@ -107,7 +107,10 @@ function BindingRoot(model) {
 
 		var child = scope.children[0];
 
-		scope.removeChild(child);
+		for (var i = scope.children.length - 1; i >= 0; i--) {
+
+			scope.removeChild(scope.children[i]);
+		}
 
 		model.forEach(function() {
 

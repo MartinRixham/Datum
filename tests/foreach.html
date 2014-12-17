@@ -190,5 +190,30 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="remove-all" data-bind="removeAll">
+			<div id="removeOne"></div>
+			<div id="removeTwo"></div>
+		</div>
+		<script>
+			QUnit.test(
+					"Remove all elements when bound to empty array",
+					function(assert) {
+
+							function RemoveAll() {
+		
+									this.removeAll = [];
+							}
+
+							var element = query("#remove-all");
+
+							var each = new RemoveAll();
+
+							var root = new BindingRoot(each);
+
+							assert.strictEqual(element.children.length, 0);
+
+							root.disconnect();
+					});
+		</script>
 	</body>
 </html>
