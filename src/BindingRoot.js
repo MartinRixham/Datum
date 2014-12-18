@@ -65,9 +65,9 @@ function BindingRoot(model) {
 
 		var children = [];
 
-		for (var i = 0; i < element.children.length; i++) {
+		for (var i = 0; i < element.childNodes.length; i++) {
 
-			children[i] = element.children[i];
+			children[i] = element.childNodes[i];
 		}
 
 		self.requestRegistrations();
@@ -86,9 +86,9 @@ function BindingRoot(model) {
 
 			var object = model[key];
 
-			for (var i = element.children.length - 1; i >= 0; i--) {
+			for (var i = element.childNodes.length - 1; i >= 0; i--) {
 
-				element.removeChild(element.children[i]);
+				element.removeChild(element.childNodes[i]);
 			}
 
 			if (object) {
@@ -107,11 +107,11 @@ function BindingRoot(model) {
 
 		var children = [];
 
-		for (var i = scope.children.length - 1; i >= 0; i--) {
+		for (var i = scope.childNodes.length - 1; i >= 0; i--) {
 
-			children[i] = scope.children[i];
+			children[i] = scope.childNodes[i];
 
-			scope.removeChild(scope.children[i]);
+			scope.removeChild(scope.childNodes[i]);
 		}
 
 		model.forEach(function(property) {
