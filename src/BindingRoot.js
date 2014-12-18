@@ -48,7 +48,9 @@ function BindingRoot(model) {
 
 					if (property instanceof Array) {
 
-						applyForeachBinding(element, property);
+						var foreach = new ForEach(element, property);
+
+						foreach.bind();
 					}
 					else {
 
@@ -103,7 +105,19 @@ function BindingRoot(model) {
 		});
 	};
 
-	var applyForeachBinding = function(scope, model) {
+	function ForEach(scope, model) {
+
+		model.isBinding = true;
+
+		var bound = false;
+
+		model.rebind = function(element, name) {};
+
+		model.bind = function(element, name) {
+
+		if (bound) return;
+
+		bound = true;
 
 		var children = [];
 
@@ -129,15 +143,20 @@ function BindingRoot(model) {
 		});
 	};
 
+		return model;
+	}
+
 	// This loop is responsible for binding the data structure
 	// both initially when the binding root is created and
 	// after a new binding is added.
 	// It only applies bindings that have not previously been bound.
 	var bindObject = function(scope, model) {
 
-		if (model instanceof Array) {
+		if (model instanceof Array && !newBinding) {
 
-			applyForeachBinding(scope, model);
+			var foreach = new ForEach(scope, model);
+
+			foreach.bind();	
 
 			return;
 		}
