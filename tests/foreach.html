@@ -233,7 +233,39 @@
 
 					var element = query("#all");
 
-					assert.strictEqual(element.children.length, 2);
+					var one = query("#allOne");
+					var two = query("#allTwo");
+
+					assert.ok(element.contains(one));
+					assert.ok(element.contains(two));
+
+					root.disconnect();
+			});
+		</script>
+		<div id="inside" data-bind="inside">
+			<div id="insideOne" data-bind="innerAll"></div>
+		</div>
+		<script>
+			QUnit.test("Apply binding inside array", function(assert) {
+
+					function InsideObject() {
+		
+							this.inside = [{
+
+								innerAll: new Binding({
+
+									text: function() { return "Hello World"; }
+								})
+							}];
+					}
+
+					var inside = new InsideObject();
+
+					var root = new BindingRoot(inside);
+
+					var element = query("#insideOne");
+
+					assert.strictEqual(element.innerHTML, "Hello World");
 
 					root.disconnect();
 			});

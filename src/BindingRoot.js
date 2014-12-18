@@ -114,12 +114,18 @@ function BindingRoot(model) {
 			scope.removeChild(scope.children[i]);
 		}
 
-		model.forEach(function() {
+		model.forEach(function(property) {
+
+			var element = document.createElement("DIV");
 
 			children.forEach(function(child) {
 
-				scope.appendChild(child.cloneNode(true));
+				element.appendChild(child.cloneNode(true));
 			});
+
+			scope.appendChild(element);
+
+			bindObject(element, property);
 		});
 	};
 

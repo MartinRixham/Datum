@@ -143,7 +143,7 @@ function YesNoQuestion(question) {
 
 	this.question = new Binding({
 
-		text: function() { return this.thequestion; }
+		text: function() { return self.thequestion; }
 	});
 }
 
