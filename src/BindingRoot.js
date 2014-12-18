@@ -105,16 +105,21 @@ function BindingRoot(model) {
 
 	var applyForeachBinding = function(scope, model) {
 
-		var child = scope.children[0];
+		var children = [];
 
 		for (var i = scope.children.length - 1; i >= 0; i--) {
+
+			children[i] = scope.children[i];
 
 			scope.removeChild(scope.children[i]);
 		}
 
 		model.forEach(function() {
 
-			scope.appendChild(child.cloneNode(true));
+			children.forEach(function(child) {
+
+				scope.appendChild(child.cloneNode(true));
+			});
 		});
 	};
 

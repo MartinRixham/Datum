@@ -215,5 +215,28 @@
 							root.disconnect();
 					});
 		</script>
+		<div id="all" data-bind="all">
+			<div id="allOne"></div>
+			<div id="allTwo"></div>
+		</div>
+		<script>
+			QUnit.test("All elements when array length one", function(assert) {
+
+					function AllObject() {
+		
+							this.all = [{}];
+					}
+
+					var all = new AllObject();
+
+					var root = new BindingRoot(all);
+
+					var element = query("#all");
+
+					assert.strictEqual(element.children.length, 2);
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>
