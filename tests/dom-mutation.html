@@ -362,9 +362,63 @@
 
 					setTimeout(function() {
 
-							var childCount = document.querySelectorAll(".null").length;
+							var childCount = fixture.querySelectorAll(".null").length;
 			
 							assert.strictEqual(childCount, 0);
+
+							done();
+
+							root.disconnect();
+					});
+			});
+		</script>
+		<script>
+			QUnit.test("Rebind array to replaced element", function(assert) {
+
+					function ArrayObject() {
+		
+							this.thearray = [{}, {}];
+					}
+
+					var element = document.createElement("div");
+
+					element.id = "array";
+
+					element.setAttribute("data-bind", "thearray");
+
+					var div = document.createElement("div");
+
+					div.className = "array";
+
+					element.appendChild(div);
+
+					fixture.appendChild(element);
+
+					var root = new BindingRoot(new ArrayObject());
+
+					fixture.removeChild(element);
+
+					element = document.createElement("div");
+
+					element.id = "array";
+
+					element.setAttribute("data-bind", "thearray");
+
+					div = document.createElement("div");
+
+					div.className = "array";
+
+					element.appendChild(div);
+
+					fixture.appendChild(element);
+
+					var done = assert.async();
+
+					setTimeout(function() {
+
+							var childCount = fixture.querySelectorAll(".array").length;
+			
+							assert.strictEqual(childCount, 2);
 
 							done();
 

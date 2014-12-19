@@ -48,9 +48,9 @@ function BindingRoot(model) {
 
 					if (property instanceof Array) {
 
-						var foreach = new ForEach(element, property);
+						var foreach = new ForEach(property);
 
-						foreach.bind();
+						foreach.bind(element, key);
 					}
 					else {
 
@@ -105,43 +105,54 @@ function BindingRoot(model) {
 		});
 	};
 
-	function ForEach(scope, model) {
+	function ForEach(model) {
 
 		model.isBinding = true;
 
 		var bound = false;
 
-		model.rebind = function(element, name) {};
+		model.bind = function(scope, name) {
 
-		model.bind = function(element, name) {
+			if (!bound) {
 
-		if (bound) return;
+				model.rebind(scope, name);
+			}
+		};
 
-		bound = true;
+		model.rebind = function(scope, name) {
 
-		var children = [];
+			bound = true;
 
-		for (var i = scope.childNodes.length - 1; i >= 0; i--) {
+			scope._rebind = function() {};
 
-			children[i] = scope.childNodes[i];
+			if (name) {
 
-			scope.removeChild(scope.childNodes[i]);
-		}
+				scope = scope.querySelector("[data-bind=" + name + "]") || scope; 
+			}
 
-		model.forEach(function(property) {
+			var children = [];
 
-			var element = document.createElement("DIV");
+			for (var i = scope.childNodes.length - 1; i >= 0; i--) {
 
-			children.forEach(function(child) {
+				children[i] = scope.childNodes[i];
 
-				element.appendChild(child.cloneNode(true));
+				scope.removeChild(scope.childNodes[i]);
+			}
+
+			model.forEach(function(property) {
+
+				var element = document.createElement("DIV");
+
+				children.forEach(function(child) {
+
+					element.appendChild(child.cloneNode(true));
+				});
+
+				scope.appendChild(element);
+
+				bindObject(element, property);
 			});
-
-			scope.appendChild(element);
-
-			bindObject(element, property);
-		});
-	};
+		};
 
 		return model;
 	}
@@ -152,11 +163,11 @@ function BindingRoot(model) {
 	// It only applies bindings that have not previously been bound.
 	var bindObject = function(scope, model) {
 
-		if (model instanceof Array && !newBinding) {
+		if (model instanceof Array) {
 
-			var foreach = new ForEach(scope, model);
+			var foreach = new ForEach(model);
 
-			foreach.bind();	
+			foreach.bind(scope);	
 
 			return;
 		}
