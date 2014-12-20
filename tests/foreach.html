@@ -322,5 +322,32 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="subnumber" data-bind="subnumber">
+			<div>
+				<div id="inner-subnumber"></div>
+			</div>
+		</div>
+		<script>
+			QUnit.test("Number ids on subelements", function(assert) {
+
+					function SubnumberObject() {
+		
+							this.subnumber = [{}];
+					}
+
+					var subnumber = new SubnumberObject();
+
+					var root = new BindingRoot(subnumber);
+
+					var element = query("#subnumber");
+
+					var one = element.querySelector("#inner-subnumber_0");
+
+					assert.ok(one);
+					assert.ok(two);
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>

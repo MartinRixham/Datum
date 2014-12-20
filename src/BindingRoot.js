@@ -135,6 +135,16 @@ function BindingRoot(model) {
 
 				element.setAttribute("name", element.getAttribute("name") + "_" + index);
 			}
+
+			if (element.children) {
+
+				for (var i = 0; i < element.children.length; i++) {
+
+					var subelement = element.children[i];
+
+					this.number(subelement, index);
+				}
+			}
 		};
 
 		var self = this;
