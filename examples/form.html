@@ -11,6 +11,7 @@
 		<script src="../src/Datum.js"></script>
 		<script src="../src/Text.js"></script>
 		<script src="../src/Value.js"></script>
+		<script src="../src/Click.js"></script>
 		<script src="Form.js"></script>
 		<style>
 			body {
@@ -24,7 +25,7 @@
 			}
 
 			form {
-					max-width: 403px;
+					max-width: 455px;
 					margin: auto;
 			}
 
@@ -34,7 +35,7 @@
 
 			label {
 					display: inline-block;
-					min-width: 150px;
+					min-width: 200px;
 					margin: 3%;
 			}
 
@@ -43,12 +44,16 @@
 					margin: 3%;
 			}
 
-			.go:hover {
+			a:hover {
 					color: slategrey;
 			}
 
 			.date input {
 					max-width: 50px;
+			}
+
+			.hide-date {
+					float: right;
 			}
 		</style>
 	</head>
@@ -69,6 +74,7 @@
 				/ <input type="number" data-bind="month" />	
 				/ <input type="number" data-bind="year" />	
 			</div>
+			<a class="hide-date" data-bind="hideDate"></a>
 			<div data-bind="yesnos">
 				<label data-bind="question"></label>
 				<span>Yes</span>
@@ -78,7 +84,7 @@
 				<span>Maybe</span>
 				<input type="radio" name="yesno" value="maybe" data-bind="yesno" />
 			</div>
-			<a class="go">GO</a>
+			<a class="go" data-bind="go">GO</a>
 		</form>
 	</body>
 </html>

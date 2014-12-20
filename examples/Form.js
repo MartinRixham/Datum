@@ -1,18 +1,43 @@
 function Form() {
 
-	this.first = null;
+	this.first = "answer";
 
-	this.second = null;
+	this.second = "another answer";
 
 	this.date = new DatePicker();
 
 	this.yesnos = 
 		[
-			new YesNoQuestion("Question"),
-			new YesNoQuestion("Thingy")
+			new YesNoQuestion("Is this the first question?"),
+			new YesNoQuestion("Is this the second question?")
 		];
 
 	var self = this;
+
+	this.hideDate = new Binding({
+
+		click: function() { 
+
+			if (self.date) {
+
+				self.date = null; 
+			}
+			else {
+
+				self.date = new DatePicker();
+			}
+		},
+
+		text: function() {
+
+			if (self.date) {
+
+				return "Hide";
+			}
+
+			else return "Show";
+		}
+	});
 
 	this.input1 = new Binding({
 
@@ -44,21 +69,22 @@ function Form() {
 		text: function() { return self.second; }
 	});
 
-	var button = document.querySelector("a");
+	this.go = new Binding({
 
-	var form = document.querySelector("form");
+		click: function() { 
 
-	button.addEventListener("click", function() {
+			var form = document.querySelector("form");
 
-		var request = new XMLHttpRequest();
+			var request = new XMLHttpRequest();
 
-		request.open("GET", "form-readonly.html");
-		request.onload = function() {
+			request.open("GET", "form-readonly.html");
+			request.onload = function() {
 
-			form.innerHTML = request.responseText;
-		};
+				form.innerHTML = request.responseText;
+			};
 
-		request.send();
+			request.send();
+		} 
 	});
 }
 
@@ -122,7 +148,7 @@ function YesNoQuestion(question) {
 
 	this.thequestion = question;
 
-	this.answer;
+	this.answer = "no answer given";
 
 	var self = this;
 
@@ -134,8 +160,6 @@ function YesNoQuestion(question) {
 
 				self.answer = value;
 			}
-
-			return self.answer;
 		},
 
 		text: function() { return self.answer; }
