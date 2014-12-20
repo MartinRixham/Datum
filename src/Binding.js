@@ -36,6 +36,13 @@ function Binding(bindings) {
 
 			value.bind(scope, name);
 		}
+		
+		if (bindings.click) {
+
+			var click = new Click(bindings.click);
+
+			click.bind(scope, name);
+		}
 	};
 
 	this.isBinding = true;
