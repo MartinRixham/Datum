@@ -12,32 +12,9 @@ function Form() {
 			new YesNoQuestion("Is this the second question?")
 		];
 
+	this.theNewQuestion = null;
+
 	var self = this;
-
-	this.hideDate = new Binding({
-
-		click: function() { 
-
-			if (self.date) {
-
-				self.date = null; 
-			}
-			else {
-
-				self.date = new DatePicker();
-			}
-		},
-
-		text: function() {
-
-			if (self.date) {
-
-				return "Hide";
-			}
-
-			else return "Show";
-		}
-	});
 
 	this.input1 = new Binding({
 
@@ -67,6 +44,54 @@ function Form() {
 		},
 
 		text: function() { return self.second; }
+	});
+
+	this.hideDate = new Binding({
+
+		click: function() { 
+
+			if (self.date) {
+
+				self.date = null; 
+			}
+			else {
+
+				self.date = new DatePicker();
+			}
+		},
+
+		text: function() {
+
+			if (self.date) {
+
+				return "Hide";
+			}
+
+			else return "Show";
+		}
+	});
+
+	this.newQuestion = new Binding({
+
+		value: function(value) {
+
+			if (value) {
+
+				self.theNewQuestion = value;
+			}
+
+			return self.theNewQuestion;
+		}
+	});
+
+	this.addQuestion = new Binding({
+
+		click: function() {
+
+			self.yesnos.push(new YesNoQuestion(self.theNewQuestion));
+
+			self.yesnos = self.yesnos;
+		}
 	});
 
 	this.go = new Binding({

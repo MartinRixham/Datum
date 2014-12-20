@@ -55,6 +55,20 @@
 			.hide-date {
 					float: right;
 			}
+
+			.options {
+					display: inline-block;
+			}
+
+			.new-question input {
+					display: inline-block;
+					width: 70%;	
+					margin-left: 3%;
+			}
+
+			.new-question a {
+					float: right;
+			}
 		</style>
 	</head>
 	<body>
@@ -77,12 +91,18 @@
 			<a class="hide-date" data-bind="hideDate"></a>
 			<div data-bind="yesnos">
 				<label data-bind="question"></label>
-				<span>Yes</span>
-				<input type="radio" name="yesno" value="yes" data-bind="yesno" />
-				<span>No</span>
-				<input type="radio" name="yesno" value="no" data-bind="yesno" />
-				<span>Maybe</span>
-				<input type="radio" name="yesno" value="maybe" data-bind="yesno" />
+				<span class="options">
+					<span>Yes</span>
+					<input type="radio" name="yesno" value="yes" data-bind="yesno" />
+					<span>No</span>
+					<input type="radio" name="yesno" value="no" data-bind="yesno" />
+					<span>Maybe</span>
+					<input type="radio" name="yesno" value="maybe" data-bind="yesno" />
+				</span>
+			</div>
+			<div class="new-question">
+				<input type="text" data-bind="newQuestion" />
+				<a data-bind="addQuestion">Add Question</a>
 			</div>
 			<a class="go" data-bind="go">GO</a>
 		</form>
