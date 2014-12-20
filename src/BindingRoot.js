@@ -17,7 +17,12 @@ function BindingRoot(model) {
 	// after dom mutations.
 	// It reapplies every binding though need not be applied to the 
 	// root object.
-	var rebind = function(model) {
+	var rebind = function(scope, model) {
+
+		if (model) {
+
+			model._scope = scope;
+		}
 
 		for(var key in model) {
 
@@ -54,7 +59,7 @@ function BindingRoot(model) {
 					}
 					else {
 
-						rebind(property);
+						rebind(element, property);
 					}
 				}
 			}
@@ -150,7 +155,7 @@ function BindingRoot(model) {
 
 				scope.appendChild(element);
 
-				bindObject(element, property);
+				rebind(element, property);
 			});
 		};
 
@@ -180,7 +185,7 @@ function BindingRoot(model) {
 
 			scope._rebind = function() {
 	
-				rebind(model);
+				rebind(scope, model);
 			};
 		}
 
