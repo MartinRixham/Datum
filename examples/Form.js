@@ -12,7 +12,7 @@ function Form() {
 			new YesNoQuestion("Is this the second question?")
 		];
 
-	this.theNewQuestion = null;
+	this.theNewQuestion = "";
 
 	var self = this;
 
@@ -88,9 +88,11 @@ function Form() {
 
 		click: function() {
 
-			self.yesnos.push(new YesNoQuestion(self.theNewQuestion));
+			self.yesnos.push(new YesNoQuestion(self.theNewQuestion + "?"));
 
 			self.yesnos = self.yesnos;
+
+			self.theNewQuestion = "";
 		}
 	});
 
@@ -115,11 +117,13 @@ function Form() {
 
 function DatePicker() {
 
-	this.theday = 17;
+	var date = new Date();
 
-	this.themonth = 12;
+	this.theday = date.getDate();
 
-	this.theyear = 2014;
+	this.themonth = date.getMonth() + 1;
+
+	this.theyear = date.getFullYear();
 
 	var self = this;
 
