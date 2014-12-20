@@ -124,11 +124,16 @@ function BindingRoot(model) {
 			}
 		};
 
-		this.numberId = function(element, index) {
+		this.number = function(element, index) {
 
 			if (element.id) {
 
 				element.id = element.id + "_" + index;
+			}
+
+			if (element.hasAttribute && element.hasAttribute("name")) {
+
+				element.setAttribute("name", element.getAttribute("name") + "_" + index);
 			}
 		};
 
@@ -164,7 +169,7 @@ function BindingRoot(model) {
 
 					var clone = child.cloneNode(true);
 
-					self.numberId(clone, index);
+					self.number(clone, index);
 
 					element.appendChild(clone);
 				});

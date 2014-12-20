@@ -296,5 +296,31 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="number-name" data-bind="name">
+			<div name="name"></div>
+		</div>
+		<script>
+			QUnit.test("Number names", function(assert) {
+
+					function NameObject() {
+		
+							this.name = [{}, {}];
+					}
+
+					var name = new NameObject();
+
+					var root = new BindingRoot(name);
+
+					var element = query("#number-name");
+
+					var one = element.querySelector("[name=name_0]");
+					var two = element.querySelector("[name=name_1]");
+
+					assert.ok(one);
+					assert.ok(two);
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>
