@@ -55,7 +55,7 @@
 
 					var element = query("#each");
 
-					var inner = query("#inner-each");
+					var inner = query("#inner-each_0");
 
 					var each = new ForeachObject();
 
@@ -83,7 +83,7 @@
 
 					var element = query("#one");
 
-					var inner = query("#inner-one");
+					var inner = query("#inner-one_0");
 
 					assert.ok(element.contains(inner));
 
@@ -216,8 +216,8 @@
 					});
 		</script>
 		<div id="all" data-bind="all">
-			<div id="allOne"></div>
-			<div id="allTwo"></div>
+			<div id="all-one"></div>
+			<div id="all-two"></div>
 		</div>
 		<script>
 			QUnit.test("All elements when array length one", function(assert) {
@@ -233,8 +233,8 @@
 
 					var element = query("#all");
 
-					var one = query("#allOne");
-					var two = query("#allTwo");
+					var one = query("#all-one_0");
+					var two = query("#all-two_0");
 
 					assert.ok(element.contains(one));
 					assert.ok(element.contains(two));
@@ -243,7 +243,7 @@
 			});
 		</script>
 		<div id="inside" data-bind="inside">
-			<div id="insideOne" data-bind="innerAll"></div>
+			<div id="inside-one" data-bind="innerAll"></div>
 		</div>
 		<script>
 			QUnit.test("Apply binding inside array", function(assert) {
@@ -263,9 +263,35 @@
 
 					var root = new BindingRoot(inside);
 
-					var element = query("#insideOne");
+					var element = query("#inside-one_0");
 
 					assert.strictEqual(element.innerHTML, "Hello World");
+
+					root.disconnect();
+			});
+		</script>
+		<div id="number-outer" data-bind="thenumber">
+			<div id="number"></div>
+		</div>
+		<script>
+			QUnit.test("Number ids", function(assert) {
+
+					function NumberObject() {
+		
+							this.thenumber = [{}, {}];
+					}
+
+					var thenumber = new NumberObject();
+
+					var root = new BindingRoot(thenumber);
+
+					var element = query("#number-outer");
+
+					var one = element.querySelector("#number_0");
+					var two = element.querySelector("#number_1");
+
+					assert.ok(one);
+					assert.ok(two);
 
 					root.disconnect();
 			});

@@ -124,6 +124,16 @@ function BindingRoot(model) {
 			}
 		};
 
+		this.numberId = function(element, index) {
+
+			if (element.id) {
+
+				element.id = element.id + "_" + index;
+			}
+		};
+
+		var self = this;
+
 		model.rebind = function(scope, name) {
 
 			bound = true;
@@ -144,14 +154,22 @@ function BindingRoot(model) {
 				scope.removeChild(scope.childNodes[i]);
 			}
 
+			var index = 0;
+
 			model.forEach(function(property) {
 
 				var element = document.createElement("DIV");
 
 				children.forEach(function(child) {
 
-					element.appendChild(child.cloneNode(true));
+					var clone = child.cloneNode(true);
+
+					self.numberId(clone, index);
+
+					element.appendChild(clone);
 				});
+
+				index += 1;
 
 				scope.appendChild(element);
 
