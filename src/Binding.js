@@ -43,6 +43,13 @@ function Binding(bindings) {
 
 			click.bind(scope, name, model);
 		}
+
+		if (bindings.init) {
+
+			var init = new Init(bindings.init);
+
+			init.bind(scope, name, model);
+		}
 	};
 
 	this.isBinding = true;
