@@ -377,5 +377,29 @@
 					root.disconnect();
 			});
 		</script>
+		<span id="span" data-bind="span">
+			<div></div>
+		</span>
+		<script>
+			QUnit.test("Two elements when array length two", function(assert) {
+
+					function SpanObject() {
+		
+							this.span = [{}, {}];
+					}
+
+					var span = new SpanObject();
+
+					var root = new BindingRoot(span);
+
+					var element = query("#span");
+
+					var childCount = element.querySelectorAll("span").length;
+
+					assert.strictEqual(childCount, 2);
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>

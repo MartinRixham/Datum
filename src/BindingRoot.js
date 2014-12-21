@@ -177,7 +177,7 @@ function BindingRoot(model) {
 
 					var property = array[i];
 
-					var element = document.createElement("DIV");
+					var element = document.createElement(scope.nodeName);
 
 					children.forEach(function(child) {
 
