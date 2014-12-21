@@ -90,8 +90,6 @@ function Form() {
 
 			self.yesnos.push(new YesNoQuestion(self.theNewQuestion + "?"));
 
-			self.yesnos = self.yesnos;
-
 			self.theNewQuestion = "";
 		}
 	});

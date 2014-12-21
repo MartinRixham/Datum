@@ -171,25 +171,41 @@ function BindingRoot(model) {
 
 			var index = 0;
 
-			model.forEach(function(property) {
+			model.append = function(array) {
 
-				var element = document.createElement("DIV");
+				for (var i = 0; i < array.length; i++) {
 
-				children.forEach(function(child) {
+					var property = array[i];
 
-					var clone = child.cloneNode(true);
+					var element = document.createElement("DIV");
 
-					self.number(clone, index);
+					children.forEach(function(child) {
 
-					element.appendChild(clone);
-				});
+						var clone = child.cloneNode(true);
 
-				index += 1;
+						self.number(clone, index);
 
-				scope.appendChild(element);
+						element.appendChild(clone);
+					});
 
-				rebind(element, property);
-			});
+					index += 1;
+
+					scope.appendChild(element);
+
+					rebind(element, property);
+				}
+			};
+
+			model.append(model);
+
+			var originalPush = model.push;
+
+			model.push = function() {
+
+				originalPush.apply(model, arguments);
+
+				model.append(arguments);
+			};
 		};
 
 		return model;
