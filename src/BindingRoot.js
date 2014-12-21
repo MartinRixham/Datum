@@ -171,7 +171,7 @@ function BindingRoot(model) {
 
 			var index = 0;
 
-			model.append = function(array) {
+			var append = function(array, newBinding) {
 
 				for (var i = 0; i < array.length; i++) {
 
@@ -192,11 +192,20 @@ function BindingRoot(model) {
 
 					scope.appendChild(element);
 
-					bindObject(element, property);
+					if (newBinding) {
+
+						bindObject(element, property);
+
+						model.bound = true;
+					}
+					else {
+
+						rebind(element, property);
+					}
 				}
 			};
 
-			model.append(model);
+			append(model, !model.bound);
 
 			var originalPush = model.push;
 
@@ -204,7 +213,7 @@ function BindingRoot(model) {
 
 				originalPush.apply(model, arguments);
 
-				model.append(arguments);
+				append(arguments, true);
 			};
 		};
 

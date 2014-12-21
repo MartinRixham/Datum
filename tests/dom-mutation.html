@@ -397,7 +397,16 @@
 
 					function ArrayObject() {
 		
-							this.thearray = [{}, {}];
+							this.thearray = 
+									[
+											{ 
+													text: new Binding({ 
+
+															text: function() { return "Hello World"; } 
+													})
+											}, 
+											{}
+									];
 					}
 
 					var element = document.createElement("div");
@@ -428,6 +437,8 @@
 
 					div.className = "array";
 
+					div.setAttribute("data-bind", "text");
+
 					element.appendChild(div);
 
 					fixture.appendChild(element);
@@ -436,9 +447,11 @@
 
 					setTimeout(function() {
 
-							var childCount = fixture.querySelectorAll(".array").length;
+							var children = fixture.querySelectorAll(".array");
 			
-							assert.strictEqual(childCount, 2);
+							assert.strictEqual(children.length, 2);
+
+							assert.strictEqual(children[0].innerHTML, "Hello World");
 
 							done();
 
