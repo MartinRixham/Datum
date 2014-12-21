@@ -50,6 +50,13 @@ function Binding(bindings) {
 
 			init.bind(scope, name, model);
 		}
+
+		if (bindings.update) {
+
+			var update = new Upudate(bindings.update);
+
+			update.bind(scope, name, model);
+		}
 	};
 
 	this.isBinding = true;
