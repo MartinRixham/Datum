@@ -6,15 +6,15 @@ function Binding(bindings) {
 
 	var element = false;
 
-	this.bind = function(scope, name) {
+	this.bind = function(scope, name, model) {
 
 		if (!element) {
 
-			this.rebind(scope, name);
+			this.rebind(scope, name, model);
 		}	
 	};
 
-	this.rebind = function(scope, name) {
+	this.rebind = function(scope, name, model) {
 
 		element = !!scope.querySelector("[data-bind=" + name + "]");
 
@@ -27,21 +27,21 @@ function Binding(bindings) {
 
 			var text = new Text(bindings.text);
 
-			text.bind(scope, name);
+			text.bind(scope, name, model);
 		}
 		
 		if (bindings.value) {
 
 			var value = new Value(bindings.value);
 
-			value.bind(scope, name);
+			value.bind(scope, name, model);
 		}
 		
 		if (bindings.click) {
 
 			var click = new Click(bindings.click);
 
-			click.bind(scope, name);
+			click.bind(scope, name, model);
 		}
 	};
 

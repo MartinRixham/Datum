@@ -1,6 +1,6 @@
 function Value(value) {
 
-	this.bind = function(scope, name) {
+	this.bind = function(scope, name, model) {
 
 		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 
@@ -8,13 +8,13 @@ function Value(value) {
 
 			this.requestRegistrations();
 
-			var evaluated = value();
+			var evaluated = value.call(model);
 
 			this.assignUpdater(function() {
 
 				var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 
-				var evaluated = value();
+				var evaluated = value.call(model);
 
 				for (var i = 0; i < elements.length; i++) {
 
@@ -33,7 +33,7 @@ function Value(value) {
 
 				element.addEventListener("change", function(event) {
 					
-					value(event.target.value);
+					value.call(model, event.target.value);
 				});
 			}
 		}

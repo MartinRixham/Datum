@@ -30,7 +30,7 @@ function BindingRoot(model) {
 
 			if (property && property.isBinding) {
 	
-				property.rebind(model._scope, key);
+				property.rebind(model._scope, key, model);
 			}
 			else if (typeof(property) == "object") {
 
@@ -252,7 +252,7 @@ function BindingRoot(model) {
 
 			if (property && property.isBinding) {
 	
-				property.bind(model._scope, key);
+				property.bind(model._scope, key, model);
 			}
 			else if (typeof(property) != "function") {
 

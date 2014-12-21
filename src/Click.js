@@ -1,6 +1,6 @@
 function Click(click) {
 
-	this.bind = function(scope, name) {
+	this.bind = function(scope, name, model) {
 
 		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 
@@ -10,7 +10,7 @@ function Click(click) {
 
 			element.addEventListener("click", function(event) {
 
-				click(event.target);
+				click.call(model, event.target);
 			});
 		}
 	};

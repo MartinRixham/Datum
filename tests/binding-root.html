@@ -215,18 +215,16 @@
 
 							this.datum = null;
 
-							var self = this;
-
 							this.plainChange = new Binding({
 
 									value: function(value) { 
 	
 											if (value) {
 
-													self.datum = value; 
+													this.datum = value; 
 											}
 											
-											return self.datum;
+											return this.datum;
 									}
 							});
 					}

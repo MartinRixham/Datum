@@ -14,21 +14,19 @@ function Form() {
 
 	this.theNewQuestion = "";
 
-	var self = this;
-
 	this.input1 = new Binding({
 
 		value: function(value) {
 
 			if (value) {
 
-				self.first = value;
+				this.first = value;
 			}
 
-			return self.first;
+			return this.first;
 		},
 
-		text: function() { return self.first; }
+		text: function() { return this.first; }
 	});
 
 	this.input2 = new Binding({
@@ -37,32 +35,32 @@ function Form() {
 
 			if (value) {
 
-				self.second = value;
+				this.second = value;
 			}
 
-			return self.second;
+			return this.second;
 		},
 
-		text: function() { return self.second; }
+		text: function() { return this.second; }
 	});
 
 	this.hideDate = new Binding({
 
 		click: function() { 
 
-			if (self.date) {
+			if (this.date) {
 
-				self.date = null; 
+				this.date = null; 
 			}
 			else {
 
-				self.date = new DatePicker();
+				this.date = new DatePicker();
 			}
 		},
 
 		text: function() {
 
-			if (self.date) {
+			if (this.date) {
 
 				return "Hide";
 			}
@@ -77,10 +75,10 @@ function Form() {
 
 			if (value) {
 
-				self.theNewQuestion = value;
+				this.theNewQuestion = value;
 			}
 
-			return self.theNewQuestion;
+			return this.theNewQuestion;
 		}
 	});
 
@@ -88,9 +86,9 @@ function Form() {
 
 		click: function() {
 
-			self.yesnos.push(new YesNoQuestion(self.theNewQuestion + "?"));
+			this.yesnos.push(new YesNoQuestion(this.theNewQuestion + "?"));
 
-			self.theNewQuestion = "";
+			this.theNewQuestion = "";
 		}
 	});
 
@@ -123,21 +121,19 @@ function DatePicker() {
 
 	this.theyear = date.getFullYear();
 
-	var self = this;
-
 	this.day = new Binding({
 
 		value: function(value) {
 
 			if (value) {
 
-				self.theday = value;
+				this.theday = value;
 			}
 
-			return self.theday;
+			return this.theday;
 		},
 
-		text: function() { return self.theday; }
+		text: function() { return this.theday; }
 	});
 
 	this.month = new Binding({
@@ -146,13 +142,13 @@ function DatePicker() {
 
 			if (value) {
 
-				self.themonth = value;
+				this.themonth = value;
 			}
 
-			return self.themonth;
+			return this.themonth;
 		},
 
-		text: function() { return self.themonth; }
+		text: function() { return this.themonth; }
 	});
 
 	this.year = new Binding({
@@ -161,13 +157,13 @@ function DatePicker() {
 
 			if (value) {
 
-				self.theyear = value;
+				this.theyear = value;
 			}
 
-			return self.theyear;
+			return this.theyear;
 		},
 
-		text: function() { return self.theyear; }
+		text: function() { return this.theyear; }
 	});
 }
 
@@ -177,24 +173,22 @@ function YesNoQuestion(question) {
 
 	this.answer = "no answer given";
 
-	var self = this;
-
 	this.yesno = new Binding({
 
 		value: function(value) {
 
 			if (value) {
 
-				self.answer = value;
+				this.answer = value;
 			}
 		},
 
-		text: function() { return self.answer; }
+		text: function() { return this.answer; }
 	});
 
 	this.question = new Binding({
 
-		text: function() { return self.thequestion; }
+		text: function() { return this.thequestion; }
 	});
 }
 

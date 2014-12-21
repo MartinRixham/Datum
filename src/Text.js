@@ -1,6 +1,6 @@
 function Text(text) {
 
-	this.bind = function(scope, name) {
+	this.bind = function(scope, name, model) {
 
 		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 
@@ -8,13 +8,13 @@ function Text(text) {
 
 			this.requestRegistrations();
 		
-			var evaluated = text();
+			var evaluated = text.call(model);
 
 			this.assignUpdater(function() {
 		
 				var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 
-				var evaluated = text();
+				var evaluated = text.call(model);
 
 				for (var i = 0; i < elements.length; i++) {
 
