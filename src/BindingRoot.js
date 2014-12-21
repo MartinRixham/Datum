@@ -116,13 +116,7 @@ function BindingRoot(model) {
 
 		var bound = false;
 
-		model.bind = function(scope, name) {
-
-			if (!bound) {
-
-				model.rebind(scope, name);
-			}
-		};
+		var currentScope = null;
 
 		this.number = function(element, index) {
 
@@ -149,7 +143,9 @@ function BindingRoot(model) {
 
 		var self = this;
 
-		model.rebind = function(scope, name) {
+		var bind = function(scope, name) {
+
+			currentScope = scope;
 
 			bound = true;
 
@@ -215,6 +211,24 @@ function BindingRoot(model) {
 
 				append(arguments, true);
 			};
+		};
+
+		model.bind = function(scope, name) {
+
+			if (!bound) {
+
+				bind(scope, name);
+			}
+		};
+
+		model.rebind = function(scope, name) {
+
+			var element = scope.querySelector("[data-bind=" + name + "]");
+
+			if (element && currentScope != element) {
+
+				bind(element, name);	
+			}
 		};
 
 		return model;
