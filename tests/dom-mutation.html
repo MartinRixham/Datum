@@ -301,10 +301,24 @@
 
 					function ArrayObject() {
 		
-							this.thearray = [{}, {}];
+							this.thearray = 
+									[
+											{ 
+
+													datum: "Thingy",
+
+													text: new Binding({ 
+
+															text: function() { return this.datum; } 
+													})
+											},
+											{}
+									];
 					}
 
-					var root = new BindingRoot(new ArrayObject());
+					var arrayObject = new ArrayObject();
+
+					var root = new BindingRoot(arrayObject);
 
 					var element = document.createElement("div");
 
@@ -316,6 +330,8 @@
 
 					div.className = "array";
 
+					div.setAttribute("data-bind", "text");
+
 					element.appendChild(div);
 
 					fixture.appendChild(element);
@@ -324,9 +340,13 @@
 
 					setTimeout(function() {
 
-							var childCount = document.querySelectorAll(".array").length;
+							var children = document.querySelectorAll(".array");
 			
-							assert.strictEqual(childCount, 2);
+							assert.strictEqual(children.length, 2);
+
+							arrayObject.thearray[0].datum = "Hello World";
+
+							assert.strictEqual(children[0].innerHTML, "Hello World");
 
 							done();
 

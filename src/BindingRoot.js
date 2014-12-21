@@ -192,7 +192,7 @@ function BindingRoot(model) {
 
 					scope.appendChild(element);
 
-					rebind(element, property);
+					bindObject(element, property);
 				}
 			};
 
