@@ -29,9 +29,9 @@ function Text(text) {
 		}
 		else {
 
-			for (i = 0; i < elements.length; i++) {
+			for (var j = 0; j < elements.length; j++) {
 
-				elements[i].textContent = text;
+				elements[j].textContent = text;
 			}
 		}
 	};

@@ -143,7 +143,7 @@ function BindingRoot(model) {
 
 		var self = this;
 
-		var bind = function(scope, name) {
+		this.bind = function(scope, name) {
 
 			currentScope = scope;
 
@@ -175,14 +175,16 @@ function BindingRoot(model) {
 
 					var element = document.createElement(scope.nodeName);
 
-					children.forEach(function(child) {
+					for (var j = 0; j < children.length; j++) {
+
+						var child = children[j];
 
 						var clone = child.cloneNode(true);
 
 						self.number(clone, index);
 
 						element.appendChild(clone);
-					});
+					}
 
 					index += 1;
 
@@ -217,7 +219,7 @@ function BindingRoot(model) {
 
 			if (!bound) {
 
-				bind(scope, name);
+				self.bind(scope, name);
 			}
 		};
 
@@ -227,7 +229,7 @@ function BindingRoot(model) {
 
 			if (element && currentScope != element) {
 
-				bind(element, name);	
+				self.bind(element, name);	
 			}
 		};
 

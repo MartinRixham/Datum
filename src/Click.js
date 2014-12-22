@@ -1,5 +1,13 @@
 function Click(click) {
 
+	this.addListener = function(element, model) {
+
+		element.addEventListener("click", function(event) {
+
+			click.call(model, event.target);
+		});
+	};
+
 	this.bind = function(scope, name, model) {
 
 		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
@@ -8,10 +16,7 @@ function Click(click) {
 
 			var element = elements[i];
 
-			element.addEventListener("click", function(event) {
-
-				click.call(model, event.target);
-			});
+			this.addListener(element, model);
 		}
 	};
 }

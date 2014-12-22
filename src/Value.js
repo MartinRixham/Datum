@@ -1,5 +1,13 @@
 function Value(value) {
 
+	this.addListener = function(element, model) {
+
+		element.addEventListener("change", function(event) {
+					
+			value.call(model, event.target.value);
+		});
+	};
+
 	this.bind = function(scope, name, model) {
 
 		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
@@ -31,17 +39,14 @@ function Value(value) {
 					element.value = evaluated;
 				}
 
-				element.addEventListener("change", function(event) {
-					
-					value.call(model, event.target.value);
-				});
+				this.addListener(element, model);
 			}
 		}
 		else {
 
-			for (i = 0; i < elements.length; i++) {
+			for (var j = 0; j < elements.length; j++) {
 
-				elements[i].value = value;
+				elements[j].value = value;
 			}
 		}	
 	};
