@@ -18,7 +18,13 @@ module.exports = function(grunt) {
 
 			dist: {
 
-				src: "src/*.js",
+				src: [
+
+					"src/Registry.js", 
+					"src/Subscriber.js", 
+					"src/UniqueRoot.js", 
+					"src/*.js"
+				],
 
 				dest: "target/Datum.js"
 			}
@@ -30,7 +36,13 @@ module.exports = function(grunt) {
 
 				files: {
 
-					"target/Datum.min.js": "src/*.js"
+					"target/Datum.min.js": [
+		
+						"src/Registry.js",
+						"src/Subscriber.js", 
+						"src/UniqueRoot.js", 
+						"src/*.js"
+					]
 				}
 			}
 		}
