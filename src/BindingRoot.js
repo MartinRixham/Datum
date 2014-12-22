@@ -291,6 +291,8 @@ function BindingRoot(model) {
 					if (newBinding) {
 
 						applyWithBinding(model, key, element);
+
+						new ViewModel(model);
 					}
 
 					if (property) {
