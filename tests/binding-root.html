@@ -56,7 +56,7 @@
 		
 							this.test = new Binding({
 
-									text: "Hello World"
+									text: function() { return "Hello World"; }
 							});
 					}
 
@@ -119,14 +119,14 @@
 
 							this.bind = new Binding({
 
-									text: "Eh Up Planet"
+									text: function() { return "Eh Up Planet"; }
 							});
 
 							this.super = {
 
 									sub: new Binding({
 
-											text: "Hello World"
+											text: function() { return "Hello World"; }
 									})
 							};
 					}

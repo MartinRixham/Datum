@@ -22,7 +22,6 @@
 		</style>
 		<div id="qunit"></div>
 		<div id="qunit-fixture"></div>
-		<div id="test-div" data-bind="test"></div>
 		<script>
 			var query = function(query) {
           
@@ -30,15 +29,6 @@
 			};
 
 			var scope = document.querySelector("body");
-
-			QUnit.test("Bind text", function(assert) {
-
-					var test = new Text("Hello World");
-
-					test.bind(scope, "test");
-
-					assert.strictEqual(query("#test-div").innerHTML, "Hello World");
-			});
 		</script>
 		<div id="text" data-bind="text"></div>
 		<script>
