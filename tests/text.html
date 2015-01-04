@@ -30,21 +30,6 @@
 
 			var scope = document.querySelector("body");
 		</script>
-		<div id="text" data-bind="text"></div>
-		<script>
-			QUnit.test("Bind datum", function(assert) {
-
-					var datum = new Datum();
-
-					var text = new Text(datum);
-
-					text.bind(scope, "text");
-
-					datum("Hello World");
-
-					assert.strictEqual(query("#text").innerHTML, "Hello World");
-			});
-		</script>
 		<div id="function" data-bind="function"></div>
 		<script>
 			QUnit.test("Bind function", function(assert) {
@@ -69,7 +54,7 @@
 
 					var datum = new Datum();
 
-					var text = new Text(datum);
+					var text = new Text(function() { return datum(); });
 
 					text.bind(scope, "two");
 
@@ -82,7 +67,7 @@
 		<div data-bind="single"></div>
 		<div data-bind="single"></div>
 		<script>
-			QUnit.test("Callback called once on init", function(assert) {
+			QUnit.test("Callback called once per element on init", function(assert) {
 
 					var count = 0;
 
@@ -98,13 +83,13 @@
 
 					text.bind(scope, "single");
 
-					assert.strictEqual(count, 1);
+					assert.strictEqual(count, 2);
 			});
 		</script>
 		<div data-bind="twice"></div>
 		<div data-bind="twice"></div>
 		<script>
-			QUnit.test("Callback called once on update", function(assert) {
+			QUnit.test("Callback called once per element on update", function(assert) {
 
 					var count = 0;
 
@@ -124,7 +109,18 @@
 
 					datum("Hello World");
 
-					assert.strictEqual(count, 1);
+					assert.strictEqual(count, 2);
+			});
+		</script>
+		<div id="element" data-bind="element"></div>
+		<script>
+			QUnit.test("Access element from callback", function(assert) {
+
+					var text = new Text(function(element) { return element.id; });
+
+					text.bind(scope, "element");
+
+					assert.strictEqual(query("#element").innerHTML, "element");
 			});
 		</script>
 	</body>
