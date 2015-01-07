@@ -57,6 +57,11 @@ function BindingRoot(model) {
 					if (property) {
 
 						property._scope = element;
+
+						if (!property.toJSON) {
+
+							new ViewModel(property);
+						}
 					}
 
 					if (property instanceof Array) {
