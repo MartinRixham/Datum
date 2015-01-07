@@ -13,6 +13,14 @@ function BindingRoot(model) {
 		});
 	};
 
+	var addRebindMethod = function(scope, model) {
+
+		scope._rebind = function() {
+
+			rebind(scope, model);
+		};
+	};
+
 	// This loop is responsible for rebinding the data structure
 	// after dom mutations.
 	// It reapplies every binding though need not be applied to the 
@@ -41,7 +49,7 @@ function BindingRoot(model) {
 
 					if (!element._rebind) {
 
-						element._rebind = function() {};
+						addRebindMethod(element, property);
 					}
 
 					applyWithBinding(model, key, element);
