@@ -40,7 +40,7 @@
 					var test =
 							new Binding({
 
-									text: "Hello World"
+									text: function() { return "Hello World"; }
 							});
 
 					test.bind(scope, "test");
