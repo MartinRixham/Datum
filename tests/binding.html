@@ -55,7 +55,7 @@
 					var input =
 							 new Binding({
 
-									value: "Hello World"
+									value: function() { return "Hello World"; }
 							});
 
 					input.bind(scope, "input");

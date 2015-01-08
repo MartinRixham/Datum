@@ -1,10 +1,15 @@
 function Value(value) {
 
-	this.addListener = function(element, model) {
+	this.addCallbacks = function(element, model) {
 
 		element.addEventListener("change", function(event) {
 					
 			value.call(model, event.target.value);
+		});
+
+		this.assignUpdater(function() {
+
+			element.value = value.call(model, undefined, element);
 		});
 	};
 
@@ -12,43 +17,21 @@ function Value(value) {
 
 		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 
-		if (typeof(value) == "function") {
+		for (var i = 0; i < elements.length; i++) {
+
+			var element = elements[i];
 
 			this.requestRegistrations();
 
-			var evaluated = value.call(model);
+			var evaluated = value.call(model, undefined, element);
 
-			this.assignUpdater(function() {
+			if (typeof(evaluated) != "undefined") {
 
-				var elements = scope.querySelectorAll("[data-bind=" + name + "]");
-
-				var evaluated = value.call(model);
-
-				for (var i = 0; i < elements.length; i++) {
-
-					elements[i].value = evaluated;
-				}
-			});
-
-			for (var i = 0; i < elements.length; i++) {
-
-				var element = elements[i];
-
-				if (typeof(evaluated) != "undefined") {
-
-					element.value = evaluated;
-				}
-
-				this.addListener(element, model);
+				element.value = evaluated;
 			}
+
+			this.addCallbacks(element, model);
 		}
-		else {
-
-			for (var j = 0; j < elements.length; j++) {
-
-				elements[j].value = value;
-			}
-		}	
 	};
 }
 

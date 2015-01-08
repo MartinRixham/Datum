@@ -22,7 +22,6 @@
 		</style>
 		<div id="qunit"></div>
 		<div id="qunit-fixture"></div>
-		<input type="text" id="test-input" data-bind="input" />
 		<script>
 			var query = function(query) {
 
@@ -30,15 +29,6 @@
 			};
 
 			var scope = document.querySelector("body");
-	
-			QUnit.test("Bind value", function(assert) {
-
-					var input = new Value("Hello World");
-
-					input.bind(scope, "input");
-
-					assert.strictEqual(query("#test-input").value, "Hello World");
-			});
 		</script>
 		<input type="text" id="value-input" data-bind="valueInput" />
 		<script>
@@ -46,7 +36,16 @@
 
 					var datum = new Datum();
 
-					var valueInput = new Value(datum);
+					var valueInput = 
+							new Value(function(value) { 
+
+									if (value) {
+
+											datum(value);
+									}
+
+									return datum(); 
+							});
 
 					valueInput.bind(scope, "valueInput");
 
@@ -64,7 +63,7 @@
 
 					var datum = new Datum("Hello World")
 
-					var input = new Value(datum);
+					var input = new Value(function() { return datum(); });
 
 					input.bind(scope, "testInput");
 
@@ -77,7 +76,7 @@
 
 					var datum = new Datum()
 
-					var input = new Value(datum);
+					var input = new Value(function() { return datum(); });
 
 					input.bind(scope, "inputValue");
 
@@ -91,7 +90,7 @@
 		<script>
 			QUnit.test("Bind value to two inputs", function(assert) {
 
-					var input = new Value("Hello World");
+					var input = new Value(function() { return "Hello World"; });
 
 					input.bind(scope, "multiInput");
 
@@ -106,7 +105,7 @@
 
 					var datum = new Datum();
 
-					var valueInput = new Value(datum);
+					var valueInput = new Value(function() { return datum(); });
 
 					valueInput.bind(scope, "sync");
 
@@ -121,7 +120,7 @@
 		<input type="text" data-bind="single" />
 		<input type="text" data-bind="single" />
 		<script>
-			QUnit.test("Callback called once on init", function(assert) {
+			QUnit.test("Callback called once per element on init", function(assert) {
 
 					var count = 0;
 
@@ -137,13 +136,13 @@
 
 					value.bind(scope, "single");
 
-					assert.strictEqual(count, 1);
+					assert.strictEqual(count, 2);
 			});
 		</script>
 		<div data-bind="twice"></div>
 		<div data-bind="twice"></div>
 		<script>
-			QUnit.test("Callback called once on update", function(assert) {
+			QUnit.test("Callback called once per element on update", function(assert) {
 
 					var count = 0;
 
@@ -163,7 +162,22 @@
 
 					datum("Hello World");
 
-					assert.strictEqual(count, 1);
+					assert.strictEqual(count, 2);
+			});
+		</script>
+		<input type="text" id="element" data-bind="element" />
+		<script>
+			QUnit.test("Bind value from datum", function(assert) {
+
+					var input = 
+							new Value(function(value, element) { 
+
+									return element.id; 
+							});
+
+					input.bind(scope, "element");
+
+					assert.strictEqual(query("#element").value, "element");
 			});
 		</script>
 	</body>
