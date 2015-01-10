@@ -13,7 +13,7 @@ function Value(value) {
 
 			element.addEventListener("change", function(event) {
 					
-				value.call(model, event.target.value);
+				value.call(model, event.target.value, element);
 			});
 
 			element.callbacks.push(value);

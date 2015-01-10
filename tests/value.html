@@ -105,7 +105,16 @@
 
 					var datum = new Datum();
 
-					var valueInput = new Value(function() { return datum(); });
+					var valueInput =
+							new Value(function(value) { 
+
+									if (value) {
+
+											datum(value);
+									}
+
+									return datum(); 
+							});
 
 					valueInput.bind(scope, "sync");
 
