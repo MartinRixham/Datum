@@ -2,10 +2,22 @@ function Value(value) {
 
 	this.addCallbacks = function(element, model) {
 
-		element.addEventListener("change", function(event) {
+		if (!element.callbacks) {
+
+			element.callbacks = [];
+		}
+
+		var alreadyBound = element.callbacks.indexOf(value) + 1;
+
+		if (!alreadyBound) {
+
+			element.addEventListener("change", function(event) {
 					
-			value.call(model, event.target.value);
-		});
+				value.call(model, event.target.value);
+			});
+
+			element.callbacks.push(value);
+		}
 
 		this.assignUpdater(function() {
 

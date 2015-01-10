@@ -2,10 +2,22 @@ function Click(click) {
 
 	this.addListener = function(element, model) {
 
-		element.addEventListener("click", function(event) {
+		if (!element.callbacks) {
 
-			click.call(model, event.target);
-		});
+			element.callbacks = [];
+		}
+
+		var alreadyBound = element.callbacks.indexOf(click) + 1;
+
+		if (!alreadyBound) {
+
+			element.addEventListener("click", function(event) {
+
+				click.call(model, event.target);
+			});
+
+			element.callbacks.push(click);
+		}
 	};
 
 	this.bind = function(scope, name, model) {
