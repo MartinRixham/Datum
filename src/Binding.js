@@ -57,6 +57,13 @@ function Binding(bindings) {
 
 			update.bind(scope, name, model);
 		}
+
+		if (bindings.visible) {
+
+			var visible = new Visible(bindings.visible);
+
+			visible.bind(scope, name, model);
+		}
 	};
 
 	this.isBinding = true;
