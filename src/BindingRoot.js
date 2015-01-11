@@ -13,80 +13,23 @@ function BindingRoot(model) {
 		});
 	};
 
-	var addRebindMethod = function(scope, model) {
-
-		scope._rebind = function() {
-
-			rebind(scope, model);
-		};
-	};
-
-	// This loop is responsible for rebinding the data structure
-	// after dom mutations.
-	// It reapplies every binding though need not be applied to the 
-	// root object.
-	var rebind = function(scope, model) {
-
-		if (model) {
-
-			model._scope = scope;
-		}
-
-		for(var key in model) {
-
-			var property = model[key];
-
-			if (property && property.isBinding) {
-	
-				property.rebind(model._scope, key, model);
-			}
-			else if (typeof(property) == "object") {
-
-				var element =
-					model._scope.querySelector("[data-bind=" + key + "]");
-
-				if (element) {
-
-					if (!element._rebind) {
-
-						addRebindMethod(element, property);
-					}
-
-					applyWithBinding(model, key, element);
-
-					if (property) {
-
-						property._scope = element;
-
-						if (!property.toJSON) {
-
-							new ViewModel(property);
-						}
-					}
-
-					if (property instanceof Array) {
-
-						var foreach = new ForEach(property);
-
-						foreach.bind(element, key);
-					}
-					else {
-
-						rebind(element, property);
-					}
-				}
-			}
-
-			if (property && !property.isBinding && typeof(property) != "function") {
-
-				injectProperty(key, model, property);
-			}
-		}
-	};
-
 	var self = this;
 
 	var applyWithBinding = function(model, key, element) {
+
+		if (!element.boundObjects) {
+
+			element.boundObjects = [];
+		}
+
+		var alreadyBound = element.boundObjects.indexOf(model) + 1;
+
+		if (alreadyBound) {
+
+			return;
+		}
+
+		element.boundObjects.push(model);
 
 		var children = [];
 
@@ -132,8 +75,6 @@ function BindingRoot(model) {
 
 		model.isBinding = true;
 
-		var bound = false;
-
 		var currentScope = null;
 
 		this.number = function(element, index) {
@@ -161,18 +102,21 @@ function BindingRoot(model) {
 
 		var self = this;
 
-		this.bind = function(scope, name) {
-
-			currentScope = scope;
-
-			bound = true;
-
-			scope._rebind = function() {};
+		model.bind = function(scope, name) {
 
 			if (name) {
 
-				scope = scope.querySelector("[data-bind=" + name + "]") || scope; 
+				scope = scope.querySelector("[data-bind=" + name + "]"); 
 			}
+
+			if (scope == currentScope) {
+
+				return;
+			}
+
+			scope._rebind = function() {};
+
+			currentScope = scope;
 
 			var children = [];
 
@@ -185,7 +129,7 @@ function BindingRoot(model) {
 
 			var index = 0;
 
-			var append = function(array, newBinding) {
+			var append = function(array) {
 
 				for (var i = 0; i < array.length; i++) {
 
@@ -208,20 +152,11 @@ function BindingRoot(model) {
 
 					scope.appendChild(element);
 
-					if (newBinding) {
-
-						bindObject(element, property);
-
-						model.bound = true;
-					}
-					else {
-
-						rebind(element, property);
-					}
+					bindObject(element, property);
 				}
 			};
 
-			append(model, !model.bound);
+			append(model);
 
 			var originalPush = model.push;
 
@@ -229,36 +164,18 @@ function BindingRoot(model) {
 
 				originalPush.apply(model, arguments);
 
-				append(arguments, true);
+				append(arguments);
 			};
-		};
-
-		model.bind = function(scope, name) {
-
-			if (!bound) {
-
-				self.bind(scope, name);
-			}
-		};
-
-		model.rebind = function(scope, name) {
-
-			var element = scope.querySelector("[data-bind=" + name + "]");
-
-			if (element && currentScope != element) {
-
-				self.bind(element, name);	
-			}
 		};
 
 		return model;
 	}
 
-	// This loop is responsible for binding the data structure
-	// both initially when the binding root is created and
-	// after a new binding is added.
-	// It only applies bindings that have not previously been bound.
 	var bindObject = function(scope, model) {
+
+		var newBinding = !model._scope;
+
+		model._scope = scope;
 
 		if (model instanceof Array) {
 
@@ -269,17 +186,10 @@ function BindingRoot(model) {
 			return;
 		}
 
-		var newBinding = !model._scope;
-
-		if (newBinding) {
-
-			model._scope = scope;
-
-			scope._rebind = function() {
+		scope._rebind = function() {
 	
-				rebind(scope, model);
-			};
-		}
+			bindObject(scope, model);
+		};
 
 		for(var key in model) {
 
@@ -306,9 +216,9 @@ function BindingRoot(model) {
 
 				if (element && typeof(property) == "object") {
 
-					if (newBinding) {
+					applyWithBinding(model, key, element);
 
-						applyWithBinding(model, key, element);
+					if (!model.toJSON) {
 
 						new ViewModel(model);
 					}

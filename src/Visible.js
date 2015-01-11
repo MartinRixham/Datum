@@ -25,16 +25,28 @@ function Visible(visible) {
 
 			var element = elements[i];
 
-			var display = getComputedStyle(element).getPropertyValue("display");
+			if (!element.callbacks) {
 
-			this.requestRegistrations();
-		
-			if(!visible.call(model, element)) {
-
-				element.style.display = "none";	
+				element.callbacks = [];
 			}
 
-			applyCallback(element, display);
+			var alreadyBound = element.callbacks.indexOf(visible) + 1;
+
+			if (!alreadyBound) {
+
+				var display = getComputedStyle(element).getPropertyValue("display");
+
+				this.requestRegistrations();
+		
+				if(!visible.call(model, element)) {
+
+					element.style.display = "none";	
+				}
+
+				applyCallback(element, display);
+
+				element.callbacks.push(visible);
+			}
 		}
 	};
 }

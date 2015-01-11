@@ -2,22 +2,10 @@ function Click(click) {
 
 	this.addListener = function(element, model) {
 
-		if (!element.callbacks) {
+		element.addEventListener("click", function(event) {
 
-			element.callbacks = [];
-		}
-
-		var alreadyBound = element.callbacks.indexOf(click) + 1;
-
-		if (!alreadyBound) {
-
-			element.addEventListener("click", function(event) {
-
-				click.call(model, element);
-			});
-
-			element.callbacks.push(click);
-		}
+			click.call(model, element);
+		});
 	};
 
 	this.bind = function(scope, name, model) {
@@ -28,7 +16,19 @@ function Click(click) {
 
 			var element = elements[i];
 
-			this.addListener(element, model);
+			if (!element.callbacks) {
+
+				element.callbacks = [];
+			}
+
+			var alreadyBound = element.callbacks.indexOf(click) + 1;
+
+			if (!alreadyBound) {
+
+				this.addListener(element, model);
+
+				element.callbacks.push(click);
+			}
 		}
 	};
 }

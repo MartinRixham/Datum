@@ -4,24 +4,7 @@ function Binding(bindings) {
 
 	setTimeout(this.rebindDataStructure);
 
-	var element = false;
-
 	this.bind = function(scope, name, model) {
-
-		if (!element) {
-
-			this.rebind(scope, name, model);
-		}	
-	};
-
-	this.rebind = function(scope, name, model) {
-
-		element = !!scope.querySelector("[data-bind=" + name + "]");
-
-		if (!element) {
-
-			return;
-		}
 
 		if (bindings.text) {
 

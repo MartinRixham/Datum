@@ -2,22 +2,10 @@ function Value(value) {
 
 	this.addCallbacks = function(element, model) {
 
-		if (!element.callbacks) {
-
-			element.callbacks = [];
-		}
-
-		var alreadyBound = element.callbacks.indexOf(value) + 1;
-
-		if (!alreadyBound) {
-
-			element.addEventListener("change", function(event) {
+		element.addEventListener("change", function(event) {
 					
-				value.call(model, event.target.value, element);
-			});
-
-			element.callbacks.push(value);
-		}
+			value.call(model, event.target.value, element);
+		});
 
 		this.assignUpdater(function() {
 
@@ -33,16 +21,28 @@ function Value(value) {
 
 			var element = elements[i];
 
-			this.requestRegistrations();
+			if (!element.callbacks) {
 
-			var evaluated = value.call(model, undefined, element);
-
-			if (typeof(evaluated) != "undefined") {
-
-				element.value = evaluated;
+				element.callbacks = [];
 			}
 
-			this.addCallbacks(element, model);
+			var alreadyBound = element.callbacks.indexOf(value) + 1;
+
+			if (!alreadyBound) {
+
+				this.requestRegistrations();
+
+				var evaluated = value.call(model, undefined, element);
+
+				if (typeof(evaluated) != "undefined") {
+
+					element.value = evaluated;
+				}
+
+				this.addCallbacks(element, model);
+
+				element.callbacks.push(value);
+			}
 		}
 	};
 }

@@ -16,11 +16,25 @@ function Update(update) {
 
 		for (var i = 0; i < elements.length; i++) {
 
-			this.requestRegistrations();
-		
-			update.call(model, elements[i]);
+			var element = elements[i];
 
-			applyCallback(elements[i]);
+			if (!element.callbacks) {
+
+				element.callbacks = [];
+			}
+
+			var alreadyBound = element.callbacks.indexOf(update) + 1;
+
+			if (!alreadyBound) {
+	
+				this.requestRegistrations();
+		
+				update.call(model, element);
+
+				applyCallback(element);
+
+				element.callbacks.push(update);
+			}
 		}
 	};
 }

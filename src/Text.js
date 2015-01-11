@@ -14,11 +14,25 @@ function Text(text) {
 		
 		for (var i = 0; i < elements.length; i++) {
 
-			this.requestRegistrations();
+			var element = elements[i];
 
-			elements[i].textContent = text.call(model, elements[i]);
+			if (!element.callbacks) {
 
-			this.createCallback(model, elements[i]);
+				element.callbacks = [];
+			}
+
+			var alreadyBound = element.callbacks.indexOf(text) + 1;
+
+			if (!alreadyBound) {
+
+				this.requestRegistrations();
+
+				element.textContent = text.call(model, element);
+
+				this.createCallback(model, element);
+
+				element.callbacks.push(text);
+			}
 		}
 	};
 }
