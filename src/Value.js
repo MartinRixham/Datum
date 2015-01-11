@@ -13,7 +13,7 @@ function Value(value) {
 		});
 	};
 
-	this.bind = function(scope, name, model) {
+	this.applyBinding = function(scope, name, model) {
 
 		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 

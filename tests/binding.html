@@ -43,7 +43,7 @@
 									text: function() { return "Hello World"; }
 							});
 
-					test.bind(scope, "test");
+					test.applyBinding(scope, "test");
 
 					assert.strictEqual(query("#test-div").innerHTML, "Hello World");
 			});
@@ -58,7 +58,7 @@
 									value: function() { return "Hello World"; }
 							});
 
-					input.bind(scope, "input");
+					input.applyBinding(scope, "input");
 
 					assert.strictEqual(query("#test-input").value, "Hello World");
 			});
@@ -75,7 +75,7 @@
 									value: datum
 							});
 
-					valueInput.bind(scope, "valueInput");
+					valueInput.applyBinding(scope, "valueInput");
 
 					var element = query("#value-input");
 

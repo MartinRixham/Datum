@@ -73,8 +73,6 @@ function BindingRoot(model) {
 
 	function ForEach(model) {
 
-		model.isBinding = true;
-
 		var currentScope = null;
 
 		this.number = function(element, index) {
@@ -102,7 +100,7 @@ function BindingRoot(model) {
 
 		var self = this;
 
-		model.bind = function(scope, name) {
+		model.applyBinding = function(scope, name) {
 
 			if (name) {
 
@@ -181,7 +179,7 @@ function BindingRoot(model) {
 
 			var foreach = new ForEach(model);
 
-			foreach.bind(scope);	
+			foreach.applyBinding(scope);	
 
 			return;
 		}
@@ -203,9 +201,9 @@ function BindingRoot(model) {
 			var element = 
 				scope.querySelector("[data-bind=" + key + "]");
 
-			if (property && property.isBinding) {
+			if (property && property.applyBinding) {
 	
-				property.bind(model._scope, key, model);
+				property.applyBinding(model._scope, key, model);
 			}
 			else if (typeof(property) != "function") {
 

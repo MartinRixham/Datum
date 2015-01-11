@@ -4,27 +4,27 @@ function Binding(bindings) {
 
 	setTimeout(this.rebindDataStructure);
 
-	this.bind = function(scope, name, model) {
+	this.applyBinding = function(scope, name, model) {
 
 		if (bindings.text) {
 
 			var text = new Text(bindings.text);
 
-			text.bind(scope, name, model);
+			text.applyBinding(scope, name, model);
 		}
 		
 		if (bindings.value) {
 
 			var value = new Value(bindings.value);
 
-			value.bind(scope, name, model);
+			value.applyBinding(scope, name, model);
 		}
 		
 		if (bindings.click) {
 
 			var click = new Click(bindings.click);
 
-			click.bind(scope, name, model);
+			click.applyBinding(scope, name, model);
 		}
 
 		if (bindings.init) {
@@ -38,18 +38,16 @@ function Binding(bindings) {
 
 			var update = new Upudate(bindings.update);
 
-			update.bind(scope, name, model);
+			update.applyBinding(scope, name, model);
 		}
 
 		if (bindings.visible) {
 
 			var visible = new Visible(bindings.visible);
 
-			visible.bind(scope, name, model);
+			visible.applyBinding(scope, name, model);
 		}
 	};
-
-	this.isBinding = true;
 }
 
 Binding.prototype = new Subscriber();
