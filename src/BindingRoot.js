@@ -76,6 +76,11 @@ function BindingRoot(model) {
 					}
 				}
 			}
+
+			if (property && !property.isBinding && typeof(property) != "function") {
+
+				injectProperty(key, model, property);
+			}
 		}
 	};
 

@@ -13,7 +13,7 @@ function Click(click) {
 
 			element.addEventListener("click", function(event) {
 
-				click.call(model, event.target);
+				click.call(model, element);
 			});
 
 			element.callbacks.push(click);
