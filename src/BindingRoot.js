@@ -71,7 +71,7 @@ function BindingRoot(model) {
 		});
 	};
 
-	function ForEach(model) {
+	function ForEach(scope, model) {
 
 		var currentScope = null;
 
@@ -100,12 +100,7 @@ function BindingRoot(model) {
 
 		var self = this;
 
-		model.applyBinding = function(scope, name) {
-
-			if (name) {
-
-				scope = scope.querySelector("[data-bind=" + name + "]"); 
-			}
+		this.bind = function(scope) {
 
 			if (scope == currentScope) {
 
@@ -166,10 +161,20 @@ function BindingRoot(model) {
 			};
 		};
 
+		model.applyBinding = function(scope, name) {
+
+			scope = scope.querySelector("[data-bind=" + name + "]"); 
+
+			self.bind(scope);
+		};
+
+		this.bind(scope);
+
 		return model;
 	}
 
 	var bindObject = function(scope, model) {
+
 
 		var newBinding = !model._scope;
 
@@ -177,9 +182,7 @@ function BindingRoot(model) {
 
 		if (model instanceof Array) {
 
-			var foreach = new ForEach(model);
-
-			foreach.applyBinding(scope);	
+			var foreach = new ForEach(scope, model);
 
 			return;
 		}
