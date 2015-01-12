@@ -38,8 +38,6 @@ function Datum(datum) {
 		return datum;
 	};
 
-	provider.isDatum = true;
-
 	return provider;
 }
 

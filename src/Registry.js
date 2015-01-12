@@ -49,7 +49,7 @@ function Registry() {
 	};
 
 	// These variables and the following two methods organise
-	// the appication of new bindings.
+	// the application of new bindings.
 	// After the binding root has performed the initial binding
 	// it supplies a rebinding callback to the registry.
 	// When a new binding is instantiated it requests a rebinding.
