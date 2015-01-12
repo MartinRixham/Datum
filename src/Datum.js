@@ -2,6 +2,8 @@ function Datum(datum) {
 
 	var updateCallbacks = [];
 
+	var dependants = [];
+
 	var self = this;
 
 	var provider = function(value) {
@@ -19,9 +21,17 @@ function Datum(datum) {
 		}
 		else if (self.registeringAssigners()) {
 
-			self.registerUpdaterAssigner(function(callback) {
+			self.registerUpdaterAssigner(function(callback, binding) {
 
-				updateCallbacks.push(callback);
+				if (!binding || !dependants.indexOf(binding) + 1) {
+
+					updateCallbacks.push(callback);
+
+					if (binding) {
+
+						dependants.push(binding);
+					}
+				}
 			});
 		}
 			

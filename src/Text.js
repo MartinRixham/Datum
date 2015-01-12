@@ -5,7 +5,8 @@ function Text(text) {
 		this.assignUpdater(function() {
 
 			element.textContent = text.call(model, element);
-		});
+		},
+		this);
 	};
 
 	this.applyBinding = function(scope, name, model) {
@@ -16,23 +17,11 @@ function Text(text) {
 
 			var element = elements[i];
 
-			if (!element.callbacks) {
+			this.requestRegistrations();
 
-				element.callbacks = [];
-			}
+			element.textContent = text.call(model, element);
 
-			var alreadyBound = element.callbacks.indexOf(text) + 1;
-
-			if (!alreadyBound) {
-
-				this.requestRegistrations();
-
-				element.textContent = text.call(model, element);
-
-				this.createCallback(model, element);
-
-				element.callbacks.push(text);
-			}
+			this.createCallback(model, element);
 		}
 	};
 }

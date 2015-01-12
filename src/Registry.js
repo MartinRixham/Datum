@@ -38,11 +38,11 @@ function Registry() {
 		return registering;
 	};
 
-	this.assignUpdater = function(updater) {
+	this.assignUpdater = function(updater, binding) {
 
 		for (var i = 0; i < registry.length; i++) {
 
-			registry[i](updater);
+			registry[i](updater, binding);
 		}
 
 		registering = false;

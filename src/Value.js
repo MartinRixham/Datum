@@ -2,15 +2,28 @@ function Value(value) {
 
 	this.addCallbacks = function(element, model) {
 
-		element.addEventListener("change", function(event) {
+		if (!element.callbacks) {
+
+			element.callbacks = [];
+		}
+
+		var alreadyBound = element.callbacks.indexOf(value) + 1;
+
+		if (!alreadyBound) {
+
+			element.addEventListener("change", function(event) {
 					
-			value.call(model, event.target.value, element);
-		});
+				value.call(model, event.target.value, element);
+			});
+
+			element.callbacks.push(value);
+		}
 
 		this.assignUpdater(function() {
 
 			element.value = value.call(model, undefined, element);
-		});
+		},
+		this);
 	};
 
 	this.applyBinding = function(scope, name, model) {
@@ -21,28 +34,16 @@ function Value(value) {
 
 			var element = elements[i];
 
-			if (!element.callbacks) {
+			this.requestRegistrations();
 
-				element.callbacks = [];
+			var evaluated = value.call(model, undefined, element);
+
+			if (typeof(evaluated) != "undefined") {
+
+				element.value = evaluated;
 			}
 
-			var alreadyBound = element.callbacks.indexOf(value) + 1;
-
-			if (!alreadyBound) {
-
-				this.requestRegistrations();
-
-				var evaluated = value.call(model, undefined, element);
-
-				if (typeof(evaluated) != "undefined") {
-
-					element.value = evaluated;
-				}
-
-				this.addCallbacks(element, model);
-
-				element.callbacks.push(value);
-			}
+			this.addCallbacks(element, model);
 		}
 	};
 }

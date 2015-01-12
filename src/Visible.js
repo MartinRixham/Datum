@@ -2,11 +2,9 @@ function Visible(visible) {
 
 	this.applyBinding = function(scope, name, model) {
 
-		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
-
 		var self = this;
 
-		var applyCallback = function(element, display) {
+		this.applyCallback = function(element, display) {
 
 			self.assignUpdater(function() {
 
@@ -18,35 +16,26 @@ function Visible(visible) {
 
 					element.style.display = "none";
 				}
-			});
+			},
+			this);
 		};
+
+		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
 
 		for (var i = 0; i < elements.length; i++) {
 
 			var element = elements[i];
 
-			if (!element.callbacks) {
+			var display = getComputedStyle(element).getPropertyValue("display");
 
-				element.callbacks = [];
-			}
-
-			var alreadyBound = element.callbacks.indexOf(visible) + 1;
-
-			if (!alreadyBound) {
-
-				var display = getComputedStyle(element).getPropertyValue("display");
-
-				this.requestRegistrations();
+			this.requestRegistrations();
 		
-				if(!visible.call(model, element)) {
+			if(!visible.call(model, element)) {
 
-					element.style.display = "none";	
-				}
-
-				applyCallback(element, display);
-
-				element.callbacks.push(visible);
+				element.style.display = "none";	
 			}
+
+			this.applyCallback(element, display);
 		}
 	};
 }

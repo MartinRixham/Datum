@@ -296,7 +296,7 @@
 		<div data-bind="inner"></div>	
 		<div data-bind="outer"></div>
 		<script>
-			QUnit.test("Old bindings are not reapplied.", function(assert) {
+			QUnit.test("Dependencies are aggressively collected.", function(assert) {
 
 					var count = 0;
 
@@ -321,7 +321,7 @@
 
 					only.datum = "Hello World";
 
-					assert.strictEqual(count, 1);
+					assert.strictEqual(count, 2);
 			});
 		</script>
 		<div data-bind="afterObject">

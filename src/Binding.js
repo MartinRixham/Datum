@@ -31,7 +31,7 @@ function Binding(bindings) {
 
 			var init = new Init(bindings.init);
 
-			init.bind(scope, name, model);
+			init.applyBinding(scope, name, model);
 		}
 
 		if (bindings.update) {
