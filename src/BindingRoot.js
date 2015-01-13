@@ -15,6 +15,10 @@ function BindingRoot(model) {
 
 	var self = this;
 
+	// The "with" binding is the binding that is applied automatically
+	// and by convention whenever a plain object is bound to an element.
+	// Its effect is to remove all child elements from the DOM
+	// when the object is null.
 	var applyWithBinding = function(model, key, element) {
 
 		if (!element.boundObjects) {
@@ -71,6 +75,9 @@ function BindingRoot(model) {
 		});
 	};
 
+	// The "foreach" binding is applied when an array is bound to an element.
+	// It copies the contents of the element to which it is bound once
+	// foreach element of the array.
 	function ForEach(scope, model) {
 
 		var currentScope = null;
@@ -173,8 +180,9 @@ function BindingRoot(model) {
 		return model;
 	}
 
+	// This method binds an object to a DOM element.
+	// It is called recursively to bind the entire data structure.
 	var bindObject = function(scope, model) {
-
 
 		var newBinding = !model._scope;
 

@@ -1,3 +1,5 @@
+// This is just a collection of utility methods that are helpful
+// when building applications with Datum.
 function ViewModel(model) {
 
 	if (!model) {
