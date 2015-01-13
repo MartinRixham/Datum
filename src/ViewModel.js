@@ -27,7 +27,7 @@ function ViewModel(model) {
 
 			if (property && 
 				typeof(property) == "object" && 
-				(!property.isBinding || property instanceof Array)) {
+				(!property.applyBinding || property instanceof Array)) {
 
 				transferObject[key] = this.toJSON(property);
 			}
