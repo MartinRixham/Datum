@@ -111,6 +111,11 @@ function BindingRoot(model) {
 
 			if (scope == currentScope) {
 
+				for (var k = 0; k < model.length; k++) {
+
+					bindObject(scope.children[k], model[k]);
+				}
+
 				return;
 			}
 
@@ -195,6 +200,11 @@ function BindingRoot(model) {
 			return;
 		}
 
+		if (!model.toJSON) {
+
+			new ViewModel(model);
+		}
+
 		scope._rebind = function() {
 	
 			bindObject(scope, model);
@@ -226,11 +236,6 @@ function BindingRoot(model) {
 				if (element && typeof(property) == "object") {
 
 					applyWithBinding(model, key, element);
-
-					if (!model.toJSON) {
-
-						new ViewModel(model);
-					}
 
 					if (property) {
 
