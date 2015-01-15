@@ -17,11 +17,14 @@ function Text(text) {
 
 			var element = elements[i];
 
-			this.requestRegistrations();
+			if (this.isInScope(element, scope)) {
 
-			element.textContent = text.call(model, element);
+				this.requestRegistrations();
 
-			this.createCallback(model, element);
+				element.textContent = text.call(model, element);
+
+				this.createCallback(model, element);
+			}
 		}
 	};
 }

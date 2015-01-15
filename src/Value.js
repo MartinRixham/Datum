@@ -34,16 +34,19 @@ function Value(value) {
 
 			var element = elements[i];
 
-			this.requestRegistrations();
+			if (this.isInScope(element, scope)) {
 
-			var evaluated = value.call(model, undefined, element);
+				this.requestRegistrations();
 
-			if (typeof(evaluated) != "undefined") {
+				var evaluated = value.call(model, undefined, element);
 
-				element.value = evaluated;
+				if (typeof(evaluated) != "undefined") {
+
+					element.value = evaluated;
+				}
+
+				this.addCallbacks(element, model);
 			}
-
-			this.addCallbacks(element, model);
 		}
 	};
 }

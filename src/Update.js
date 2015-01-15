@@ -40,7 +40,7 @@ function Update(update) {
 
 			var alreadyBound = element.callbacks.indexOf(update) + 1;
 
-			if (!alreadyBound) {
+			if (!alreadyBound && this.isInScope(element, scope)) {
 	
 				this.requestRegistrations();
 		

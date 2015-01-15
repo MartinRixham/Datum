@@ -142,6 +142,8 @@ function BindingRoot(model) {
 
 					var element = document.createElement(scope.nodeName);
 
+					element.dataset.bind = scope.dataset.bind + "_" + index;
+
 					for (var j = 0; j < children.length; j++) {
 
 						var child = children[j];

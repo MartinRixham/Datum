@@ -26,16 +26,19 @@ function Visible(visible) {
 
 			var element = elements[i];
 
-			var display = getComputedStyle(element).getPropertyValue("display");
+			if (this.isInScope(element, scope)) {
 
-			this.requestRegistrations();
+				var display = getComputedStyle(element).getPropertyValue("display");
+
+				this.requestRegistrations();
 		
-			if(!visible.call(model, element)) {
+				if(!visible.call(model, element)) {
 
-				element.style.display = "none";	
+					element.style.display = "none";	
+				}
+
+				this.applyCallback(element, display);
 			}
-
-			this.applyCallback(element, display);
 		}
 	};
 }

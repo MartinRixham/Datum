@@ -338,12 +338,12 @@
 
 					after.afterObject = {
 
-						datum: null,
+							datum: null,
 
-						after: new Binding({
+							after: new Binding({
 
-								text: function() { return after.afterObject.datum; }
-						})
+									text: function() { return after.afterObject.datum; }
+							})
 					};
 
 					after.afterObject.datum = "Hello World";
@@ -406,6 +406,30 @@
 
 							done();
 					});
+			});
+		</script>
+		<div data-bind="scope">
+			<div data-bind="subscope">
+				<div id="scope" data-bind="text"></div>
+			</div>
+		</div>
+		<script>
+			QUnit.test("Bindings not applied in subscope.", function(assert) {
+
+					function ScopeObject() {
+
+							this.subscope = {};
+
+							this.text = new Text(function() { return "Hello World"; });
+					}
+
+					var scope = new ScopeObject();
+
+					new BindingRoot(scope);
+
+					var element = query("#scope");
+
+					assert.notEqual(element.textContent, "Hello World");
 			});
 		</script>
 	</body>

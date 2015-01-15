@@ -15,7 +15,7 @@ function Init(init) {
 
 			var alreadyBound = element.callbacks.indexOf(init) + 1;
 
-			if (!alreadyBound) {
+			if (!alreadyBound && this.isInScope(element, scope)) {
 
 				init.call(model, element);
 
