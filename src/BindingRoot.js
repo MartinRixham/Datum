@@ -175,9 +175,11 @@ function BindingRoot(model) {
 			};
 		};
 
-		model.applyBinding = function(scope, name) {
+		model.applyBinding = function(scope, name, model) {
 
 			scope = scope.querySelector("[data-bind=" + name + "]"); 
+
+			applyWithBinding(model, name, scope);
 
 			self.bind(scope);
 		};

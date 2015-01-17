@@ -8,9 +8,9 @@ function Datum(datum) {
 
 	var provider = function(value) {
 
-		self.rebindDataStructure();
-
 		if (typeof value != "undefined") {
+
+			self.rebindDataStructure();
 
 			datum = value;
 
