@@ -176,6 +176,15 @@ function BindingRoot(model) {
 
 				append(arguments);
 			};
+
+			var originalPop = model.pop;
+
+			model.pop = function() {
+
+				originalPop.apply(model, arguments);
+
+				scope.removeChild(scope.lastElementChild);
+			}
 		};
 
 		model.applyBinding = function(scope, name, model) {

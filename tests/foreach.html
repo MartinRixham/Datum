@@ -429,5 +429,33 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="pop" data-bind="pop">
+			<div class="pop"></div>
+		</div>
+		<script>
+			QUnit.test("Remove element when object popped from array", function(assert) {
+
+					function PopObject() {
+		
+							this.pop = [{}, {}];
+					}
+
+					var pop = new PopObject();
+
+					var root = new BindingRoot(pop);
+
+					pop.pop.pop();
+
+					assert.strictEqual(pop.pop.length, 1);
+
+					var element = query("#pop");
+
+					var childCount = element.querySelectorAll(".pop").length;
+
+					assert.strictEqual(childCount, 1);
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>
