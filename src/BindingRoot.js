@@ -134,28 +134,33 @@ function BindingRoot(model) {
 
 			var index = 0;
 
+			var newElement = function() {
+
+				var element = document.createElement(scope.nodeName);
+
+				for (var j = 0; j < children.length; j++) {
+
+					var child = children[j];
+
+					var clone = child.cloneNode(true);
+
+					self.number(clone, index);
+
+					element.appendChild(clone);
+				}
+
+				index += 1;
+
+				return element;
+			}
+
 			var append = function(array) {
 
 				for (var i = 0; i < array.length; i++) {
 
 					var property = array[i];
 
-					var element = document.createElement(scope.nodeName);
-
-					//element.dataset.bind = scope.dataset.bind + "_" + index;
-
-					for (var j = 0; j < children.length; j++) {
-
-						var child = children[j];
-
-						var clone = child.cloneNode(true);
-
-						self.number(clone, index);
-
-						element.appendChild(clone);
-					}
-
-					index += 1;
+					var element = newElement();
 
 					scope.appendChild(element);
 
@@ -165,6 +170,23 @@ function BindingRoot(model) {
 					}
 				}
 			};
+
+			var prepend = function(array) {
+
+				for (var i = 0; i < array.length; i++) {
+
+					var property = array[i];
+
+					var element = newElement();
+
+					scope.insertBefore(element, scope.firstChild);
+
+					if (typeof(property) == "object") {
+
+						bindObject(element, property);
+					}
+				}
+			}
 
 			append(model);
 
@@ -194,6 +216,15 @@ function BindingRoot(model) {
 
 				scope.removeChild(scope.firstElementChild);
 			}
+
+			var originalUnshift = model.unshift;
+
+			model.unshift = function() {
+
+				originalUnshift.apply(model, arguments);
+
+				prepend(arguments);
+			};
 		};
 
 		model.applyBinding = function(scope, name, model) {
