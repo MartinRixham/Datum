@@ -142,7 +142,7 @@ function BindingRoot(model) {
 
 					var element = document.createElement(scope.nodeName);
 
-					element.dataset.bind = scope.dataset.bind + "_" + index;
+					//element.dataset.bind = scope.dataset.bind + "_" + index;
 
 					for (var j = 0; j < children.length; j++) {
 
@@ -184,6 +184,15 @@ function BindingRoot(model) {
 				originalPop.apply(model, arguments);
 
 				scope.removeChild(scope.lastElementChild);
+			}
+
+			var originalShift = model.shift;
+
+			model.shift = function() {
+
+				originalShift.apply(model, arguments);
+
+				scope.removeChild(scope.firstElementChild);
 			}
 		};
 

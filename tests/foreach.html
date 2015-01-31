@@ -457,5 +457,41 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="shift" data-bind="shift">
+			<div class="shift" data-bind="shiftText"></div>
+		</div>
+		<script>
+			QUnit.test("Remove first element on array shift", function(assert) {
+
+					function ShiftObject() {
+		
+							this.shift = 
+								[
+									{}, 
+									{ shiftText: new Text(function() { return "Hello World"; } )}
+								];
+					}
+
+					var shift = new ShiftObject();
+
+					var root = new BindingRoot(shift);
+
+					shift.shift.shift();
+
+					assert.strictEqual(shift.shift.length, 1);
+
+					var element = query("#shift");
+
+					children = element.querySelectorAll(".shift");
+
+					var childCount = children.length;
+
+					assert.strictEqual(childCount, 1);
+
+					assert.strictEqual(children[0].innerHTML, "Hello World");
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>
