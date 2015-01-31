@@ -159,7 +159,10 @@ function BindingRoot(model) {
 
 					scope.appendChild(element);
 
-					bindObject(element, property);
+					if (typeof(property) == "object") {
+
+						bindObject(element, property);
+					}
 				}
 			};
 

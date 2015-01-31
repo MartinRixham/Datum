@@ -405,5 +405,29 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="string" data-bind="str">
+			<div class="string"></div>
+		</div>
+		<script>
+			QUnit.test("Bind to string array", function(assert) {
+
+					function StringObject() {
+		
+							this.str = ["thingy", "sumpt"];
+					}
+
+					var str = new StringObject();
+
+					var root = new BindingRoot(str);
+
+					var element = query("#string");
+
+					var childCount = element.querySelectorAll(".string").length;
+
+					assert.strictEqual(childCount, 2);
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>
