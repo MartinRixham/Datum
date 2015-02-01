@@ -43,9 +43,6 @@
 
 					teardown: function() {
 
-							var importWith = BindingRoot.prototype.importWith;
-							var importForeach = BindingRoot.prototype.importForeach;
-
 							Subscriber.prototype = new Registry();
 							Binding.prototype = new Subscriber();
 							Datum.prototype = new Subscriber();
@@ -53,9 +50,7 @@
 							Value.prototype = new Subscriber();
 							UniqueRoot.prototype = new Subscriber();
 							BindingRoot.prototype = new UniqueRoot();
-
-							BindingRoot.prototype.importWith = importWith;
-							BindingRoot.prototype.importForeach = importForeach;
+							BindingRoot.With.prototype = new Subscriber();
 					}
 			});
 		</script>

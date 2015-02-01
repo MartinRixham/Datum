@@ -1,66 +1,61 @@
-BindingRoot.importWith(function(bindObject) {
+// The "with" binding is the binding that is applied automatically
+// and by convention whenever a plain object is bound to an element.
+// Its effect is to remove all child elements from the DOM
+// when the object is null.
+BindingRoot.With = function(model, key, element) {
 
-	// The "with" binding is the binding that is applied automatically
-	// and by convention whenever a plain object is bound to an element.
-	// Its effect is to remove all child elements from the DOM
-	// when the object is null.
-	function With(model, key, element) {
+	if (!element.boundObjects) {
 
-		if (!element.boundObjects) {
+		element.boundObjects = [];
+	}
 
-			element.boundObjects = [];
-		}
+	var alreadyBound = element.boundObjects.indexOf(model) + 1;
 
-		var alreadyBound = element.boundObjects.indexOf(model) + 1;
+	if (alreadyBound) {
 
-		if (alreadyBound) {
+		return;
+	}
 
-			return;
-		}
+	element.boundObjects.push(model);
 
-		element.boundObjects.push(model);
+	var children = [];
 
-		var children = [];
+	for (var i = 0; i < element.childNodes.length; i++) {
 
-		for (var i = 0; i < element.childNodes.length; i++) {
+		children[i] = element.childNodes[i];
+	}
 
-			children[i] = element.childNodes[i];
-		}
+	this.requestRegistrations();
 
-		this.requestRegistrations();
+	var object = model[key];
 
-		var object = model[key];
+	if (!object) {
 
-		if (!object) {
+		children.forEach(function(child) {
 
-			children.forEach(function(child) {
-
-				element.removeChild(child);
-			});
-		}
-
-		this.assignUpdater(function() {
-
-			var object = model[key];
-
-			for (var i = element.childNodes.length - 1; i >= 0; i--) {
-
-				element.removeChild(element.childNodes[i]);
-			}
-
-			if (object) {
-
-				children.forEach(function(child) {
-
-					element.appendChild(child);
-				});
-
-				bindObject(element, object);
-			}
+			element.removeChild(child);
 		});
 	}
 
-	With.prototype = new Subscriber();
+	this.assignUpdater(function() {
 
-	return With;
-});
+		var object = model[key];
+
+		for (var i = element.childNodes.length - 1; i >= 0; i--) {
+
+			element.removeChild(element.childNodes[i]);
+		}
+
+		if (object) {
+
+			children.forEach(function(child) {
+
+				element.appendChild(child);
+			});
+
+			BindingRoot.bindObject(element, object);
+		}
+	});
+};
+
+BindingRoot.With.prototype = new Subscriber();

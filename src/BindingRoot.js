@@ -17,7 +17,7 @@ function BindingRoot(model) {
 
 	// This method binds an object to a DOM element.
 	// It is called recursively to bind the entire data structure.
-	var bindObject = function(scope, model) {
+	BindingRoot.bindObject = function(scope, model) {
 
 		var newBinding = !model._scope;
 
@@ -37,7 +37,7 @@ function BindingRoot(model) {
 
 		scope._rebind = function() {
 	
-			bindObject(scope, model);
+			BindingRoot.bindObject(scope, model);
 		};
 
 		for(var key in model) {
@@ -69,23 +69,20 @@ function BindingRoot(model) {
 
 					if (property) {
 
-						bindObject(element, property);
+						BindingRoot.bindObject(element, property);
 					}
 				}
 			}
 		}
 	};
 
-	this.importWith(bindObject);
-	this.importForeach(bindObject, BindingRoot.With);
-
 	var scope = document.querySelector("body");
 
-	bindObject(scope, model);
+	BindingRoot.bindObject(scope, model);
 
 	this.rebindDataStructure(function() {
 
-		bindObject(scope, model);
+		BindingRoot.bindObject(scope, model);
 	});
 
 	var domWatcher = new BindingRoot.DomWatcher(scope);
@@ -95,21 +92,5 @@ function BindingRoot(model) {
 		domWatcher.disconnect();
 	};
 }
-
-BindingRoot.importWith = function(constructor) {
-
-	BindingRoot.prototype.importWith = function(bindObject) {
-
-		BindingRoot.With = constructor(bindObject);
-	};	
-};
-
-BindingRoot.importForeach = function(constructor) {
-
-	BindingRoot.prototype.importForeach = function(bindObject, With) {
-
-		BindingRoot.ForEach = constructor(bindObject, With);
-	};	
-};
 
 BindingRoot.prototype = new UniqueRoot();

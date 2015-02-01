@@ -1,170 +1,165 @@
-BindingRoot.importForeach(function(bindObject, With) {
+// The "foreach" binding is applied when an array is bound to an element.
+// It copies the contents of the element to which it is bound once
+// for each element of the array.
+BindingRoot.ForEach = function(scope, model) {
 
-	// The "foreach" binding is applied when an array is bound to an element.
-	// It copies the contents of the element to which it is bound once
-	// for each element of the array.
-	function ForEach(scope, model) {
+	var currentScope = null;
 
-		var currentScope = null;
+	this.number = function(element, index) {
 
-		this.number = function(element, index) {
+		if (element.id) {
 
-			if (element.id) {
+			element.id = element.id + "_" + index;
+		}
 
-				element.id = element.id + "_" + index;
+		if (element.hasAttribute && element.hasAttribute("name")) {
+
+			element.setAttribute("name", element.getAttribute("name") + "_" + index);
+		}
+
+		if (element.children) {
+
+			for (var i = 0; i < element.children.length; i++) {
+
+				var subelement = element.children[i];
+
+				this.number(subelement, index);
+			}
+		}
+	};
+
+	var self = this;
+
+	this.bind = function(scope) {
+
+		if (scope == currentScope) {
+
+			for (var k = 0; k < model.length; k++) {
+
+				BindingRoot.bindObject(scope.children[k], model[k]);
 			}
 
-			if (element.hasAttribute && element.hasAttribute("name")) {
+			return;
+		}
 
-				element.setAttribute("name", element.getAttribute("name") + "_" + index);
+		scope._rebind = function() {};
+
+		currentScope = scope;
+
+		var children = [];
+
+		for (var i = scope.childNodes.length - 1; i >= 0; i--) {
+
+			children[i] = scope.childNodes[i];
+
+			scope.removeChild(scope.childNodes[i]);
+		}
+
+		var index = 0;
+
+		var newElement = function() {
+
+			var element = document.createElement(scope.nodeName);
+
+			for (var j = 0; j < children.length; j++) {
+
+				var child = children[j];
+
+				var clone = child.cloneNode(true);
+
+				self.number(clone, index);
+
+				element.appendChild(clone);
 			}
 
-			if (element.children) {
+			index += 1;
 
-				for (var i = 0; i < element.children.length; i++) {
+			return element;
+		};
 
-					var subelement = element.children[i];
+		var append = function(array) {
 
-					this.number(subelement, index);
+			for (var i = 0; i < array.length; i++) {
+
+				var property = array[i];
+
+				var element = newElement();
+
+				scope.appendChild(element);
+
+				if (typeof(property) == "object") {
+
+					BindingRoot.bindObject(element, property);
 				}
 			}
 		};
 
-		var self = this;
+		var prepend = function(array) {
 
-		this.bind = function(scope) {
+			for (var i = 0; i < array.length; i++) {
 
-			if (scope == currentScope) {
+				var property = array[i];
 
-				for (var k = 0; k < model.length; k++) {
+				var element = newElement();
 
-					bindObject(scope.children[k], model[k]);
+				scope.insertBefore(element, scope.firstChild);
+
+				if (typeof(property) == "object") {
+
+					BindingRoot.bindObject(element, property);
 				}
-
-				return;
 			}
-
-			scope._rebind = function() {};
-
-			currentScope = scope;
-
-			var children = [];
-
-			for (var i = scope.childNodes.length - 1; i >= 0; i--) {
-
-				children[i] = scope.childNodes[i];
-
-				scope.removeChild(scope.childNodes[i]);
-			}
-
-			var index = 0;
-
-			var newElement = function() {
-
-				var element = document.createElement(scope.nodeName);
-
-				for (var j = 0; j < children.length; j++) {
-
-					var child = children[j];
-
-					var clone = child.cloneNode(true);
-
-					self.number(clone, index);
-
-					element.appendChild(clone);
-				}
-
-				index += 1;
-
-				return element;
-			};
-
-			var append = function(array) {
-
-				for (var i = 0; i < array.length; i++) {
-
-					var property = array[i];
-
-					var element = newElement();
-
-					scope.appendChild(element);
-
-					if (typeof(property) == "object") {
-
-						bindObject(element, property);
-					}
-				}
-			};
-
-			var prepend = function(array) {
-
-				for (var i = 0; i < array.length; i++) {
-
-					var property = array[i];
-
-					var element = newElement();
-
-					scope.insertBefore(element, scope.firstChild);
-
-					if (typeof(property) == "object") {
-
-						bindObject(element, property);
-					}
-				}
-			};
-
-			append(model);
-
-			var originalPush = model.push;
-
-			model.push = function() {
-
-				originalPush.apply(model, arguments);
-
-				append(arguments);
-			};
-
-			var originalPop = model.pop;
-
-			model.pop = function() {
-
-				originalPop.apply(model, arguments);
-
-				scope.removeChild(scope.lastElementChild);
-			};
-
-			var originalShift = model.shift;
-
-			model.shift = function() {
-
-				originalShift.apply(model, arguments);
-
-				scope.removeChild(scope.firstElementChild);
-			};
-
-			var originalUnshift = model.unshift;
-
-			model.unshift = function() {
-
-				originalUnshift.apply(model, arguments);
-
-				prepend(arguments);
-			};
 		};
 
-		model.applyBinding = function(scope, name, model) {
+		append(model);
 
-			scope = scope.querySelector("[data-bind=" + name + "]"); 
+		var originalPush = model.push;
 
-			new With(model, name, scope);
+		model.push = function() {
 
-			self.bind(scope);
+			originalPush.apply(model, arguments);
+
+			append(arguments);
 		};
 
-		this.bind(scope);
+		var originalPop = model.pop;
 
-		return model;
-	}
+		model.pop = function() {
 
-	return ForEach;
-});
+			originalPop.apply(model, arguments);
+
+			scope.removeChild(scope.lastElementChild);
+		};
+
+		var originalShift = model.shift;
+
+		model.shift = function() {
+
+			originalShift.apply(model, arguments);
+
+			scope.removeChild(scope.firstElementChild);
+		};
+
+		var originalUnshift = model.unshift;
+
+		model.unshift = function() {
+
+			originalUnshift.apply(model, arguments);
+
+			prepend(arguments);
+		};
+	};
+
+	model.applyBinding = function(scope, name, model) {
+
+		scope = scope.querySelector("[data-bind=" + name + "]"); 
+
+		new BindingRoot.With(model, name, scope);
+
+		self.bind(scope);
+	};
+
+	this.bind(scope);
+
+	return model;
+};
