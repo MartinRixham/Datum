@@ -32,7 +32,7 @@ function BindingRoot(model) {
 
 		if (!model.toJSON) {
 
-			new ViewModel(model);
+			new BindingRoot.ViewModel(model);
 		}
 
 		scope._rebind = function() {
@@ -88,36 +88,11 @@ function BindingRoot(model) {
 		bindObject(scope, model);
 	});
 
-	var observer = new MutationObserver(function(mutations) {
-
-		var mutation = mutations[0];
-
-		var notTextMutation = mutation.target.children.length; 
-
-		if (notTextMutation) {
-
-			var element = mutation.target;
-
-			while (element) {
-
-				if (element._rebind) {
-
-					element._rebind();
-					break;
-				}
-				else {
-
-					element = element.parentElement;
-				}
-			}
-		}
-	});
-
-	observer.observe(scope, { childList: true, subtree: true });
+	var domWatcher = new BindingRoot.DomWatcher(scope);
 
 	this.disconnect = function() {
 
-		observer.disconnect();
+		domWatcher.disconnect();
 	};
 }
 
