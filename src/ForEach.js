@@ -77,7 +77,7 @@ BindingRoot.importForeach(function(bindObject, With) {
 				index += 1;
 
 				return element;
-			}
+			};
 
 			var append = function(array) {
 
@@ -111,7 +111,7 @@ BindingRoot.importForeach(function(bindObject, With) {
 						bindObject(element, property);
 					}
 				}
-			}
+			};
 
 			append(model);
 
@@ -131,7 +131,7 @@ BindingRoot.importForeach(function(bindObject, With) {
 				originalPop.apply(model, arguments);
 
 				scope.removeChild(scope.lastElementChild);
-			}
+			};
 
 			var originalShift = model.shift;
 
@@ -140,7 +140,7 @@ BindingRoot.importForeach(function(bindObject, With) {
 				originalShift.apply(model, arguments);
 
 				scope.removeChild(scope.firstElementChild);
-			}
+			};
 
 			var originalUnshift = model.unshift;
 
