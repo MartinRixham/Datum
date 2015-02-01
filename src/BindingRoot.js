@@ -15,66 +15,6 @@ function BindingRoot(model) {
 
 	var self = this;
 
-	// The "with" binding is the binding that is applied automatically
-	// and by convention whenever a plain object is bound to an element.
-	// Its effect is to remove all child elements from the DOM
-	// when the object is null.
-	var applyWithBinding = function(model, key, element) {
-
-		if (!element.boundObjects) {
-
-			element.boundObjects = [];
-		}
-
-		var alreadyBound = element.boundObjects.indexOf(model) + 1;
-
-		if (alreadyBound) {
-
-			return;
-		}
-
-		element.boundObjects.push(model);
-
-		var children = [];
-
-		for (var i = 0; i < element.childNodes.length; i++) {
-
-			children[i] = element.childNodes[i];
-		}
-
-		self.requestRegistrations();
-
-		var object = model[key];
-
-		if (!object) {
-
-			children.forEach(function(child) {
-
-				element.removeChild(child);
-			});
-		}
-
-		self.assignUpdater(function() {
-
-			var object = model[key];
-
-			for (var i = element.childNodes.length - 1; i >= 0; i--) {
-
-				element.removeChild(element.childNodes[i]);
-			}
-
-			if (object) {
-
-				children.forEach(function(child) {
-
-					element.appendChild(child);
-				});
-
-				bindObject(element, object);
-			}
-		});
-	};
-
 	// This method binds an object to a DOM element.
 	// It is called recursively to bind the entire data structure.
 	var bindObject = function(scope, model) {
@@ -85,7 +25,7 @@ function BindingRoot(model) {
 
 		if (model instanceof Array) {
 
-			var foreach = new self.ForEach(scope, model);
+			var foreach = new BindingRoot.ForEach(scope, model);
 
 			return;
 		}
@@ -125,7 +65,7 @@ function BindingRoot(model) {
 
 				if (element && typeof(property) == "object") {
 
-					applyWithBinding(model, key, element);
+					new BindingRoot.With(model, key, element);
 
 					if (property) {
 
@@ -136,7 +76,8 @@ function BindingRoot(model) {
 		}
 	};
 
-	this.importForeach(bindObject);
+	this.importWith(bindObject);
+	this.importForeach(bindObject, BindingRoot.With);
 
 	var scope = document.querySelector("body");
 
@@ -180,11 +121,19 @@ function BindingRoot(model) {
 	};
 }
 
+BindingRoot.importWith = function(constructor) {
+
+	BindingRoot.prototype.importWith = function(bindObject) {
+
+		BindingRoot.With = constructor(bindObject);
+	};	
+};
+
 BindingRoot.importForeach = function(constructor) {
 
-	BindingRoot.prototype.importForeach = function(bindObject) {
+	BindingRoot.prototype.importForeach = function(bindObject, With) {
 
-		BindingRoot.prototype.ForEach = constructor(bindObject);
+		BindingRoot.ForEach = constructor(bindObject, With);
 	};	
 };
 

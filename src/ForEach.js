@@ -1,4 +1,4 @@
-BindingRoot.importForeach(function(bindObject) {
+BindingRoot.importForeach(function(bindObject, With) {
 
 	// The "foreach" binding is applied when an array is bound to an element.
 	// It copies the contents of the element to which it is bound once
@@ -156,7 +156,7 @@ BindingRoot.importForeach(function(bindObject) {
 
 			scope = scope.querySelector("[data-bind=" + name + "]"); 
 
-			//applyWithBinding(model, name, scope);
+			new With(model, name, scope);
 
 			self.bind(scope);
 		};

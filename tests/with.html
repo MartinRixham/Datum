@@ -10,6 +10,7 @@
 		<script src="../src/UniqueRoot.js"></script>
 		<script src="../src/BindingRoot.js"></script>
 		<script src="../src/ForEach.js"></script>
+		<script src="../src/With.js"></script>
 		<script src="../src/Binding.js"></script>
 		<script src="../src/Datum.js"></script>
 		<script src="../src/Text.js"></script>
@@ -39,6 +40,7 @@
 
 					teardown: function() {
 
+							var importWith = BindingRoot.prototype.importWith;
 							var importForeach = BindingRoot.prototype.importForeach;
 
 							Subscriber.prototype = new Registry();
@@ -49,6 +51,7 @@
 							UniqueRoot.prototype = new Subscriber();
 							BindingRoot.prototype = new UniqueRoot();
 
+							BindingRoot.prototype.importWith = importWith;
 							BindingRoot.prototype.importForeach = importForeach;
 					}
 			});
