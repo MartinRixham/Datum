@@ -18,10 +18,15 @@ function Datum(datum) {
 
 				var callback = updateCallbacks[i];
 
-				if (document.contains(callback.element)) {
+				if (!document.contains(callback.element)) {
 
-					callback(value);	
+					updateCallbacks.splice(i, 1);
 				}
+			}
+
+			for (var j = 0; j < updateCallbacks.length; j++) {
+
+				updateCallbacks[j](value);
 			}
 		}
 		else if (self.registeringAssigners()) {
