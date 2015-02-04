@@ -26,7 +26,9 @@ function Update(update) {
 			self.assignUpdater(function() {
 
 				update.call(model, element);
-			});
+			},
+			this,
+			element);
 		};
 
 		for (var i = 0; i < elements.length; i++) {

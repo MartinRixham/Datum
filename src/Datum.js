@@ -16,14 +16,21 @@ function Datum(datum) {
 
 			for (var i = 0; i < updateCallbacks.length; i++) {
 
-				updateCallbacks[i](value);	
+				var callback = updateCallbacks[i];
+
+				if (document.contains(callback.element)) {
+
+					callback(value);	
+				}
 			}
 		}
 		else if (self.registeringAssigners()) {
 
-			self.registerUpdaterAssigner(function(callback, binding) {
+			self.registerUpdaterAssigner(function(callback, binding, element) {
 
-				if (!binding || !dependants.indexOf(binding) + 1) {
+				if (!dependants.indexOf(binding) + 1) {
+
+					callback.element = element;
 
 					updateCallbacks.push(callback);
 

@@ -6,7 +6,8 @@ function Text(text) {
 
 			element.textContent = text.call(model, element);
 		},
-		this);
+		this,
+		element);
 	};
 
 	this.applyBinding = function(scope, name, model) {

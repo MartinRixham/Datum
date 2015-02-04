@@ -55,7 +55,9 @@ BindingRoot.With = function(model, key, element) {
 
 			BindingRoot.bindObject(element, object);
 		}
-	});
+	},
+	this,
+	element);
 };
 
 BindingRoot.With.prototype = new Subscriber();

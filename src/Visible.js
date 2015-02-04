@@ -17,7 +17,8 @@ function Visible(visible) {
 					element.style.display = "none";
 				}
 			},
-			this);
+			this,
+			element);
 		};
 
 		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
