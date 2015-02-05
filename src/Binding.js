@@ -47,7 +47,7 @@ function Binding(bindings) {
 
 		if (bindings.update) {
 
-			var update = new Upudate(bindings.update);
+			var update = new Update(bindings.update);
 
 			update.applyBinding(scope, name, model);
 		}
