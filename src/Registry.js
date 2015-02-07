@@ -15,7 +15,7 @@ function Registry() {
 	// updater to any datum which supplied an assigner.
 	// If in the future the value of a datum which has been
 	// assigned the updater changes the datum will call the
-	// updater wich will update the elements wich are bound 
+	// updater which will update the elements which are bound 
 	// to the binding.
 	var registry = [];
 
