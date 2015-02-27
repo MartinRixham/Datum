@@ -26,19 +26,19 @@ function BindingRoot(model) {
 		if (model instanceof Array) {
 
 			var foreach = new BindingRoot.ForEach(scope, model);
-
-			return;
+		}
+		else {
+		
+			scope._rebind = function() {
+	
+				BindingRoot.bindObject(scope, model);
+			};
 		}
 
 		if (!model.toJSON) {
 
 			new BindingRoot.ViewModel(model);
 		}
-
-		scope._rebind = function() {
-	
-			BindingRoot.bindObject(scope, model);
-		};
 
 		for(var key in model) {
 
@@ -49,8 +49,15 @@ function BindingRoot(model) {
 
 			var property = model[key];
 	
-			var element = 
-				scope.querySelector("[data-bind=" + key + "]");
+			if (isNaN(key)) {
+			
+				var element = 
+					scope.querySelector("[data-bind=" + key + "]");
+			}
+			else {
+			
+				var element = scope.children[key];
+			}
 
 			if (property && property.applyBinding) {
 	

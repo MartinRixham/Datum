@@ -87,7 +87,7 @@ BindingRoot.ForEach = function(scope, model) {
 
 				scope.appendChild(element);
 
-				if (typeof(property) == "object") {
+				if (property && typeof(property) == "object") {
 
 					BindingRoot.bindObject(element, property);
 				}
@@ -104,7 +104,7 @@ BindingRoot.ForEach = function(scope, model) {
 
 				scope.insertBefore(element, scope.firstChild);
 
-				if (typeof(property) == "object") {
+				if (property && typeof(property) == "object") {
 
 					BindingRoot.bindObject(element, property);
 				}

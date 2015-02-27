@@ -528,5 +528,29 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="null" data-bind="nullProperty">
+			<div class="null"></div>
+		</div>
+		<script>
+			QUnit.test("Bind array with null element", function(assert) {
+
+					function NullObject() {
+		
+							this.nullProperty = [null, {}];
+					}
+
+					var nullObject = new NullObject();
+
+					var root = new BindingRoot(nullObject);
+
+					var element = query("#null");
+
+					var childCount = element.querySelectorAll(".null").length;
+
+					assert.strictEqual(childCount, 1);
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>
