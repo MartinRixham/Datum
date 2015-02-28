@@ -155,7 +155,10 @@ BindingRoot.ForEach = function(scope, model) {
 		
 			originalSplice.apply(model, arguments);
 			
-			scope.removeChild(scope.children[start]);
+			for (var i = deleteCount - 1; i >= 0; i--) {
+			
+				scope.removeChild(scope.children[start + i]);
+			}
 		};
 	};
 

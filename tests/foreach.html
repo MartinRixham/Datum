@@ -552,7 +552,7 @@
 					root.disconnect();
 			});
 		</script>
-				<div id="splice-remove" data-bind="spliceRemove">
+		<div id="splice-remove" data-bind="spliceRemove">
 			<div class="splice-remove"></div>
 		</div>
 		<script>
@@ -576,6 +576,35 @@
 					var childCount = element.querySelectorAll(".splice-remove").length;
 
 					assert.strictEqual(childCount, 2);
+
+					root.disconnect();
+			});
+		</script>
+		<div id="splice-remove-two" data-bind="spliceRemoveTwo">
+			<div class="splice-remove-two"></div>
+		</div>
+		<script>
+			QUnit.test("Remove two elements with splice", function(assert) {
+
+					function SpliceRemoveTwoObject() {
+		
+							this.spliceRemoveTwo = [{}, {}, {}];
+					}
+
+					var spliceRemoveTwo = new SpliceRemoveTwoObject();
+
+					var root = new BindingRoot(spliceRemoveTwo);
+					
+					spliceRemoveTwo.spliceRemoveTwo.splice(1, 2);
+					
+					assert.strictEqual(spliceRemoveTwo.spliceRemoveTwo.length, 1);
+
+					var element = query("#splice-remove-two");
+
+					var childCount =
+							element.querySelectorAll(".splice-remove-two").length;
+
+					assert.strictEqual(childCount, 1);
 
 					root.disconnect();
 			});
