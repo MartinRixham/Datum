@@ -685,5 +685,38 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="splice-add-remove" data-bind="spliceAddRemove">
+			<div class="splice-add-remove" data-bind="spliceText"></div>
+		</div>
+		<script>
+			QUnit.test("Add and remove element with splice", function(assert) {
+
+					function SpliceAddRemoveObject() {
+		
+							this.spliceAddRemove = [{}, {}];
+					}
+
+					var spliceAddRemove = new SpliceAddRemoveObject();
+
+					var root = new BindingRoot(spliceAddRemove);
+
+					spliceAddRemove.spliceAddRemove.splice(1, 1, { 
+
+							spliceText: new Text(function() { return "Hello World"; }) 
+					});
+
+					assert.strictEqual(spliceAddRemove.spliceAddRemove.length, 2);
+					
+					var element = query("#splice-add-remove");
+
+					var children = element.querySelectorAll(".splice-add-remove");
+
+					assert.strictEqual(children.length, 2);
+
+					assert.strictEqual(children[1].innerHTML, "Hello World");
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>
