@@ -10,7 +10,7 @@ function Click(click) {
 
 	this.applyBinding = function(scope, name, model) {
 
-		var elements = this.matchingElements(scope, model);
+		var elements = this.matchingElements(scope, name);
 
 		for (var i = 0; i < elements.length; i++) {
 

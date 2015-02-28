@@ -28,7 +28,7 @@ function Subscriber() {
 		
 			return [scope.children[key]];
 		}
-	}
+	};
 }
 
 Subscriber.prototype = new Registry();

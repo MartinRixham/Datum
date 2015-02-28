@@ -744,7 +744,7 @@
 		<table>
 			<tbody id="tr" data-bind="tr">
 			</tbody>
-		<table>
+		</table>
 		<script>
 			QUnit.test("Insert tr within tbody", function(assert) {
 
@@ -770,7 +770,7 @@
 			<tbody>
 				<tr id="td" data-bind="td"></td>
 			</tbody>
-		<table>
+		</table>
 		<script>
 			QUnit.test("Insert td within tr and tbody", function(assert) {
 
@@ -796,7 +796,7 @@
 			<thead>
 				<tr id="th" data-bind="th"></td>
 			</thead>
-		<table>
+		</table>
 		<script>
 			QUnit.test("Insert th within tr and thead", function(assert) {
 
@@ -922,6 +922,44 @@
 					assert.strictEqual(children[1].innerHTML, "Hello World");
 
 					root.disconnect();
+			});
+		</script>
+		<div id="push-binding" data-bind="pushBinding">
+		</div>
+		<script>
+			QUnit.test("Push binding to bound array", function(assert) {
+
+					function PushBindingObject() {
+		
+							this.pushBinding = [{}];
+					}
+
+					var pushBindingObject = new PushBindingObject();
+
+					var root = new BindingRoot(pushBindingObject);
+					
+					pushBindingObject.pushBinding.push(
+							new Binding({
+							
+					      	text: function() { return "Hello World"; }
+							}));
+							
+					var done = assert.async();
+					
+					setTimeout(function() {
+
+							var element = query("#push-binding");
+
+							var children = element.children;
+
+							assert.strictEqual(children.length, 2);
+					
+							assert.strictEqual(children[1].innerHTML, "Hello World");
+
+							done();
+
+							root.disconnect();
+					});
 			});
 		</script>
 	</body>

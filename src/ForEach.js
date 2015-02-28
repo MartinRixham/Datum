@@ -35,8 +35,18 @@ BindingRoot.ForEach = function(scope, model) {
 		if (scope == currentScope) {
 
 			for (var k = 0; k < model.length; k++) {
+			
+				if (model[k].applyBinding) {
 
-				BindingRoot.bindObject(scope.children[k], model[k]);
+					model[k].applyBinding(
+						scope,
+						k,
+						model);
+				}
+				else {
+
+					BindingRoot.bindObject(scope.children[k], model[k]);
+				}
 			}
 
 			return;
@@ -207,9 +217,12 @@ BindingRoot.ForEach = function(scope, model) {
 			scope = scope.children[name];
 		}
 
-		new BindingRoot.With(model, name, scope);
+		if (scope) {
 
-		self.bind(scope);
+			new BindingRoot.With(model, name, scope);
+
+			self.bind(scope);
+		}
 	};
 
 	this.bind(scope);
