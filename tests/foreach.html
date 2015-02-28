@@ -864,5 +864,33 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="square" data-bind="square">
+			<div class="square"></div>
+		</div>
+		<script>
+			QUnit.test("Bind square array", function(assert) {
+
+					function SquareObject() {
+		
+							this.square =
+							[
+									[{}, {}], 
+									[{}, {}]
+							];
+					}
+
+					var square = new SquareObject();
+
+					var root = new BindingRoot(square);
+
+					var element = query("#square");
+
+					var childCount = element.querySelectorAll(".square").length;
+
+					assert.strictEqual(childCount, 4);
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>

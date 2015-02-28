@@ -198,7 +198,14 @@ BindingRoot.ForEach = function(scope, model) {
 
 	model.applyBinding = function(scope, name, model) {
 
-		scope = scope.querySelector("[data-bind=" + name + "]"); 
+		if (isNaN(name)) {
+		
+			scope = scope.querySelector("[data-bind=" + name + "]"); 
+		}
+		else {
+		
+			scope = scope.children[name];
+		}
 
 		new BindingRoot.With(model, name, scope);
 
