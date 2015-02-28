@@ -609,5 +609,38 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="splice-add" data-bind="spliceAdd">
+			<div class="splice-add" data-bind="spliceText"></div>
+		</div>
+		<script>
+			QUnit.test("Add element with splice", function(assert) {
+
+					function SpliceAddObject() {
+		
+							this.spliceAdd = [{}, {}];
+					}
+
+					var spliceAdd = new SpliceAddObject();
+
+					var root = new BindingRoot(spliceAdd);
+
+					spliceAdd.spliceAdd.splice(1, 0, { 
+
+						spliceText: new Text(function() { return "Hello World"; }) 
+					});
+
+					assert.strictEqual(spliceAdd.spliceAdd.length, 3);
+
+					var element = query("#splice-add");
+
+					var children = element.querySelectorAll(".splice-add");
+
+					assert.strictEqual(children.length, 3);
+
+					assert.strictEqual(children[1].innerHTML, "Hello World");
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>

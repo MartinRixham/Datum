@@ -94,7 +94,7 @@ BindingRoot.ForEach = function(scope, model) {
 			}
 		};
 
-		var prepend = function(array) {
+		var insertBefore = function(index, array) {
 
 			for (var i = 0; i < array.length; i++) {
 
@@ -102,7 +102,7 @@ BindingRoot.ForEach = function(scope, model) {
 
 				var element = newElement();
 
-				scope.insertBefore(element, scope.firstChild);
+				scope.insertBefore(element, scope.children[index]);
 
 				if (property && typeof(property) == "object") {
 
@@ -146,7 +146,7 @@ BindingRoot.ForEach = function(scope, model) {
 
 			originalUnshift.apply(model, arguments);
 
-			prepend(arguments);
+			insertBefore(0, arguments);
 		};
 		
 		var originalSplice = model.splice;
@@ -158,6 +158,11 @@ BindingRoot.ForEach = function(scope, model) {
 			for (var i = deleteCount - 1; i >= 0; i--) {
 			
 				scope.removeChild(scope.children[start + i]);
+			}
+			
+			if (arguments[2]) {
+			
+				insertBefore(start + 1, [arguments[2]]);
 			}
 		};
 	};
