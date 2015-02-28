@@ -57,9 +57,38 @@ BindingRoot.ForEach = function(scope, model) {
 
 		var index = 0;
 
+		var childNodeName = function(name, parentName) {
+
+			switch(name) {
+
+				case "TABLE":
+					return "TBODY";
+				case "TBODY":
+					return "TR";
+				case "THEAD":
+					return "TR";
+				case "TR":
+					return parentName == "THEAD" ? "TH" : "TD";
+				case "SPAN":
+					return "SPAN";
+				case "OL":
+					return "LI";
+				case "UL":
+					return "LI";
+				default:
+					return "DIV";
+			}
+		};
+
 		var newElement = function() {
 
-			var element = document.createElement(scope.nodeName);
+			var childName =
+				childNodeName(
+					scope.nodeName,
+					scope.parentElement.nodeName);
+
+			var element =
+				document.createElement(childName);
 
 			for (var j = 0; j < children.length; j++) {
 
