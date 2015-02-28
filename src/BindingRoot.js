@@ -48,15 +48,17 @@ function BindingRoot(model) {
 			}
 
 			var property = model[key];
+			
+			var element;
 	
 			if (isNaN(key)) {
 			
-				var element = 
+				element = 
 					scope.querySelector("[data-bind=" + key + "]");
 			}
 			else {
 			
-				var element = scope.children[key];
+				element = scope.children[key];
 			}
 
 			if (property && property.applyBinding) {
