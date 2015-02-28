@@ -160,10 +160,10 @@ BindingRoot.ForEach = function(scope, model) {
 				scope.removeChild(scope.children[start + i]);
 			}
 			
-			if (arguments[2]) {
+			var newObjects =
+				Array.prototype.slice.call(arguments, 2);
 			
-				insertBefore(start + 1, [arguments[2]]);
-			}
+			insertBefore(start + 1, newObjects);
 		};
 	};
 

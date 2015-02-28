@@ -626,7 +626,7 @@
 
 					spliceAdd.spliceAdd.splice(1, 0, { 
 
-						spliceText: new Text(function() { return "Hello World"; }) 
+							spliceText: new Text(function() { return "Hello World"; }) 
 					});
 
 					assert.strictEqual(spliceAdd.spliceAdd.length, 3);
@@ -638,6 +638,49 @@
 					assert.strictEqual(children.length, 3);
 
 					assert.strictEqual(children[1].innerHTML, "Hello World");
+
+					root.disconnect();
+			});
+		</script>
+		<div id="splice-add-two" data-bind="spliceAddTwo">
+			<div class="splice-add-two" data-bind="spliceText"></div>
+		</div>
+		<script>
+			QUnit.test("Add two elements with splice", function(assert) {
+
+					function SpliceAddTwoObject() {
+		
+							this.spliceAddTwo = [{}, {}];
+					}
+
+					var spliceAddTwo = new SpliceAddTwoObject();
+
+					var root = new BindingRoot(spliceAddTwo);
+
+					spliceAddTwo.spliceAddTwo.splice(1, 0, { 
+
+							spliceText: new Text(function() { 
+							
+									return "Hello World";
+							})
+					},
+					{ 
+							spliceText: new Text(function() { 
+									
+									return "Eh Up Planet"; })
+					});
+
+					assert.strictEqual(spliceAddTwo.spliceAddTwo.length, 4);
+
+					var element = query("#splice-add-two");
+
+					var children = element.querySelectorAll(".splice-add-two");
+
+					assert.strictEqual(children.length, 4);
+
+					assert.strictEqual(children[1].innerHTML, "Hello World");
+					
+					assert.strictEqual(children[2].innerHTML, "Eh Up Planet");
 
 					root.disconnect();
 			});
