@@ -21,7 +21,7 @@ function Visible(visible) {
 			element);
 		};
 
-		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
+		var elements = this.matchingElements(scope, name);
 
 		for (var i = 0; i < elements.length; i++) {
 

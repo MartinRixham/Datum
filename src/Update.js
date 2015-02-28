@@ -17,8 +17,8 @@ function Update(update) {
 
 	this.applyBinding = function(scope, name, model) {
 
-		var elements = scope.querySelectorAll("[data-bind=" + name + "]");
-
+		var elements = this.matchingElements(scope, name);
+		
 		var self = this;
 
 		var applyCallback = function(element) {

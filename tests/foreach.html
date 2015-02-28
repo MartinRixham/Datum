@@ -892,5 +892,37 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="binding" data-bind="binding">
+		</div>
+		<script>
+			QUnit.test("Bind array containing binding", function(assert) {
+
+					function BindingObject() {
+		
+							this.binding = 
+							[
+							    {},
+							    new Binding({
+							
+							        text: function() { return "Hello World"; }
+							    })
+							];
+					}
+
+					var bindingObject = new BindingObject();
+
+					var root = new BindingRoot(bindingObject);
+
+					var element = query("#binding");
+
+					var children = element.children;
+
+					assert.strictEqual(children.length, 2);
+					
+					assert.strictEqual(children[1].innerHTML, "Hello World");
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>
