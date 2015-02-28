@@ -552,5 +552,33 @@
 					root.disconnect();
 			});
 		</script>
+				<div id="splice-remove" data-bind="spliceRemove">
+			<div class="splice-remove"></div>
+		</div>
+		<script>
+			QUnit.test("Remove element with splice", function(assert) {
+
+					function SpliceRemoveObject() {
+		
+							this.spliceRemove = [{}, {}, {}];
+					}
+
+					var spliceRemove = new SpliceRemoveObject();
+
+					var root = new BindingRoot(spliceRemove);
+					
+					spliceRemove.spliceRemove.splice(1, 1);
+					
+					assert.strictEqual(spliceRemove.spliceRemove.length, 2);
+
+					var element = query("#splice-remove");
+
+					var childCount = element.querySelectorAll(".splice-remove").length;
+
+					assert.strictEqual(childCount, 2);
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>
