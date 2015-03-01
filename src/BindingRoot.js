@@ -18,6 +18,11 @@ function BindingRoot(model) {
 	// This method binds an object to a DOM element.
 	// It is called recursively to bind the entire data structure.
 	BindingRoot.bindObject = function(scope, model) {
+	
+		if (model.onBind) {
+		
+			model.onBind(scope);
+		}
 
 		var newBinding = !model._scope;
 

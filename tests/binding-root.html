@@ -436,5 +436,27 @@
 					assert.notEqual(element.textContent, "Hello World");
 			});
 		</script>
+		<div id="on-bind" data-bind="bindOn"></div>
+		<script>
+			QUnit.test("onBind is called when object is bound", function(assert) {
+
+					var elementId;
+					
+					function OnBindObject() {
+		
+							this.bindOn = {
+							
+									onBind: function(element) {
+									
+											elementId = element.id;
+									}
+							};
+					}
+
+					new BindingRoot(new OnBindObject());
+
+					assert.strictEqual(elementId, "on-bind");
+			});
+		</script>
 	</body>
 </html>
