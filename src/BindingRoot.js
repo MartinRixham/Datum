@@ -19,7 +19,7 @@ function BindingRoot(model) {
 	// It is called recursively to bind the entire data structure.
 	BindingRoot.bindObject = function(scope, model) {
 	
-		if (model.onBind) {
+		if (scope != model._scope && model.onBind) {
 		
 			model.onBind(scope);
 		}

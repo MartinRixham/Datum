@@ -458,5 +458,38 @@
 					assert.strictEqual(elementId, "on-bind");
 			});
 		</script>
+		<div data-bind="bindOnce"></div>
+		<script>
+			QUnit.test("onBind is not recalled", function(assert) {
+
+					var count = 0;
+					
+					function OnBindOnceObject() {
+		
+							this.bindOnce = {
+							
+									onBind: function(element) {
+									
+											count += 1;
+									}
+							};
+					}
+					
+					var onBindOnce = new OnBindOnceObject()
+
+					new BindingRoot(onBindOnce);
+					
+					onBindOnce.bindOnce.newBinding = new Binding({});
+
+					var done = assert.async();
+					
+					setTimeout(function() {
+
+							assert.strictEqual(count, 1);
+							
+							done();
+					});
+			});
+		</script>
 	</body>
 </html>
