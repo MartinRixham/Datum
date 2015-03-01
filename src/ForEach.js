@@ -135,7 +135,7 @@ BindingRoot.ForEach = function(scope, model) {
 
 		var insertBefore = function(index, array) {
 
-			for (var i = 0; i < array.length; i++) {
+			for (var i = array.length - 1; i >= 0; i--) {
 
 				var property = array[i];
 
@@ -202,7 +202,7 @@ BindingRoot.ForEach = function(scope, model) {
 			var newObjects =
 				Array.prototype.slice.call(arguments, 2);
 			
-			insertBefore(start + 1, newObjects);
+			insertBefore(start, newObjects);
 		};
 	};
 
