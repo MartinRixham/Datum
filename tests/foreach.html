@@ -962,5 +962,39 @@
 					});
 			});
 		</script>
+		<div id="sort-two" data-bind="sortTwo">
+			<div class="sort-two" id="sort-two-child"></div>
+		</div>
+		<script>
+			QUnit.test("Sort two element bound array", function(assert) {
+
+					function SortTwo() {
+		
+							this.sortTwo = [2, 1];
+					}
+
+					var sortTwo = new SortTwo();
+
+					var root = new BindingRoot(sortTwo);
+
+					sortTwo.sortTwo.sort();
+
+					assert.strictEqual(sortTwo.sortTwo.length, 2);
+					
+					var element = query("#sort-two");
+
+					var children = element.querySelectorAll(".sort-two");
+
+					assert.strictEqual(children.length, 2);
+
+					assert.strictEqual(sortTwo.sortTwo[0], 1);
+					assert.strictEqual(sortTwo.sortTwo[1], 2);
+
+					assert.strictEqual(children[0].id, "sort-two-child_1");
+					assert.strictEqual(children[1].id, "sort-two-child_0");
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>

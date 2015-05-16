@@ -204,6 +204,22 @@ BindingRoot.ForEach = function(scope, model) {
 			
 			insertBefore(start, newObjects);
 		};
+
+		var originalSort = model.sort;
+
+		model.sort = function(compareFunction) {
+
+			if (model[0] >  model[1]) {
+
+				var firstChild = scope.children[0];
+
+				scope.removeChild(firstChild);
+
+				scope.appendChild(firstChild);
+			}
+
+			originalSort.apply(model, arguments);
+		};
 	};
 
 	model.applyBinding = function(scope, name, model) {
