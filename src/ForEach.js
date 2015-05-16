@@ -257,6 +257,29 @@ BindingRoot.ForEach = function(scope, model) {
 
 			originalSort.apply(model, arguments);
 		};
+
+		var originalReverse = model.reverse;
+
+		model.reverse = function() {
+
+			var children = [];
+
+			for (var i = scope.children.length - 1; i >= 0; i--) {
+
+				var child = scope.children[i];
+
+				children[i] = child;
+
+				scope.removeChild(child);
+			}
+
+			for (i = children.length - 1; i >= 0; i--) {
+
+				scope.appendChild(children[i]);
+			}
+
+			originalReverse.apply(model, arguments);
+		};
 	};
 
 	model.applyBinding = function(scope, name, model) {
