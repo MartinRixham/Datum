@@ -996,5 +996,41 @@
 					root.disconnect();
 			});
 		</script>
+		<div id="sort-three" data-bind="sortThree">
+			<div class="sort-three" id="sort-three-child"></div>
+		</div>
+		<script>
+			QUnit.test("Sort three element bound array", function(assert) {
+
+					function SortThree() {
+		
+							this.sortThree = [2, 3, 1];
+					}
+
+					var sortThree = new SortThree();
+
+					var root = new BindingRoot(sortThree);
+
+					sortThree.sortThree.sort();
+
+					assert.strictEqual(sortThree.sortThree.length, 3);
+					
+					var element = query("#sort-three");
+
+					var children = element.querySelectorAll(".sort-three");
+
+					assert.strictEqual(children.length, 3);
+
+					assert.strictEqual(sortThree.sortThree[0], 1);
+					assert.strictEqual(sortThree.sortThree[1], 2);
+					assert.strictEqual(sortThree.sortThree[2], 3);
+
+					assert.strictEqual(children[0].id, "sort-three-child_2");
+					assert.strictEqual(children[1].id, "sort-three-child_0");
+					assert.strictEqual(children[2].id, "sort-three-child_1");
+
+					root.disconnect();
+			});
+		</script>
 	</body>
 </html>

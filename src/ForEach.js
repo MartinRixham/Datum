@@ -209,13 +209,40 @@ BindingRoot.ForEach = function(scope, model) {
 
 		model.sort = function(compareFunction) {
 
-			if (model[0] >  model[1]) {
+			var modelElementPairs = [];
 
-				var firstChild = scope.children[0];
+			for (var i = 0; i < model.length; i++) {
 
-				scope.removeChild(firstChild);
+				modelElementPairs.push({
 
-				scope.appendChild(firstChild);
+					model: model[i],
+					element: scope.children[i]
+				});
+			}
+
+			for (i = scope.children.length - 1; i >=0; i--) {
+
+				scope.removeChild(scope.children[i]);
+			}
+
+			modelElementPairs.sort(function(a, b) {
+
+				if (a.model > b.model) {
+
+					return 1;
+				}
+
+				if (a.model < b.model) {
+
+					return -1;
+				}
+
+				return 0;
+			});
+
+			for (i = 0; i < modelElementPairs.length; i++) {
+
+				scope.appendChild(modelElementPairs[i].element);
 			}
 
 			originalSort.apply(model, arguments);
