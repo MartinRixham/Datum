@@ -225,20 +225,30 @@ BindingRoot.ForEach = function(scope, model) {
 				scope.removeChild(scope.children[i]);
 			}
 
-			modelElementPairs.sort(function(a, b) {
+			if (compareFunction) {
 
-				if (a.model > b.model) {
+				modelElementPairs.sort(function(a, b) {
 
-					return 1;
-				}
+					return compareFunction(a.model, b.model);
+				});
+			}
+			else {
 
-				if (a.model < b.model) {
+				modelElementPairs.sort(function(a, b) {
 
-					return -1;
-				}
+					if (a.model > b.model) {
 
-				return 0;
-			});
+						return 1;
+					}
+
+					if (a.model < b.model) {
+
+						return -1;
+					}
+
+					return 0;
+				});
+			}
 
 			for (i = 0; i < modelElementPairs.length; i++) {
 
