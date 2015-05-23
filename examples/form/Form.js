@@ -109,6 +109,14 @@ function Form() {
 			request.send();
 		} 
 	});
+
+	this.sort = new Click(function() {
+
+		this.yesnos.sort(function(a, b) {
+
+			return a.compareTo(b);
+		});
+	});
 }
 
 function DatePicker() {
@@ -190,6 +198,27 @@ function YesNoQuestion(question) {
 
 		text: function() { return this.thequestion; }
 	});
+
+	this.compareTo = function(other) {
+
+		var thisQuestion =
+			this.thequestion.toUpperCase();
+
+		var otherQuestion =
+			other.thequestion.toUpperCase();
+
+		if (thisQuestion > otherQuestion) {
+
+			return 1;
+		}
+
+		if (thisQuestion < otherQuestion) {
+
+			return -1;
+		}
+
+		return 0;
+	};
 }
 
 document.addEventListener("DOMContentLoaded", function() {

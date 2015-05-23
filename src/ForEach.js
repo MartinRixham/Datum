@@ -205,8 +205,6 @@ BindingRoot.ForEach = function(scope, model) {
 			insertBefore(start, newObjects);
 		};
 
-		var originalSort = model.sort;
-
 		model.sort = function(compareFunction) {
 
 			var modelElementPairs = [];
@@ -253,9 +251,9 @@ BindingRoot.ForEach = function(scope, model) {
 			for (i = 0; i < modelElementPairs.length; i++) {
 
 				scope.appendChild(modelElementPairs[i].element);
-			}
 
-			originalSort.apply(model, arguments);
+				model[i] = modelElementPairs[i].model;
+			}
 		};
 
 		var originalReverse = model.reverse;
