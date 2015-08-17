@@ -7,7 +7,7 @@ BindingRoot.ViewModel = function(model) {
 		model = {};
 	}
 
-	this.toJSON = function(model) {
+	model.toJSON = function() {
 
 		var transferObject = {};
 
@@ -26,10 +26,11 @@ BindingRoot.ViewModel = function(model) {
 			}
 
 			if (property && 
+				property.toJSON &&
 				typeof(property) == "object" && 
 				(!property.applyBinding || property instanceof Array)) {
 
-				transferObject[key] = this.toJSON(property);
+				transferObject[key] = property.toJSON();
 			}
 
 			if (!property || 
@@ -43,11 +44,9 @@ BindingRoot.ViewModel = function(model) {
 		return transferObject;
 	};
 
-	var self = this;
+	model.toJSONString = function() {
 
-	model.toJSON = function() {
-
-		return JSON.stringify(self.toJSON(model));
+		return JSON.stringify(model.toJSON());
 	};
 
 	return model;	

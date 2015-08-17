@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Binding Root Tests</title>
+		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
+		<script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
+		<script src="../src/Registry.js"></script>
+		<script src="../src/Subscriber.js"></script>
+		<script src="../src/UniqueRoot.js"></script>
+		<script src="../src/BindingRoot.js"></script>
+		<script src="../src/ForEach.js"></script>
+		<script src="../src/With.js"></script>
+		<script src="../src/DomWatcher.js"></script>
+		<script src="../src/Binding.js"></script>
+		<script src="../src/Datum.js"></script>
+		<script src="../src/Text.js"></script>
+		<script src="../src/Value.js"></script>
+		<script src="../src/Init.js"></script>
+		<script src="../src/Update.js"></script>
+		<script src="../src/Click.js"></script>
+		<script src="../src/ViewModel.js"></script>
+	</head>
+	<body>
+		<style>
+			#qunit ~ * {
+					display: none;
+			}
+		</style>
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+		<script>
+			query = function(query) {
+
+					return document.querySelector(query);
+			};
+
+			QUnit.module("", {
+
+					teardown: function() {
+
+							Subscriber.prototype = new Registry();
+							Binding.prototype = new Subscriber();
+							Datum.prototype = new Subscriber();
+							Text.prototype = new Subscriber();
+							Value.prototype = new Subscriber();
+							UniqueRoot.prototype = new Subscriber();
+							BindingRoot.prototype = new UniqueRoot();
+							BindingRoot.With.prototype = new Subscriber();
+					}
+			});
+		</script>
+		<script>
+			QUnit.test("toJSON returns an object", function(assert) {
+
+					function ToJSONObject() {
+		
+					}
+
+					var toJSONObject = new ToJSONObject();
+
+					new BindingRoot(toJSONObject);
+
+					assert.ok(toJSONObject.toJSON());
+			});
+		</script>
+		<script>
+			QUnit.test("toJSON returns an object with data property", function(assert) {
+
+					function ToJSONObject() {
+		
+							this.jsonProperty = "thingy";
+					}
+
+					var toJSONObject = new ToJSONObject();
+
+					new BindingRoot(toJSONObject);
+
+					assert.strictEqual(toJSONObject.toJSON().jsonProperty, "thingy");
+			});
+		</script>
+		<script>
+			QUnit.test("toJSON returns an object without method", function(assert) {
+
+					function ToJSONObject() {
+		
+							this.method = function() {};
+					}
+
+					var toJSONObject = new ToJSONObject();
+
+					new BindingRoot(toJSONObject);
+
+					assert.ok(!toJSONObject.toJSON().method);
+			});
+		</script>
+		<script>
+			QUnit.test("toJSON returns an object without binding", function(assert) {
+
+					function ToJSONObject() {
+		
+							this.binding = new Binding({});
+					}
+
+					var toJSONObject = new ToJSONObject();
+
+					new BindingRoot(toJSONObject);
+
+					assert.ok(!toJSONObject.toJSON().binding);
+			});
+		</script>
+		<script>
+			QUnit.test("toJSON returns an object without scope element", function(assert) {
+
+					function ToJSONObject() {
+		
+							this._scope = query("body");
+					}
+
+					var toJSONObject = new ToJSONObject();
+
+					new BindingRoot(toJSONObject);
+
+					assert.ok(!toJSONObject.toJSON()._scope);
+			});
+		</script>
+		<script>
+			QUnit.test("toJSON uses custom toJSON method", function(assert) {
+
+					var json = { thingy: "thingy" };
+
+					function ToJSONObject() {
+		
+							this.child = {
+
+									toJSON: function() {
+
+											return json;
+									}
+							};
+					}
+
+					var toJSONObject = new ToJSONObject();
+
+					new BindingRoot(toJSONObject);
+
+					assert.strictEqual(toJSONObject.toJSON().child, json);
+			});
+		</script>
+		<script>
+			QUnit.test("toJSONString returns a stringified object", function(assert) {
+
+					function ToJSONObject() {
+		
+					}
+
+					var toJSONObject = new ToJSONObject();
+
+					new BindingRoot(toJSONObject);
+
+					assert.strictEqual(toJSONObject.toJSONString(), "{}");
+			});
+		</script>
+	</body>
+</html>
