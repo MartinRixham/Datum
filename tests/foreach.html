@@ -44,6 +44,7 @@
 							Datum.prototype = new Subscriber();
 							Text.prototype = new Subscriber();
 							Value.prototype = new Subscriber();
+							Update.prototype = new Subscriber();
 							UniqueRoot.prototype = new Subscriber();
 							BindingRoot.prototype = new UniqueRoot();
 							BindingRoot.With.prototype = new Subscriber();
@@ -1036,7 +1037,7 @@
 			<div class="sort-comparer" id="sort-comparer-child"></div>
 		</div>
 		<script>
-			QUnit.test("Sort three element array with a comare function", function(assert) {
+			QUnit.test("Sort three element array with a compare function", function(assert) {
 
 					function SortComparer() {
 		
@@ -1113,6 +1114,49 @@
 					assert.strictEqual(children[0].id, "reverse-child_2");
 					assert.strictEqual(children[1].id, "reverse-child_1");
 					assert.strictEqual(children[2].id, "reverse-child_0");
+
+					root.disconnect();
+			});
+		</script>
+		<div id="length" data-bind="length">
+			<div class="length"></div>
+		</div>
+		<div data-bind="update"></div>
+		<script>
+			QUnit.test("Update subscribable length when array updated", function(assert) {
+
+					var lengthUpdateCount = 0;
+
+					function LengthObject() {
+		
+							this.length = [{}];
+
+							this.update = new Binding({
+
+									update: function() {
+
+											var thingy = this.length.subscribableLength;
+
+											lengthUpdateCount++;
+									}
+							});
+					}
+
+					var length = new LengthObject();
+
+					var root = new BindingRoot(length);
+
+					length.length.push({});
+
+					length.length.pop();
+
+					length.length.unshift({});	
+
+					length.length.shift();
+
+					length.length.splice(0);
+
+					assert.strictEqual(lengthUpdateCount, 6);
 
 					root.disconnect();
 			});

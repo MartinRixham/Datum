@@ -5,6 +5,8 @@ BindingRoot.ForEach = function(scope, model) {
 
 	var currentScope = null;
 
+	model.subscribableLength = model.length;
+
 	this.number = function(element, index) {
 
 		if (element.id) {
@@ -159,6 +161,8 @@ BindingRoot.ForEach = function(scope, model) {
 			originalPush.apply(model, arguments);
 
 			append(arguments);
+
+			model.subscribableLength = model.length;
 		};
 
 		var originalPop = model.pop;
@@ -168,6 +172,8 @@ BindingRoot.ForEach = function(scope, model) {
 			originalPop.apply(model, arguments);
 
 			scope.removeChild(scope.lastElementChild);
+
+			model.subscribableLength = model.length;
 		};
 
 		var originalShift = model.shift;
@@ -177,6 +183,8 @@ BindingRoot.ForEach = function(scope, model) {
 			originalShift.apply(model, arguments);
 
 			scope.removeChild(scope.firstElementChild);
+
+			model.subscribableLength = model.length;
 		};
 
 		var originalUnshift = model.unshift;
@@ -186,6 +194,8 @@ BindingRoot.ForEach = function(scope, model) {
 			originalUnshift.apply(model, arguments);
 
 			insertBefore(0, arguments);
+
+			model.subscribableLength = model.length;
 		};
 		
 		var originalSplice = model.splice;
@@ -203,6 +213,8 @@ BindingRoot.ForEach = function(scope, model) {
 				Array.prototype.slice.call(arguments, 2);
 			
 			insertBefore(start, newObjects);
+
+			model.subscribableLength = model.length;
 		};
 
 		model.sort = function(compareFunction) {
