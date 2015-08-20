@@ -79,7 +79,10 @@ function BindingRoot(model) {
 
 				if (element && typeof(property) == "object") {
 
-					new BindingRoot.With(model, key, element);
+					if (!(model instanceof Array)) {
+
+						new BindingRoot.With(model, key, element);
+					}
 
 					if (property) {
 

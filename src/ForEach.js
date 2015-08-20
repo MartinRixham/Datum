@@ -45,7 +45,7 @@ BindingRoot.ForEach = function(scope, model) {
 						k,
 						model);
 				}
-				else {
+				else if (scope.children[k]) {
 
 					BindingRoot.bindObject(scope.children[k], model[k]);
 				}
@@ -304,8 +304,6 @@ BindingRoot.ForEach = function(scope, model) {
 		}
 
 		if (scope) {
-
-			new BindingRoot.With(model, name, scope);
 
 			self.bind(scope);
 		}
