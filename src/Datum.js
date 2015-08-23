@@ -1,7 +1,5 @@
 function Datum(datum) {
 
-	var updateCallbacks = [];
-
 	var dependants = [];
 
 	var self = this;
@@ -14,35 +12,40 @@ function Datum(datum) {
 
 			datum = value;
 
-			for (var i = 0; i < updateCallbacks.length; i++) {
+			for (var i = 0; i < dependants.length; i++) {
 
-				var callback = updateCallbacks[i];
+				var dependant = dependants[i];
 
-				if (!document.contains(callback.element)) {
+				if (!document.contains(dependant.element)) {
 
-					updateCallbacks.splice(i, 1);
+					dependants.splice(i, 1);
 				}
 			}
 
-			for (var j = 0; j < updateCallbacks.length; j++) {
+			for (var j = 0; j < dependants.length; j++) {
 
-				updateCallbacks[j](value);
+				dependants[j].callback(value);
 			}
 		}
 		else if (self.registeringAssigners()) {
 
 			self.registerUpdaterAssigner(function(callback, binding, element) {
 
-				if (!dependants.indexOf(binding) + 1) {
+				var dependant = new Datum.Dependant(callback, binding, element);
 
-					callback.element = element;
+				var containsBinding = false;
 
-					updateCallbacks.push(callback);
+				for (var k = 0; k < dependants.length; k++) {
 
-					if (binding) {
+					if (dependants[k].equals(dependant)) {
 
-						dependants.push(binding);
+						containsBinding = true;
 					}
+				}
+
+				if (!containsBinding) {
+
+					dependants.push(dependant);
 				}
 			});
 		}
@@ -54,3 +57,4 @@ function Datum(datum) {
 }
 
 Datum.prototype = new Subscriber();
+

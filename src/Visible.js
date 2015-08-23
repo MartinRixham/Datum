@@ -17,7 +17,7 @@ function Visible(visible) {
 					element.style.display = "none";
 				}
 			},
-			this,
+			visible,
 			element);
 		};
 

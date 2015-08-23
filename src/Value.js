@@ -23,7 +23,7 @@ function Value(value) {
 
 			element.value = value.call(model, undefined, element);
 		},
-		this,
+		value,
 		element);
 	};
 

@@ -6,7 +6,7 @@ function Text(text) {
 
 			element.textContent = text.call(model, element);
 		},
-		this,
+		text,
 		element);
 	};
 

@@ -27,7 +27,7 @@ function Update(update) {
 
 				update.call(model, element);
 			},
-			this,
+			update,
 			element);
 		};
 
