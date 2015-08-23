@@ -7,6 +7,7 @@ BindingRoot.ViewModel = function(model) {
 		model = {};
 	}
 
+	if (!model.toJSON)
 	model.toJSON = function() {
 
 		var transferObject = {};
@@ -44,6 +45,7 @@ BindingRoot.ViewModel = function(model) {
 		return transferObject;
 	};
 
+	if (!model.toJSONString)
 	model.toJSONString = function() {
 
 		return JSON.stringify(model.toJSON());

@@ -161,5 +161,23 @@
 					assert.strictEqual(toJSONObject.toJSONString(), "{}");
 			});
 		</script>
+		<script>
+			QUnit.test("object with custom toJSON method has toJSONString", function(assert) {
+
+					function ToJSONObject() {
+		
+							this.toJSON = function() {
+
+									return {};
+							}
+					}
+
+					var toJSONObject = new ToJSONObject();
+
+					new BindingRoot(toJSONObject);
+
+					assert.ok(toJSONObject.toJSONString);
+			});
+		</script>
 	</body>
 </html>

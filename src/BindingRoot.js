@@ -40,10 +40,7 @@ function BindingRoot(model) {
 			};
 		}
 
-		if (!model.toJSON) {
-
-			new BindingRoot.ViewModel(model);
-		}
+		new BindingRoot.ViewModel(model);
 
 		for(var key in model) {
 
