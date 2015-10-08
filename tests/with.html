@@ -313,5 +313,31 @@
 					assert.ok(element.children.length == 1);
 			});
 		</script>
+		<div id="subobjects" data-bind="subobjects"></div>
+		<div id="subsubobject" data-bind="subsubobject">
+			<div id="textbinding" data-bind="textbinding"></div>
+		</div>
+		<script>
+			QUnit.test("Subobjects not bound outside of scope", function(assert) {
+
+				function SomeObject() {
+					this.subobjects = {
+						subsubobject: {
+							textbinding: new Binding({
+								text: function() { return "test" }
+							})
+						}
+					};
+				}
+
+				var bind = new SomeObject();
+
+				new BindingRoot(bind);
+
+				var textbinding = query("#textbinding");
+
+				assert.notEqual(textbinding.innerHTML, "test");
+			});
+		</script>
 	</body>
 </html>
