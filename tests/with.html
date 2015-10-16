@@ -313,30 +313,60 @@
 					assert.ok(element.children.length == 1);
 			});
 		</script>
-		<div id="subobjects" data-bind="subobjects"></div>
-		<div id="subsubobject" data-bind="subsubobject">
-			<div id="textbinding" data-bind="textbinding"></div>
+		<div data-bind="object"></div>
+		<div data-bind="subobject">
+			<div id="subobject-text" data-bind="text"></div>
 		</div>
 		<script>
 			QUnit.test("Subobjects not bound outside of scope", function(assert) {
 
-				function SomeObject() {
-					this.subobjects = {
-						subsubobject: {
-							textbinding: new Binding({
-								text: function() { return "test" }
-							})
-						}
-					};
-				}
+					function SubobjectObject() {
 
-				var bind = new SomeObject();
+							this.object = {
 
-				new BindingRoot(bind);
+									subobject: {
 
-				var textbinding = query("#textbinding");
+											text: new Binding({
 
-				assert.notEqual(textbinding.innerHTML, "test");
+													text: function() { return "Hello World"; }
+											})
+									}
+							};
+					}
+
+					new BindingRoot(new SubobjectObject());
+
+					var text = query("#subobject-text");
+
+					assert.notEqual(text.innerHTML, "Hello World");
+			});
+		</script>
+		<div data-bind="subscope">
+			<div data-bind="subscopeobject">
+				<div id="subscope-text" data-bind="text"></div>
+			</div>
+		</div>
+		<script>
+			QUnit.test("Subobjects not bound inside subscope", function(assert) {
+
+					function SubscopeObject() {
+
+							this.subscope = {};
+
+							this.subscopeobject = {
+
+									text: new Binding({
+
+											text: function() { return "Hello World"; }
+									})
+							};
+					}
+
+					new BindingRoot(new SubscopeObject());
+
+					var text = query("#subscope-text");
+
+					assert.notEqual(text.innerHTML, "Hello World");
 			});
 		</script>
 	</body>
