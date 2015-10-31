@@ -42,7 +42,7 @@ function BindingRoot(model) {
 
 		new BindingRoot.ViewModel(model);
 
-		for(var key in model) {
+		for (var key in model) {
 
 			if (key == "_scope") {
 

@@ -230,7 +230,7 @@ BindingRoot.ForEach = function(scope, model) {
 				});
 			}
 
-			for (i = scope.children.length - 1; i >=0; i--) {
+			for (i = scope.children.length - 1; i >= 0; i--) {
 
 				scope.removeChild(scope.children[i]);
 			}
