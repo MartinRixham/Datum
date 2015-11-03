@@ -1,373 +1,373 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>With Binding Tests</title>
-		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
-		<script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
-		<script src="../src/Registry.js"></script>
-		<script src="../src/Subscriber.js"></script>
-		<script src="../src/UniqueRoot.js"></script>
-		<script src="../src/BindingRoot.js"></script>
-		<script src="../src/ForEach.js"></script>
-		<script src="../src/With.js"></script>
-		<script src="../src/DomWatcher.js"></script>
-		<script src="../src/Binding.js"></script>
-		<script src="../src/Datum.js"></script>
-		<script src="../src/Dependant.js"></script>
-		<script src="../src/Text.js"></script>
-		<script src="../src/Value.js"></script>
-		<script src="../src/Init.js"></script>
-		<script src="../src/Update.js"></script>
-		<script src="../src/Click.js"></script>
-		<script src="../src/ViewModel.js"></script>
-	</head>
-	<body>
-		<style>
-			#qunit ~ * {
-					display: none;
-			}
-		</style>
-		<div id="qunit"></div>
-		<div id="qunit-fixture"></div>
-		<script>
-			var query = function(query) {
+  <head>
+    <meta charset="utf-8">
+    <title>With Binding Tests</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
+    <script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
+    <script src="../src/Registry.js"></script>
+    <script src="../src/Subscriber.js"></script>
+    <script src="../src/UniqueRoot.js"></script>
+    <script src="../src/BindingRoot.js"></script>
+    <script src="../src/ForEach.js"></script>
+    <script src="../src/With.js"></script>
+    <script src="../src/DomWatcher.js"></script>
+    <script src="../src/Binding.js"></script>
+    <script src="../src/Datum.js"></script>
+    <script src="../src/Dependant.js"></script>
+    <script src="../src/Text.js"></script>
+    <script src="../src/Value.js"></script>
+    <script src="../src/Init.js"></script>
+    <script src="../src/Update.js"></script>
+    <script src="../src/Click.js"></script>
+    <script src="../src/ViewModel.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var query = function(query) {
 
-					return document.querySelector(query);
+			return document.querySelector(query);
+		};
+
+		// To preserve atomicity prototypes must be 
+		// reassigned after each test.
+		QUnit.module("", {
+
+			teardown: function() {
+
+				Subscriber.prototype = new Registry();
+				Binding.prototype = new Subscriber();
+				Datum.prototype = new Subscriber();
+				Text.prototype = new Subscriber();
+				Value.prototype = new Subscriber();
+				UniqueRoot.prototype = new Subscriber();
+				BindingRoot.prototype = new UniqueRoot();
+				BindingRoot.With.prototype = new Subscriber();
+			}
+		});
+    </script>
+    <div id="outer" data-bind="with">
+      <div id="with"></div>
+    </div>
+    <script>
+		QUnit.test("Remove element bound to null", function(assert) {
+
+			function WithObject() {
+		
+				this.with = null;
+			}
+
+			var outer = query("#outer");
+
+			var element = query("#with");
+
+			new BindingRoot(new WithObject());
+
+			assert.ok(!outer.contains(element));
+		});
+    </script>
+    <div id="remove" data-bind="remove">
+      <div id="inner"></div>
+    </div>
+    <script>
+		QUnit.test("Remove element when object set to null", function(assert) {
+
+			function RemoveObject() {
+		
+				this.remove = {};
+			}
+
+			var element = query("#remove");
+
+			var inner = query("#inner");
+
+			var remove = new RemoveObject();
+
+			new BindingRoot(remove);
+
+			remove.remove = null;
+
+			assert.ok(!element.contains(inner));
+		});
+    </script>
+    <div id="replace" data-bind="replace">
+      <div id="inner-replace"></div>
+    </div>
+    <script>
+		QUnit.test("Replace element when object added", function(assert) {
+
+			function ReplaceObject() {
+		
+				this.replace = null;
+			}
+
+			var replace = new ReplaceObject();
+
+			new BindingRoot(replace);
+
+			replace.replace = {};
+
+			var element = query("#replace");
+
+			var inner = query("#inner-replace");
+
+			assert.ok(element.contains(inner));
+		});
+    </script>
+    <div data-bind="bind">
+      <div id="text" data-bind="text"></div>
+    </div>
+    <script>
+		QUnit.test("Apply binding when object added", function(assert) {
+
+			function ReplaceObject() {
+		
+				this.bind = null;
+			}
+
+			var bind = new ReplaceObject();
+
+			new BindingRoot(bind);
+
+			bind.bind = {
+
+				text: new Binding({
+
+					text: function() { return "Hello World"; }
+				})
 			};
 
-			// To preserve atomicity prototypes must be 
-			// reassigned after each test.
-			QUnit.module("", {
+			var done = assert.async();
 
-					teardown: function() {
+			setTimeout(function() {
 
-							Subscriber.prototype = new Registry();
-							Binding.prototype = new Subscriber();
-							Datum.prototype = new Subscriber();
-							Text.prototype = new Subscriber();
-							Value.prototype = new Subscriber();
-							UniqueRoot.prototype = new Subscriber();
-							BindingRoot.prototype = new UniqueRoot();
-							BindingRoot.With.prototype = new Subscriber();
-					}
+				assert.strictEqual(query("#text").innerHTML, "Hello World");
+
+				done();
 			});
-		</script>
-		<div id="outer" data-bind="with">
-			<div id="with"></div>
-		</div>
-		<script>
-			QUnit.test("Remove element bound to null", function(assert) {
+		});
+    </script>
+    <div id="multi-outer" data-bind="multi">
+      <div id="one"></div>
+      <div id="two"></div>
+    </div>
+    <script>
+		QUnit.test("Remove all elements when bound to null", function(assert) {
 
-					function WithObject() {
+			function MultipleObject() {
 		
-							this.with = null;
-					}
+				this.multi = null;
+			}
 
-					var outer = query("#outer");
+			var outer = query("#multi-outer");
 
-					var element = query("#with");
+			var one = query("#one");
+			var two = query("#two");
 
-					new BindingRoot(new WithObject());
+			new BindingRoot(new MultipleObject());
 
-					assert.ok(!outer.contains(element));
-			});
-		</script>
-		<div id="remove" data-bind="remove">
-			<div id="inner"></div>
-		</div>
-		<script>
-			QUnit.test("Remove element when object set to null", function(assert) {
+			assert.ok(!outer.contains(one));
+			assert.ok(!outer.contains(two));
+		});
+    </script>
+    <div id="multi-remove" data-bind="removeMulti">
+      <div id="remove-one"></div>
+      <div id="remove-two"></div>
+    </div>
+    <script>
+		QUnit.test("Remove all elements when object set to null", function(assert) {
 
-					function RemoveObject() {
+			function RemoveObject() {
 		
-							this.remove = {};
-					}
+				this.removeMulti = {};
+			}
 
-					var element = query("#remove");
+			var element = query("#multi-remove");
 
-					var inner = query("#inner");
+			var one = query("#remove-one");
+			var two = query("#remove-two");
 
-					var remove = new RemoveObject();
+			var remove = new RemoveObject();
 
-					new BindingRoot(remove);
+			new BindingRoot(remove);
 
-					remove.remove = null;
+			remove.removeMulti = null;
 
-					assert.ok(!element.contains(inner));
-			});
-		</script>
-		<div id="replace" data-bind="replace">
-			<div id="inner-replace"></div>
-		</div>
-		<script>
-			QUnit.test("Replace element when object added", function(assert) {
+			assert.ok(!element.contains(one));
+			assert.ok(!element.contains(two));
+		});
+    </script>
+    <div id="multi-replace" data-bind="Multireplace">
+      <div id="replace-one"></div>
+      <div id="replace-two"></div>
+    </div>
+    <script>
+		QUnit.test("Replace all elements when object added", function(assert) {
 
-					function ReplaceObject() {
+			function ReplaceObject() {
 		
-							this.replace = null;
-					}
+				this.Multireplace = null;
+			}
 
-					var replace = new ReplaceObject();
+			var replace = new ReplaceObject();
 
-					new BindingRoot(replace);
+			new BindingRoot(replace);
 
-					replace.replace = {};
+			replace.Multireplace = {};
 
-					var element = query("#replace");
+			var element = query("#multi-replace");
 
-					var inner = query("#inner-replace");
+			var one = query("#replace-one");
+			var two = query("#replace-two");
 
-					assert.ok(element.contains(inner));
-			});
-		</script>
-		<div data-bind="bind">
-			<div id="text" data-bind="text"></div>
-		</div>
-		<script>
-			QUnit.test("Apply binding when object added", function(assert) {
+			assert.ok(element.contains(one));
+			assert.ok(element.contains(two));
 
-					function ReplaceObject() {
+			var elementCount =
+				document.querySelectorAll(
+					"[data-bind=Multireplace]").length;
+
+			assert.strictEqual(elementCount, 1);
+
+			assert.ok(one.nextSibiling = two);
+		});
+    </script>
+    <div id="reremove" data-bind="reremove">
+      <div id="inner-reremove"></div>
+    </div>
+    <script>
+		QUnit.test("Reremove element", function(assert) {
+
+			function ReremoveObject() {
 		
-							this.bind = null;
-					}
+				this.reremove = null;
+			}
 
-					var bind = new ReplaceObject();
+			var reremove = new ReremoveObject();
 
-					new BindingRoot(bind);
+			new BindingRoot(reremove);
 
-					bind.bind = {
+			reremove.reremove = {};
 
-							text: new Binding({
+			var inner = query("#inner-reremove");
 
-									text: function() { return "Hello World" }
-							})
-					};
+			reremove.reremove = null;
 
-					var done = assert.async();
+			var element = query("#reremove");
 
-					setTimeout(function() {
+			assert.ok(!element.contains(inner));
+		});
+    </script>
+    <div id="renull" data-bind="renull">
+      <div id="inner-null"></div>
+    </div>
+    <script>
+		QUnit.test("Reset object to null", function(assert) {
 
-							assert.strictEqual(query("#text").innerHTML, "Hello World");
-
-							done();
-					});
-			});
-		</script>
-		<div id="multi-outer" data-bind="multi">
-			<div id="one"></div>
-			<div id="two"></div>
-		</div>
-		<script>
-			QUnit.test("Remove all elements when bound to null", function(assert) {
-
-					function MultipleObject() {
+			function RenullObject() {
 		
-							this.multi = null;
-					}
+				this.renull = null;
+			}
 
-					var outer = query("#multi-outer");
+			var element = query("#renull");
 
-					var one = query("#one");
-					var two = query("#two");
+			var inner = query("#inner-renull");
 
-					new BindingRoot(new MultipleObject());
+			var renull = new RenullObject();
 
-					assert.ok(!outer.contains(one));
-					assert.ok(!outer.contains(two));
-			});
-		</script>
-		<div id="multi-remove" data-bind="removeMulti">
-			<div id="remove-one"></div>
-			<div id="remove-two"></div>
-		</div>
-		<script>
-			QUnit.test("Remove all elements when object set to null", function(assert) {
+			new BindingRoot(renull);
 
-					function RemoveObject() {
+			renull.renull = null;
+
+			assert.ok(!element.contains(inner));
+		});
+    </script>
+    <div id="renew" data-bind="renew">
+      <div id="inner-renew"></div>
+    </div>
+    <script>
+		QUnit.test("Reassign object", function(assert) {
+
+			function RenewObject() {
 		
-							this.removeMulti = {};
+				this.renew = {};
+			}
+
+			var element = query("#renew");
+
+			var inner = query("#inner-renew");
+
+			var renew = new RenewObject();
+
+			new BindingRoot(renew);
+
+			renew.renew = {};
+
+			assert.ok(element.children.length == 1);
+		});
+    </script>
+    <div data-bind="object"></div>
+    <div data-bind="subobject">
+      <div id="subobject-text" data-bind="text"></div>
+    </div>
+    <script>
+		QUnit.test("Subobjects not bound outside of scope", function(assert) {
+
+			function SubobjectObject() {
+
+				this.object = {
+
+					subobject: {
+
+						text: new Binding({
+
+							text: function() { return "Hello World"; }
+						})
 					}
+				};
+			}
 
-					var element = query("#multi-remove");
+			new BindingRoot(new SubobjectObject());
 
-					var one = query("#remove-one");
-					var two = query("#remove-two");
+			var text = query("#subobject-text");
 
-					var remove = new RemoveObject();
+			assert.notEqual(text.innerHTML, "Hello World");
+		});
+    </script>
+    <div data-bind="subscope">
+      <div data-bind="subscopeobject">
+        <div id="subscope-text" data-bind="text"></div>
+      </div>
+    </div>
+    <script>
+		QUnit.test("Subobjects not bound inside subscope", function(assert) {
 
-					new BindingRoot(remove);
+			function SubscopeObject() {
 
-					remove.removeMulti = null;
+				this.subscope = {};
 
-					assert.ok(!element.contains(one));
-					assert.ok(!element.contains(two));
-			});
-		</script>
-		<div id="multi-replace" data-bind="Multireplace">
-			<div id="replace-one"></div>
-			<div id="replace-two"></div>
-		</div>
-		<script>
-			QUnit.test("Replace all elements when object added", function(assert) {
+				this.subscopeobject = {
 
-					function ReplaceObject() {
-		
-							this.Multireplace = null;
-					}
+					text: new Binding({
 
-					var replace = new ReplaceObject();
+						text: function() { return "Hello World"; }
+					})
+				};
+			}
 
-					new BindingRoot(replace);
+			new BindingRoot(new SubscopeObject());
 
-					replace.Multireplace = {};
+			var text = query("#subscope-text");
 
-					var element = query("#multi-replace");
-
-					var one = query("#replace-one");
-					var two = query("#replace-two");
-
-					assert.ok(element.contains(one));
-					assert.ok(element.contains(two));
-
-					var elementCount =
-							document.querySelectorAll(
-									"[data-bind=Multireplace]").length;
-
-					assert.strictEqual(elementCount, 1);
-					
-					assert.ok(one.nextSibiling = two);
-			});
-		</script>
-		<div id="reremove" data-bind="reremove">
-			<div id="inner-reremove"></div>
-		</div>
-		<script>
-			QUnit.test("Reremove element", function(assert) {
-
-					function ReremoveObject() {
-		
-							this.reremove = null;
-					}
-
-					var reremove = new ReremoveObject();
-
-					new BindingRoot(reremove);
-
-					reremove.reremove = {};
-
-					var inner = query("#inner-reremove");
-
-					reremove.reremove = null;
-
-					var element = query("#reremove");
-
-					assert.ok(!element.contains(inner));
-			});
-		</script>
-		<div id="renull" data-bind="renull">
-			<div id="inner-null"></div>
-		</div>
-		<script>
-			QUnit.test("Reset object to null", function(assert) {
-
-					function RenullObject() {
-		
-							this.renull = null;
-					}
-
-					var element = query("#renull");
-
-					var inner = query("#inner-renull");
-
-					var renull = new RenullObject();
-
-					new BindingRoot(renull);
-
-					renull.renull = null;
-
-					assert.ok(!element.contains(inner));
-			});
-		</script>
-		<div id="renew" data-bind="renew">
-			<div id="inner-renew"></div>
-		</div>
-		<script>
-			QUnit.test("Reassign object", function(assert) {
-
-					function RenewObject() {
-		
-							this.renew = {};
-					}
-
-					var element = query("#renew");
-
-					var inner = query("#inner-renew");
-
-					var renew = new RenewObject();
-
-					new BindingRoot(renew);
-
-					renew.renew = {};
-
-					assert.ok(element.children.length == 1);
-			});
-		</script>
-		<div data-bind="object"></div>
-		<div data-bind="subobject">
-			<div id="subobject-text" data-bind="text"></div>
-		</div>
-		<script>
-			QUnit.test("Subobjects not bound outside of scope", function(assert) {
-
-					function SubobjectObject() {
-
-							this.object = {
-
-									subobject: {
-
-											text: new Binding({
-
-													text: function() { return "Hello World"; }
-											})
-									}
-							};
-					}
-
-					new BindingRoot(new SubobjectObject());
-
-					var text = query("#subobject-text");
-
-					assert.notEqual(text.innerHTML, "Hello World");
-			});
-		</script>
-		<div data-bind="subscope">
-			<div data-bind="subscopeobject">
-				<div id="subscope-text" data-bind="text"></div>
-			</div>
-		</div>
-		<script>
-			QUnit.test("Subobjects not bound inside subscope", function(assert) {
-
-					function SubscopeObject() {
-
-							this.subscope = {};
-
-							this.subscopeobject = {
-
-									text: new Binding({
-
-											text: function() { return "Hello World"; }
-									})
-							};
-					}
-
-					new BindingRoot(new SubscopeObject());
-
-					var text = query("#subscope-text");
-
-					assert.notEqual(text.innerHTML, "Hello World");
-			});
-		</script>
-	</body>
+			assert.notEqual(text.innerHTML, "Hello World");
+		});
+    </script>
+  </body>
 </html>

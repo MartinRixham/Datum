@@ -1,1166 +1,1184 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>For Each Tests</title>
-		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
-		<script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
-		<script src="../src/Registry.js"></script>
-		<script src="../src/Subscriber.js"></script>
-		<script src="../src/UniqueRoot.js"></script>
-		<script src="../src/BindingRoot.js"></script>
-		<script src="../src/Binding.js"></script>
-		<script src="../src/ForEach.js"></script>
-		<script src="../src/With.js"></script>
-		<script src="../src/DomWatcher.js"></script>
-		<script src="../src/Datum.js"></script>
-		<script src="../src/Dependant.js"></script>
-		<script src="../src/Text.js"></script>
-		<script src="../src/Value.js"></script>
-		<script src="../src/Init.js"></script>
-		<script src="../src/Update.js"></script>
-		<script src="../src/Click.js"></script>
-		<script src="../src/ViewModel.js"></script>
-	</head>
-	<body>
-		<style>
-			#qunit ~ * {
-					display: none;
+  <head>
+    <meta charset="utf-8">
+    <title>For Each Tests</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
+    <script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
+    <script src="../src/Registry.js"></script>
+    <script src="../src/Subscriber.js"></script>
+    <script src="../src/UniqueRoot.js"></script>
+    <script src="../src/BindingRoot.js"></script>
+    <script src="../src/Binding.js"></script>
+    <script src="../src/ForEach.js"></script>
+    <script src="../src/With.js"></script>
+    <script src="../src/DomWatcher.js"></script>
+    <script src="../src/Datum.js"></script>
+    <script src="../src/Dependant.js"></script>
+    <script src="../src/Text.js"></script>
+    <script src="../src/Value.js"></script>
+    <script src="../src/Init.js"></script>
+    <script src="../src/Update.js"></script>
+    <script src="../src/Click.js"></script>
+    <script src="../src/ViewModel.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var query = function(query) {
+
+			return document.querySelector(query);
+		};
+
+		QUnit.module("", {
+
+			teardown: function() {
+
+				Subscriber.prototype = new Registry();
+				Binding.prototype = new Subscriber();
+				Datum.prototype = new Subscriber();
+				Text.prototype = new Subscriber();
+				Value.prototype = new Subscriber();
+				Update.prototype = new Subscriber();
+				UniqueRoot.prototype = new Subscriber();
+				BindingRoot.prototype = new UniqueRoot();
+				BindingRoot.With.prototype = new Subscriber();
 			}
-		</style>
-		<div id="qunit"></div>
-		<div id="qunit-fixture"></div>
-		<script>
-			var query = function(query) {
+		});
+    </script>
+    <div id="each" data-bind="each">
+      <div id="inner-each"></div>
+    </div>
+    <script>
+		QUnit.test(
+			"Remove element when bound to empty array",
+			function(assert) {
 
-					return document.querySelector(query);
-			};
+				function ForeachObject() {
 
-			QUnit.module("", {
+					this.each = [];
+				}
 
-					teardown: function() {
+				var element = query("#each");
 
-							Subscriber.prototype = new Registry();
-							Binding.prototype = new Subscriber();
-							Datum.prototype = new Subscriber();
-							Text.prototype = new Subscriber();
-							Value.prototype = new Subscriber();
-							Update.prototype = new Subscriber();
-							UniqueRoot.prototype = new Subscriber();
-							BindingRoot.prototype = new UniqueRoot();
-							BindingRoot.With.prototype = new Subscriber();
-					}
+				var inner = query("#inner-each_0");
+
+				var each = new ForeachObject();
+
+				var root = new BindingRoot(each);
+
+				assert.ok(!element.contains(inner));
+
+				root.disconnect();
 			});
-		</script>
-		<div id="each" data-bind="each">
-			<div id="inner-each"></div>
-		</div>
-		<script>
-			QUnit.test("Remove element when bound to empty array", function(assert) {
+    </script>
+    <div id="one" data-bind="one">
+      <div id="inner-one"></div>
+    </div>
+    <script>
+		QUnit.test("One element when array length one", function(assert) {
 
-					function ForeachObject() {
+			function OneObject() {
 		
-							this.each = [];
-					}
+				this.one = [{}];
+			}
 
-					var element = query("#each");
+			var one = new OneObject();
 
-					var inner = query("#inner-each_0");
+			var root = new BindingRoot(one);
 
-					var each = new ForeachObject();
+			var element = query("#one");
 
-					var root = new BindingRoot(each);
+			var inner = query("#inner-one_0");
 
-					assert.ok(!element.contains(inner));
+			assert.ok(element.contains(inner));
 
-					root.disconnect();
+			root.disconnect();
+		});
+    </script>
+    <div id="two" data-bind="two">
+      <div class="two"></div>
+    </div>
+    <script>
+		QUnit.test("Two elements when array length two", function(assert) {
+
+			function TwoObject() {
+		
+				this.two = [{}, {}];
+			}
+
+			var two = new TwoObject();
+
+			var root = new BindingRoot(two);
+
+			var element = query("#two");
+
+			var childCount = element.querySelectorAll(".two").length;
+
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <div id="remove" data-bind="remove">
+      <div id="remove-one"></div>
+    </div>
+    <script>
+		QUnit.test(
+			"Remove elements when array set to null",
+			function(assert) {
+
+				function RemoveObject() {
+		
+					this.remove = [{}];
+				}
+
+				var remove = new RemoveObject();
+
+				var element = query("#remove");
+
+				var root = new BindingRoot(remove);
+
+				remove.remove = null;
+
+				assert.strictEqual(element.children.length, 0);
+
+				root.disconnect();
 			});
-		</script>
-		<div id="one" data-bind="one">
-			<div id="inner-one"></div>
-		</div>
-		<script>
-			QUnit.test("One element when array length one", function(assert) {
+    </script>
+    <div id="after" data-bind="after">
+      <div class="after"></div>
+    </div>
+    <script>
+		QUnit.test("Bind array after root", function(assert) {
 
-					function OneObject() {
+			function AfterObject() {
 		
-							this.one = [{}];
-					}
+				this.after = null;
+			}
 
-					var one = new OneObject();
+			var after = new AfterObject();
 
-					var root = new BindingRoot(one);
+			var root = new BindingRoot(after);
 
-					var element = query("#one");
+			after.after = [{}, {}];
 
-					var inner = query("#inner-one_0");
+			var element = query("#after");
 
-					assert.ok(element.contains(inner));
+			var childCount = element.querySelectorAll(".after").length;
 
-					root.disconnect();
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <div id="reassign" data-bind="reassign">
+      <div class="reassign"></div>
+    </div>
+    <script>
+		QUnit.test("Reassign array", function(assert) {
+
+			function ReassignObject() {
+		
+				this.reassign = [{}, {}];
+			}
+
+			var reassign = new ReassignObject();
+
+			var root = new BindingRoot(reassign);
+
+			reassign.reassign = [{}, {}];
+
+			var element = query("#reassign");
+
+			var childCount = element.querySelectorAll(".reassign").length;
+
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <div id="remove-all" data-bind="removeAll">
+      <div id="removeOne"></div>
+      <div id="removeTwo"></div>
+    </div>
+    <script>
+		QUnit.test(
+			"Remove all elements when bound to empty array",
+			function(assert) {
+
+				function RemoveAll() {
+
+					this.removeAll = [];
+				}
+
+				var element = query("#remove-all");
+
+				var each = new RemoveAll();
+
+				var root = new BindingRoot(each);
+
+				assert.strictEqual(element.children.length, 0);
+
+				root.disconnect();
 			});
-		</script>
-		<div id="two" data-bind="two">
-			<div class="two"></div>
-		</div>
-		<script>
-			QUnit.test("Two elements when array length two", function(assert) {
+    </script>
+    <div id="all" data-bind="all">
+      <div id="all-one"></div>
+      <div id="all-two"></div>
+    </div>
+    <script>
+		QUnit.test("All elements when array length one", function(assert) {
 
-					function TwoObject() {
+			function AllObject() {
 		
-							this.two = [{}, {}];
-					}
+				this.all = [{}];
+			}
 
-					var two = new TwoObject();
+			var all = new AllObject();
 
-					var root = new BindingRoot(two);
+			var root = new BindingRoot(all);
 
-					var element = query("#two");
+			var element = query("#all");
 
-					var childCount = element.querySelectorAll(".two").length;
+			var one = query("#all-one_0");
+			var two = query("#all-two_0");
 
-					assert.strictEqual(childCount, 2);
+			assert.ok(element.contains(one));
+			assert.ok(element.contains(two));
 
-					root.disconnect();
+			root.disconnect();
+		});
+    </script>
+    <div id="inside" data-bind="inside">
+      <div id="inside-one" data-bind="innerAll"></div>
+    </div>
+    <script>
+		QUnit.test("Apply binding inside array", function(assert) {
+
+			function InsideObject() {
+		
+				this.inside = [{
+
+					innerAll: new Binding({
+
+						text: function() { return "Hello World"; }
+					})
+				}];
+			}
+
+			var inside = new InsideObject();
+
+			var root = new BindingRoot(inside);
+
+			var element = query("#inside-one_0");
+
+			assert.strictEqual(element.innerHTML, "Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <div id="number-outer" data-bind="thenumber">
+      <div id="number"></div>
+   </div>
+   <script>
+		QUnit.test("Number ids", function(assert) {
+
+			function NumberObject() {
+		
+				this.thenumber = [{}, {}];
+			}
+
+			var thenumber = new NumberObject();
+
+			var root = new BindingRoot(thenumber);
+
+			var element = query("#number-outer");
+
+			var one = element.querySelector("#number_0");
+			var two = element.querySelector("#number_1");
+
+			assert.ok(one);
+			assert.ok(two);
+
+			root.disconnect();
+		});
+    </script>
+    <div id="number-name" data-bind="name">
+      <div name="name"></div>
+    </div>
+    <script>
+		QUnit.test("Number names", function(assert) {
+
+			function NameObject() {
+		
+				this.name = [{}, {}];
+			}
+
+			var name = new NameObject();
+
+			var root = new BindingRoot(name);
+
+			var element = query("#number-name");
+
+			var one = element.querySelector("[name=name_0]");
+			var two = element.querySelector("[name=name_1]");
+
+			assert.ok(one);
+			assert.ok(two);
+
+			root.disconnect();
+		});
+    </script>
+    <div id="subnumber" data-bind="subnumber">
+      <div>
+        <div id="inner-subnumber"></div>
+      </div>
+    </div>
+    <script>
+		QUnit.test("Number ids on subelements", function(assert) {
+
+			function SubnumberObject() {
+		
+				this.subnumber = [{}];
+			}
+
+			var subnumber = new SubnumberObject();
+
+			var root = new BindingRoot(subnumber);
+
+			var element = query("#subnumber");
+
+			var one = element.querySelector("#inner-subnumber_0");
+
+			assert.ok(one);
+			assert.ok(two);
+
+			root.disconnect();
+		});
+    </script>
+    <div id="push" data-bind="push">
+      <div class="push"></div>
+    </div>
+    <script>
+		QUnit.test("Add element when object pushed to array", function(assert) {
+
+			function PushObject() {
+		
+				this.push = [{}];
+			}
+
+			var push = new PushObject();
+
+			var root = new BindingRoot(push);
+
+			push.push.push({});
+
+			assert.strictEqual(push.push.length, 2);
+
+			var element = query("#push");
+
+			var childCount = element.querySelectorAll(".push").length;
+
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <span id="span" data-bind="span">
+      <div></div>
+    </span>
+    <script>
+		QUnit.test("Insert spans within spans", function(assert) {
+
+			function SpanObject() {
+
+				this.span = [{}, {}];
+			}
+
+			var span = new SpanObject();
+
+			var root = new BindingRoot(span);
+
+			var element = query("#span");
+
+			var childCount = element.querySelectorAll("span").length;
+
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <div id="string" data-bind="str">
+      <div class="string"></div>
+    </div>
+    <script>
+		QUnit.test("Bind to string array", function(assert) {
+
+			function StringObject() {
+
+				this.str = ["thingy", "sumpt"];
+			}
+
+			var str = new StringObject();
+
+			var root = new BindingRoot(str);
+
+			var element = query("#string");
+
+			var childCount = element.querySelectorAll(".string").length;
+
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <div id="pop" data-bind="pop">
+      <div class="pop"></div>
+    </div>
+    <script>
+		QUnit.test(
+			"Remove element when object popped from array",
+			function(assert) {
+
+				function PopObject() {
+
+					this.pop = [{}, {}];
+				}
+
+				var pop = new PopObject();
+
+				var root = new BindingRoot(pop);
+
+				pop.pop.pop();
+
+				assert.strictEqual(pop.pop.length, 1);
+
+				var element = query("#pop");
+
+				var childCount = element.querySelectorAll(".pop").length;
+
+				assert.strictEqual(childCount, 1);
+
+				root.disconnect();
 			});
-		</script>
-		<div id="remove" data-bind="remove">
-			<div id="remove-one"></div>
-		</div>
-		<script>
-			QUnit.test("Remove elements when array set to null", function(assert) {
-
-					function RemoveObject() {
-		
-							this.remove = [{}];
-					}
-
-					var remove = new RemoveObject();
-
-					var element = query("#remove");
-
-					var root = new BindingRoot(remove);
-
-					remove.remove = null;
-
-					assert.strictEqual(element.children.length, 0);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="after" data-bind="after">
-			<div class="after"></div>
-		</div>
-		<script>
-			QUnit.test("Bind array after root", function(assert) {
-
-					function AfterObject() {
-		
-							this.after = null;
-					}
-
-					var after = new AfterObject();
-
-					var root = new BindingRoot(after);
-
-					after.after = [{}, {}];
-
-					var element = query("#after");
-
-					var childCount = element.querySelectorAll(".after").length;
-
-					assert.strictEqual(childCount, 2);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="reassign" data-bind="reassign">
-			<div class="reassign"></div>
-		</div>
-		<script>
-			QUnit.test("Reassign array", function(assert) {
-
-					function ReassignObject() {
-		
-							this.reassign = [{}, {}];
-					}
-
-					var reassign = new ReassignObject();
-
-					var root = new BindingRoot(reassign);
-
-					reassign.reassign = [{}, {}];
-
-					var element = query("#reassign");
-
-					var childCount = element.querySelectorAll(".reassign").length;
-
-					assert.strictEqual(childCount, 2);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="remove-all" data-bind="removeAll">
-			<div id="removeOne"></div>
-			<div id="removeTwo"></div>
-		</div>
-		<script>
-			QUnit.test(
-					"Remove all elements when bound to empty array",
-					function(assert) {
-
-							function RemoveAll() {
-		
-									this.removeAll = [];
-							}
-
-							var element = query("#remove-all");
-
-							var each = new RemoveAll();
-
-							var root = new BindingRoot(each);
-
-							assert.strictEqual(element.children.length, 0);
-
-							root.disconnect();
-					});
-		</script>
-		<div id="all" data-bind="all">
-			<div id="all-one"></div>
-			<div id="all-two"></div>
-		</div>
-		<script>
-			QUnit.test("All elements when array length one", function(assert) {
-
-					function AllObject() {
-		
-							this.all = [{}];
-					}
-
-					var all = new AllObject();
-
-					var root = new BindingRoot(all);
-
-					var element = query("#all");
-
-					var one = query("#all-one_0");
-					var two = query("#all-two_0");
-
-					assert.ok(element.contains(one));
-					assert.ok(element.contains(two));
-
-					root.disconnect();
-			});
-		</script>
-		<div id="inside" data-bind="inside">
-			<div id="inside-one" data-bind="innerAll"></div>
-		</div>
-		<script>
-			QUnit.test("Apply binding inside array", function(assert) {
-
-					function InsideObject() {
-		
-							this.inside = [{
-
-								innerAll: new Binding({
-
-									text: function() { return "Hello World"; }
-								})
-							}];
-					}
-
-					var inside = new InsideObject();
-
-					var root = new BindingRoot(inside);
-
-					var element = query("#inside-one_0");
-
-					assert.strictEqual(element.innerHTML, "Hello World");
-
-					root.disconnect();
-			});
-		</script>
-		<div id="number-outer" data-bind="thenumber">
-			<div id="number"></div>
-		</div>
-		<script>
-			QUnit.test("Number ids", function(assert) {
-
-					function NumberObject() {
-		
-							this.thenumber = [{}, {}];
-					}
-
-					var thenumber = new NumberObject();
-
-					var root = new BindingRoot(thenumber);
-
-					var element = query("#number-outer");
-
-					var one = element.querySelector("#number_0");
-					var two = element.querySelector("#number_1");
-
-					assert.ok(one);
-					assert.ok(two);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="number-name" data-bind="name">
-			<div name="name"></div>
-		</div>
-		<script>
-			QUnit.test("Number names", function(assert) {
-
-					function NameObject() {
-		
-							this.name = [{}, {}];
-					}
-
-					var name = new NameObject();
-
-					var root = new BindingRoot(name);
-
-					var element = query("#number-name");
-
-					var one = element.querySelector("[name=name_0]");
-					var two = element.querySelector("[name=name_1]");
-
-					assert.ok(one);
-					assert.ok(two);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="subnumber" data-bind="subnumber">
-			<div>
-				<div id="inner-subnumber"></div>
-			</div>
-		</div>
-		<script>
-			QUnit.test("Number ids on subelements", function(assert) {
-
-					function SubnumberObject() {
-		
-							this.subnumber = [{}];
-					}
-
-					var subnumber = new SubnumberObject();
-
-					var root = new BindingRoot(subnumber);
-
-					var element = query("#subnumber");
-
-					var one = element.querySelector("#inner-subnumber_0");
-
-					assert.ok(one);
-					assert.ok(two);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="push" data-bind="push">
-			<div class="push"></div>
-		</div>
-		<script>
-			QUnit.test("Add element when object pushed to array", function(assert) {
-
-					function PushObject() {
-		
-							this.push = [{}];
-					}
-
-					var push = new PushObject();
-
-					var root = new BindingRoot(push);
-
-					push.push.push({});
-
-					assert.strictEqual(push.push.length, 2);
-
-					var element = query("#push");
-
-					var childCount = element.querySelectorAll(".push").length;
-
-					assert.strictEqual(childCount, 2);
-
-					root.disconnect();
-			});
-		</script>
-		<span id="span" data-bind="span">
-			<div></div>
-		</span>
-		<script>
-			QUnit.test("Insert spans within spans", function(assert) {
-
-					function SpanObject() {
-		
-							this.span = [{}, {}];
-					}
-
-					var span = new SpanObject();
-
-					var root = new BindingRoot(span);
-
-					var element = query("#span");
-
-					var childCount = element.querySelectorAll("span").length;
-
-					assert.strictEqual(childCount, 2);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="string" data-bind="str">
-			<div class="string"></div>
-		</div>
-		<script>
-			QUnit.test("Bind to string array", function(assert) {
-
-					function StringObject() {
-		
-							this.str = ["thingy", "sumpt"];
-					}
-
-					var str = new StringObject();
-
-					var root = new BindingRoot(str);
-
-					var element = query("#string");
-
-					var childCount = element.querySelectorAll(".string").length;
-
-					assert.strictEqual(childCount, 2);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="pop" data-bind="pop">
-			<div class="pop"></div>
-		</div>
-		<script>
-			QUnit.test("Remove element when object popped from array", function(assert) {
-
-					function PopObject() {
-		
-							this.pop = [{}, {}];
-					}
-
-					var pop = new PopObject();
-
-					var root = new BindingRoot(pop);
-
-					pop.pop.pop();
-
-					assert.strictEqual(pop.pop.length, 1);
-
-					var element = query("#pop");
-
-					var childCount = element.querySelectorAll(".pop").length;
-
-					assert.strictEqual(childCount, 1);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="shift" data-bind="shift">
-			<div class="shift" data-bind="shiftText"></div>
-		</div>
-		<script>
-			QUnit.test("Remove first element on array shift", function(assert) {
-
-					function ShiftObject() {
-		
-							this.shift = 
-								[
-									{}, 
-									{ shiftText: new Text(function() { return "Hello World"; }) }
-								];
-					}
-
-					var shift = new ShiftObject();
-
-					var root = new BindingRoot(shift);
-
-					shift.shift.shift();
-
-					assert.strictEqual(shift.shift.length, 1);
-
-					var element = query("#shift");
-
-					children = element.querySelectorAll(".shift");
-
-					assert.strictEqual(children.length, 1);
-
-					assert.strictEqual(children[0].innerHTML, "Hello World");
-
-					root.disconnect();
-			});
-		</script>
-		<div id="unshift" data-bind="unshift">
-			<div class="unshift" data-bind="shiftText"></div>
-		</div>
-		<script>
-			QUnit.test("Add element to front of array on unshift", function(assert) {
-
-					function UnshfitObject() {
-		
-							this.unshift = [{}];
-					}
-
-					var unshift = new UnshfitObject();
-
-					var root = new BindingRoot(unshift);
-
-					unshift.unshift.unshift({ 
-
-						shiftText: new Text(function() { return "Hello World"; }) 
-					});
-
-					assert.strictEqual(unshift.unshift.length, 2);
-
-					var element = query("#unshift");
-
-					var children = element.querySelectorAll(".unshift");
-
-					assert.strictEqual(children.length, 2);
-
-					assert.strictEqual(children[0].innerHTML, "Hello World");
-
-					root.disconnect();
-			});
-		</script>
-		<div id="null" data-bind="nullProperty">
-			<div class="null"></div>
-		</div>
-		<script>
-			QUnit.test("Bind array with null element", function(assert) {
-
-					function NullObject() {
-		
-							this.nullProperty = [null, {}];
-					}
-
-					var nullObject = new NullObject();
-
-					var root = new BindingRoot(nullObject);
-
-					var element = query("#null");
-
-					var childCount = element.querySelectorAll(".null").length;
-
-					assert.strictEqual(childCount, 2);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="splice-remove" data-bind="spliceRemove">
-			<div class="splice-remove"></div>
-		</div>
-		<script>
-			QUnit.test("Remove element with splice", function(assert) {
-
-					function SpliceRemoveObject() {
-		
-							this.spliceRemove = [{}, {}, {}];
-					}
-
-					var spliceRemove = new SpliceRemoveObject();
-
-					var root = new BindingRoot(spliceRemove);
-					
-					spliceRemove.spliceRemove.splice(1, 1);
-					
-					assert.strictEqual(spliceRemove.spliceRemove.length, 2);
-
-					var element = query("#splice-remove");
-
-					var childCount = element.querySelectorAll(".splice-remove").length;
-
-					assert.strictEqual(childCount, 2);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="splice-remove-two" data-bind="spliceRemoveTwo">
-			<div class="splice-remove-two"></div>
-		</div>
-		<script>
-			QUnit.test("Remove two elements with splice", function(assert) {
-
-					function SpliceRemoveTwoObject() {
-		
-							this.spliceRemoveTwo = [{}, {}, {}];
-					}
-
-					var spliceRemoveTwo = new SpliceRemoveTwoObject();
-
-					var root = new BindingRoot(spliceRemoveTwo);
-					
-					spliceRemoveTwo.spliceRemoveTwo.splice(1, 2);
-					
-					assert.strictEqual(spliceRemoveTwo.spliceRemoveTwo.length, 1);
-
-					var element = query("#splice-remove-two");
-
-					var childCount =
-							element.querySelectorAll(".splice-remove-two").length;
-
-					assert.strictEqual(childCount, 1);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="splice-add" data-bind="spliceAdd">
-			<div class="splice-add" data-bind="spliceText"></div>
-		</div>
-		<script>
-			QUnit.test("Add element with splice", function(assert) {
-
-					function SpliceAddObject() {
-		
-							this.spliceAdd = [{}, {}];
-					}
-
-					var spliceAdd = new SpliceAddObject();
-
-					var root = new BindingRoot(spliceAdd);
-
-					spliceAdd.spliceAdd.splice(1, 0, { 
-
-							spliceText: new Text(function() { return "Hello World"; }) 
-					});
-
-					assert.strictEqual(spliceAdd.spliceAdd.length, 3);
-
-					var element = query("#splice-add");
-
-					var children = element.querySelectorAll(".splice-add");
-
-					assert.strictEqual(children.length, 3);
-
-					assert.strictEqual(children[1].innerHTML, "Hello World");
-
-					root.disconnect();
-			});
-		</script>
-		<div id="splice-add-two" data-bind="spliceAddTwo">
-			<div class="splice-add-two" data-bind="spliceText"></div>
-		</div>
-		<script>
-			QUnit.test("Add two elements with splice", function(assert) {
-
-					function SpliceAddTwoObject() {
-		
-							this.spliceAddTwo = [{}, {}];
-					}
-
-					var spliceAddTwo = new SpliceAddTwoObject();
-
-					var root = new BindingRoot(spliceAddTwo);
-
-					spliceAddTwo.spliceAddTwo.splice(1, 0, { 
-
-							spliceText: new Text(function() { 
-							
-									return "Hello World";
+    </script>
+    <div id="shift" data-bind="shift">
+      <div class="shift" data-bind="shiftText"></div>
+    </div>
+    <script>
+		QUnit.test("Remove first element on array shift", function(assert) {
+
+			function ShiftObject() {
+
+				this.shift =
+					[
+						{},
+						{
+							shiftText: new Text(function() {
+
+								return "Hello World";
 							})
-					},
-					{ 
-							spliceText: new Text(function() { 
-									
-									return "Eh Up Planet"; })
-					});
+						}
+					];
+			}
 
-					assert.strictEqual(spliceAddTwo.spliceAddTwo.length, 4);
+			var shift = new ShiftObject();
 
-					var element = query("#splice-add-two");
+			var root = new BindingRoot(shift);
 
-					var children = element.querySelectorAll(".splice-add-two");
+			shift.shift.shift();
 
-					assert.strictEqual(children.length, 4);
+			assert.strictEqual(shift.shift.length, 1);
 
-					assert.strictEqual(children[1].innerHTML, "Hello World");
+			var element = query("#shift");
+
+			children = element.querySelectorAll(".shift");
+
+			assert.strictEqual(children.length, 1);
+
+			assert.strictEqual(children[0].innerHTML, "Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <div id="unshift" data-bind="unshift">
+      <div class="unshift" data-bind="shiftText"></div>
+    </div>
+    <script>
+		QUnit.test(
+			"Add element to front of array on unshift",
+			function(assert) {
+
+				function UnshfitObject() {
+
+					this.unshift = [{}];
+				}
+
+				var unshift = new UnshfitObject();
+
+				var root = new BindingRoot(unshift);
+
+				unshift.unshift.unshift({
+
+					shiftText: new Text(function() {
+
+						return "Hello World";
+					})
+				});
+
+				assert.strictEqual(unshift.unshift.length, 2);
+
+				var element = query("#unshift");
+
+				var children = element.querySelectorAll(".unshift");
+
+				assert.strictEqual(children.length, 2);
+
+				assert.strictEqual(children[0].innerHTML, "Hello World");
+
+				root.disconnect();
+			});
+    </script>
+    <div id="null" data-bind="nullProperty">
+      <div class="null"></div>
+    </div>
+    <script>
+		QUnit.test("Bind array with null element", function(assert) {
+
+			function NullObject() {
+		
+				this.nullProperty = [null, {}];
+			}
+
+			var nullObject = new NullObject();
+
+			var root = new BindingRoot(nullObject);
+
+			var element = query("#null");
+
+			var childCount = element.querySelectorAll(".null").length;
+
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <div id="splice-remove" data-bind="spliceRemove">
+      <div class="splice-remove"></div>
+    </div>
+    <script>
+		QUnit.test("Remove element with splice", function(assert) {
+
+			function SpliceRemoveObject() {
+		
+				this.spliceRemove = [{}, {}, {}];
+			}
+
+			var spliceRemove = new SpliceRemoveObject();
+
+			var root = new BindingRoot(spliceRemove);
 					
-					assert.strictEqual(children[2].innerHTML, "Eh Up Planet");
-
-					root.disconnect();
-			});
-		</script>
-		<div id="splice-add-remove" data-bind="spliceAddRemove">
-			<div class="splice-add-remove" data-bind="spliceText"></div>
-		</div>
-		<script>
-			QUnit.test("Add and remove element with splice", function(assert) {
-
-					function SpliceAddRemoveObject() {
-		
-							this.spliceAddRemove = [{}, {}];
-					}
-
-					var spliceAddRemove = new SpliceAddRemoveObject();
-
-					var root = new BindingRoot(spliceAddRemove);
-
-					spliceAddRemove.spliceAddRemove.splice(1, 1, { 
-
-							spliceText: new Text(function() { return "Hello World"; }) 
-					});
-
-					assert.strictEqual(spliceAddRemove.spliceAddRemove.length, 2);
+			spliceRemove.spliceRemove.splice(1, 1);
 					
-					var element = query("#splice-add-remove");
+			assert.strictEqual(spliceRemove.spliceRemove.length, 2);
 
-					var children = element.querySelectorAll(".splice-add-remove");
+			var element = query("#splice-remove");
 
-					assert.strictEqual(children.length, 2);
+			var childCount =
+				element.querySelectorAll(".splice-remove").length;
 
-					assert.strictEqual(children[1].innerHTML, "Hello World");
+			assert.strictEqual(childCount, 2);
 
-					root.disconnect();
-			});
-		</script>
-		<table id="tbody" data-bind="tBody">
-		</table>
-		<script>
-			QUnit.test("Insert tbody within table", function(assert) {
+			root.disconnect();
+		});
+    </script>
+    <div id="splice-remove-two" data-bind="spliceRemoveTwo">
+      <div class="splice-remove-two"></div>
+    </div>
+    <script>
+		QUnit.test("Remove two elements with splice", function(assert) {
 
-					function TBodyObject() {
+			function SpliceRemoveTwoObject() {
 		
-							this.tBody = [{}, {}];
-					}
+				this.spliceRemoveTwo = [{}, {}, {}];
+			}
 
-					var tBody = new TBodyObject();
+			var spliceRemoveTwo = new SpliceRemoveTwoObject();
 
-					var root = new BindingRoot(tBody);
+			var root = new BindingRoot(spliceRemoveTwo);
+					
+			spliceRemoveTwo.spliceRemoveTwo.splice(1, 2);
+					
+			assert.strictEqual(spliceRemoveTwo.spliceRemoveTwo.length, 1);
 
-					var element = query("#tbody");
+			var element = query("#splice-remove-two");
 
-					var childCount = element.querySelectorAll("tbody").length;
+			var childCount =
+				element.querySelectorAll(".splice-remove-two").length;
 
-					assert.strictEqual(childCount, 2);
+			assert.strictEqual(childCount, 1);
 
-					root.disconnect();
+			root.disconnect();
+		});
+    </script>
+    <div id="splice-add" data-bind="spliceAdd">
+      <div class="splice-add" data-bind="spliceText"></div>
+    </div>
+    <script>
+		QUnit.test("Add element with splice", function(assert) {
+
+			function SpliceAddObject() {
+
+				this.spliceAdd = [{}, {}];
+			}
+
+			var spliceAdd = new SpliceAddObject();
+
+			var root = new BindingRoot(spliceAdd);
+
+			spliceAdd.spliceAdd.splice(1, 0, {
+
+				spliceText: new Text(function() { return "Hello World"; })
 			});
-		</script>
-		<table>
-			<tbody id="tr" data-bind="tr">
-			</tbody>
-		</table>
-		<script>
-			QUnit.test("Insert tr within tbody", function(assert) {
 
-					function TRObject() {
-		
-							this.tr = [{}, {}];
-					}
+			assert.strictEqual(spliceAdd.spliceAdd.length, 3);
 
-					var tr = new TRObject();
+			var element = query("#splice-add");
 
-					var root = new BindingRoot(tr);
+			var children = element.querySelectorAll(".splice-add");
 
-					var element = query("#tr");
+			assert.strictEqual(children.length, 3);
 
-					var childCount = element.querySelectorAll("tr").length;
+			assert.strictEqual(children[1].innerHTML, "Hello World");
 
-					assert.strictEqual(childCount, 2);
+			root.disconnect();
+		});
+    </script>
+    <div id="splice-add-two" data-bind="spliceAddTwo">
+      <div class="splice-add-two" data-bind="spliceText"></div>
+    </div>
+    <script>
+		QUnit.test("Add two elements with splice", function(assert) {
 
-					root.disconnect();
-			});
-		</script>
-		<table>
-			<tbody>
-				<tr id="td" data-bind="td"></td>
-			</tbody>
-		</table>
-		<script>
-			QUnit.test("Insert td within tr and tbody", function(assert) {
+			function SpliceAddTwoObject() {
 
-					function TDObject() {
-		
-							this.td = [{}, {}];
-					}
+				this.spliceAddTwo = [{}, {}];
+			}
 
-					var td = new TDObject();
+			var spliceAddTwo = new SpliceAddTwoObject();
 
-					var root = new BindingRoot(td);
+			var root = new BindingRoot(spliceAddTwo);
 
-					var element = query("#td");
+			spliceAddTwo.spliceAddTwo.splice(1, 0, {
 
-					var childCount = element.querySelectorAll("td").length;
-
-					assert.strictEqual(childCount, 2);
-
-					root.disconnect();
-			});
-		</script>
-		<table>
-			<thead>
-				<tr id="th" data-bind="th"></td>
-			</thead>
-		</table>
-		<script>
-			QUnit.test("Insert th within tr and thead", function(assert) {
-
-					function THObject() {
-		
-							this.th = [{}, {}];
-					}
-
-					var th = new THObject();
-
-					var root = new BindingRoot(th);
-
-					var element = query("#th");
-
-					var childCount = element.querySelectorAll("th").length;
-
-					assert.strictEqual(childCount, 2);
-
-					root.disconnect();
-			});
-		</script>
-		<ol id="ol" data-bind="ol">
-		</ol>
-		<script>
-			QUnit.test("Insert li within ol", function(assert) {
-
-					function OLObject() {
-		
-							this.ol = [{}, {}];
-					}
-
-					var ol = new OLObject();
-
-					var root = new BindingRoot(ol);
-
-					var element = query("#ol");
-
-					var childCount = element.querySelectorAll("li").length;
-
-					assert.strictEqual(childCount, 2);
-
-					root.disconnect();
-			});
-		</script>
-		<ul id="ul" data-bind="ul">
-		</ul>
-		<script>
-			QUnit.test("Insert li within ul", function(assert) {
-
-					function ULObject() {
-		
-							this.ul = [{}, {}];
-					}
-
-					var ul = new ULObject();
-
-					var root = new BindingRoot(ul);
-
-					var element = query("#ul");
-
-					var childCount = element.querySelectorAll("li").length;
-
-					assert.strictEqual(childCount, 2);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="square" data-bind="square">
-			<div class="square"></div>
-		</div>
-		<script>
-			QUnit.test("Bind square array", function(assert) {
-
-					function SquareObject() {
-		
-							this.square =
-							[
-									[{}, {}], 
-									[{}, {}]
-							];
-					}
-
-					var square = new SquareObject();
-
-					var root = new BindingRoot(square);
-
-					var element = query("#square");
-
-					var childCount = element.querySelectorAll(".square").length;
-
-					assert.strictEqual(childCount, 4);
-
-					root.disconnect();
-			});
-		</script>
-		<div id="binding" data-bind="binding">
-		</div>
-		<script>
-			QUnit.test("Bind array containing binding", function(assert) {
-
-					function BindingObject() {
-		
-							this.binding = 
-							[
-							    {},
-							    new Binding({
+				spliceText: new Text(function() {
 							
-							        text: function() { return "Hello World"; }
-							    })
-							];
-					}
+					return "Hello World";
+				})
+			},
+			{
+				spliceText: new Text(function() {
 
-					var bindingObject = new BindingObject();
-
-					var root = new BindingRoot(bindingObject);
-
-					var element = query("#binding");
-
-					var children = element.children;
-
-					assert.strictEqual(children.length, 2);
-					
-					assert.strictEqual(children[1].innerHTML, "Hello World");
-
-					root.disconnect();
+					return "Eh Up Planet";
+				})
 			});
-		</script>
-		<div id="push-binding" data-bind="pushBinding">
-		</div>
-		<script>
-			QUnit.test("Push binding to bound array", function(assert) {
 
-					function PushBindingObject() {
-		
-							this.pushBinding = [{}];
-					}
+			assert.strictEqual(spliceAddTwo.spliceAddTwo.length, 4);
 
-					var pushBindingObject = new PushBindingObject();
+			var element = query("#splice-add-two");
 
-					var root = new BindingRoot(pushBindingObject);
+			var children = element.querySelectorAll(".splice-add-two");
+
+			assert.strictEqual(children.length, 4);
+
+			assert.strictEqual(children[1].innerHTML, "Hello World");
 					
-					pushBindingObject.pushBinding.push(
-							new Binding({
+			assert.strictEqual(children[2].innerHTML, "Eh Up Planet");
+
+			root.disconnect();
+		});
+    </script>
+    <div id="splice-add-remove" data-bind="spliceAddRemove">
+      <div class="splice-add-remove" data-bind="spliceText"></div>
+    </div>
+    <script>
+		QUnit.test("Add and remove element with splice", function(assert) {
+
+			function SpliceAddRemoveObject() {
+
+				this.spliceAddRemove = [{}, {}];
+			}
+
+			var spliceAddRemove = new SpliceAddRemoveObject();
+
+			var root = new BindingRoot(spliceAddRemove);
+
+			spliceAddRemove.spliceAddRemove.splice(1, 1, {
+
+				spliceText: new Text(function() { return "Hello World"; })
+			});
+
+			assert.strictEqual(spliceAddRemove.spliceAddRemove.length, 2);
+					
+			var element = query("#splice-add-remove");
+
+			var children = element.querySelectorAll(".splice-add-remove");
+
+			assert.strictEqual(children.length, 2);
+
+			assert.strictEqual(children[1].innerHTML, "Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <table id="tbody" data-bind="tBody">
+    </table>
+    <script>
+		QUnit.test("Insert tbody within table", function(assert) {
+
+			function TBodyObject() {
+
+				this.tBody = [{}, {}];
+			}
+
+			var tBody = new TBodyObject();
+
+			var root = new BindingRoot(tBody);
+
+			var element = query("#tbody");
+
+			var childCount = element.querySelectorAll("tbody").length;
+
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <table>
+      <tbody id="tr" data-bind="tr">
+      </tbody>
+    </table>
+    <script>
+		QUnit.test("Insert tr within tbody", function(assert) {
+
+			function TRObject() {
+
+				this.tr = [{}, {}];
+			}
+
+			var tr = new TRObject();
+
+			var root = new BindingRoot(tr);
+
+			var element = query("#tr");
+
+			var childCount = element.querySelectorAll("tr").length;
+
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <table>
+     <tbody>
+       <tr id="td" data-bind="td"></td>
+      </tbody>
+    </table>
+    <script>
+		QUnit.test("Insert td within tr and tbody", function(assert) {
+
+			function TDObject() {
+
+				this.td = [{}, {}];
+			}
+
+			var td = new TDObject();
+
+			var root = new BindingRoot(td);
+
+			var element = query("#td");
+
+			var childCount = element.querySelectorAll("td").length;
+
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <table>
+      <thead>
+        <tr id="th" data-bind="th"></td>
+      </thead>
+    </table>
+    <script>
+		QUnit.test("Insert th within tr and thead", function(assert) {
+
+			function THObject() {
+
+				this.th = [{}, {}];
+			}
+
+			var th = new THObject();
+
+			var root = new BindingRoot(th);
+
+			var element = query("#th");
+
+			var childCount = element.querySelectorAll("th").length;
+
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <ol id="ol" data-bind="ol">
+    </ol>
+    <script>
+		QUnit.test("Insert li within ol", function(assert) {
+
+			function OLObject() {
+
+				this.ol = [{}, {}];
+			}
+
+			var ol = new OLObject();
+
+			var root = new BindingRoot(ol);
+
+			var element = query("#ol");
+
+			var childCount = element.querySelectorAll("li").length;
+
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <ul id="ul" data-bind="ul">
+    </ul>
+    <script>
+		QUnit.test("Insert li within ul", function(assert) {
+
+			function ULObject() {
+
+				this.ul = [{}, {}];
+			}
+
+			var ul = new ULObject();
+
+			var root = new BindingRoot(ul);
+
+			var element = query("#ul");
+
+			var childCount = element.querySelectorAll("li").length;
+
+			assert.strictEqual(childCount, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <div id="square" data-bind="square">
+      <div class="square"></div>
+    </div>
+    <script>
+		QUnit.test("Bind square array", function(assert) {
+
+			function SquareObject() {
+
+				this.square =
+					[
+						[{}, {}],
+						[{}, {}]
+					];
+			}
+
+			var square = new SquareObject();
+
+			var root = new BindingRoot(square);
+
+			var element = query("#square");
+
+			var childCount = element.querySelectorAll(".square").length;
+
+			assert.strictEqual(childCount, 4);
+
+			root.disconnect();
+		});
+    </script>
+    <div id="binding" data-bind="binding">
+    </div>
+    <script>
+		QUnit.test("Bind array containing binding", function(assert) {
+
+			function BindingObject() {
+
+				this.binding =
+					[
+						{},
+						new Binding({
+
+							text: function() { return "Hello World"; }
+						})
+					];
+			}
+
+			var bindingObject = new BindingObject();
+
+			var root = new BindingRoot(bindingObject);
+
+			var element = query("#binding");
+
+			var children = element.children;
+
+			assert.strictEqual(children.length, 2);
+					
+			assert.strictEqual(children[1].innerHTML, "Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <div id="push-binding" data-bind="pushBinding">
+    </div>
+    <script>
+		QUnit.test("Push binding to bound array", function(assert) {
+
+			function PushBindingObject() {
+
+				this.pushBinding = [{}];
+			}
+
+			var pushBindingObject = new PushBindingObject();
+
+			var root = new BindingRoot(pushBindingObject);
+
+			pushBindingObject.pushBinding.push(
+				new Binding({
 							
-					      	text: function() { return "Hello World"; }
-							}));
-							
-					var done = assert.async();
+					text: function() { return "Hello World"; }
+				}));
+
+			var done = assert.async();
+
+			setTimeout(function() {
+
+				var element = query("#push-binding");
+
+				var children = element.children;
+
+				assert.strictEqual(children.length, 2);
 					
-					setTimeout(function() {
+				assert.strictEqual(children[1].innerHTML, "Hello World");
 
-							var element = query("#push-binding");
+				done();
 
-							var children = element.children;
-
-							assert.strictEqual(children.length, 2);
-					
-							assert.strictEqual(children[1].innerHTML, "Hello World");
-
-							done();
-
-							root.disconnect();
-					});
+				root.disconnect();
 			});
-		</script>
-		<div id="sort-two" data-bind="sortTwo">
-			<div class="sort-two" id="sort-two-child"></div>
-		</div>
-		<script>
-			QUnit.test("Sort two element bound array", function(assert) {
+		});
+    </script>
+    <div id="sort-two" data-bind="sortTwo">
+      <div class="sort-two" id="sort-two-child"></div>
+    </div>
+    <script>
+		QUnit.test("Sort two element bound array", function(assert) {
 
-					function SortTwo() {
-		
-							this.sortTwo = [2, 1];
+			function SortTwo() {
+
+				this.sortTwo = [2, 1];
+			}
+
+			var sortTwo = new SortTwo();
+
+			var root = new BindingRoot(sortTwo);
+
+			sortTwo.sortTwo.sort();
+
+			assert.strictEqual(sortTwo.sortTwo.length, 2);
+					
+			var element = query("#sort-two");
+
+			var children = element.querySelectorAll(".sort-two");
+
+			assert.strictEqual(children.length, 2);
+
+			assert.strictEqual(sortTwo.sortTwo[0], 1);
+			assert.strictEqual(sortTwo.sortTwo[1], 2);
+
+			assert.strictEqual(children[0].id, "sort-two-child_1");
+			assert.strictEqual(children[1].id, "sort-two-child_0");
+
+			root.disconnect();
+		});
+    </script>
+      <div id="sort-three" data-bind="sortThree">
+        <div class="sort-three" id="sort-three-child"></div>
+      </div>
+    <script>
+		QUnit.test("Sort three element bound array", function(assert) {
+
+			function SortThree() {
+
+				this.sortThree = [2, 3, 1];
+			}
+
+			var sortThree = new SortThree();
+
+			var root = new BindingRoot(sortThree);
+
+			sortThree.sortThree.sort();
+
+			assert.strictEqual(sortThree.sortThree.length, 3);
+					
+			var element = query("#sort-three");
+
+			var children = element.querySelectorAll(".sort-three");
+
+			assert.strictEqual(children.length, 3);
+
+			assert.strictEqual(sortThree.sortThree[0], 1);
+			assert.strictEqual(sortThree.sortThree[1], 2);
+			assert.strictEqual(sortThree.sortThree[2], 3);
+
+			assert.strictEqual(children[0].id, "sort-three-child_2");
+			assert.strictEqual(children[1].id, "sort-three-child_0");
+			assert.strictEqual(children[2].id, "sort-three-child_1");
+
+			root.disconnect();
+		});
+    </script>
+    <div id="sort-comparer" data-bind="sortComparer">
+      <div class="sort-comparer" id="sort-comparer-child"></div>
+    </div>
+    <script>
+		QUnit.test("Sort three element array with a compare function", function(assert) {
+
+			function SortComparer() {
+
+				this.sortComparer = ["am", "me.", "I"];
+			}
+
+			var sortComparer = new SortComparer();
+
+			var root = new BindingRoot(sortComparer);
+
+			sortComparer.sortComparer.sort(function(a, b) {
+
+				if (a.length > b.length) {
+
+					return 1;
+				}
+
+				if (a.length < b.length) {
+
+					return -1;
+				}
+
+				return 0;
+			});
+
+			assert.strictEqual(sortComparer.sortComparer.length, 3);
+					
+			var element = query("#sort-comparer");
+
+			var children = element.querySelectorAll(".sort-comparer");
+
+			assert.strictEqual(children.length, 3);
+
+			assert.strictEqual(sortComparer.sortComparer[0], "I");
+			assert.strictEqual(sortComparer.sortComparer[1], "am");
+			assert.strictEqual(sortComparer.sortComparer[2], "me.");
+
+			assert.strictEqual(children[0].id, "sort-comparer-child_2");
+			assert.strictEqual(children[1].id, "sort-comparer-child_0");
+			assert.strictEqual(children[2].id, "sort-comparer-child_1");
+
+			root.disconnect();
+		});
+    </script>
+    <div id="reverse" data-bind="reverse">
+      <div class="reverse" id="reverse-child"></div>
+    </div>
+    <script>
+		QUnit.test("Reverse three element bound array", function(assert) {
+
+			function Reverse() {
+
+				this.reverse = [2, 3, 1];
+			}
+
+			var reverse = new Reverse();
+
+			var root = new BindingRoot(reverse);
+
+			reverse.reverse.reverse();
+
+			assert.strictEqual(reverse.reverse.length, 3);
+					
+			var element = query("#reverse");
+
+			var children = element.querySelectorAll(".reverse");
+
+			assert.strictEqual(children.length, 3);
+
+			assert.strictEqual(reverse.reverse[0], 1);
+			assert.strictEqual(reverse.reverse[1], 3);
+			assert.strictEqual(reverse.reverse[2], 2);
+
+			assert.strictEqual(children[0].id, "reverse-child_2");
+			assert.strictEqual(children[1].id, "reverse-child_1");
+			assert.strictEqual(children[2].id, "reverse-child_0");
+
+			root.disconnect();
+		});
+    </script>
+    <div id="length" data-bind="length">
+      <div class="length"></div>
+    </div>
+    <div data-bind="update"></div>
+    <script>
+		QUnit.test("Update subscribable length when array updated", function(assert) {
+
+			var lengthUpdateCount = 0;
+
+			function LengthObject() {
+
+				this.length = [{}];
+
+				this.update = new Binding({
+
+					update: function() {
+
+						var thingy = this.length.subscribableLength;
+
+						lengthUpdateCount++;
 					}
+				});
+			}
 
-					var sortTwo = new SortTwo();
+			var length = new LengthObject();
 
-					var root = new BindingRoot(sortTwo);
+			var root = new BindingRoot(length);
 
-					sortTwo.sortTwo.sort();
+			length.length.push({});
 
-					assert.strictEqual(sortTwo.sortTwo.length, 2);
-					
-					var element = query("#sort-two");
+			length.length.pop();
 
-					var children = element.querySelectorAll(".sort-two");
+			length.length.unshift({});
 
-					assert.strictEqual(children.length, 2);
+			length.length.shift();
 
-					assert.strictEqual(sortTwo.sortTwo[0], 1);
-					assert.strictEqual(sortTwo.sortTwo[1], 2);
+			length.length.splice(0);
 
-					assert.strictEqual(children[0].id, "sort-two-child_1");
-					assert.strictEqual(children[1].id, "sort-two-child_0");
+			assert.strictEqual(lengthUpdateCount, 6);
 
-					root.disconnect();
-			});
-		</script>
-		<div id="sort-three" data-bind="sortThree">
-			<div class="sort-three" id="sort-three-child"></div>
-		</div>
-		<script>
-			QUnit.test("Sort three element bound array", function(assert) {
-
-					function SortThree() {
-		
-							this.sortThree = [2, 3, 1];
-					}
-
-					var sortThree = new SortThree();
-
-					var root = new BindingRoot(sortThree);
-
-					sortThree.sortThree.sort();
-
-					assert.strictEqual(sortThree.sortThree.length, 3);
-					
-					var element = query("#sort-three");
-
-					var children = element.querySelectorAll(".sort-three");
-
-					assert.strictEqual(children.length, 3);
-
-					assert.strictEqual(sortThree.sortThree[0], 1);
-					assert.strictEqual(sortThree.sortThree[1], 2);
-					assert.strictEqual(sortThree.sortThree[2], 3);
-
-					assert.strictEqual(children[0].id, "sort-three-child_2");
-					assert.strictEqual(children[1].id, "sort-three-child_0");
-					assert.strictEqual(children[2].id, "sort-three-child_1");
-
-					root.disconnect();
-			});
-		</script>
-		<div id="sort-comparer" data-bind="sortComparer">
-			<div class="sort-comparer" id="sort-comparer-child"></div>
-		</div>
-		<script>
-			QUnit.test("Sort three element array with a compare function", function(assert) {
-
-					function SortComparer() {
-		
-							this.sortComparer = ["am", "me.", "I"];
-					}
-
-					var sortComparer = new SortComparer();
-
-					var root = new BindingRoot(sortComparer);
-
-					sortComparer.sortComparer.sort(function(a, b) {
-
-							if (a.length > b.length) {
-
-									return 1;
-							}
-
-							if (a.length < b.length) {
-
-									return -1;
-							}
-
-							return 0;
-					});
-
-					assert.strictEqual(sortComparer.sortComparer.length, 3);
-					
-					var element = query("#sort-comparer");
-
-					var children = element.querySelectorAll(".sort-comparer");
-
-					assert.strictEqual(children.length, 3);
-
-					assert.strictEqual(sortComparer.sortComparer[0], "I");
-					assert.strictEqual(sortComparer.sortComparer[1], "am");
-					assert.strictEqual(sortComparer.sortComparer[2], "me.");
-
-					assert.strictEqual(children[0].id, "sort-comparer-child_2");
-					assert.strictEqual(children[1].id, "sort-comparer-child_0");
-					assert.strictEqual(children[2].id, "sort-comparer-child_1");
-
-					root.disconnect();
-			});
-		</script>
-		<div id="reverse" data-bind="reverse">
-			<div class="reverse" id="reverse-child"></div>
-		</div>
-		<script>
-			QUnit.test("Reverse three element bound array", function(assert) {
-
-					function Reverse() {
-		
-							this.reverse = [2, 3, 1];
-					}
-
-					var reverse = new Reverse();
-
-					var root = new BindingRoot(reverse);
-
-					reverse.reverse.reverse();
-
-					assert.strictEqual(reverse.reverse.length, 3);
-					
-					var element = query("#reverse");
-
-					var children = element.querySelectorAll(".reverse");
-
-					assert.strictEqual(children.length, 3);
-
-					assert.strictEqual(reverse.reverse[0], 1);
-					assert.strictEqual(reverse.reverse[1], 3);
-					assert.strictEqual(reverse.reverse[2], 2);
-
-					assert.strictEqual(children[0].id, "reverse-child_2");
-					assert.strictEqual(children[1].id, "reverse-child_1");
-					assert.strictEqual(children[2].id, "reverse-child_0");
-
-					root.disconnect();
-			});
-		</script>
-		<div id="length" data-bind="length">
-			<div class="length"></div>
-		</div>
-		<div data-bind="update"></div>
-		<script>
-			QUnit.test("Update subscribable length when array updated", function(assert) {
-
-					var lengthUpdateCount = 0;
-
-					function LengthObject() {
-		
-							this.length = [{}];
-
-							this.update = new Binding({
-
-									update: function() {
-
-											var thingy = this.length.subscribableLength;
-
-											lengthUpdateCount++;
-									}
-							});
-					}
-
-					var length = new LengthObject();
-
-					var root = new BindingRoot(length);
-
-					length.length.push({});
-
-					length.length.pop();
-
-					length.length.unshift({});	
-
-					length.length.shift();
-
-					length.length.splice(0);
-
-					assert.strictEqual(lengthUpdateCount, 6);
-
-					root.disconnect();
-			});
-		</script>
-	</body>
+			root.disconnect();
+		});
+    </script>
+  </body>
 </html>

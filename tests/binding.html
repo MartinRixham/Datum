@@ -1,87 +1,87 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Binding Tests</title>
-		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.15.0.css">
-		<script src="http://code.jquery.com/qunit/qunit-1.15.0.js"></script>
-		<script src="../src/Registry.js"></script>
-		<script src="../src/Subscriber.js"></script>
-		<script src="../src/Binding.js"></script>
-		<script src="../src/Datum.js"></script>
-		<script src="../src/Dependant.js"></script>
-		<script src="../src/Text.js"></script>
-		<script src="../src/Value.js"></script>
-		<script src="../src/Init.js"></script>
-		<script src="../src/Update.js"></script>
-		<script src="../src/Click.js"></script>
-	</head>
-	<body>
-		<style>
-			#qunit ~ * {
-					display: none;
-			}
-		</style>
-		<div id="qunit"></div>
-		<div id="qunit-fixture"></div>
-		<div id="test-div" data-bind="test"></div>
-		<script>
-			var query = function(query) {
+  <head>
+    <meta charset="utf-8">
+    <title>Binding Tests</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.15.0.css">
+    <script src="http://code.jquery.com/qunit/qunit-1.15.0.js"></script>
+    <script src="../src/Registry.js"></script>
+    <script src="../src/Subscriber.js"></script>
+    <script src="../src/Binding.js"></script>
+    <script src="../src/Datum.js"></script>
+    <script src="../src/Dependant.js"></script>
+    <script src="../src/Text.js"></script>
+    <script src="../src/Value.js"></script>
+    <script src="../src/Init.js"></script>
+    <script src="../src/Update.js"></script>
+    <script src="../src/Click.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <div id="test-div" data-bind="test"></div>
+    <script>
+		var query = function(query) {
 
-					return document.querySelector(query);
-			};
+			return document.querySelector(query);
+		};
 
-			var scope = document.querySelector("body");
+		var scope = document.querySelector("body");
 
-			QUnit.test("Bind text", function(assert) {
+		QUnit.test("Bind text", function(assert) {
 
-					var test =
-							new Binding({
+			var test =
+				new Binding({
 
-									text: function() { return "Hello World"; }
-							});
+					text: function() { return "Hello World"; }
+				});
 
-					test.applyBinding(scope, "test");
+			test.applyBinding(scope, "test");
 
-					assert.strictEqual(query("#test-div").innerHTML, "Hello World");
-			});
-		</script>
-		<input type="text" id="test-input" data-bind="input" />
-		<script>
-			QUnit.test("Bind value", function(assert) {
+			assert.strictEqual(query("#test-div").innerHTML, "Hello World");
+		});
+    </script>
+    <input type="text" id="test-input" data-bind="input" />
+    <script>
+		QUnit.test("Bind value", function(assert) {
 
-					var input =
-							 new Binding({
+			var input =
+				new Binding({
 
-									value: function() { return "Hello World"; }
-							});
+					value: function() { return "Hello World"; }
+				});
 
-					input.applyBinding(scope, "input");
+			input.applyBinding(scope, "input");
 
-					assert.strictEqual(query("#test-input").value, "Hello World");
-			});
-		</script>
-		<input type="text" id="value-input" data-bind="valueInput" />
-		<script>
-			QUnit.test("Update data from input", function(assert) {
+			assert.strictEqual(query("#test-input").value, "Hello World");
+		});
+    </script>
+    <input type="text" id="value-input" data-bind="valueInput" />
+    <script>
+		QUnit.test("Update data from input", function(assert) {
 
-					var datum = new Datum();
+			var datum = new Datum();
 
-					var valueInput =
-							 new Binding({
+			var valueInput =
+				new Binding({
 
-									value: datum
-							});
+					value: datum
+				});
 
-					valueInput.applyBinding(scope, "valueInput");
+			valueInput.applyBinding(scope, "valueInput");
 
-					var element = query("#value-input");
+			var element = query("#value-input");
 
-					element.value = "Hello World";
-					element.dispatchEvent(new Event("change"));
+			element.value = "Hello World";
+			element.dispatchEvent(new Event("change"));
 
-					assert.strictEqual(datum(), "Hello World");
-			});
-		</script>
-	</body>
+			assert.strictEqual(datum(), "Hello World");
+		});
+    </script>
+ </body>
 </html>

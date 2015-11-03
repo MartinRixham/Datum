@@ -5,18 +5,22 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON("package.json"),
 		jshint: {
 
-			all: "src/*.js"
+			all: ["src/*.js", "tests/*.html"],
+			options: {
+
+				extract: "auto"
+			}
 		},
 		jscs: {
 
-			src: "src/*.js",
+			src: ["src/*.js", "tests"],
 			options: {
 
 				config: ".jscsrc",
  				esnext: false,
 				verbose: true,
 				fix: false,
-				requireCurlyBraces: []
+				extract: ["tests/*.html"]
 			}
 		},
 		concat: {

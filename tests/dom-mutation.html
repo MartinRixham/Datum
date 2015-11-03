@@ -1,472 +1,473 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Dom Mutation Tests</title>
-		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
-		<script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
-		<script src="../src/Registry.js"></script>
-		<script src="../src/Subscriber.js"></script>
-		<script src="../src/UniqueRoot.js"></script>
-		<script src="../src/BindingRoot.js"></script>
-		<script src="../src/ForEach.js"></script>
-		<script src="../src/With.js"></script>
-		<script src="../src/DomWatcher.js"></script>
-		<script src="../src/Binding.js"></script>
-		<script src="../src/Datum.js"></script>
-		<script src="../src/Dependant.js"></script>
-		<script src="../src/Text.js"></script>
-		<script src="../src/Value.js"></script>
-		<script src="../src/Init.js"></script>
-		<script src="../src/Update.js"></script>
-		<script src="../src/Click.js"></script>
-		<script src="../src/ViewModel.js"></script>
-	</head>
-	<body>
-		<style>
-			#qunit ~ * {
-					display: none;
+  <head>
+    <meta charset="utf-8">
+    <title>Dom Mutation Tests</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
+    <script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
+    <script src="../src/Registry.js"></script>
+    <script src="../src/Subscriber.js"></script>
+    <script src="../src/UniqueRoot.js"></script>
+    <script src="../src/BindingRoot.js"></script>
+    <script src="../src/ForEach.js"></script>
+    <script src="../src/With.js"></script>
+    <script src="../src/DomWatcher.js"></script>
+    <script src="../src/Binding.js"></script>
+    <script src="../src/Datum.js"></script>
+    <script src="../src/Dependant.js"></script>
+    <script src="../src/Text.js"></script>
+    <script src="../src/Value.js"></script>
+    <script src="../src/Init.js"></script>
+    <script src="../src/Update.js"></script>
+    <script src="../src/Click.js"></script>
+    <script src="../src/ViewModel.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var query = function(query) {
+
+			return document.querySelector(query);
+		};
+
+		var fixture = query("#qunit-fixture");
+
+		// To preserve atomicity prototypes must be 
+		// reassigned after each test.
+		QUnit.module("", {
+
+			teardown: function() {
+
+				Subscriber.prototype = new Registry();
+				Binding.prototype = new Subscriber();
+				Datum.prototype = new Subscriber();
+				Text.prototype = new Subscriber();
+				Value.prototype = new Subscriber();
+				UniqueRoot.prototype = new Subscriber();
+				BindingRoot.prototype = new UniqueRoot();
+				BindingRoot.With.prototype = new Subscriber();
 			}
-		</style>
-		<div id="qunit"></div>
-		<div id="qunit-fixture"></div>
-		<script>
-			var query = function(query) {
+		});
+    </script>
+    <script>
+		QUnit.test("Bind to inserted element", function(assert) {
 
-					return document.querySelector(query);
-			};
-
-			var fixture = query("#qunit-fixture");
-
-			// To preserve atomicity prototypes must be 
-			// reassigned after each test.
-			QUnit.module("", {
-
-					teardown: function() {
-
-							Subscriber.prototype = new Registry();
-							Binding.prototype = new Subscriber();
-							Datum.prototype = new Subscriber();
-							Text.prototype = new Subscriber();
-							Value.prototype = new Subscriber();
-							UniqueRoot.prototype = new Subscriber();
-							BindingRoot.prototype = new UniqueRoot();
-							BindingRoot.With.prototype = new Subscriber();
-					}
-			});
-		</script>
-		<script>
-			QUnit.test("Bind to inserted element", function(assert) {
-
-					function TextObject() {
+			function TextObject() {
 		
-							this.test = new Binding({
+				this.test = new Binding({
 
-									text: function() { return "Hello World"; }
-							});
-					}
+					text: function() { return "Hello World"; }
+				});
+			}
 
-					var root = new BindingRoot(new TextObject());
+			var root = new BindingRoot(new TextObject());
 
-					var div = document.createElement("div");
+			var div = document.createElement("div");
 
-					div.id = "test-div";
+			div.id = "test-div";
 
-					div.setAttribute("data-bind", "test");
+			div.setAttribute("data-bind", "test");
 
-					fixture.appendChild(div);
+			fixture.appendChild(div);
 
-					var done = assert.async();
+			var done = assert.async();
 
-					setTimeout(function() {
+			setTimeout(function() {
 					
-							assert.strictEqual(
-									query("#test-div").innerHTML,
-									"Hello World");
-							done();
+				assert.strictEqual(
+					query("#test-div").innerHTML,
+					"Hello World");
+				done();
 
-							root.disconnect();
-					});
+				root.disconnect();
 			});
-		</script>
-		<script>
-			QUnit.test("Bind datum to inserted element", function(assert) {
+		});
+    </script>
+    <script>
+		QUnit.test("Bind datum to inserted element", function(assert) {
 
-					function TextObject() {
+			function TextObject() {
 
-							this.datum = null;
+				this.datum = null;
 
-							var self = this;
+				var self = this;
 		
-							this.test = new Binding({
+				this.test = new Binding({
 
-									text: function() { return self.datum; }
-							});
-					}
+					text: function() { return self.datum; }
+				});
+			}
 
-					var textObject = new TextObject();
+			var textObject = new TextObject();
 
-					var root = new BindingRoot(textObject);
+			var root = new BindingRoot(textObject);
 
-					var div = document.createElement("div");
+			var div = document.createElement("div");
 
-					div.id = "test-div";
+			div.id = "test-div";
 
-					div.setAttribute("data-bind", "test");
+			div.setAttribute("data-bind", "test");
 
-					fixture.appendChild(div);
+			fixture.appendChild(div);
 
-					textObject.datum = "Hello World";
+			textObject.datum = "Hello World";
 
-					var done = assert.async();
+			var done = assert.async();
 
-					setTimeout(function() {
+			setTimeout(function() {
 					
-							assert.strictEqual(
-									query("#test-div").innerHTML,
-									"Hello World");
-							done();
+				assert.strictEqual(
+					query("#test-div").innerHTML,
+					"Hello World");
+				done();
 
-							root.disconnect();
-					});
+				root.disconnect();
 			});
-		</script>
-		<script>
-			QUnit.test("Bind to replaced element", function(assert) {
+		});
+    </script>
+    <script>
+		QUnit.test("Bind to replaced element", function(assert) {
 
-					var firstDiv = document.createElement("div");
+			var firstDiv = document.createElement("div");
 
-					firstDiv.id = "first";
+			firstDiv.id = "first";
 
-					firstDiv.setAttribute("data-bind", "test");
+			firstDiv.setAttribute("data-bind", "test");
 
-					fixture.appendChild(firstDiv);
+			fixture.appendChild(firstDiv);
 
-					function TextObject() {
+			function TextObject() {
 		
-							this.test = new Binding({
+				this.test = new Binding({
 
-									text: function() { return "Hello World"; }
-							});
-					}
+					text: function() { return "Hello World"; }
+				});
+			}
 
-					root = new BindingRoot(new TextObject());
+			root = new BindingRoot(new TextObject());
 
-					var div = document.createElement("div");
+			var div = document.createElement("div");
 
-					div.id = "test-div";
+			div.id = "test-div";
 
-					div.setAttribute("data-bind", "test");
+			div.setAttribute("data-bind", "test");
 
-					fixture.removeChild(firstDiv);
+			fixture.removeChild(firstDiv);
 
-					fixture.appendChild(div);
+			fixture.appendChild(div);
 
-					var done = assert.async();
+			var done = assert.async();
 
-					setTimeout(function() {
+			setTimeout(function() {
 					
-							assert.strictEqual(
-									query("#test-div").innerHTML,
-									"Hello World");
-							done();
+				assert.strictEqual(
+					query("#test-div").innerHTML,
+					"Hello World");
+				done();
 
-							root.disconnect();
-					});
+				root.disconnect();
 			});
-		</script>
-		<script>
-			QUnit.test("Bind value to replaced element", function(assert) {
+		});
+    </script>
+    <script>
+		QUnit.test("Bind value to replaced element", function(assert) {
 
-					var firstInput = document.createElement("input");
+			var firstInput = document.createElement("input");
 
-					firstInput.id = "first";
+			firstInput.id = "first";
 
-					firstInput.setAttribute("type", "text");
+			firstInput.setAttribute("type", "text");
 
-					firstInput.setAttribute("data-bind", "test");
+			firstInput.setAttribute("data-bind", "test");
 
-					fixture.appendChild(firstInput);
+			fixture.appendChild(firstInput);
 
-					function TextObject() {
+			function TextObject() {
 		
-							this.datum = null;
+				this.datum = null;
 
-							var self = this;
+				var self = this;
 		
-							this.test = new Binding({
+				this.test = new Binding({
 
-									value: function(value) { 
+					value: function(value) { 
 
-											if (value) {
+						if (value) {
 
-													self.datum = value;
-											}
+							self.datum = value;
+						}
 
-											return self.datum; 
-									}
-							});
+						return self.datum; 
 					}
+				});
+			}
 
-					var textObject = new TextObject();
+			var textObject = new TextObject();
 
-					var root = new BindingRoot(textObject);
+			var root = new BindingRoot(textObject);
 
-					var input = document.createElement("input");
+			var input = document.createElement("input");
 
-					input.id = "test-div";
+			input.id = "test-div";
 
-					input.setAttribute("type", "text");
+			input.setAttribute("type", "text");
 
-					input.setAttribute("data-bind", "test");
+			input.setAttribute("data-bind", "test");
 
-					fixture.removeChild(firstInput);
+			fixture.removeChild(firstInput);
 
-					fixture.appendChild(input);
+			fixture.appendChild(input);
 
-					setTimeout(function() {
+			setTimeout(function() {
 
-							var element = query("#test-div");
+				var element = query("#test-div");
 
-							element.value = "Hello World";
-							element.dispatchEvent(new Event("change"));
-					});
-
-					var done = assert.async();
-
-					setTimeout(function() {
-					
-							assert.strictEqual(
-									textObject.datum,
-									"Hello World");
-							done();
-
-							root.disconnect();
-					});
+				element.value = "Hello World";
+				element.dispatchEvent(new Event("change"));
 			});
-		</script>
-		<div data-bind="first"></div>
-		<div id="inner" data-bind="inner">
-			<div id="second" data-bind="second"></div>
-		</div>
-		<script>
-			QUnit.test(
-					"Bindings outside of the mutation are not reapplied",
-					function(assert) {
 
-							var count = 0;
+			var done = assert.async();
 
-							function OuterObject() {
-		
-									this.first = new Binding({
-
-											text: function() { 
-
-													count += 1;
-
-													return "Hello World"; 
-											}
-									});
-
-									this.inner = {
-
-											second: new Binding({
-
-													text: function() { return "Hello World"; }
-											})
-									};
-							}
-
-							var root = new BindingRoot(new OuterObject());
-
-							var div = document.createElement("div");
-
-							div.id = "third";
-
-							div.setAttribute("data-bind", "second");
-
-							var inner = query("#inner");
-
-							inner.appendChild(div);
-
-							var done = assert.async();
-
-							setTimeout(function() {
-
-									assert.strictEqual(count, 1);
+			setTimeout(function() {
 					
-									assert.strictEqual(
-											query("#third").innerHTML,
-											"Hello World");
+				assert.strictEqual(
+					textObject.datum,
+					"Hello World");
+				done();
 
-									done();
+				root.disconnect();
+			});
+		});
+    </script>
+    <div data-bind="first"></div>
+    <div id="inner" data-bind="inner">
+      <div id="second" data-bind="second"></div>
+    </div>
+    <script>
+		QUnit.test(
+			"Bindings outside of the mutation are not reapplied",
+			function(assert) {
 
-									root.disconnect();
-							});
-					});
-		</script>
-		<script>
-			QUnit.test("Bind array to inserted element", function(assert) {
+				var count = 0;
 
-					function ArrayObject() {
+				function OuterObject() {
 		
-							this.thearray = 
-									[
-											{ 
+					this.first = new Binding({
 
-													datum: "Thingy",
+						text: function() { 
 
-													text: new Binding({ 
+							count += 1;
 
-															text: function() { return this.datum; } 
-													})
-											},
-											{}
-									];
-					}
+							return "Hello World"; 
+						}
+					});
 
-					var arrayObject = new ArrayObject();
+					this.inner = {
 
-					var root = new BindingRoot(arrayObject);
+						second: new Binding({
 
-					var element = document.createElement("div");
+							text: function() { return "Hello World"; }
+						})
+					};
+				}
 
-					element.id = "array";
+				var root = new BindingRoot(new OuterObject());
 
-					element.setAttribute("data-bind", "thearray");
+				var div = document.createElement("div");
 
-					var div = document.createElement("div");
+				div.id = "third";
 
-					div.className = "array";
+				div.setAttribute("data-bind", "second");
 
-					div.setAttribute("data-bind", "text");
+				var inner = query("#inner");
 
-					element.appendChild(div);
+				inner.appendChild(div);
 
-					fixture.appendChild(element);
+				var done = assert.async();
 
-					var done = assert.async();
+				setTimeout(function() {
 
-					setTimeout(function() {
+					assert.strictEqual(count, 1);
+					
+					assert.strictEqual(
+						query("#third").innerHTML,
+						"Hello World");
 
-							var children = document.querySelectorAll(".array");
+					done();
+
+					root.disconnect();
+				});
+			});
+    </script>
+    <script>
+		QUnit.test("Bind array to inserted element", function(assert) {
+
+			function ArrayObject() {
+		
+				this.thearray = 
+					[
+						{ 
+							datum: "Thingy",
+							text: new Binding({ 
+
+								text: function() { return this.datum; } 
+							})
+						},
+						{}
+					];
+			}
+
+			var arrayObject = new ArrayObject();
+
+			var root = new BindingRoot(arrayObject);
+
+			var element = document.createElement("div");
+
+			element.id = "array";
+
+			element.setAttribute("data-bind", "thearray");
+
+			var div = document.createElement("div");
+
+			div.className = "array";
+
+			div.setAttribute("data-bind", "text");
+
+			element.appendChild(div);
+
+			fixture.appendChild(element);
+
+			var done = assert.async();
+
+			setTimeout(function() {
+
+				var children = document.querySelectorAll(".array");
 			
-							assert.strictEqual(children.length, 2);
+				assert.strictEqual(children.length, 2);
 
-							arrayObject.thearray[0].datum = "Hello World";
+				arrayObject.thearray[0].datum = "Hello World";
 
-							assert.strictEqual(children[0].innerHTML, "Hello World");
+				assert.strictEqual(children[0].innerHTML, "Hello World");
 
-							done();
+				done();
 
-							root.disconnect();
-					});
+				root.disconnect();
 			});
-		</script>
-		<script>
-			QUnit.test("Bind null object to inserted element", function(assert) {
+		});
+    </script>
+    <script>
+		QUnit.test("Bind null object to inserted element", function(assert) {
 
-					function NullObject() {
+			function NullObject() {
 		
-							this.thenull = null;
-					}
+				this.thenull = null;
+			}
 
-					var root = new BindingRoot(new NullObject());
+			var root = new BindingRoot(new NullObject());
 
-					var element = document.createElement("div");
+			var element = document.createElement("div");
 
-					element.id = "null";
+			element.id = "null";
 
-					element.setAttribute("data-bind", "thenull");
+			element.setAttribute("data-bind", "thenull");
 
-					var div = document.createElement("div");
+			var div = document.createElement("div");
 
-					div.className = "null";
+			div.className = "null";
 
-					element.appendChild(div);
+			element.appendChild(div);
 
-					fixture.appendChild(element);
+			fixture.appendChild(element);
 
-					var done = assert.async();
+			var done = assert.async();
 
-					setTimeout(function() {
+			setTimeout(function() {
 
-							var childCount = fixture.querySelectorAll(".null").length;
+				var childCount = fixture.querySelectorAll(".null").length;
 			
-							assert.strictEqual(childCount, 0);
+				assert.strictEqual(childCount, 0);
 
-							done();
+				done();
 
-							root.disconnect();
-					});
+				root.disconnect();
 			});
-		</script>
-		<script>
-			QUnit.test("Rebind array to replaced element", function(assert) {
+		});
+    </script>
+    <script>
+		QUnit.test("Rebind array to replaced element", function(assert) {
 
-					function ArrayObject() {
+			function ArrayObject() {
 		
-							this.thearray = 
-									[
-											{ 
-													text: new Binding({ 
+				this.thearray = 
+					[
+						{ 
+							text: new Binding({ 
 
-															text: function() { return "Hello World"; } 
-													})
-											}, 
-											{}
-									];
-					}
+								text: function() { 
 
-					var element = document.createElement("div");
+									return "Hello World"; 
+								}  
+							})
+						}, 
+						{}
+					];
+			}
 
-					element.id = "array";
+			var element = document.createElement("div");
 
-					element.setAttribute("data-bind", "thearray");
+			element.id = "array";
 
-					var div = document.createElement("div");
+			element.setAttribute("data-bind", "thearray");
 
-					div.className = "array";
+			var div = document.createElement("div");
 
-					element.appendChild(div);
+			div.className = "array";
 
-					fixture.appendChild(element);
+			element.appendChild(div);
 
-					var root = new BindingRoot(new ArrayObject());
+			fixture.appendChild(element);
 
-					fixture.removeChild(element);
+			var root = new BindingRoot(new ArrayObject());
 
-					element = document.createElement("div");
+			fixture.removeChild(element);
 
-					element.id = "array";
+			element = document.createElement("div");
 
-					element.setAttribute("data-bind", "thearray");
+			element.id = "array";
 
-					div = document.createElement("div");
+			element.setAttribute("data-bind", "thearray");
 
-					div.className = "array";
+			div = document.createElement("div");
 
-					div.setAttribute("data-bind", "text");
+			div.className = "array";
 
-					element.appendChild(div);
+			div.setAttribute("data-bind", "text");
 
-					fixture.appendChild(element);
+			element.appendChild(div);
 
-					var done = assert.async();
+			fixture.appendChild(element);
 
-					setTimeout(function() {
+			var done = assert.async();
 
-							var children = fixture.querySelectorAll(".array");
+			setTimeout(function() {
+
+				var children = fixture.querySelectorAll(".array");
 			
-							assert.strictEqual(children.length, 2);
+				assert.strictEqual(children.length, 2);
 
-							assert.strictEqual(children[0].innerHTML, "Hello World");
+				assert.strictEqual(children[0].innerHTML, "Hello World");
 
-							done();
+				done();
 
-							root.disconnect();
-					});
+				root.disconnect();
 			});
-		</script>
-	</body>
+		});
+    </script> 
+  </body>
 </html>

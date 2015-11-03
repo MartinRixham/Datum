@@ -1,190 +1,190 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Value Tests</title>
-		<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.15.0.css">
-		<script src="http://code.jquery.com/qunit/qunit-1.15.0.js"></script>
-		<script src="../src/Registry.js"></script>
-		<script src="../src/Subscriber.js"></script>
-		<script src="../src/Datum.js"></script>
-		<script src="../src/Dependant.js"></script>
-		<script src="../src/Value.js"></script>
-	</head>
-	<body>
-		<style>
-			#qunit ~ * {
-					display: none;
-			}
-		</style>
-		<div id="qunit"></div>
-		<div id="qunit-fixture"></div>
-		<script>
-			var query = function(query) {
+  <head>
+    <meta charset="utf-8">
+    <title>Value Tests</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.15.0.css">
+    <script src="http://code.jquery.com/qunit/qunit-1.15.0.js"></script>
+    <script src="../src/Registry.js"></script>
+    <script src="../src/Subscriber.js"></script>
+    <script src="../src/Datum.js"></script>
+    <script src="../src/Dependant.js"></script>
+    <script src="../src/Value.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+				display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var query = function(query) {
 
-					return document.querySelector(query);
-			};
+			return document.querySelector(query);
+		};
 
-			var scope = document.querySelector("body");
-		</script>
-		<input type="text" id="value-input" data-bind="valueInput" />
-		<script>
-			QUnit.test("Update data from input", function(assert) {
+		var scope = document.querySelector("body");
+    </script>
+    <input type="text" id="value-input" data-bind="valueInput" />
+    <script>
+		QUnit.test("Update data from input", function(assert) {
 
-					var datum = new Datum();
+			var datum = new Datum();
 
-					var valueInput = 
-							new Value(function(value) { 
+			var valueInput = 
+				new Value(function(value) { 
 
-									if (value) {
+					if (value) {
 
-											datum(value);
-									}
+						datum(value);
+					}
 
-									return datum(); 
-							});
+					return datum(); 
+				});
 
-					valueInput.applyBinding(scope, "valueInput");
+			valueInput.applyBinding(scope, "valueInput");
 
-					var element = query("#value-input");
+			var element = query("#value-input");
 
-					element.value = "Hello World";
-					element.dispatchEvent(new Event("change"));
+			element.value = "Hello World";
+			element.dispatchEvent(new Event("change"));
 
-					assert.strictEqual(datum(), "Hello World");
-			});
-		</script>
-		<input type="text" id="input" data-bind="testInput" />
-		<script>
-			QUnit.test("Bind value from datum", function(assert) {
+			assert.strictEqual(datum(), "Hello World");
+		});
+    </script>
+    <input type="text" id="input" data-bind="testInput" />
+    <script>
+		QUnit.test("Bind value from datum", function(assert) {
 
-					var datum = new Datum("Hello World")
+			var datum = new Datum("Hello World");
 
-					var input = new Value(function() { return datum(); });
+			var input = new Value(function() { return datum(); });
 
-					input.applyBinding(scope, "testInput");
+			input.applyBinding(scope, "testInput");
 
-					assert.strictEqual(query("#input").value, "Hello World");
-			});
-		</script>
-		<input type="text" id="input-value" data-bind="inputValue" />
-		<script>
-			QUnit.test("Change value after binding", function(assert) {
+			assert.strictEqual(query("#input").value, "Hello World");
+		});
+    </script>
+    <input type="text" id="input-value" data-bind="inputValue" />
+    <script>
+		QUnit.test("Change value after binding", function(assert) {
 
-					var datum = new Datum()
+			var datum = new Datum();
 
-					var input = new Value(function() { return datum(); });
+			var input = new Value(function() { return datum(); });
 
-					input.applyBinding(scope, "inputValue");
+			input.applyBinding(scope, "inputValue");
 
-					datum("Hello World");
+			datum("Hello World");
 
-					assert.strictEqual(query("#input-value").value, "Hello World");
-			});
-		</script>
-		<input type="text" id="input1" data-bind="multiInput" />
-		<input type="text" id="input2" data-bind="multiInput" />
-		<script>
-			QUnit.test("Bind value to two inputs", function(assert) {
+			assert.strictEqual(query("#input-value").value, "Hello World");
+		});
+    </script>
+    <input type="text" id="input1" data-bind="multiInput" />
+    <input type="text" id="input2" data-bind="multiInput" />
+    <script>
+		QUnit.test("Bind value to two inputs", function(assert) {
 
-					var input = new Value(function() { return "Hello World"; });
+			var input = new Value(function() { return "Hello World"; });
 
-					input.applyBinding(scope, "multiInput");
+			input.applyBinding(scope, "multiInput");
 
-					assert.strictEqual(query("#input1").value, "Hello World");
-					assert.strictEqual(query("#input2").value, "Hello World");
-			});
-		</script>
-		<input type="text" id="send" data-bind="sync" />
-		<input type="text" id="receive" data-bind="sync" />
-		<script>
-			QUnit.test("Synchronise inputs", function(assert) {
+			assert.strictEqual(query("#input1").value, "Hello World");
+			assert.strictEqual(query("#input2").value, "Hello World");
+		});
+    </script>
+    <input type="text" id="send" data-bind="sync" />
+    <input type="text" id="receive" data-bind="sync" />
+    <script>
+		QUnit.test("Synchronise inputs", function(assert) {
 
-					var datum = new Datum();
+			var datum = new Datum();
 
-					var valueInput =
-							new Value(function(value) { 
+			var valueInput =
+				new Value(function(value) { 
 
-									if (value) {
+					if (value) {
 
-											datum(value);
-									}
+						datum(value);
+					}
 
-									return datum(); 
-							});
+					return datum(); 
+				});
 
-					valueInput.applyBinding(scope, "sync");
+			valueInput.applyBinding(scope, "sync");
 
-					var sender = query("#send");
+			var sender = query("#send");
 
-					sender.value = "Hello World";
-					sender.dispatchEvent(new Event("change"));
+			sender.value = "Hello World";
+			sender.dispatchEvent(new Event("change"));
 
-					assert.strictEqual(query("#receive").value, "Hello World");
-			});
-		</script>
-		<input type="text" data-bind="single" />
-		<input type="text" data-bind="single" />
-		<script>
-			QUnit.test("Callback called once per element on init", function(assert) {
+			assert.strictEqual(query("#receive").value, "Hello World");
+		});
+    </script>
+    <input type="text" data-bind="single" />
+    <input type="text" data-bind="single" />
+    <script>
+		QUnit.test("Callback called once per element on init", function(assert) {
 
-					var count = 0;
+			var count = 0;
 
-					var datum = new Datum();
+			var datum = new Datum();
 
-					var value = 
-							new Value(function() {
+			var value = 
+				new Value(function() {
 
-									count += 1; 
+					count += 1; 
 
-									return datum();
-							});
+					return datum();
+				});
 
-					value.applyBinding(scope, "single");
+			value.applyBinding(scope, "single");
 
-					assert.strictEqual(count, 2);
-			});
-		</script>
-		<div data-bind="twice"></div>
-		<div data-bind="twice"></div>
-		<script>
-			QUnit.test("Callback called once per element on update", function(assert) {
+			assert.strictEqual(count, 2);
+		});
+    </script>
+    <div data-bind="twice"></div>
+    <div data-bind="twice"></div>
+    <script>
+		QUnit.test("Callback called once per element on update", function(assert) {
 
-					var count = 0;
+			var count = 0;
 
-					var datum = new Datum();
+			var datum = new Datum();
 
-					var value = 
-							new Value(function() {
+			var value = 
+				new Value(function() {
 
-									count += 1; 
+					count += 1; 
 
-									return datum();
-							});
+					return datum();
+				});
 
-					value.applyBinding(scope, "twice");
+			value.applyBinding(scope, "twice");
 
-					count = 0;
+			count = 0;
 
-					datum("Hello World");
+			datum("Hello World");
 
-					assert.strictEqual(count, 2);
-			});
-		</script>
-		<input type="text" id="element" data-bind="element" />
-		<script>
-			QUnit.test("Bind value from datum", function(assert) {
+			assert.strictEqual(count, 2);
+		});
+    </script>
+    <input type="text" id="element" data-bind="element" />
+    <script>
+		QUnit.test("Bind value from datum", function(assert) {
 
-					var input = 
-							new Value(function(value, element) { 
+			var input = 
+				new Value(function(value, element) { 
 
-									return element.id; 
-							});
+					return element.id; 
+				});
 
-					input.applyBinding(scope, "element");
+			input.applyBinding(scope, "element");
 
-					assert.strictEqual(query("#element").value, "element");
-			});
-		</script>
-	</body>
+			assert.strictEqual(query("#element").value, "element");
+		});
+    </script>
+  </body>
 </html>
