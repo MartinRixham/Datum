@@ -1,5 +1,7 @@
 function Text(text) {
 
+	var model = null;
+
 	this.createCallback = function(model, element) {
 
 		this.assignUpdater(function() {
@@ -11,6 +13,8 @@ function Text(text) {
 	};
 
 	this.applyBinding = function(scope, name, model) {
+
+		model = model;
 
 		var elements = this.matchingElements(scope, name);
 		
@@ -26,6 +30,14 @@ function Text(text) {
 
 				this.createCallback(model, element);
 			}
+		}
+	};
+
+	this.test = {
+
+		call: function(element) {
+
+			text.call(model, element);
 		}
 	};
 }
