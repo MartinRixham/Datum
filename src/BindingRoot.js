@@ -74,11 +74,13 @@ function BindingRoot(model) {
 					injectProperty(key, model, property);
 				}
 
-				if (element && typeof(property) == "object") {
+				if (element &&
+					self.isInScope(element, scope) &&
+					typeof(property) == "object") {
 
 					if (!(model instanceof Array)) {
 
-						new BindingRoot.With(model, key, element);
+						new BindingRoot.With(model, key, element, scope);
 					}
 
 					if (property) {

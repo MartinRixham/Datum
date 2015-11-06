@@ -2,7 +2,12 @@
 // and by convention whenever a plain object is bound to an element.
 // Its effect is to remove all child elements from the DOM
 // when the object is null.
-BindingRoot.With = function(model, key, element) {
+BindingRoot.With = function(model, key, element, scope) {
+
+	if (!this.isInScope(element, scope)) {
+
+		return;
+	}
 
 	if (!element.boundObjects) {
 
