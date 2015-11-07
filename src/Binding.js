@@ -3,6 +3,8 @@ function Binding(bindings) {
 	this.requestRebind();
 
 	setTimeout(this.rebindDataStructure);
+
+	var parentModel = null;
 	
 	// The applyBinding method is the sole member of the binding interface,
 	// the most important internal interface in Datum.
@@ -16,6 +18,8 @@ function Binding(bindings) {
 	// The client code is responsible only for telling the binding where to bind
 	// and signalling that the binding may need to be applied.
 	this.applyBinding = function(scope, name, model) {
+
+		parentModel = model;
 
 		if (bindings.text) {
 
@@ -59,6 +63,16 @@ function Binding(bindings) {
 			visible.applyBinding(scope, name, model);
 		}
 	};
+
+	this.test = {};
+
+	for (key in bindings) {
+
+		this.test[key] = function(element) {
+
+			bindings[key].call(parentModel, element);
+		};
+	}
 }
 
 Binding.prototype = new Subscriber();

@@ -83,5 +83,25 @@
 			assert.strictEqual(datum(), "Hello World");
 		});
     </script>
+	<script>
+		QUnit.test("Callback called from test handle.", function(assert) {
+
+			var callCount = 0;
+
+			var binding = new Binding({
+
+				thingy: function() {
+
+					callCount++;
+				}
+			});
+
+			binding.applyBinding(scope, "sumpt", {});
+
+			binding.test.thingy(document.createElement("DIV"));
+
+			assert.strictEqual(callCount, 1);
+		});
+	</script>
  </body>
 </html>
