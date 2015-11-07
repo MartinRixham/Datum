@@ -1,5 +1,7 @@
 function Value(value) {
 
+	var parentModel = null;
+
 	this.addCallbacks = function(element, model) {
 
 		if (!element.callbacks) {
@@ -29,6 +31,8 @@ function Value(value) {
 
 	this.applyBinding = function(scope, name, model) {
 
+		parentModel = model;
+
 		var elements = this.matchingElements(scope, name);
 
 		for (var i = 0; i < elements.length; i++) {
@@ -48,6 +52,14 @@ function Value(value) {
 
 				this.addCallbacks(element, model);
 			}
+		}
+	};
+
+	this.test = {
+
+		call: function(element) {
+
+			value.call(parentModel, element);
 		}
 	};
 }

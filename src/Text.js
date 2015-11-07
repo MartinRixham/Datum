@@ -1,6 +1,6 @@
 function Text(text) {
 
-	var model = null;
+	var parentModel = null;
 
 	this.createCallback = function(model, element) {
 
@@ -14,7 +14,7 @@ function Text(text) {
 
 	this.applyBinding = function(scope, name, model) {
 
-		model = model;
+		parentModel = model;
 
 		var elements = this.matchingElements(scope, name);
 		
@@ -37,7 +37,7 @@ function Text(text) {
 
 		call: function(element) {
 
-			text.call(model, element);
+			text.call(parentModel, element);
 		}
 	};
 }
