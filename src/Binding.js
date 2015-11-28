@@ -64,15 +64,17 @@ function Binding(bindings) {
 		}
 	};
 
-	this.test = {};
+	test = {};
 
-	for (key in bindings) {
+	Object.keys(bindings).forEach(function(key) {
 
-		this.test[key] = function(element) {
+		test[key] = function(element) {
 
 			bindings[key].call(parentModel, element);
 		};
-	}
+	});
+
+	this.test = test;
 }
 
 Binding.prototype = new Subscriber();
