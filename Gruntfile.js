@@ -23,6 +23,10 @@ module.exports = function(grunt) {
 				extract: ["tests/*.html"]
 			}
 		},
+		qunit: {
+
+			all: ["tests/*"]
+		},
 		concat: {
 
 			options: {
@@ -60,9 +64,10 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks("grunt-contrib-jshint");
-        grunt.loadNpmTasks("grunt-jscs");
+	grunt.loadNpmTasks("grunt-jscs");
+	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks("grunt-contrib-concat");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 
-	grunt.registerTask("default", ["jshint", "jscs", "concat", "uglify"]);
+	grunt.registerTask("default", ["jshint", "jscs", "qunit", "concat", "uglify"]);
 };
