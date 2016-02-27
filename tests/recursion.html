@@ -20,6 +20,7 @@
     <script src="../src/Init.js"></script>
     <script src="../src/Update.js"></script>
     <script src="../src/Click.js"></script>
+    <script src="../src/Visible.js"></script>
     <script src="../src/ViewModel.js"></script>
   </head>
   <body>
@@ -81,8 +82,6 @@
 
 			new BindingRoot(texts);
 
-			texts.text1 = "thingy";
-
 			assert.ok(texts);
 		});
 	</script>
@@ -95,11 +94,11 @@
 
 				this.value1 = "some value";
 
-				this.value2 = "some more value";
+				this.value2 = "some other value";
 
 				this.firstValue = new Value(function() {
 
-					this.value1 = this.text2;
+					this.value1 = this.value2;
 
 					return this.value1;
 				});
@@ -116,9 +115,40 @@
 
 			new BindingRoot(values);
 
-			values.value1 = "thingy";
-
 			assert.ok(values);
+		});
+	</script>
+	<div data-bind="firstVisible"></div>
+	<div data-bind="secondVisible"></div>
+	<script>
+		QUnit.test("Visible dependencies don't cause infinite recusion", function(assert) {
+
+			function Visibles() {
+
+				this.visible1 = "some value";
+
+				this.visible2 = "some other value";
+
+				this.firstVisible = new Visible(function() {
+
+					this.visible1 = this.visible2;
+
+					return this.visible1;
+				});
+
+				this.secondVisible = new Visible(function() {
+
+					this.visible2 = this.visible1;
+
+					return this.visible2;
+				});
+			}
+
+			var visibles = new Visibles();
+
+			new BindingRoot(visibles);
+
+			assert.ok(visibles);
 		});
 	</script>
   </body>

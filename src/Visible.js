@@ -8,13 +8,20 @@ function Visible(visible) {
 
 			self.assignUpdater(function() {
 
-				if(visible.call(model, element)) {
+				if (!visible._running) {
 
-					element.style.display = display;
-				}
-				else {
+					visible._running = true;
 
-					element.style.display = "none";
+					if(visible.call(model, element)) {
+
+						element.style.display = display;
+					}
+					else {
+
+						element.style.display = "none";
+					}
+
+					visible._running = false;
 				}
 			},
 			visible,
