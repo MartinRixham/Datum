@@ -86,5 +86,40 @@
 			assert.ok(texts);
 		});
 	</script>
+	<div data-bind="firstValue"></div>
+	<div data-bind="secondValue"></div>
+	<script>
+		QUnit.test("Value dependencies don't cause infinite recusion", function(assert) {
+
+			function Values() {
+
+				this.value1 = "some value";
+
+				this.value2 = "some more value";
+
+				this.firstValue = new Value(function() {
+
+					this.value1 = this.text2;
+
+					return this.value1;
+				});
+
+				this.secondValue = new Value(function() {
+
+					this.value2 = this.value1;
+
+					return this.value2;
+				});
+			}
+
+			var values = new Values();
+
+			new BindingRoot(values);
+
+			values.value1 = "thingy";
+
+			assert.ok(values);
+		});
+	</script>
   </body>
 </html>
