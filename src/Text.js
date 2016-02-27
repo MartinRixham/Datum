@@ -6,7 +6,14 @@ function Text(text) {
 
 		this.assignUpdater(function() {
 
-			element.textContent = text.call(model, element);
+			if (!text._running) {
+
+				text._running = true;
+
+				element.textContent = text.call(model, element);
+
+				text._running = false;
+			}
 		},
 		text,
 		element);

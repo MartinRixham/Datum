@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Recursion Tests</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.16.0.css">
+    <script src="http://code.jquery.com/qunit/qunit-1.16.0.js"></script>
+    <script src="../src/Registry.js"></script>
+    <script src="../src/Subscriber.js"></script>
+    <script src="../src/UniqueRoot.js"></script>
+    <script src="../src/BindingRoot.js"></script>
+    <script src="../src/ForEach.js"></script>
+    <script src="../src/With.js"></script>
+    <script src="../src/DomWatcher.js"></script>
+    <script src="../src/Binding.js"></script>
+    <script src="../src/Datum.js"></script>
+    <script src="../src/Dependant.js"></script>
+    <script src="../src/Text.js"></script>
+    <script src="../src/Value.js"></script>
+    <script src="../src/Init.js"></script>
+    <script src="../src/Update.js"></script>
+    <script src="../src/Click.js"></script>
+    <script src="../src/ViewModel.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		query = function(query) {
+
+			return document.querySelector(query);
+		};
+
+		QUnit.module("", {
+
+			teardown: function() {
+
+				Subscriber.prototype = new Registry();
+				Binding.prototype = new Subscriber();
+				Datum.prototype = new Subscriber();
+				Text.prototype = new Subscriber();
+				Value.prototype = new Subscriber();
+				UniqueRoot.prototype = new Subscriber();
+				BindingRoot.prototype = new UniqueRoot();
+				BindingRoot.With.prototype = new Subscriber();
+			}
+		});
+    </script>
+	<div data-bind="firstText"></div>
+	<div data-bind="secondText"></div>
+	<script>
+		QUnit.test("Text dependencies don't cause infinite recusion", function(assert) {
+
+			function Texts() {
+
+				this.text1 = "some text";
+
+				this.text2 = "some more text";
+
+				this.firstText = new Text(function() {
+
+					this.text1 = this.text2;
+
+					return this.text1;
+				});
+
+				this.secondText = new Text(function() {
+
+					this.text2 = this.text1;
+
+					return this.text2;
+				});
+			}
+
+			var texts = new Texts();
+
+			new BindingRoot(texts);
+
+			texts.text1 = "thingy";
+
+			assert.ok(texts);
+		});
+	</script>
+  </body>
+</html>
