@@ -58,7 +58,7 @@ BindingRoot.With = function(model, key, element, scope) {
 				element.appendChild(child);
 			});
 
-			BindingRoot.bindObject(element, object);
+			BindingRoot.bindObject(object, element);
 		}
 	},
 	this,

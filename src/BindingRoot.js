@@ -17,27 +17,30 @@ function BindingRoot(model) {
 
 	// This method binds an object to a DOM element.
 	// It is called recursively to bind the entire data structure.
-	BindingRoot.bindObject = function(scope, model) {
-	
-		if (scope != model._scope && model.onBind) {
-		
-			model.onBind(scope);
-		}
+	BindingRoot.bindObject = function (model, scope) {
 
 		var newBinding = !model._scope;
 
-		model._scope = scope;
+		if (scope) {
 
-		if (model instanceof Array) {
+			if (scope != model._scope && model.onBind) {
 
-			var foreach = new BindingRoot.ForEach(scope, model);
-		}
-		else {
-		
-			scope._rebind = function() {
-	
-				BindingRoot.bindObject(scope, model);
-			};
+				model.onBind(scope);
+			}
+
+			model._scope = scope;
+
+			if (model instanceof Array) {
+
+				var foreach = new BindingRoot.ForEach(scope, model);
+			}
+			else {
+
+				scope._rebind = function () {
+
+					BindingRoot.bindObject(model, scope);
+				};
+			}
 		}
 
 		new BindingRoot.ViewModel(model);
@@ -52,18 +55,21 @@ function BindingRoot(model) {
 			var property = model[key];
 			
 			var element;
-	
-			if (isNaN(key)) {
-			
-				element = 
-					scope.querySelector("[data-bind=" + key + "]");
-			}
-			else {
-			
-				element = scope.children[key];
+
+			if (scope) {
+
+				if (isNaN(key)) {
+
+					element =
+						scope.querySelector("[data-bind=" + key + "]");
+				}
+				else {
+
+					element = scope.children[key];
+				}
 			}
 
-			if (property && property.applyBinding) {
+			if (model._scope && property && property.applyBinding) {
 	
 				property.applyBinding(model._scope, key, model);
 			}
@@ -74,18 +80,23 @@ function BindingRoot(model) {
 					injectProperty(key, model, property);
 				}
 
-				if (element &&
-					self.isInScope(element, scope) &&
-					typeof(property) == "object") {
+				if (typeof(property) == "object") {
 
-					if (!(model instanceof Array)) {
+					if (element && self.isInScope(element, scope)) {
 
-						new BindingRoot.With(model, key, element, scope);
+						if (!(model instanceof Array)) {
+
+							new BindingRoot.With(model, key, element, scope);
+						}
+
+						if (property) {
+
+							BindingRoot.bindObject(property, element);
+						}
 					}
+					else if (property && !element) {
 
-					if (property) {
-
-						BindingRoot.bindObject(element, property);
+						BindingRoot.bindObject(property);
 					}
 				}
 			}
@@ -94,11 +105,11 @@ function BindingRoot(model) {
 
 	var scope = document.querySelector("body");
 
-	BindingRoot.bindObject(scope, model);
+	BindingRoot.bindObject(model, scope);
 
 	this.rebindDataStructure(function() {
 
-		BindingRoot.bindObject(scope, model);
+		BindingRoot.bindObject(model, scope);
 	});
 
 	var domWatcher = new BindingRoot.DomWatcher(scope);

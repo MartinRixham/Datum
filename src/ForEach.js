@@ -47,7 +47,7 @@ BindingRoot.ForEach = function(scope, model) {
 				}
 				else if (scope.children[k]) {
 
-					BindingRoot.bindObject(scope.children[k], model[k]);
+					BindingRoot.bindObject(model[k], scope.children[k]);
 				}
 			}
 
@@ -130,7 +130,7 @@ BindingRoot.ForEach = function(scope, model) {
 
 				if (property && typeof(property) == "object") {
 
-					BindingRoot.bindObject(element, property);
+					BindingRoot.bindObject(property, element);
 				}
 			}
 		};
@@ -147,7 +147,7 @@ BindingRoot.ForEach = function(scope, model) {
 
 				if (property && typeof(property) == "object") {
 
-					BindingRoot.bindObject(element, property);
+					BindingRoot.bindObject(property, element);
 				}
 			}
 		};

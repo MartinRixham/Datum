@@ -47,6 +47,8 @@
 				Datum.prototype = new Subscriber();
 				Text.prototype = new Subscriber();
 				Value.prototype = new Subscriber();
+				Update.prototype = new Subscriber();
+				Init.prototype = new Subscriber();
 				UniqueRoot.prototype = new Subscriber();
 				BindingRoot.prototype = new UniqueRoot();
 				BindingRoot.With.prototype = new Subscriber();
@@ -498,5 +500,35 @@
 			});
 		});
     </script>
+	<div data-bind="update"></div>
+	<script>
+		QUnit.test("Properties of unbound objects are tracked.", function(assert) {
+
+			var count = 0;
+
+			function Subproperty() {
+
+				this.subobject = {
+
+					property: "Hello World"
+				};
+
+				this.update = new Update(function() {
+
+					var value = this.subobject.property;
+
+					count++;
+				});
+			}
+
+			var subproperty = new Subproperty();
+
+			new BindingRoot(subproperty);
+
+			subproperty.subobject.property = "Eh up planet.";
+
+			assert.strictEqual(count, 2);
+		});
+	</script>
   </body>
 </html>
