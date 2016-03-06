@@ -4,7 +4,7 @@ function Visible(visible) {
 
 		var self = this;
 
-		this.applyCallback = function(element, display) {
+		this.applyCallback = function(element) {
 
 			self.assignUpdater(function() {
 
@@ -14,7 +14,7 @@ function Visible(visible) {
 
 					if(visible.call(model, element)) {
 
-						element.style.display = display;
+						element.style.display = null;
 					}
 					else {
 
@@ -36,8 +36,6 @@ function Visible(visible) {
 
 			if (this.isInScope(element, scope)) {
 
-				var display = getComputedStyle(element).getPropertyValue("display");
-
 				this.requestRegistrations();
 		
 				if(!visible.call(model, element)) {
@@ -45,7 +43,7 @@ function Visible(visible) {
 					element.style.display = "none";	
 				}
 
-				this.applyCallback(element, display);
+				this.applyCallback(element);
 			}
 		}
 	};
