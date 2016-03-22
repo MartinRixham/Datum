@@ -1,4 +1,4 @@
-// The "foreach" binding is applied when an array is bound to an element.
+// The "for each" binding is applied when an array is bound to an element.
 // It copies the contents of the element to which it is bound once
 // for each element of the array.
 BindingRoot.ForEach = function(scope, model) {
@@ -16,7 +16,9 @@ BindingRoot.ForEach = function(scope, model) {
 
 		if (element.hasAttribute && element.hasAttribute("name")) {
 
-			element.setAttribute("name", element.getAttribute("name") + "_" + index);
+			var name = element.getAttribute("name") + "_" + index;
+
+			element.setAttribute("name", name);
 		}
 
 		if (element.children) {
@@ -60,62 +62,26 @@ BindingRoot.ForEach = function(scope, model) {
 
 		var children = [];
 
-		for (var i = scope.childNodes.length - 1; i >= 0; i--) {
+		for (var i = scope.children.length - 1; i >= 0; i--) {
 
-			children[i] = scope.childNodes[i];
+			children[i] = scope.children[i];
 
-			scope.removeChild(scope.childNodes[i]);
+			scope.removeChild(scope.children[i]);
 		}
 
 		var index = 0;
 
-		var childNodeName = function(name, parentName) {
-
-			switch(name) {
-
-				case "TABLE":
-					return "TBODY";
-				case "TBODY":
-					return "TR";
-				case "THEAD":
-					return "TR";
-				case "TR":
-					return parentName == "THEAD" ? "TH" : "TD";
-				case "SPAN":
-					return "SPAN";
-				case "OL":
-					return "LI";
-				case "UL":
-					return "LI";
-				default:
-					return "DIV";
-			}
-		};
-
 		var newElement = function() {
 
-			var childName =
-				childNodeName(
-					scope.nodeName,
-					scope.parentElement.nodeName);
+			var child = children[0];
 
-			var element =
-				document.createElement(childName);
+			var clone = child.cloneNode(true);
 
-			for (var j = 0; j < children.length; j++) {
+			self.number(clone, index);
 
-				var child = children[j];
+			index++;
 
-				var clone = child.cloneNode(true);
-
-				self.number(clone, index);
-
-				element.appendChild(clone);
-			}
-
-			index += 1;
-
-			return element;
+			return clone;
 		};
 
 		var append = function(array) {
@@ -124,13 +90,13 @@ BindingRoot.ForEach = function(scope, model) {
 
 				var property = array[i];
 
-				var element = newElement();
+				element = newElement();
 
 				scope.appendChild(element);
 
 				if (property && typeof(property) == "object") {
 
-					BindingRoot.bindObject(property, element);
+					BindingRoot.bindObject(property, scope);
 				}
 			}
 		};
