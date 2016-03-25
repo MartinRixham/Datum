@@ -262,7 +262,9 @@
 		});
     </script>
     <div id="inside" data-bind="inside">
-      <div id="inside-one" data-bind="innerAll"></div>
+      <div>
+        <div id="inside-one" data-bind="innerAll"></div>
+      </div>
     </div>
     <script>
 		QUnit.test("Apply binding inside array", function(assert) {
@@ -451,7 +453,9 @@
 			});
     </script>
     <div id="shift" data-bind="shift">
-      <div class="shift" data-bind="shiftText"></div>
+      <div>
+        <div class="shift" data-bind="shiftText"></div>
+      </div>
     </div>
     <script>
 		QUnit.test("Remove first element on array shift", function(assert) {
@@ -490,7 +494,9 @@
 		});
     </script>
     <div id="unshift" data-bind="unshift">
-      <div class="unshift" data-bind="shiftText"></div>
+      <div>
+        <div class="unshift" data-bind="shiftText"></div>
+      </div>
     </div>
     <script>
 		QUnit.test(
@@ -610,7 +616,9 @@
 		});
     </script>
     <div id="splice-add" data-bind="spliceAdd">
-      <div class="splice-add" data-bind="spliceText"></div>
+      <div>
+        <div class="splice-add" data-bind="spliceText"></div>
+      </div>
     </div>
     <script>
 		QUnit.test("Add element with splice", function(assert) {
@@ -643,7 +651,9 @@
 		});
     </script>
     <div id="splice-add-two" data-bind="spliceAddTwo">
-      <div class="splice-add-two" data-bind="spliceText"></div>
+      <div>
+        <div class="splice-add-two" data-bind="spliceText"></div>
+      </div>
     </div>
     <script>
 		QUnit.test("Add two elements with splice", function(assert) {
@@ -687,7 +697,9 @@
 		});
     </script>
     <div id="splice-add-remove" data-bind="spliceAddRemove">
-      <div class="splice-add-remove" data-bind="spliceText"></div>
+      <div>
+        <div class="splice-add-remove" data-bind="spliceText"></div>
+      </div>
     </div>
     <script>
 		QUnit.test("Add and remove element with splice", function(assert) {
