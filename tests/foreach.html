@@ -252,21 +252,7 @@
 			}
 			catch (e) {
 
-				if (e.name == "DatumException") {
-
-					exception = e;
-				}
-				else {
-
-					throw e;
-				}
-			}
-			finally {
-
-				if (root) {
-
-					root.disconnect();
-				}
+				exception = e;
 			}
 
 			assert.ok(exception);
@@ -734,7 +720,9 @@
 		});
     </script>
     <div id="square" data-bind="square">
-      <div class="square"></div>
+      <div>
+        <div class="square"></div>
+      </div>
     </div>
     <script>
 		QUnit.test("Bind square array", function(assert) {
