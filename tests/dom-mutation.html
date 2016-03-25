@@ -305,6 +305,11 @@
 				});
 			});
     </script>
+    <div id="array" data-bind="thearray">
+      <div>
+        <div class="array" data-bind="text"></div>
+      </div>
+    </div>
     <script>
 		QUnit.test("Bind array to inserted element", function(assert) {
 
@@ -327,19 +332,7 @@
 
 			var root = new BindingRoot(arrayObject);
 
-			var element = document.createElement("div");
-
-			element.id = "array";
-
-			element.setAttribute("data-bind", "thearray");
-
-			var div = document.createElement("div");
-
-			div.className = "array";
-
-			div.setAttribute("data-bind", "text");
-
-			element.appendChild(div);
+			var element = query("#array");
 
 			fixture.appendChild(element);
 
@@ -399,12 +392,17 @@
 			});
 		});
     </script>
+    <div id="replaced" data-bind="replaced">
+      <div>
+        <div class="replaced" data-bind="text"></div>
+      </div>
+    </div>
     <script>
 		QUnit.test("Rebind array to replaced element", function(assert) {
 
 			function ArrayObject() {
 		
-				this.thearray = 
+				this.replaced = 
 					[
 						{ 
 							text: new Binding({ 
@@ -419,17 +417,7 @@
 					];
 			}
 
-			var element = document.createElement("div");
-
-			element.id = "array";
-
-			element.setAttribute("data-bind", "thearray");
-
-			var div = document.createElement("div");
-
-			div.className = "array";
-
-			element.appendChild(div);
+			var element = query("#replaced");
 
 			fixture.appendChild(element);
 
@@ -437,27 +425,13 @@
 
 			fixture.removeChild(element);
 
-			element = document.createElement("div");
-
-			element.id = "array";
-
-			element.setAttribute("data-bind", "thearray");
-
-			div = document.createElement("div");
-
-			div.className = "array";
-
-			div.setAttribute("data-bind", "text");
-
-			element.appendChild(div);
-
 			fixture.appendChild(element);
 
 			var done = assert.async();
 
 			setTimeout(function() {
 
-				var children = fixture.querySelectorAll(".array");
+				var children = fixture.querySelectorAll(".replaced");
 			
 				assert.strictEqual(children.length, 2);
 
