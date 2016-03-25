@@ -60,6 +60,15 @@ BindingRoot.ForEach = function(scope, model) {
 
 		currentScope = scope;
 
+		if (scope.children.length != 1) {
+
+			throw {
+
+				name: "DatumException",
+				message: "An array must be bound to an element with exactly one child."
+			};
+		}
+
 		var children = [];
 
 		for (var i = scope.children.length - 1; i >= 0; i--) {

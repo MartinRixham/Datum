@@ -229,31 +229,51 @@
 				root.disconnect();
 			});
     </script>
-    <div id="all" data-bind="all">
-      <div id="all-one"></div>
-      <div id="all-two"></div>
+    <div data-bind="onlyOne">
+      <div></div>
+      <div></div>
     </div>
     <script>
-		QUnit.test("All elements when array length one", function(assert) {
+		QUnit.test("Exception if mutilple elements", function(assert) {
 
-			function AllObject() {
+			var exception;
+
+			var root;
+
+			function OnlyOneObject() {
 		
-				this.all = [{}];
+				this.onlyOne = [{}];
 			}
 
-			var all = new AllObject();
+			try {
 
-			var root = new BindingRoot(all);
+				var onlyOne = new OnlyOneObject();
 
-			var element = query("#all");
+				root = new BindingRoot(onlyOne);
+			}
+			catch (e) {
 
-			var one = query("#all-one_0");
-			var two = query("#all-two_0");
+				if (e.name == "DatumException") {
 
-			assert.ok(element.contains(one));
-			assert.ok(element.contains(two));
+					exception = e;
+				}
+				else {
 
-			root.disconnect();
+					throw e;
+				}
+			}
+			finally {
+
+				if (root) {
+
+					root.disconnect();
+				}
+			}
+
+			assert.ok(exception);
+			assert.strictEqual(
+				exception.message,
+				"An array must be bound to an element with exactly one child.");
 		});
     </script>
     <div id="inside" data-bind="inside">
