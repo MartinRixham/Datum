@@ -101,7 +101,7 @@ BindingRoot.ForEach = function(scope, model) {
 
 				if (property && typeof(property) == "object") {
 
-					BindingRoot.bindObject(property, scope);
+					BindingRoot.bindObject(property, element);
 				}
 			}
 		};
