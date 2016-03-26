@@ -37,10 +37,10 @@ function Visible(visible) {
 			if (this.isInScope(element, scope)) {
 
 				this.requestRegistrations();
-		
+
 				if(!visible.call(model, element)) {
 
-					element.style.display = "none";	
+					element.style.display = "none";
 				}
 
 				this.applyCallback(element);

@@ -49,7 +49,7 @@ function Datum(datum) {
 				}
 			});
 		}
-			
+
 		return datum;
 	};
 

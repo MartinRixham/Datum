@@ -1,8 +1,8 @@
-// Unlike the other bindings the "update" binding prioritises 
+// Unlike the other bindings the "update" binding prioritises
 // predictability rather than comprehensiveness when collecting
 // dependencies. Dependencies are registered only once when the
 // callback is executed during the initial binding.
-// After this the callback is called exactly once per change 
+// After this the callback is called exactly once per change
 // each time the value of a dependency changes.
 // This means that expensive operations or AJAX calls etc.
 // can be safely placed inside update callbacks
@@ -18,7 +18,7 @@ function Update(update) {
 	this.applyBinding = function(scope, name, model) {
 
 		var elements = this.matchingElements(scope, name);
-		
+
 		var self = this;
 
 		var applyCallback = function(element) {
@@ -43,9 +43,9 @@ function Update(update) {
 			var alreadyBound = element.callbacks.indexOf(update) + 1;
 
 			if (!alreadyBound && this.isInScope(element, scope)) {
-	
+
 				this.requestRegistrations();
-		
+
 				update.call(model, element);
 
 				applyCallback(element);

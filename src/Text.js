@@ -24,7 +24,7 @@ function Text(text) {
 		parentModel = model;
 
 		var elements = this.matchingElements(scope, name);
-		
+
 		for (var i = 0; i < elements.length; i++) {
 
 			var element = elements[i];

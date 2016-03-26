@@ -85,7 +85,7 @@
 		QUnit.test("One element when array length one", function(assert) {
 
 			function OneObject() {
-		
+
 				this.one = [{}];
 			}
 
@@ -109,7 +109,7 @@
 		QUnit.test("Two elements when array length two", function(assert) {
 
 			function TwoObject() {
-		
+
 				this.two = [{}, {}];
 			}
 
@@ -135,7 +135,7 @@
 			function(assert) {
 
 				function RemoveObject() {
-		
+
 					this.remove = [{}];
 				}
 
@@ -159,7 +159,7 @@
 		QUnit.test("Bind array after root", function(assert) {
 
 			function AfterObject() {
-		
+
 				this.after = null;
 			}
 
@@ -185,7 +185,7 @@
 		QUnit.test("Reassign array", function(assert) {
 
 			function ReassignObject() {
-		
+
 				this.reassign = [{}, {}];
 			}
 
@@ -240,7 +240,7 @@
 			var root;
 
 			function OnlyOneObject() {
-		
+
 				this.onlyOne = [{}];
 			}
 
@@ -270,7 +270,7 @@
 		QUnit.test("Apply binding inside array", function(assert) {
 
 			function InsideObject() {
-		
+
 				this.inside = [{
 
 					innerAll: new Binding({
@@ -298,7 +298,7 @@
 		QUnit.test("Number ids", function(assert) {
 
 			function NumberObject() {
-		
+
 				this.thenumber = [{}, {}];
 			}
 
@@ -324,7 +324,7 @@
 		QUnit.test("Number names", function(assert) {
 
 			function NameObject() {
-		
+
 				this.name = [{}, {}];
 			}
 
@@ -352,7 +352,7 @@
 		QUnit.test("Number ids on subelements", function(assert) {
 
 			function SubnumberObject() {
-		
+
 				this.subnumber = [{}];
 			}
 
@@ -377,7 +377,7 @@
 		QUnit.test("Add element when object pushed to array", function(assert) {
 
 			function PushObject() {
-		
+
 				this.push = [{}];
 			}
 
@@ -540,7 +540,7 @@
 		QUnit.test("Bind array with null element", function(assert) {
 
 			function NullObject() {
-		
+
 				this.nullProperty = [null, {}];
 			}
 
@@ -564,16 +564,16 @@
 		QUnit.test("Remove element with splice", function(assert) {
 
 			function SpliceRemoveObject() {
-		
+
 				this.spliceRemove = [{}, {}, {}];
 			}
 
 			var spliceRemove = new SpliceRemoveObject();
 
 			var root = new BindingRoot(spliceRemove);
-					
+
 			spliceRemove.spliceRemove.splice(1, 1);
-					
+
 			assert.strictEqual(spliceRemove.spliceRemove.length, 2);
 
 			var element = query("#splice-remove");
@@ -593,16 +593,16 @@
 		QUnit.test("Remove two elements with splice", function(assert) {
 
 			function SpliceRemoveTwoObject() {
-		
+
 				this.spliceRemoveTwo = [{}, {}, {}];
 			}
 
 			var spliceRemoveTwo = new SpliceRemoveTwoObject();
 
 			var root = new BindingRoot(spliceRemoveTwo);
-					
+
 			spliceRemoveTwo.spliceRemoveTwo.splice(1, 2);
-					
+
 			assert.strictEqual(spliceRemoveTwo.spliceRemoveTwo.length, 1);
 
 			var element = query("#splice-remove-two");
@@ -670,7 +670,7 @@
 			spliceAddTwo.spliceAddTwo.splice(1, 0, {
 
 				spliceText: new Text(function() {
-							
+
 					return "Hello World";
 				})
 			},
@@ -690,7 +690,7 @@
 			assert.strictEqual(children.length, 4);
 
 			assert.strictEqual(children[1].innerHTML, "Hello World");
-					
+
 			assert.strictEqual(children[2].innerHTML, "Eh Up Planet");
 
 			root.disconnect();
@@ -719,7 +719,7 @@
 			});
 
 			assert.strictEqual(spliceAddRemove.spliceAddRemove.length, 2);
-					
+
 			var element = query("#splice-add-remove");
 
 			var children = element.querySelectorAll(".splice-add-remove");
@@ -788,7 +788,7 @@
 			var children = element.children;
 
 			assert.strictEqual(children.length, 2);
-					
+
 			assert.strictEqual(children[1].innerHTML, "Hello World");
 
 			root.disconnect();
@@ -811,7 +811,7 @@
 
 			pushBindingObject.pushBinding.push(
 				new Binding({
-							
+
 					text: function() { return "Hello World"; }
 				}));
 
@@ -824,7 +824,7 @@
 				var children = element.children;
 
 				assert.strictEqual(children.length, 2);
-					
+
 				assert.strictEqual(children[1].innerHTML, "Hello World");
 
 				done();
@@ -851,7 +851,7 @@
 			sortTwo.sortTwo.sort();
 
 			assert.strictEqual(sortTwo.sortTwo.length, 2);
-					
+
 			var element = query("#sort-two");
 
 			var children = element.querySelectorAll(".sort-two");
@@ -885,7 +885,7 @@
 			sortThree.sortThree.sort();
 
 			assert.strictEqual(sortThree.sortThree.length, 3);
-					
+
 			var element = query("#sort-three");
 
 			var children = element.querySelectorAll(".sort-three");
@@ -934,7 +934,7 @@
 			});
 
 			assert.strictEqual(sortComparer.sortComparer.length, 3);
-					
+
 			var element = query("#sort-comparer");
 
 			var children = element.querySelectorAll(".sort-comparer");
@@ -970,7 +970,7 @@
 			reverse.reverse.reverse();
 
 			assert.strictEqual(reverse.reverse.length, 3);
-					
+
 			var element = query("#reverse");
 
 			var children = element.querySelectorAll(".reverse");

@@ -15,17 +15,17 @@ function Subscriber() {
 		else {
 
 			return this.isInScope(element, scope);
-		}	
+		}
 	};
-	
+
 	this.matchingElements = function(scope, key) {
-	
+
 		if (isNaN(key)) {
-		
+
 			return scope.querySelectorAll("[data-bind=" + key + "]");
 		}
 		else {
-		
+
 			return [scope.children[key]];
 		}
 	};

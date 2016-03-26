@@ -53,7 +53,7 @@ function BindingRoot(model) {
 			}
 
 			var property = model[key];
-			
+
 			var element;
 
 			if (scope) {
@@ -70,7 +70,7 @@ function BindingRoot(model) {
 			}
 
 			if (model._scope && property && property.applyBinding) {
-	
+
 				property.applyBinding(model._scope, key, model);
 			}
 			else if (typeof(property) != "function") {

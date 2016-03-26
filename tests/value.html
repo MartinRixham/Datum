@@ -33,15 +33,15 @@
 
 			var datum = new Datum();
 
-			var valueInput = 
-				new Value(function(value) { 
+			var valueInput =
+				new Value(function(value) {
 
 					if (value) {
 
 						datum(value);
 					}
 
-					return datum(); 
+					return datum();
 				});
 
 			valueInput.applyBinding(scope, "valueInput");
@@ -103,14 +103,14 @@
 			var datum = new Datum();
 
 			var valueInput =
-				new Value(function(value) { 
+				new Value(function(value) {
 
 					if (value) {
 
 						datum(value);
 					}
 
-					return datum(); 
+					return datum();
 				});
 
 			valueInput.applyBinding(scope, "sync");
@@ -132,10 +132,10 @@
 
 			var datum = new Datum();
 
-			var value = 
+			var value =
 				new Value(function() {
 
-					count += 1; 
+					count += 1;
 
 					return datum();
 				});
@@ -154,10 +154,10 @@
 
 			var datum = new Datum();
 
-			var value = 
+			var value =
 				new Value(function() {
 
-					count += 1; 
+					count += 1;
 
 					return datum();
 				});
@@ -175,10 +175,10 @@
     <script>
 		QUnit.test("Bind value from datum", function(assert) {
 
-			var input = 
-				new Value(function(value, element) { 
+			var input =
+				new Value(function(value, element) {
 
-					return element.id; 
+					return element.id;
 				});
 
 			input.applyBinding(scope, "element");

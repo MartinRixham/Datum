@@ -39,7 +39,7 @@ BindingRoot.ForEach = function(scope, model) {
 		if (scope == currentScope) {
 
 			for (var k = 0; k < model.length; k++) {
-			
+
 				if (model[k].applyBinding) {
 
 					model[k].applyBinding(
@@ -162,21 +162,21 @@ BindingRoot.ForEach = function(scope, model) {
 
 			model.subscribableLength = model.length;
 		};
-		
+
 		var originalSplice = model.splice;
-		
+
 		model.splice = function(start, deleteCount) {
-		
+
 			originalSplice.apply(model, arguments);
-			
+
 			for (var i = deleteCount - 1; i >= 0; i--) {
-			
+
 				scope.removeChild(scope.children[start + i]);
 			}
-			
+
 			var newObjects =
 				Array.prototype.slice.call(arguments, 2);
-			
+
 			insertBefore(start, newObjects);
 
 			model.subscribableLength = model.length;
@@ -257,14 +257,14 @@ BindingRoot.ForEach = function(scope, model) {
 		};
 	};
 
-	model.applyBinding = function(scope, name, model) {
+	model.applyBinding = function(scope, name) {
 
 		if (isNaN(name)) {
-		
-			scope = scope.querySelector("[data-bind=" + name + "]"); 
+
+			scope = scope.querySelector("[data-bind=" + name + "]");
 		}
 		else {
-		
+
 			scope = scope.children[name];
 		}
 

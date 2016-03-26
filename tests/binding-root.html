@@ -36,7 +36,7 @@
 			return document.querySelector(query);
 		};
 
-		// To preserve atomicity prototypes must be 
+		// To preserve atomicity prototypes must be
 		// reassigned after each test.
 		QUnit.module("", {
 
@@ -60,7 +60,7 @@
 		QUnit.test("Bind text", function(assert) {
 
 			function TextObject() {
-		
+
 				this.test = new Binding({
 
 					text: function() { return "Hello World"; }
@@ -230,13 +230,13 @@
 
 				this.plainChange = new Binding({
 
-					value: function(value) { 
-	
+					value: function(value) {
+
 						if (value) {
 
-							this.datum = value; 
+							this.datum = value;
 						}
-											
+
 						return this.datum;
 					}
 				});
@@ -275,7 +275,7 @@
 
 				assert.strictEqual(
 					exception.message,
-					"The binding root is unique and " + 
+					"The binding root is unique and " +
 					"cannot be instantiated multiple times.");
 			});
     </script>
@@ -364,9 +364,9 @@
 			// In this case the binding is done asynchronously
 			// so the test must be queued after the binding.
 			setTimeout(function() {
-	
+
 				assert.strictEqual(
-					query("#after-object").innerHTML, 
+					query("#after-object").innerHTML,
 					"Hello World");
 
 				done();
@@ -388,14 +388,14 @@
 
 			after.updateAfter = new Binding({
 
-				value: function(value) { 
+				value: function(value) {
 
 					if (value) {
 
 						after.datum = value;
 					}
 
-					return after.datum; 
+					return after.datum;
 				}
 			});
 
@@ -410,9 +410,9 @@
 			var done = assert.async();
 
 			setTimeout(function() {
-	
+
 				assert.strictEqual(
-					after.datum, 
+					after.datum,
 					"Hello World");
 
 				done();
@@ -450,13 +450,13 @@
 			function(assert) {
 
 				var elementId;
-					
+
 				function OnBindObject() {
-		
+
 					this.bindOn = {
-							
+
 						onBind: function(element) {
-									
+
 							elementId = element.id;
 						}
 					};
@@ -472,30 +472,30 @@
 		QUnit.test("onBind is not recalled", function(assert) {
 
 			var count = 0;
-					
+
 			function OnBindOnceObject() {
-		
+
 				this.bindOnce = {
-							
-					onBind: function(element) {
-									
-						count += 1;
+
+					onBind: function() {
+
+						count++;
 					}
 				};
 			}
-					
+
 			var onBindOnce = new OnBindOnceObject();
 
 			new BindingRoot(onBindOnce);
-					
+
 			onBindOnce.bindOnce.newBinding = new Binding({});
 
 			var done = assert.async();
-					
+
 			setTimeout(function() {
 
 				assert.strictEqual(count, 1);
-							
+
 				done();
 			});
 		});

@@ -55,7 +55,7 @@
 		QUnit.test("toJSON returns an object", function(assert) {
 
 			function ToJSONObject() {
-		
+
 			}
 
 			var toJSONObject = new ToJSONObject();
@@ -69,7 +69,7 @@
 		QUnit.test("toJSON returns an object with data property", function(assert) {
 
 			function ToJSONObject() {
-		
+
 				this.jsonProperty = "thingy";
 			}
 
@@ -84,7 +84,7 @@
 		QUnit.test("toJSON returns an object without method", function(assert) {
 
 			function ToJSONObject() {
-		
+
 				this.method = function() {};
 			}
 
@@ -99,7 +99,7 @@
 		QUnit.test("toJSON returns an object without binding", function(assert) {
 
 			function ToJSONObject() {
-		
+
 				this.binding = new Binding({});
 			}
 
@@ -114,7 +114,7 @@
 		QUnit.test("toJSON returns an object without scope element", function(assert) {
 
 			function ToJSONObject() {
-		
+
 				this._scope = query("body");
 			}
 
@@ -131,7 +131,7 @@
 			var json = { thingy: "thingy" };
 
 			function ToJSONObject() {
-		
+
 				this.child = {
 
 					toJSON: function() {
@@ -152,7 +152,7 @@
 		QUnit.test("toJSONString returns a stringified object", function(assert) {
 
 			function ToJSONObject() {
-		
+
 			}
 
 			var toJSONObject = new ToJSONObject();
@@ -166,7 +166,7 @@
 		QUnit.test("object with custom toJSON method has toJSONString", function(assert) {
 
 			function ToJSONObject() {
-		
+
 				this.toJSON = function() {
 
 					return {};

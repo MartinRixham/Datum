@@ -26,16 +26,16 @@ BindingRoot.ViewModel = function(model) {
 				continue;
 			}
 
-			if (property && 
+			if (property &&
 				property.toJSON &&
-				typeof(property) == "object" && 
+				typeof(property) == "object" &&
 				(!property.applyBinding || property instanceof Array)) {
 
 				transferObject[key] = property.toJSON();
 			}
 
-			if (!property || 
-				(typeof(property) != "object" && 
+			if (!property ||
+				(typeof(property) != "object" &&
 				typeof(property) != "function")) {
 
 				transferObject[key] = property;
@@ -51,5 +51,5 @@ BindingRoot.ViewModel = function(model) {
 		return JSON.stringify(model.toJSON());
 	};
 
-	return model;	
+	return model;
 };

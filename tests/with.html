@@ -36,7 +36,7 @@
 			return document.querySelector(query);
 		};
 
-		// To preserve atomicity prototypes must be 
+		// To preserve atomicity prototypes must be
 		// reassigned after each test.
 		QUnit.module("", {
 
@@ -60,7 +60,7 @@
 		QUnit.test("Remove element bound to null", function(assert) {
 
 			function WithObject() {
-		
+
 				this.with = null;
 			}
 
@@ -80,7 +80,7 @@
 		QUnit.test("Remove element when object set to null", function(assert) {
 
 			function RemoveObject() {
-		
+
 				this.remove = {};
 			}
 
@@ -104,7 +104,7 @@
 		QUnit.test("Replace element when object added", function(assert) {
 
 			function ReplaceObject() {
-		
+
 				this.replace = null;
 			}
 
@@ -128,7 +128,7 @@
 		QUnit.test("Apply binding when object added", function(assert) {
 
 			function ReplaceObject() {
-		
+
 				this.bind = null;
 			}
 
@@ -162,7 +162,7 @@
 		QUnit.test("Remove all elements when bound to null", function(assert) {
 
 			function MultipleObject() {
-		
+
 				this.multi = null;
 			}
 
@@ -185,7 +185,7 @@
 		QUnit.test("Remove all elements when object set to null", function(assert) {
 
 			function RemoveObject() {
-		
+
 				this.removeMulti = {};
 			}
 
@@ -212,7 +212,7 @@
 		QUnit.test("Replace all elements when object added", function(assert) {
 
 			function ReplaceObject() {
-		
+
 				this.Multireplace = null;
 			}
 
@@ -246,7 +246,7 @@
 		QUnit.test("Reremove element", function(assert) {
 
 			function ReremoveObject() {
-		
+
 				this.reremove = null;
 			}
 
@@ -272,7 +272,7 @@
 		QUnit.test("Reset object to null", function(assert) {
 
 			function RenullObject() {
-		
+
 				this.renull = null;
 			}
 
@@ -296,7 +296,7 @@
 		QUnit.test("Reassign object", function(assert) {
 
 			function RenewObject() {
-		
+
 				this.renew = {};
 			}
 

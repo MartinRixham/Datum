@@ -4,7 +4,7 @@ BindingRoot.DomWatcher = function(scope) {
 
 		var mutation = mutations[0];
 
-		var notTextMutation = mutation.target.children.length; 
+		var notTextMutation = mutation.target.children.length;
 
 		if (notTextMutation) {
 

@@ -5,7 +5,7 @@ function Binding(bindings) {
 	setTimeout(this.rebindDataStructure);
 
 	var parentModel = null;
-	
+
 	// The applyBinding method is the sole member of the binding interface,
 	// the most important internal interface in Datum.
 	// Is is implemented by many different objects and is the library's
@@ -27,14 +27,14 @@ function Binding(bindings) {
 
 			text.applyBinding(scope, name, model);
 		}
-		
+
 		if (bindings.value) {
 
 			var value = new Value(bindings.value);
 
 			value.applyBinding(scope, name, model);
 		}
-		
+
 		if (bindings.click) {
 
 			var click = new Click(bindings.click);

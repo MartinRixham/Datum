@@ -2,7 +2,7 @@ function Click(click) {
 
 	this.addListener = function(element, model) {
 
-		element.addEventListener("click", function(event) {
+		element.addEventListener("click", function() {
 
 			click.call(model, element);
 		});

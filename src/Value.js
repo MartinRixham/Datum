@@ -31,7 +31,7 @@ function Value(value) {
 		if (!alreadyBound) {
 
 			element.addEventListener("change", function(event) {
-					
+
 				value.call(model, event.target.value, element);
 			});
 
