@@ -1,12 +1,12 @@
 function Click(click) {
 
-	this.addListener = function(element, model) {
+	function addListener(element, model) {
 
 		element.addEventListener("click", function() {
 
 			click.call(model, element);
 		});
-	};
+	}
 
 	this.applyBinding = function(scope, name, model) {
 
@@ -25,7 +25,7 @@ function Click(click) {
 
 			if (!alreadyBound && this.isInScope(element, scope)) {
 
-				this.addListener(element, model);
+				addListener(element, model);
 
 				element.callbacks.push(click);
 			}

@@ -2,9 +2,11 @@ function Text(text) {
 
 	var parentModel = null;
 
-	this.createCallback = function(model, element) {
+	var self = this;
 
-		this.assignUpdater(function() {
+	function createCallback(model, element) {
+
+		self.assignUpdater(function() {
 
 			if (!text._running) {
 
@@ -17,7 +19,7 @@ function Text(text) {
 		},
 		text,
 		element);
-	};
+	}
 
 	this.applyBinding = function(scope, name, model) {
 
@@ -35,7 +37,7 @@ function Text(text) {
 
 				element.textContent = text.call(model, element);
 
-				this.createCallback(model, element);
+				createCallback(model, element);
 			}
 		}
 	};

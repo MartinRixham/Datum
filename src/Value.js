@@ -2,9 +2,11 @@ function Value(value) {
 
 	var parentModel = null;
 
-	this.createCallback = function(element, model) {
+	var self = this;
 
-		this.assignUpdater(function() {
+	function createCallback(element, model) {
+
+		self.assignUpdater(function() {
 
 			if (!value._running) {
 
@@ -17,9 +19,9 @@ function Value(value) {
 		},
 		value,
 		element);
-	};
+	}
 
-	this.addCallbacks = function(element, model) {
+	function addCallbacks(element, model) {
 
 		if (!element.callbacks) {
 
@@ -38,8 +40,8 @@ function Value(value) {
 			element.callbacks.push(value);
 		}
 
-		this.createCallback(element, model);
-	};
+		createCallback(element, model);
+	}
 
 	this.applyBinding = function(scope, name, model) {
 
@@ -62,7 +64,7 @@ function Value(value) {
 					element.value = evaluated;
 				}
 
-				this.addCallbacks(element, model);
+				addCallbacks(element, model);
 			}
 		}
 	};

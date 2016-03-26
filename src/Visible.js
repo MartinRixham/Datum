@@ -1,32 +1,32 @@
 function Visible(visible) {
 
-	this.applyBinding = function(scope, name, model) {
+	var self = this;
 
-		var self = this;
+	function applyCallback(element, model) {
 
-		this.applyCallback = function(element) {
+		self.assignUpdater(function() {
 
-			self.assignUpdater(function() {
+			if (!visible._running) {
 
-				if (!visible._running) {
+				visible._running = true;
 
-					visible._running = true;
+				if(visible.call(model, element)) {
 
-					if(visible.call(model, element)) {
-
-						element.style.display = null;
-					}
-					else {
-
-						element.style.display = "none";
-					}
-
-					visible._running = false;
+					element.style.display = null;
 				}
-			},
-			visible,
-			element);
-		};
+				else {
+
+					element.style.display = "none";
+				}
+
+				visible._running = false;
+			}
+		},
+		visible,
+		element);
+	}
+
+	this.applyBinding = function(scope, name, model) {
 
 		var elements = this.matchingElements(scope, name);
 
@@ -43,7 +43,7 @@ function Visible(visible) {
 					element.style.display = "none";
 				}
 
-				this.applyCallback(element);
+				applyCallback(element, model);
 			}
 		}
 	};
