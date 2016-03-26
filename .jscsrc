@@ -31,7 +31,7 @@
 	"requireSpaceAfterBinaryOperators": true,
 	"requireSpacesInsideObjectBrackets": "all",
 	"requireSpaceAfterLineComment": true,
-	"validateCommentPosition": { position: "above" },
+	"validateCommentPosition": { "position": "above" },
 	"validateIndentation": "\t",
 	"validateQuoteMarks": "\"",
 	"validateParameterSeparator": ", "

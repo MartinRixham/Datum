@@ -7,7 +7,7 @@ BindingRoot.ForEach = function(scope, model) {
 
 	model.subscribableLength = model.length;
 
-	this.number = function(element, index) {
+	function number(element, index) {
 
 		if (element.id) {
 
@@ -27,14 +27,14 @@ BindingRoot.ForEach = function(scope, model) {
 
 				var subelement = element.children[i];
 
-				this.number(subelement, index);
+				number(subelement, index);
 			}
 		}
-	};
+	}
 
 	var self = this;
 
-	this.bind = function(scope) {
+	function bind(scope) {
 
 		if (scope == currentScope) {
 
@@ -76,7 +76,7 @@ BindingRoot.ForEach = function(scope, model) {
 
 			var clone = child.cloneNode(true);
 
-			self.number(clone, index);
+			number(clone, index);
 
 			index++;
 
@@ -255,7 +255,7 @@ BindingRoot.ForEach = function(scope, model) {
 
 			originalReverse.apply(model, arguments);
 		};
-	};
+	}
 
 	model.applyBinding = function(scope, name) {
 
@@ -270,11 +270,11 @@ BindingRoot.ForEach = function(scope, model) {
 
 		if (scope) {
 
-			self.bind(scope);
+			bind(scope);
 		}
 	};
 
-	this.bind(scope);
+	bind(scope);
 
 	return model;
 };
