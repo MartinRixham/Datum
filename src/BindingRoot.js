@@ -2,7 +2,7 @@ function BindingRoot(model) {
 
 	this.assertUniqueness();
 
-	var injectProperty = function(key, model, property) {
+	function injectProperty(key, model, property) {
 
 		var datum = new Datum(property);
 
@@ -11,7 +11,7 @@ function BindingRoot(model) {
 			get: function() { return datum(); },
 			set: function(value) { datum(value); }
 		});
-	};
+	}
 
 	var self = this;
 

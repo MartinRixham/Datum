@@ -22,6 +22,7 @@
 	"requireCapitalizedConstructors": true,
 	"requireCommaBeforeLineBreak": true,
 	"requireDotNotation": true,
+	"requireFunctionDeclarations": true,
 	"requireLineBreakAfterVariableAssignment": true,
 	"requireOperatorBeforeLineBreak": true,
 	"requirePaddingNewLineAfterVariableDeclaration": true,

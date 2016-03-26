@@ -4,7 +4,7 @@ function Datum(datum) {
 
 	var self = this;
 
-	var provider = function(value) {
+	function provider(value) {
 
 		if (typeof value != "undefined") {
 
@@ -51,7 +51,7 @@ function Datum(datum) {
 		}
 
 		return datum;
-	};
+	}
 
 	return provider;
 }

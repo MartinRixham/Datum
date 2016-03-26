@@ -72,7 +72,7 @@ BindingRoot.ForEach = function(scope, model) {
 
 		var index = 0;
 
-		var newElement = function() {
+		function newElement() {
 
 			var clone = child.cloneNode(true);
 
@@ -81,7 +81,7 @@ BindingRoot.ForEach = function(scope, model) {
 			index++;
 
 			return clone;
-		};
+		}
 
 		function append(array) {
 

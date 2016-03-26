@@ -15,21 +15,23 @@
 // their callbacks.
 function Update(update) {
 
+	var self = this;
+
+	function applyCallback(element, model) {
+
+		self.assignUpdater(function() {
+
+			update.call(model, element);
+		},
+		update,
+		element);
+	}
+
 	this.applyBinding = function(scope, name, model) {
 
 		var elements = this.matchingElements(scope, name);
 
 		var self = this;
-
-		var applyCallback = function(element) {
-
-			self.assignUpdater(function() {
-
-				update.call(model, element);
-			},
-			update,
-			element);
-		};
 
 		for (var i = 0; i < elements.length; i++) {
 
@@ -48,7 +50,7 @@ function Update(update) {
 
 				update.call(model, element);
 
-				applyCallback(element);
+				applyCallback(element, model);
 
 				element.callbacks.push(update);
 			}
