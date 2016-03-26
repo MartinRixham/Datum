@@ -62,23 +62,17 @@ BindingRoot.ForEach = function(scope, model) {
 
 		if (scope.children.length != 1) {
 
-			throw new Error("An array must be bound to an element with exactly one child.");
+			throw new Error(
+				"An array must be bound to an element with exactly one child.");
 		}
 
-		var children = [];
+		var child = scope.children[0];
 
-		for (var i = scope.children.length - 1; i >= 0; i--) {
-
-			children[i] = scope.children[i];
-
-			scope.removeChild(scope.children[i]);
-		}
+		scope.removeChild(child);
 
 		var index = 0;
 
 		var newElement = function() {
-
-			var child = children[0];
 
 			var clone = child.cloneNode(true);
 
@@ -89,7 +83,7 @@ BindingRoot.ForEach = function(scope, model) {
 			return clone;
 		};
 
-		var append = function(array) {
+		function append(array) {
 
 			for (var i = 0; i < array.length; i++) {
 
@@ -104,9 +98,9 @@ BindingRoot.ForEach = function(scope, model) {
 					BindingRoot.bindObject(property, element);
 				}
 			}
-		};
+		}
 
-		var insertBefore = function(index, array) {
+		function insertBefore(index, array) {
 
 			for (var i = array.length - 1; i >= 0; i--) {
 
@@ -121,7 +115,7 @@ BindingRoot.ForEach = function(scope, model) {
 					BindingRoot.bindObject(property, element);
 				}
 			}
-		};
+		}
 
 		append(model);
 
