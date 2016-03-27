@@ -367,7 +367,7 @@
 
 			var root = new BindingRoot(after);
 
-			after.afterObject = {
+			after.addProperty("afterObject", {
 
 				datum: null,
 
@@ -375,24 +375,15 @@
 
 					text: function() { return after.afterObject.datum; }
 				})
-			};
+			});
 
 			after.afterObject.datum = "Hello World";
 
-			var done = assert.async();
+			assert.strictEqual(
+				query("#after-object").innerHTML,
+				"Hello World");
 
-			// In this case the binding is done asynchronously
-			// so the test must be queued after the binding.
-			setTimeout(function() {
-
-				assert.strictEqual(
-					query("#after-object").innerHTML,
-					"Hello World");
-
-				root.disconnect();
-
-				done();
-			});
+			root.disconnect();
 		});
     </script>
     <input type="text" id="update-after" data-bind="updateAfter" />
@@ -408,7 +399,7 @@
 
 			var root = new BindingRoot(after);
 
-			after.updateAfter = new Binding({
+			after.addProperty("updateAfter", new Binding({
 
 				value: function(value) {
 
@@ -419,25 +410,18 @@
 
 					return after.datum;
 				}
-			});
+			}));
 
-			var done = assert.async();
+			var element = query("#update-after");
 
-			setTimeout(function() {
+			element.value = "Hello World";
+			element.dispatchEvent(new Event("change"));
 
-				var element = query("#update-after");
+			assert.strictEqual(
+				after.datum,
+				"Hello World");
 
-				element.value = "Hello World";
-				element.dispatchEvent(new Event("change"));
-
-				assert.strictEqual(
-					after.datum,
-					"Hello World");
-
-				root.disconnect();
-
-				done();
-			});
+			root.disconnect();
 		});
     </script>
     <div data-bind="scope">

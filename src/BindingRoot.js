@@ -40,6 +40,14 @@ function BindingRoot(model) {
 
 					BindingRoot.bindObject(model, scope);
 				};
+
+
+				model.addProperty = function(name, property) {
+
+					model[name] = property;
+
+					self.rebindDataStructure();
+				};
 			}
 		}
 

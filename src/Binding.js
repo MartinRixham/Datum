@@ -2,8 +2,6 @@ function Binding(bindings) {
 
 	this.requestRebind();
 
-	setTimeout(this.rebindDataStructure);
-
 	var parentModel = null;
 
 	// The applyBinding method is the sole member of the binding interface,

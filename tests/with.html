@@ -68,9 +68,11 @@
 
 			var element = query("#with");
 
-			new BindingRoot(new WithObject());
+			var root = new BindingRoot(new WithObject());
 
 			assert.ok(!outer.contains(element));
+
+			root.disconnect();
 		});
     </script>
     <div id="remove" data-bind="remove">
@@ -90,11 +92,13 @@
 
 			var remove = new RemoveObject();
 
-			new BindingRoot(remove);
+			var root = new BindingRoot(remove);
 
 			remove.remove = null;
 
 			assert.ok(!element.contains(inner));
+
+			root.disconnect();
 		});
     </script>
     <div id="replace" data-bind="replace">
@@ -110,7 +114,7 @@
 
 			var replace = new ReplaceObject();
 
-			new BindingRoot(replace);
+			var root = new BindingRoot(replace);
 
 			replace.replace = {};
 
@@ -119,6 +123,8 @@
 			var inner = query("#inner-replace");
 
 			assert.ok(element.contains(inner));
+
+			root.disconnect();
 		});
     </script>
     <div data-bind="bind">
@@ -127,31 +133,26 @@
     <script>
 		QUnit.test("Apply binding when object added", function(assert) {
 
-			function ReplaceObject() {
+			function ApplyObject() {
 
 				this.bind = null;
 			}
 
-			var bind = new ReplaceObject();
+			var bind = new ApplyObject();
 
-			new BindingRoot(bind);
+			var root = new BindingRoot(bind);
 
-			bind.bind = {
+			bind.addProperty("bind", {
 
 				text: new Binding({
 
 					text: function() { return "Hello World"; }
 				})
-			};
-
-			var done = assert.async();
-
-			setTimeout(function() {
-
-				assert.strictEqual(query("#text").innerHTML, "Hello World");
-
-				done();
 			});
+
+			assert.strictEqual(query("#text").innerHTML, "Hello World");
+
+			root.disconnect();
 		});
     </script>
     <div id="multi-outer" data-bind="multi">
@@ -171,10 +172,12 @@
 			var one = query("#one");
 			var two = query("#two");
 
-			new BindingRoot(new MultipleObject());
+			var root = new BindingRoot(new MultipleObject());
 
 			assert.ok(!outer.contains(one));
 			assert.ok(!outer.contains(two));
+
+			root.disconnect();
 		});
     </script>
     <div id="multi-remove" data-bind="removeMulti">
@@ -196,12 +199,14 @@
 
 			var remove = new RemoveObject();
 
-			new BindingRoot(remove);
+			var root = new BindingRoot(remove);
 
 			remove.removeMulti = null;
 
 			assert.ok(!element.contains(one));
 			assert.ok(!element.contains(two));
+
+			root.disconnect();
 		});
     </script>
     <div id="multi-replace" data-bind="Multireplace">
@@ -218,7 +223,7 @@
 
 			var replace = new ReplaceObject();
 
-			new BindingRoot(replace);
+			var root = new BindingRoot(replace);
 
 			replace.Multireplace = {};
 
@@ -237,6 +242,8 @@
 			assert.strictEqual(elementCount, 1);
 
 			assert.ok(one.nextSibiling = two);
+
+			root.disconnect();
 		});
     </script>
     <div id="reremove" data-bind="reremove">
@@ -252,7 +259,7 @@
 
 			var reremove = new ReremoveObject();
 
-			new BindingRoot(reremove);
+			var root = new BindingRoot(reremove);
 
 			reremove.reremove = {};
 
@@ -263,6 +270,8 @@
 			var element = query("#reremove");
 
 			assert.ok(!element.contains(inner));
+
+			root.disconnect();
 		});
     </script>
     <div id="renull" data-bind="renull">
@@ -282,11 +291,13 @@
 
 			var renull = new RenullObject();
 
-			new BindingRoot(renull);
+			var root = new BindingRoot(renull);
 
 			renull.renull = null;
 
 			assert.ok(!element.contains(inner));
+
+			root.disconnect();
 		});
     </script>
     <div id="renew" data-bind="renew">
@@ -306,11 +317,13 @@
 
 			var renew = new RenewObject();
 
-			new BindingRoot(renew);
+			var root = new BindingRoot(renew);
 
 			renew.renew = {};
 
 			assert.ok(element.children.length == 1);
+
+			root.disconnect();
 		});
     </script>
     <div data-bind="object"></div>
@@ -334,11 +347,13 @@
 				};
 			}
 
-			new BindingRoot(new SubobjectObject());
+			var root = new BindingRoot(new SubobjectObject());
 
 			var text = query("#subobject-text");
 
 			assert.notEqual(text.innerHTML, "Hello World");
+
+			root.disconnect();
 		});
     </script>
     <div data-bind="subscope">
@@ -362,11 +377,13 @@
 				};
 			}
 
-			new BindingRoot(new SubscopeObject());
+			var root = new BindingRoot(new SubscopeObject());
 
 			var text = query("#subscope-text");
 
 			assert.notEqual(text.innerHTML, "Hello World");
+
+			root.disconnect();
 		});
     </script>
   </body>
