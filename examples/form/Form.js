@@ -96,14 +96,12 @@ function Form() {
 
 		click: function() { 
 
-			var form = document.querySelector("form");
-
 			var request = new XMLHttpRequest();
 
 			request.open("GET", "form-readonly.html");
 			request.onload = function() {
 
-				form.innerHTML = request.responseText;
+				document.body.innerHTML = request.responseText;
 			};
 
 			request.send();
