@@ -67,9 +67,11 @@
 				});
 			}
 
-			new BindingRoot(new TextObject());
+			var root = new BindingRoot(new TextObject());
 
 			assert.strictEqual(query("#test-div").innerHTML, "Hello World");
+
+			root.disconnect();
 		});
     </script>
     <input type="text" id="test-input" data-bind="input" />
@@ -84,9 +86,11 @@
 				});
 			}
 
-			new BindingRoot(new InputObject());
+			var root = new BindingRoot(new InputObject());
 
 			assert.strictEqual(query("#test-input").value, "Hello World");
+
+			root.disconnect();
 		});
     </script>
     <input type="text" id="value-input" data-bind="valueInput" />
@@ -105,7 +109,7 @@
 
 			var input = new InputObject();
 
-			new BindingRoot(input);
+			var root = new BindingRoot(input);
 
 			var element = query("#value-input");
 
@@ -113,6 +117,8 @@
 			element.dispatchEvent(new Event("change"));
 
 			assert.strictEqual(input.datum(), "Hello World");
+
+			root.disconnect();
 		});
     </script>
     <div id="super-bind" data-bind="bind"></div>
@@ -138,13 +144,15 @@
 				};
 			}
 
-			new BindingRoot(new TextObject());
+			var root = new BindingRoot(new TextObject());
 
 			assert.strictEqual(
 				query("#super-bind").innerHTML,
 				"Eh Up Planet");
 
 			assert.strictEqual(query("#sub").innerHTML, "Hello World");
+
+			root.disconnect();
 		});
     </script>
     <div data-bind="nonSuper"></div>
@@ -165,9 +173,11 @@
 					};
 				}
 
-				new BindingRoot(new TextObject());
+				var root = new BindingRoot(new TextObject());
 
 				assert.notEqual(query("#non-sub").innerHTML, "Hello World");
+
+				root.disconnect();
 			});
     </script>
     <div id="plain" data-bind="plain"></div>
@@ -188,11 +198,13 @@
 
 			var plainObject = new PlainObject();
 
-			new BindingRoot(plainObject);
+			var root = new BindingRoot(plainObject);
 
 			plainObject.datum = "Hello World";
 
 			assert.strictEqual(query("#plain").innerHTML, "Hello World");
+
+			root.disconnect();
 		});
     </script>
     <input type="text" id="plainValue" data-bind="plainValue" />
@@ -213,11 +225,13 @@
 
 			var plainObject = new PlainObject();
 
-			new BindingRoot(plainObject);
+			var root = new BindingRoot(plainObject);
 
 			plainObject.datum = "Hello World";
 
 			assert.strictEqual(query("#plainValue").value, "Hello World");
+
+			root.disconnect();
 		});
     </script>
     <input type="text" id="plain-change" data-bind="plainChange" />
@@ -244,7 +258,7 @@
 
 			var input = new InputObject();
 
-			new BindingRoot(input);
+			var root = new BindingRoot(input);
 
 			var element = query("#plain-change");
 
@@ -252,32 +266,36 @@
 			element.dispatchEvent(new Event("change"));
 
 			assert.strictEqual(input.datum, "Hello World");
+
+			root.disconnect();
 		});
     </script>
     <script>
-		QUnit.test(
-			"Constructor can only be called once.",
-			function(assert) {
+		QUnit.test("Constructor can only be called once.", function(assert) {
 
-				var exception = null;
+			var exception = null;
 
-				try {
+			var root;
 
-					new BindingRoot({});
-					new BindingRoot({});
-				}
-				catch(ex) {
+			try {
 
-					exception = ex;
-				}
+				root = new BindingRoot({});
+				new BindingRoot({});
+			}
+			catch(ex) {
 
-				assert.ok(exception);
+				exception = ex;
+			}
 
-				assert.strictEqual(
-					exception.message,
-					"The binding root is unique and " +
-					"cannot be instantiated multiple times.");
-			});
+			assert.ok(exception);
+
+			assert.strictEqual(
+				exception.message,
+				"The binding root is unique and " +
+				"cannot be instantiated multiple times.");
+
+			root.disconnect();
+		});
     </script>
     <div id="after" data-bind="after"></div>
     <script>
@@ -290,7 +308,7 @@
 
 			var after = new After();
 
-			new BindingRoot(after);
+			var root = new BindingRoot(after);
 
 			after.after = new Binding({
 
@@ -300,40 +318,42 @@
 			after.datum = "Hello World";
 
 			assert.strictEqual(query("#after").innerHTML, "Hello World");
+
+			root.disconnect();
 		});
     </script>
     <div data-bind="inner"></div>	
     <div data-bind="outer"></div>
 	<script>
-		QUnit.test(
-			"Dependencies are aggressively collected.",
-			function(assert) {
+		QUnit.test("Dependencies are aggressively collected.", function(assert) {
 
-				var count = 0;
+			var count = 0;
 
-				function Only() {
+			function Only() {
 
-					this.datum = null;
+				this.datum = null;
 
-					this.inner = new Binding({
+				this.inner = new Binding({
 
-						text: function() { count += 1; }
-					});
-				}
-
-				var only = new Only();
-
-				new BindingRoot(only);
-
-				only.outer = new Binding({
-
-					text: function() { return only.datum; }
+					text: function() { count += 1; }
 				});
+			}
 
-				only.datum = "Hello World";
+			var only = new Only();
 
-				assert.strictEqual(count, 2);
+			var root = new BindingRoot(only);
+
+			only.outer = new Binding({
+
+				text: function() { return only.datum; }
 			});
+
+			only.datum = "Hello World";
+
+			assert.strictEqual(count, 2);
+
+			root.disconnect();
+		});
     </script>
     <div data-bind="afterObject">
       <div id="after-object" data-bind="after"></div>
@@ -345,7 +365,7 @@
 
 			var after = new AfterObject();
 
-			new BindingRoot(after);
+			var root = new BindingRoot(after);
 
 			after.afterObject = {
 
@@ -369,6 +389,8 @@
 					query("#after-object").innerHTML,
 					"Hello World");
 
+				root.disconnect();
+
 				done();
 			});
 		});
@@ -384,7 +406,7 @@
 
 			var after = new AfterUpdate();
 
-			new BindingRoot(after);
+			var root = new BindingRoot(after);
 
 			after.updateAfter = new Binding({
 
@@ -399,21 +421,20 @@
 				}
 			});
 
+			var done = assert.async();
+
 			setTimeout(function() {
 
 				var element = query("#update-after");
 
 				element.value = "Hello World";
 				element.dispatchEvent(new Event("change"));
-			});
-
-			var done = assert.async();
-
-			setTimeout(function() {
 
 				assert.strictEqual(
 					after.datum,
 					"Hello World");
+
+				root.disconnect();
 
 				done();
 			});
@@ -436,11 +457,13 @@
 
 			var scope = new ScopeObject();
 
-			new BindingRoot(scope);
+			var root = new BindingRoot(scope);
 
 			var element = query("#scope");
 
 			assert.notEqual(element.textContent, "Hello World");
+
+			root.disconnect();
 		});
     </script>
     <div id="on-bind" data-bind="bindOn"></div>
@@ -462,9 +485,11 @@
 					};
 				}
 
-				new BindingRoot(new OnBindObject());
+				var root = new BindingRoot(new OnBindObject());
 
 				assert.strictEqual(elementId, "on-bind");
+
+				root.disconnect();
 			});
     </script>
     <div data-bind="bindOnce"></div>
@@ -486,7 +511,7 @@
 
 			var onBindOnce = new OnBindOnceObject();
 
-			new BindingRoot(onBindOnce);
+			var root = new BindingRoot(onBindOnce);
 
 			onBindOnce.bindOnce.newBinding = new Binding({});
 
@@ -495,6 +520,8 @@
 			setTimeout(function() {
 
 				assert.strictEqual(count, 1);
+
+				root.disconnect();
 
 				done();
 			});
@@ -523,11 +550,13 @@
 
 			var subproperty = new Subproperty();
 
-			new BindingRoot(subproperty);
+			var root = new BindingRoot(subproperty);
 
 			subproperty.subobject.property = "Eh up planet.";
 
 			assert.strictEqual(count, 2);
+
+			root.disconnect();
 		});
 	</script>
   </body>

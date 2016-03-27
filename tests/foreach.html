@@ -815,22 +815,15 @@
 					text: function() { return "Hello World"; }
 				}));
 
-			var done = assert.async();
+			var element = query("#push-binding");
 
-			setTimeout(function() {
+			var children = element.children;
 
-				var element = query("#push-binding");
+			assert.strictEqual(children.length, 2);
 
-				var children = element.children;
+			assert.strictEqual(children[1].innerHTML, "Hello World");
 
-				assert.strictEqual(children.length, 2);
-
-				assert.strictEqual(children[1].innerHTML, "Hello World");
-
-				done();
-
-				root.disconnect();
-			});
+			root.disconnect();
 		});
     </script>
     <div id="sort-two" data-bind="sortTwo">
