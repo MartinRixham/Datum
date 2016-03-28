@@ -261,5 +261,22 @@ However you must make sure that all of it's dependencies can be found when they 
 
 ### Serialisation
 
+It is common to want to be able to turn objects into JSON to send to the server.
+For this reason Datum attaches a `toJSON` method to each object in the view model.
+This method returns an object containing only data properties and subobjects that can be easily stringified and sent to the server.
+
+    var viewModel = {
+    
+        datum: "Hello world."
+    };
+    
+    new BindingRoot(viewModel);
+
+	var jsonString = JSON.stringify(viewModel.toJSON());
+
+If an object contains data that should not be serialised then it can implement its own `toJSON` method.
+This method should return an object that contains just its serialisable data.
+Beginners are encouraged to use the default implementation of `toJSON` and not to worry if a few redundant properties are sent to the server.
+
 ### The Array Binding
 
