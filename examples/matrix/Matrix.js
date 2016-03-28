@@ -2251,7 +2251,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	var character = document.createElement("SPAN");
 
-	character.setAttribute("data-bind", "character");
+	character.className = "character";
 
 	var waterfall = document.querySelector("#waterfall");
 
