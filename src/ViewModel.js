@@ -45,11 +45,5 @@ BindingRoot.ViewModel = function(model) {
 		return transferObject;
 	};
 
-	if (!model.toJSONString)
-	model.toJSONString = function() {
-
-		return JSON.stringify(model.toJSON());
-	};
-
 	return model;
 };
