@@ -6,13 +6,8 @@ function UniqueRoot() {
 
 		if (flag) {
 
-			throw {
-
-				message: "The binding root is unique and " +
-						"cannot be instantiated multiple times.",
-
-				name: "DatumException"
-			};
+			throw new Error(
+				"The binding root is unique and cannot be instantiated multiple times.");
 		}
 		else {
 
