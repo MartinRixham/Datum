@@ -1,49 +1,116 @@
-// This is just a collection of utility methods that are helpful
-// when building applications with Datum.
 BindingRoot.ViewModel = function(model) {
 
-	if (!model) {
+	new BindingRoot.ViewModel.Serialisable(model);
 
-		model = {};
-	}
+	var properties = {};
 
-	if (!model.toJSON)
-	model.toJSON = function() {
+	var bindings = {};
 
-		var transferObject = {};
+	this.applyBinding = function (scope, name) {
 
-		if (model instanceof Array) {
+		var element;
 
-			transferObject = [];
-		}
+		if (scope) {
 
-		for (var key in model) {
+			var elements = this.getAllMatchingElements(scope, name);
 
-			var property = model[key];
+			if (elements.length > 1) {
 
-			if (key == "_scope") {
-
-				continue;
+				throw new Error("Objects can only be bound to one element.");
 			}
+			else if (elements.length) {
 
-			if (property &&
-				property.toJSON &&
-				typeof(property) == "object" &&
-				(!property.applyBinding || property instanceof Array)) {
-
-				transferObject[key] = property.toJSON();
-			}
-
-			if (!property ||
-				(typeof(property) != "object" &&
-				typeof(property) != "function")) {
-
-				transferObject[key] = property;
+				element = elements[0];
 			}
 		}
+		else {
 
-		return transferObject;
+			element = document.body;
+		}
+
+		if (element) {
+
+			var self = this;
+
+			element._rebind = function () {
+
+				self.applyBinding(scope, name);
+			};
+		}
+
+		if (model.onBind) {
+
+			model.onBind(element);
+		}
+
+		var key;
+
+		for (key in properties) {
+
+			if (!model[key]) {
+
+				properties[key].removeBinding();
+
+				delete properties[key];
+			}
+		}
+
+		for (key in model) {
+
+			if (isNew(key) && key != "_scope") {
+
+				if (properties[key]) {
+
+					properties[key].removeBinding();
+				}
+
+				var property = model[key];
+
+				if (property && property.applyBinding && property.removeBinding) {
+
+					bindings[key] = property;
+				}
+				else if (typeof(property) != "function") {
+
+					properties[key] = new BindingRoot.ViewModel.Property(model[key]);
+				}
+			}
+		}
+
+		for (key in properties) {
+
+			properties[key].applyBinding(element, key, model);
+		}
+
+		for (key in bindings) {
+
+			bindings[key].applyBinding(element, key, model);
+		}
 	};
 
-	return model;
+	function isNew(key) {
+
+		var property = properties[key];
+
+		return !property || property.isOlderThan(model[key]);
+	}
+
+	this.removeBinding = function() {
+
+		for (var key in properties) {
+
+			properties[key].removeBinding();
+		}
+	};
+
+	var self = this;
+
+	model.setProperty = function(name, property) {
+
+		model[name] = property;
+
+		self.rebindDataStructure();
+	};
 };
+
+BindingRoot.ViewModel.prototype = new Subscriber();

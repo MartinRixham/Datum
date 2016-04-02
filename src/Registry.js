@@ -54,8 +54,7 @@ function Registry() {
 	// it supplies a rebinding callback to the registry.
 	// When a new binding is instantiated it requests a rebinding.
 	// The rebinding is initialised either by the next datum
-	// to be called or eventually by a callback supplied to
-	// setTimeout.
+	// to be called or eventually by a callback supplied to setTimeout.
 	var rebind = null;
 
 	var rebindRequested = false;

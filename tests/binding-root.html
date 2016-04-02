@@ -9,8 +9,11 @@
     <script src="../src/Subscriber.js"></script>
     <script src="../src/UniqueRoot.js"></script>
     <script src="../src/BindingRoot.js"></script>
-    <script src="../src/ForEach.js"></script>
-    <script src="../src/With.js"></script>
+  	<script src="../src/ViewModel.js"></script>
+  	<script src="../src/Property.js"></script>
+    <script src="../src/ArrayBinding.js"></script>
+    <script src="../src/Serialisable.js"></script>
+    <script src="../src/ObjectBinding.js"></script>
     <script src="../src/DomWatcher.js"></script>
     <script src="../src/Binding.js"></script>
     <script src="../src/Datum.js"></script>
@@ -20,7 +23,6 @@
     <script src="../src/Init.js"></script>
     <script src="../src/Update.js"></script>
     <script src="../src/Click.js"></script>
-    <script src="../src/ViewModel.js"></script>
   </head>
   <body>
     <style>
@@ -52,6 +54,8 @@
 				UniqueRoot.prototype = new Subscriber();
 				BindingRoot.prototype = new UniqueRoot();
 				BindingRoot.With.prototype = new Subscriber();
+				BindingRoot.ViewModel.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();
 			}
 		});
     </script>
@@ -158,27 +162,25 @@
     <div data-bind="nonSuper"></div>
     <div id="non-sub" data-bind="nonSub"></div>
     <script>
-		QUnit.test(
-			"Fail to bind subobject outside of scope",
-			function(assert) {
+		QUnit.test("Fail to bind subobject outside of scope", function(assert) {
 
-				function TextObject() {
+			function TextObject() {
 
-					this.nonSuper = {
+				this.nonSuper = {
 
-						nonSub: new Binding({
+					nonSub: new Binding({
 
-							text: "Hello World"
-						})
-					};
-				}
+						text: function() { return "Hello World"; }
+					})
+				};
+			}
 
-				var root = new BindingRoot(new TextObject());
+			var root = new BindingRoot(new TextObject());
 
-				assert.notEqual(query("#non-sub").innerHTML, "Hello World");
+			assert.notEqual(query("#non-sub").innerHTML, "Hello World");
 
-				root.disconnect();
-			});
+			root.disconnect();
+		});
     </script>
     <div id="plain" data-bind="plain"></div>
     <script>
@@ -310,10 +312,10 @@
 
 			var root = new BindingRoot(after);
 
-			after.after = new Binding({
+			after.setProperty("after", new Binding({
 
 				text: function() { return after.datum; }
-			});
+			}));
 
 			after.datum = "Hello World";
 
@@ -367,7 +369,7 @@
 
 			var root = new BindingRoot(after);
 
-			after.addProperty("afterObject", {
+			after.setProperty("afterObject", {
 
 				datum: null,
 
@@ -399,7 +401,7 @@
 
 			var root = new BindingRoot(after);
 
-			after.addProperty("updateAfter", new Binding({
+			after.setProperty("updateAfter", new Binding({
 
 				value: function(value) {
 

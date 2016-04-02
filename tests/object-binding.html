@@ -2,15 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>With Binding Tests</title>
+    <title>Object Binding Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../src/Registry.js"></script>
     <script src="../src/Subscriber.js"></script>
     <script src="../src/UniqueRoot.js"></script>
     <script src="../src/BindingRoot.js"></script>
-    <script src="../src/ForEach.js"></script>
-    <script src="../src/With.js"></script>
+  	<script src="../src/ViewModel.js"></script>
+  	<script src="../src/Property.js"></script>
+    <script src="../src/ArrayBinding.js"></script>
+    <script src="../src/ObjectBinding.js"></script>
+    <script src="../src/Serialisable.js"></script>
     <script src="../src/DomWatcher.js"></script>
     <script src="../src/Binding.js"></script>
     <script src="../src/Datum.js"></script>
@@ -20,7 +23,6 @@
     <script src="../src/Init.js"></script>
     <script src="../src/Update.js"></script>
     <script src="../src/Click.js"></script>
-    <script src="../src/ViewModel.js"></script>
   </head>
   <body>
     <style>
@@ -50,6 +52,8 @@
 				UniqueRoot.prototype = new Subscriber();
 				BindingRoot.prototype = new UniqueRoot();
 				BindingRoot.With.prototype = new Subscriber();
+				BindingRoot.ViewModel.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();
 			}
 		});
     </script>
@@ -142,7 +146,7 @@
 
 			var root = new BindingRoot(bind);
 
-			bind.addProperty("bind", {
+			bind.setProperty("bind", {
 
 				text: new Binding({
 
@@ -347,13 +351,24 @@
 				};
 			}
 
-			var root = new BindingRoot(new SubobjectObject());
+			var root;
 
-			var text = query("#subobject-text");
+			try {
 
-			assert.notEqual(text.innerHTML, "Hello World");
+				root = new BindingRoot(new SubobjectObject());
+			}
+			catch (e) {}
+			finally {
 
-			root.disconnect();
+				var text = query("#subobject-text");
+
+				assert.notEqual(text.innerHTML, "Hello World");
+
+				if (root) {
+
+					root.disconnect();
+				}
+			}
 		});
     </script>
     <div data-bind="subscope">

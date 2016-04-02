@@ -4,22 +4,31 @@ function Value(value) {
 
 	var self = this;
 
-	function createCallback(element, model) {
+	this.applyBinding = function(scope, name, model) {
 
-		self.assignUpdater(function() {
+		parentModel = model;
 
-			if (!value._running) {
+		var elements = this.getAllMatchingElements(scope, name);
 
-				value._running = true;
+		for (var i = 0; i < elements.length; i++) {
 
-				element.value = value.call(model, undefined, element);
+			var element = elements[i];
 
-				value._running = false;
+			if (this.isInScope(element, scope)) {
+
+				this.requestRegistrations();
+
+				var evaluated = value.call(model, undefined, element);
+
+				if (typeof(evaluated) != "undefined") {
+
+					element.value = evaluated;
+				}
+
+				addCallbacks(element, model);
 			}
-		},
-		value,
-		element);
-	}
+		}
+	};
 
 	function addCallbacks(element, model) {
 
@@ -43,31 +52,24 @@ function Value(value) {
 		createCallback(element, model);
 	}
 
-	this.applyBinding = function(scope, name, model) {
+	function createCallback(element, model) {
 
-		parentModel = model;
+		self.assignUpdater(function() {
 
-		var elements = this.matchingElements(scope, name);
+			if (!value._running) {
 
-		for (var i = 0; i < elements.length; i++) {
+				value._running = true;
 
-			var element = elements[i];
+				element.value = value.call(model, undefined, element);
 
-			if (this.isInScope(element, scope)) {
-
-				this.requestRegistrations();
-
-				var evaluated = value.call(model, undefined, element);
-
-				if (typeof(evaluated) != "undefined") {
-
-					element.value = evaluated;
-				}
-
-				addCallbacks(element, model);
+				value._running = false;
 			}
-		}
-	};
+		},
+		value,
+		element);
+	}
+
+	this.removeBinding = function() {};
 
 	this.test = {
 

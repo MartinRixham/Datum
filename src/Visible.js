@@ -2,6 +2,28 @@ function Visible(visible) {
 
 	var self = this;
 
+	this.applyBinding = function(scope, name, model) {
+
+		var elements = this.getAllMatchingElements(scope, name);
+
+		for (var i = 0; i < elements.length; i++) {
+
+			var element = elements[i];
+
+			if (this.isInScope(element, scope)) {
+
+				this.requestRegistrations();
+
+				if(!visible.call(model, element)) {
+
+					element.style.display = "none";
+				}
+
+				applyCallback(element, model);
+			}
+		}
+	};
+
 	function applyCallback(element, model) {
 
 		self.assignUpdater(function() {
@@ -26,27 +48,7 @@ function Visible(visible) {
 		element);
 	}
 
-	this.applyBinding = function(scope, name, model) {
-
-		var elements = this.matchingElements(scope, name);
-
-		for (var i = 0; i < elements.length; i++) {
-
-			var element = elements[i];
-
-			if (this.isInScope(element, scope)) {
-
-				this.requestRegistrations();
-
-				if(!visible.call(model, element)) {
-
-					element.style.display = "none";
-				}
-
-				applyCallback(element, model);
-			}
-		}
-	};
+	this.removeBinding = function() {};
 }
 
 Visible.prototype = new Subscriber();

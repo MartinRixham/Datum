@@ -57,4 +57,3 @@ function Datum(datum) {
 }
 
 Datum.prototype = new Subscriber();
-

@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON("package.json"),
 		jshint: {
 
-			all: ["src/*.js", "tests/*.html"],
+			all: ["src/*.js", "tests/*.html", "examples/**/*.js"],
 			options: {
 
 				extract: "auto"
@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 		},
 		jscs: {
 
-			src: ["src/*.js", "tests"],
+			src: ["src/*.js", "tests", "examples/**/*.js"],
 			options: {
 
 				config: ".jscsrc",

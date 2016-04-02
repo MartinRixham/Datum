@@ -17,21 +17,9 @@ function Update(update) {
 
 	var self = this;
 
-	function applyCallback(element, model) {
-
-		self.assignUpdater(function() {
-
-			update.call(model, element);
-		},
-		update,
-		element);
-	}
-
 	this.applyBinding = function(scope, name, model) {
 
-		var elements = this.matchingElements(scope, name);
-
-		var self = this;
+		var elements = this.getAllMatchingElements(scope, name);
 
 		for (var i = 0; i < elements.length; i++) {
 
@@ -56,6 +44,18 @@ function Update(update) {
 			}
 		}
 	};
+
+	function applyCallback(element, model) {
+
+		self.assignUpdater(function() {
+
+			update.call(model, element);
+		},
+		update,
+		element);
+	}
+
+	this.removeBinding = function() {};
 }
 
 Update.prototype = new Subscriber();

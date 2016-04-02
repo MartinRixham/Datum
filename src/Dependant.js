@@ -12,4 +12,3 @@ Datum.Dependant = function(callback, binding, element) {
 			this.element == other.element;
 	};
 };
-

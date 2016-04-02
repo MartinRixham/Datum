@@ -6,7 +6,7 @@ function Form() {
 
 	this.date = new DatePicker();
 
-	this.yesnos = 
+	this.yesnos =
 		[
 			new YesNoQuestion("Is this the first question?"),
 			new YesNoQuestion("Is this the second question?")
@@ -46,11 +46,11 @@ function Form() {
 
 	this.hideDate = new Binding({
 
-		click: function() { 
+		click: function() {
 
 			if (this.date) {
 
-				this.date = null; 
+				this.date = null;
 			}
 			else {
 
@@ -94,7 +94,7 @@ function Form() {
 
 	this.go = new Binding({
 
-		click: function() { 
+		click: function() {
 
 			var request = new XMLHttpRequest();
 
@@ -105,7 +105,7 @@ function Form() {
 			};
 
 			request.send();
-		} 
+		}
 	});
 
 	this.sort = new Click(function() {

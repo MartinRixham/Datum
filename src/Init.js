@@ -2,7 +2,7 @@ function Init(init) {
 
 	this.applyBinding = function(scope, name, model) {
 
-		var elements = this.matchingElements(scope, name);
+		var elements = this.getAllMatchingElements(scope, name);
 
 		for (var i = 0; i < elements.length; i++) {
 
@@ -23,6 +23,8 @@ function Init(init) {
 			}
 		}
 	};
+
+	this.removeBinding = function() {};
 }
 
 Init.prototype = new Subscriber();

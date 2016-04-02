@@ -253,7 +253,7 @@ This means that you should never put expensive computation or expensively access
 In particuar you should never initiate network requests from a binding callback.
 
 Of course you may well want to make a network request or access an expensive resource automatically when the view model updates.
-In this case the correct tool is the update binding.
+In this case the correct tool is the *update* binding.
 In contrast to all the other binding callbacks, the update binding collects its dependencies only once when it is first bound.
 After that it is only re-executed when one of those dependencies changes.
 It is therefore safe to put expensive operations in an update binding since they will only be run when necessary.
@@ -272,7 +272,7 @@ This method returns an object containing only data properties and subobjects tha
     
     new BindingRoot(viewModel);
 
-	var jsonString = JSON.stringify(viewModel.toJSON());
+	var jsonString = JSON.stringify(viewModel);
 
 If an object contains data that should not be serialised then it can implement its own `toJSON` method.
 This method should return an object that contains just its serialisable data.

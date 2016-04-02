@@ -1,6 +1,8 @@
+// jscs:disable maximumNumberOfLines
+
 function Matrix() {
 
-	this.one = 
+	this.one =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -56,7 +58,7 @@ function Matrix() {
 			new Text(function() { return "G"; })
 		];
 
-	this.two = 
+	this.two =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -112,7 +114,7 @@ function Matrix() {
 			new Text(function() { return "l"; })
 		];
 
-	this.three = 
+	this.three =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -168,7 +170,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.four = 
+	this.four =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -224,7 +226,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.five = 
+	this.five =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -280,7 +282,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.six = 
+	this.six =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -336,7 +338,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.seven = 
+	this.seven =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -392,7 +394,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.eight = 
+	this.eight =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -448,7 +450,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.nine = 
+	this.nine =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -504,7 +506,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.ten = 
+	this.ten =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -560,7 +562,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.eleven = 
+	this.eleven =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -616,7 +618,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.twelve = 
+	this.twelve =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -672,7 +674,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.thirteen = 
+	this.thirteen =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -728,7 +730,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.fourteen = 
+	this.fourteen =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -784,7 +786,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.fifteen = 
+	this.fifteen =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -840,7 +842,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.sixteen = 
+	this.sixteen =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -896,7 +898,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.seventeen = 
+	this.seventeen =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -952,7 +954,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.eighteen = 
+	this.eighteen =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1008,7 +1010,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.nineteen = 
+	this.nineteen =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1064,7 +1066,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.twenty = 
+	this.twenty =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1120,7 +1122,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.twentyone = 
+	this.twentyone =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1176,7 +1178,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.twentytwo = 
+	this.twentytwo =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1232,7 +1234,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.twentythree = 
+	this.twentythree =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1288,7 +1290,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.twentyfour = 
+	this.twentyfour =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1344,7 +1346,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.twentyfive = 
+	this.twentyfive =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1400,7 +1402,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.twentysix = 
+	this.twentysix =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1456,7 +1458,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.twentyseven = 
+	this.twentyseven =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1512,7 +1514,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.twentyeight = 
+	this.twentyeight =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1568,7 +1570,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.twentynine = 
+	this.twentynine =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1624,7 +1626,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.thirty = 
+	this.thirty =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1680,7 +1682,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.thirtyone = 
+	this.thirtyone =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1736,7 +1738,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.thirtytwo = 
+	this.thirtytwo =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1792,7 +1794,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.thirtythree = 
+	this.thirtythree =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1848,7 +1850,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.thirtyfour = 
+	this.thirtyfour =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1904,7 +1906,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.thirtyfive = 
+	this.thirtyfive =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -1960,7 +1962,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.thirtysix = 
+	this.thirtysix =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -2016,7 +2018,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.thirtyseven = 
+	this.thirtyseven =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -2072,7 +2074,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.thirtyeight = 
+	this.thirtyeight =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -2128,7 +2130,7 @@ function Matrix() {
 			new Text(function() { return "\xA0"; })
 		];
 
-	this.thirtynine = 
+	this.thirtynine =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -2184,7 +2186,7 @@ function Matrix() {
 			new Text(function() { return "S"; })
 		];
 
-	this.forty = 
+	this.forty =
 		[
 			new Text(function() { return "\xA0"; }),
 			new Text(function() { return "\xA0"; }),
@@ -2255,11 +2257,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	var waterfall = document.querySelector("#waterfall");
 
-	var animate = function() {
+	function animate() {
 
 		var lastChild = waterfall.lastElementChild;
 
-		waterfall.removeChild(lastChild);		
+		waterfall.removeChild(lastChild);
 
 		var rowNumber = lastChild.firstElementChild.getAttribute("data-bind");
 
@@ -2282,7 +2284,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		waterfall.insertBefore(newDiv, waterfall.firstChild);
 
 		setTimeout(animate);
-	};
+	}
 
 	animate();
 });

@@ -18,7 +18,7 @@ function Subscriber() {
 		}
 	};
 
-	this.matchingElements = function(scope, key) {
+	this.getAllMatchingElements = function(scope, key) {
 
 		if (isNaN(key)) {
 
@@ -27,6 +27,18 @@ function Subscriber() {
 		else {
 
 			return [scope.children[key]];
+		}
+	};
+
+	this.getMatchingElement = function(scope, key) {
+
+		if (isNaN(key)) {
+
+			return scope.querySelector("[data-bind=" + key + "]");
+		}
+		else {
+
+			return scope.children[key];
 		}
 	};
 }

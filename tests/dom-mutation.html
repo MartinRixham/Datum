@@ -5,22 +5,32 @@
     <title>Dom Mutation Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-    <script src="../src/Registry.js"></script>
-    <script src="../src/Subscriber.js"></script>
-    <script src="../src/UniqueRoot.js"></script>
-    <script src="../src/BindingRoot.js"></script>
-    <script src="../src/ForEach.js"></script>
-    <script src="../src/With.js"></script>
-    <script src="../src/DomWatcher.js"></script>
-    <script src="../src/Binding.js"></script>
-    <script src="../src/Datum.js"></script>
-    <script src="../src/Dependant.js"></script>
-    <script src="../src/Text.js"></script>
-    <script src="../src/Value.js"></script>
-    <script src="../src/Init.js"></script>
-    <script src="../src/Update.js"></script>
-    <script src="../src/Click.js"></script>
-    <script src="../src/ViewModel.js"></script>
+	  <script src="../src/Registry.js"></script>
+	  <script src="../src/Subscriber.js"></script>
+	  <script src="../src/UniqueRoot.js"></script>
+	  <script src="../src/BindingRoot.js"></script>
+	  <script src="../src/ViewModel.js"></script>
+	  <script src="../src/Property.js"></script>
+	  <script src="../src/Binding.js"></script>
+	  <script src="../src/ArrayBinding.js"></script>
+	  <script src="../src/ArrayElement.js"></script>
+	  <script src="../src/Push.js"></script>
+	  <script src="../src/Pop.js"></script>
+	  <script src="../src/Shift.js"></script>
+	  <script src="../src/Unshift.js"></script>
+	  <script src="../src/Splice.js"></script>
+	  <script src="../src/Sort.js"></script>
+	  <script src="../src/Reverse.js"></script>
+	  <script src="../src/ObjectBinding.js"></script>
+	  <script src="../src/Serialisable.js"></script>
+	  <script src="../src/DomWatcher.js"></script>
+	  <script src="../src/Datum.js"></script>
+	  <script src="../src/Dependant.js"></script>
+	  <script src="../src/Text.js"></script>
+	  <script src="../src/Value.js"></script>
+	  <script src="../src/Init.js"></script>
+	  <script src="../src/Update.js"></script>
+	  <script src="../src/Click.js"></script>
   </head>
   <body>
     <style>
@@ -52,6 +62,8 @@
 				UniqueRoot.prototype = new Subscriber();
 				BindingRoot.prototype = new UniqueRoot();
 				BindingRoot.With.prototype = new Subscriber();
+				BindingRoot.ViewModel.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();
 			}
 		});
     </script>

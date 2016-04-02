@@ -2,16 +2,27 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>For Each Tests</title>
+    <title>Array Binding Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../src/Registry.js"></script>
     <script src="../src/Subscriber.js"></script>
     <script src="../src/UniqueRoot.js"></script>
     <script src="../src/BindingRoot.js"></script>
+    <script src="../src/ViewModel.js"></script>
+    <script src="../src/Property.js"></script>
     <script src="../src/Binding.js"></script>
-    <script src="../src/ForEach.js"></script>
-    <script src="../src/With.js"></script>
+    <script src="../src/ArrayBinding.js"></script>
+    <script src="../src/ArrayElement.js"></script>
+    <script src="../src/Push.js"></script>
+    <script src="../src/Pop.js"></script>
+    <script src="../src/Shift.js"></script>
+    <script src="../src/Unshift.js"></script>
+    <script src="../src/Splice.js"></script>
+    <script src="../src/Sort.js"></script>
+    <script src="../src/Reverse.js"></script>
+    <script src="../src/ObjectBinding.js"></script>
+  	<script src="../src/Serialisable.js"></script>
     <script src="../src/DomWatcher.js"></script>
     <script src="../src/Datum.js"></script>
     <script src="../src/Dependant.js"></script>
@@ -20,7 +31,6 @@
     <script src="../src/Init.js"></script>
     <script src="../src/Update.js"></script>
     <script src="../src/Click.js"></script>
-    <script src="../src/ViewModel.js"></script>
   </head>
   <body>
     <style>
@@ -49,6 +59,15 @@
 				UniqueRoot.prototype = new Subscriber();
 				BindingRoot.prototype = new UniqueRoot();
 				BindingRoot.With.prototype = new Subscriber();
+				BindingRoot.ViewModel.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Push.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Pop.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Shift.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Unshift.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Splice.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Sort.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Reverse.prototype = new Subscriber();
 			}
 		});
     </script>
@@ -56,27 +75,25 @@
       <div id="inner-each"></div>
     </div>
     <script>
-		QUnit.test(
-			"Remove element when bound to empty array",
-			function(assert) {
+		QUnit.test("Remove element when bound to empty array", function(assert) {
 
-				function ForeachObject() {
+			function ArrayBindingObject() {
 
-					this.each = [];
-				}
+				this.each = [];
+			}
 
-				var element = query("#each");
+			var element = query("#each");
 
-				var inner = query("#inner-each_0");
+			var inner = query("#inner-each_0");
 
-				var each = new ForeachObject();
+			var each = new ArrayBindingObject();
 
-				var root = new BindingRoot(each);
+			var root = new BindingRoot(each);
 
-				assert.ok(!element.contains(inner));
+			assert.ok(!element.contains(inner));
 
-				root.disconnect();
-			});
+			root.disconnect();
+		});
     </script>
     <div id="one" data-bind="one">
       <div id="inner-one"></div>
@@ -130,27 +147,25 @@
       <div id="remove-one"></div>
     </div>
     <script>
-		QUnit.test(
-			"Remove elements when array set to null",
-			function(assert) {
+		QUnit.test("Remove elements when array set to null", function(assert) {
 
-				function RemoveObject() {
+			function RemoveObject() {
 
-					this.remove = [{}];
-				}
+				this.remove = [{}];
+			}
 
-				var remove = new RemoveObject();
+			var remove = new RemoveObject();
 
-				var element = query("#remove");
+			var element = query("#remove");
 
-				var root = new BindingRoot(remove);
+			var root = new BindingRoot(remove);
 
-				remove.remove = null;
+			remove.remove = null;
 
-				assert.strictEqual(element.children.length, 0);
+			assert.strictEqual(element.children.length, 0);
 
-				root.disconnect();
-			});
+			root.disconnect();
+		});
     </script>
     <div id="after" data-bind="after">
       <div class="after"></div>
@@ -208,32 +223,30 @@
       <div id="removeOne"></div>
     </div>
     <script>
-		QUnit.test(
-			"Remove element when bound to empty array",
-			function(assert) {
+		QUnit.test("Remove element when bound to empty array", function(assert) {
 
-				function RemoveAll() {
+			function RemoveAll() {
 
-					this.removeAll = [];
-				}
+				this.removeAll = [];
+			}
 
-				var element = query("#remove-all");
+			var element = query("#remove-all");
 
-				var each = new RemoveAll();
+			var each = new RemoveAll();
 
-				var root = new BindingRoot(each);
+			var root = new BindingRoot(each);
 
-				assert.strictEqual(element.children.length, 0);
+			assert.strictEqual(element.children.length, 0);
 
-				root.disconnect();
-			});
+			root.disconnect();
+		});
     </script>
     <div data-bind="onlyOne">
       <div></div>
       <div></div>
     </div>
     <script>
-		QUnit.test("Exception if mutilple elements", function(assert) {
+		QUnit.test("Exception if multiple elements", function(assert) {
 
 			var exception;
 
@@ -293,8 +306,8 @@
     </script>
     <div id="number-outer" data-bind="thenumber">
       <div id="number"></div>
-   </div>
-   <script>
+    </div>
+	<script>
 		QUnit.test("Number ids", function(assert) {
 
 			function NumberObject() {
@@ -426,31 +439,29 @@
       <div class="pop"></div>
     </div>
     <script>
-		QUnit.test(
-			"Remove element when object popped from array",
-			function(assert) {
+		QUnit.test("Remove element when object popped from array", function(assert) {
 
-				function PopObject() {
+			function PopObject() {
 
-					this.pop = [{}, {}];
-				}
+				this.pop = [{}, {}];
+			}
 
-				var pop = new PopObject();
+			var pop = new PopObject();
 
-				var root = new BindingRoot(pop);
+			var root = new BindingRoot(pop);
 
-				pop.pop.pop();
+			pop.pop.pop();
 
-				assert.strictEqual(pop.pop.length, 1);
+			assert.strictEqual(pop.pop.length, 1);
 
-				var element = query("#pop");
+			var element = query("#pop");
 
-				var childCount = element.querySelectorAll(".pop").length;
+			var childCount = element.querySelectorAll(".pop").length;
 
-				assert.strictEqual(childCount, 1);
+			assert.strictEqual(childCount, 1);
 
-				root.disconnect();
-			});
+			root.disconnect();
+		});
     </script>
     <div id="shift" data-bind="shift">
       <div>
@@ -484,7 +495,7 @@
 
 			var element = query("#shift");
 
-			children = element.querySelectorAll(".shift");
+			var children = element.querySelectorAll(".shift");
 
 			assert.strictEqual(children.length, 1);
 
@@ -499,39 +510,37 @@
       </div>
     </div>
     <script>
-		QUnit.test(
-			"Add element to front of array on unshift",
-			function(assert) {
+		QUnit.test("Add element to front of array on unshift", function(assert) {
 
-				function UnshfitObject() {
+			function UnshfitObject() {
 
-					this.unshift = [{}];
-				}
+				this.unshift = [{}];
+			}
 
-				var unshift = new UnshfitObject();
+			var unshift = new UnshfitObject();
 
-				var root = new BindingRoot(unshift);
+			var root = new BindingRoot(unshift);
 
-				unshift.unshift.unshift({
+			unshift.unshift.unshift({
 
-					shiftText: new Text(function() {
+				shiftText: new Text(function() {
 
-						return "Hello World";
-					})
-				});
-
-				assert.strictEqual(unshift.unshift.length, 2);
-
-				var element = query("#unshift");
-
-				var children = element.querySelectorAll(".unshift");
-
-				assert.strictEqual(children.length, 2);
-
-				assert.strictEqual(children[0].innerHTML, "Hello World");
-
-				root.disconnect();
+					return "Hello World";
+				})
 			});
+
+			assert.strictEqual(unshift.unshift.length, 2);
+
+			var element = query("#unshift");
+
+			var children = element.querySelectorAll(".unshift");
+
+			assert.strictEqual(children.length, 2);
+
+			assert.strictEqual(children[0].innerHTML, "Hello World");
+
+			root.disconnect();
+		});
     </script>
     <div id="null" data-bind="nullProperty">
       <div class="null"></div>

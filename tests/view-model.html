@@ -9,8 +9,11 @@
     <script src="../src/Subscriber.js"></script>
     <script src="../src/UniqueRoot.js"></script>
     <script src="../src/BindingRoot.js"></script>
-    <script src="../src/ForEach.js"></script>
-    <script src="../src/With.js"></script>
+    <script src="../src/ViewModel.js"></script>
+    <script src="../src/Property.js"></script>
+    <script src="../src/ArrayBinding.js"></script>
+    <script src="../src/ObjectBinding.js"></script>
+    <script src="../src/Serialisable.js"></script>
     <script src="../src/DomWatcher.js"></script>
     <script src="../src/Binding.js"></script>
     <script src="../src/Datum.js"></script>
@@ -20,7 +23,6 @@
     <script src="../src/Init.js"></script>
     <script src="../src/Update.js"></script>
     <script src="../src/Click.js"></script>
-    <script src="../src/ViewModel.js"></script>
   </head>
   <body>
     <style>
@@ -48,6 +50,8 @@
 				UniqueRoot.prototype = new Subscriber();
 				BindingRoot.prototype = new UniqueRoot();
 				BindingRoot.With.prototype = new Subscriber();
+				BindingRoot.ViewModel.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();
 			}
 		});
     </script>
