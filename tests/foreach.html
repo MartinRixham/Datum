@@ -1024,5 +1024,37 @@
 			root.disconnect();
 		});
     </script>
+    <div data-bind="twice">
+      <div data-bind="twice">
+        <div class="twice"></div>
+      </div>
+    </div>
+    <script>
+		QUnit.test("One element bound twice to an array", function(assert) {
+
+			function TwiceObject() {
+
+				this.twice = {
+
+					twice: [{}, {}]
+				};
+			}
+
+			var twice = new TwiceObject();
+
+			var root = new BindingRoot(twice);
+
+			twice.twice = {
+
+				twice: [{}, {}, {}]
+			};
+
+			var childCount = document.querySelectorAll(".twice").length;
+
+			assert.strictEqual(childCount, 3);
+
+			root.disconnect();
+		});
+    </script>
   </body>
 </html>
