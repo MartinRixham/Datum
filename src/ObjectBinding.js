@@ -2,7 +2,7 @@
 // and by convention whenever a plain object is bound to an element.
 // Its effect is to remove all child elements from the DOM
 // when the object is null.
-BindingRoot.With = function(property) {
+BindingRoot.ObjectBinding = function(property) {
 
 	if (property instanceof Array) {
 
@@ -51,7 +51,7 @@ BindingRoot.With = function(property) {
 
 			var self = this;
 
-			this.assignUpdater(function (property) {
+			this.assignUpdater(function(property) {
 
 				for (var i = element.childNodes.length - 1; i >= 0; i--) {
 
@@ -64,6 +64,11 @@ BindingRoot.With = function(property) {
 
 						element.appendChild(child);
 					});
+
+					if (self.binding) {
+
+						self.binding.removeBinding();
+					}
 
 					if (property instanceof Array) {
 
@@ -90,7 +95,13 @@ BindingRoot.With = function(property) {
 		}
 	};
 
-	this.removeBinding = function() {};
+	this.removeBinding = function() {
+
+		if (this.binding) {
+
+			this.binding.removeBinding();
+		}
+	};
 };
 
-BindingRoot.With.prototype = new Subscriber();
+BindingRoot.ObjectBinding.prototype = new Subscriber();

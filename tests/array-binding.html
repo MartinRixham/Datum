@@ -58,7 +58,7 @@
 				Update.prototype = new Subscriber();
 				UniqueRoot.prototype = new Subscriber();
 				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.With.prototype = new Subscriber();
+				BindingRoot.ObjectBinding.prototype = new Subscriber();
 				BindingRoot.ViewModel.prototype = new Subscriber();
 				BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();
 				BindingRoot.ViewModel.ArrayBinding.Push.prototype = new Subscriber();
@@ -1034,7 +1034,7 @@
 		});
     </script>
     <div data-bind="twice">
-      <div data-bind="twice">
+      <div data-bind="twiceArray">
         <div class="twice"></div>
       </div>
     </div>
@@ -1045,7 +1045,7 @@
 
 				this.twice = {
 
-					twice: [{}, {}]
+					twiceArray: [{}, {}]
 				};
 			}
 
@@ -1055,7 +1055,7 @@
 
 			twice.twice = {
 
-				twice: [{}, {}, {}]
+				twiceArray: [{}, new Text(function() { return "Hello world."; }), {}]
 			};
 
 			var childCount = document.querySelectorAll(".twice").length;

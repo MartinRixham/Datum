@@ -51,7 +51,7 @@
 				Value.prototype = new Subscriber();
 				UniqueRoot.prototype = new Subscriber();
 				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.With.prototype = new Subscriber();
+				BindingRoot.ObjectBinding.prototype = new Subscriber();
 				BindingRoot.ViewModel.prototype = new Subscriber();
 				BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();
 			}
@@ -146,13 +146,13 @@
 
 			var root = new BindingRoot(bind);
 
-			bind.setProperty("bind", {
+			bind.bind = {
 
 				text: new Binding({
 
 					text: function() { return "Hello World"; }
 				})
-			});
+			};
 
 			assert.strictEqual(query("#text").innerHTML, "Hello World");
 

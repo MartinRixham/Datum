@@ -6,7 +6,7 @@ BindingRoot.ViewModel = function(model) {
 
 	var bindings = {};
 
-	this.applyBinding = function (scope, name) {
+	this.applyBinding = function(scope, name) {
 
 		var element;
 
@@ -32,7 +32,7 @@ BindingRoot.ViewModel = function(model) {
 
 			var self = this;
 
-			element._rebind = function () {
+			element._rebind = function() {
 
 				self.applyBinding(scope, name);
 			};

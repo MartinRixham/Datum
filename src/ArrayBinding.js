@@ -13,6 +13,8 @@ BindingRoot.ViewModel.ArrayBinding = function(model) {
 
 	var lengthBinding = new BindingRoot.ViewModel.Property(model.subscribableLength);
 
+	var arrayElement = null;
+
 	this.applyBinding = function(scope, name) {
 
 		var element = this.getMatchingElement(scope, name);
@@ -76,9 +78,9 @@ BindingRoot.ViewModel.ArrayBinding = function(model) {
 
 		element.removeChild(child);
 
-		var arrayElement = new BindingRoot.ViewModel.ArrayBinding.ArrayElement(child);
+		arrayElement = new BindingRoot.ViewModel.ArrayBinding.ArrayElement(child);
 
-		append(model, element, arrayElement);
+		append(model, element);
 
 		bindings.push(
 			new BindingRoot.ViewModel.ArrayBinding.Push(model, arrayElement),
@@ -90,7 +92,7 @@ BindingRoot.ViewModel.ArrayBinding = function(model) {
 			new BindingRoot.ViewModel.ArrayBinding.Reverse(model));
 	}
 
-	function append(array, element, arrayElement) {
+	function append(array, element) {
 
 		for (var i = 0; i < array.length; i++) {
 
@@ -118,7 +120,21 @@ BindingRoot.ViewModel.ArrayBinding = function(model) {
 		}
 	}
 
-	this.removeBinding = function() {};
+	this.removeBinding = function() {
+
+		var element = currentElement;
+
+		var children = element.children;
+
+		for (var i = children.length - 1; i >= 0; i--) {
+
+			element.removeChild(children[i]);
+		}
+
+		var newElement = arrayElement.clone();
+
+		element.appendChild(newElement);
+	};
 };
 
 BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();

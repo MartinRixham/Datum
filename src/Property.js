@@ -2,7 +2,7 @@ BindingRoot.ViewModel.Property = function(property) {
 
 	if (typeof(property) == "object") {
 
-		this.objectBinding = new BindingRoot.With(property);
+		this.objectBinding = new BindingRoot.ObjectBinding(property);
 	}
 
 	this.applyBinding = function(scope, key, model) {
