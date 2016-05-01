@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Binding Root Tests</title>
+    <title>Serialisable Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../src/Registry.js"></script>
@@ -79,7 +79,7 @@
 
 			var toJSONObject = new ToJSONObject();
 
-			new BindingRoot(toJSONObject);
+			new BindingRoot.ViewModel.Serialisable(toJSONObject);
 
 			assert.strictEqual(toJSONObject.toJSON().jsonProperty, "thingy");
 		});
@@ -94,7 +94,7 @@
 
 			var toJSONObject = new ToJSONObject();
 
-			new BindingRoot(toJSONObject);
+			new BindingRoot.ViewModel.Serialisable(toJSONObject);
 
 			assert.ok(!toJSONObject.toJSON().method);
 		});
@@ -109,7 +109,7 @@
 
 			var toJSONObject = new ToJSONObject();
 
-			new BindingRoot(toJSONObject);
+			new BindingRoot.ViewModel.Serialisable(toJSONObject);
 
 			assert.ok(!toJSONObject.toJSON().binding);
 		});
@@ -124,7 +124,7 @@
 
 			var toJSONObject = new ToJSONObject();
 
-			new BindingRoot(toJSONObject);
+			new BindingRoot.ViewModel.Serialisable(toJSONObject);
 
 			assert.ok(!toJSONObject.toJSON()._scope);
 		});
@@ -147,7 +147,7 @@
 
 			var toJSONObject = new ToJSONObject();
 
-			new BindingRoot(toJSONObject);
+			new BindingRoot.ViewModel.Serialisable(toJSONObject);
 
 			assert.strictEqual(toJSONObject.toJSON().child, json);
 		});
