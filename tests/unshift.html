@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Unshift Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+	  <script src="../src/Registry.js"></script>
+	  <script src="../src/Subscriber.js"></script>
+	  <script src="../src/UniqueRoot.js"></script>
+	  <script src="../src/BindingRoot.js"></script>
+	  <script src="../src/ViewModel.js"></script>
+	  <script src="../src/Serialisable.js"></script>
+	  <script src="../src/ArrayBinding.js"></script>
+	  <script src="../src/ArrayElement.js"></script>
+	  <script src="../src/Unshift.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		QUnit.module("", {
+
+			teardown: function() {
+
+				Subscriber.prototype = new Registry();
+				UniqueRoot.prototype = new Subscriber();
+				BindingRoot.prototype = new UniqueRoot();
+				BindingRoot.ViewModel.prototype = new UniqueRoot();
+				BindingRoot.ArrayBinding.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.Unshift.prototype = new Subscriber();
+			}
+		});
+    </script>
+    <div id="unshift" data-bind="unshift">
+      <div id="old"></div>
+    </div>
+    <script>
+		QUnit.test("Add element to front of array on unshift", function(assert) {
+
+			var unshift = [{ count: "second" }];
+
+			var element = document.createElement("DIV");
+			element.id = "new";
+
+			var arrayElement =
+				new BindingRoot.ArrayBinding.ArrayElement(element);
+
+			var binding =
+				new BindingRoot.ArrayBinding.Unshift(unshift, arrayElement, []);
+
+			binding.applyBinding(document.body, "unshift");
+
+			unshift.unshift({ count: "first" });
+
+			assert.strictEqual(unshift.length, 2);
+
+			assert.strictEqual(unshift[0].count, "first");
+
+			var boundElement = document.querySelector("#unshift");
+			var children = boundElement.children;
+
+			assert.strictEqual(children.length, 2);
+
+			assert.strictEqual(children[0].id, "new_0");
+		});
+    </script>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-BindingRoot.ArrayBinding.Unshift = function(model, arrayElement, bindings) {
+BindingRoot.ArrayBinding.Unshift = function(model, arrayElement, properties) {
 
 	this.applyBinding = function(scope, name) {
 
@@ -32,7 +32,7 @@ BindingRoot.ArrayBinding.Unshift = function(model, arrayElement, bindings) {
 
 			if (property && typeof(property) == "object") {
 
-				bindings.unshift(new BindingRoot.ViewModel(property));
+				properties.unshift(new BindingRoot.ViewModel(property));
 			}
 		}
 	}

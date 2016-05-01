@@ -402,44 +402,6 @@
 			root.disconnect();
 		});
     </script>
-    <div id="unshift" data-bind="unshift">
-      <div>
-        <div class="unshift" data-bind="shiftText"></div>
-      </div>
-    </div>
-    <script>
-		QUnit.test("Add element to front of array on unshift", function(assert) {
-
-			function UnshfitObject() {
-
-				this.unshift = [{}];
-			}
-
-			var unshift = new UnshfitObject();
-
-			var root = new BindingRoot(unshift);
-
-			unshift.unshift.unshift({
-
-				shiftText: new Text(function() {
-
-					return "Hello World";
-				})
-			});
-
-			assert.strictEqual(unshift.unshift.length, 2);
-
-			var element = document.querySelector("#unshift");
-
-			var children = element.querySelectorAll(".unshift");
-
-			assert.strictEqual(children.length, 2);
-
-			assert.strictEqual(children[0].innerHTML, "Hello World");
-
-			root.disconnect();
-		});
-    </script>
     <div id="null" data-bind="nullProperty">
       <div class="null"></div>
     </div>
