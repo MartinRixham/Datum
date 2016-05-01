@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Push Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../src/Registry.js"></script>
+    <script src="../src/Subscriber.js"></script>
+    <script src="../src/UniqueRoot.js"></script>
+    <script src="../src/BindingRoot.js"></script>
+    <script src="../src/ViewModel.js"></script>
+    <script src="../src/Property.js"></script>
+    <script src="../src/Binding.js"></script>
+    <script src="../src/ArrayBinding.js"></script>
+    <script src="../src/ArrayElement.js"></script>
+    <script src="../src/Push.js"></script>
+    <script src="../src/Pop.js"></script>
+    <script src="../src/Shift.js"></script>
+    <script src="../src/Unshift.js"></script>
+    <script src="../src/Splice.js"></script>
+    <script src="../src/Sort.js"></script>
+    <script src="../src/Reverse.js"></script>
+    <script src="../src/ObjectBinding.js"></script>
+  	<script src="../src/Serialisable.js"></script>
+    <script src="../src/DomWatcher.js"></script>
+    <script src="../src/Datum.js"></script>
+    <script src="../src/Dependant.js"></script>
+    <script src="../src/Text.js"></script>
+    <script src="../src/Value.js"></script>
+    <script src="../src/Init.js"></script>
+    <script src="../src/Update.js"></script>
+    <script src="../src/Click.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		QUnit.module("", {
+
+			teardown: function() {
+
+				Subscriber.prototype = new Registry();
+				Binding.prototype = new Subscriber();
+				Datum.prototype = new Subscriber();
+				Text.prototype = new Subscriber();
+				Value.prototype = new Subscriber();
+				Update.prototype = new Subscriber();
+				UniqueRoot.prototype = new Subscriber();
+				BindingRoot.prototype = new UniqueRoot();
+				BindingRoot.ObjectBinding.prototype = new Subscriber();
+				BindingRoot.ViewModel.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Push.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Pop.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Shift.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Unshift.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Splice.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Sort.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.Reverse.prototype = new Subscriber();
+			}
+		});
+    </script>
+    <div id="push" data-bind="push">
+      <div class="push"></div>
+    </div>
+    <script>
+		QUnit.test("Add element when object pushed to array", function(assert) {
+
+			var push = [{}];
+
+			var element = document.querySelector(".push");
+
+			var arrayElement =
+				new BindingRoot.ViewModel.ArrayBinding.ArrayElement(element);git 
+
+			var binding =
+				new BindingRoot.ViewModel.ArrayBinding.Push(push, arrayElement);
+
+			binding.applyBinding(document.body, "push");
+
+			push.push({});
+
+			assert.strictEqual(push.length, 2);
+
+			var boundElement = document.querySelector("#push");
+
+			var childCount = boundElement.querySelectorAll(".push").length;
+
+			assert.strictEqual(childCount, 2);
+		});
+    </script>
+  </body>
+</html>

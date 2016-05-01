@@ -378,34 +378,6 @@
 			root.disconnect();
 		});
     </script>
-    <div id="push" data-bind="push">
-      <div class="push"></div>
-    </div>
-    <script>
-		QUnit.test("Add element when object pushed to array", function(assert) {
-
-			function PushObject() {
-
-				this.push = [{}];
-			}
-
-			var push = new PushObject();
-
-			var root = new BindingRoot(push);
-
-			push.push.push({});
-
-			assert.strictEqual(push.push.length, 2);
-
-			var element = document.querySelector("#push");
-
-			var childCount = element.querySelectorAll(".push").length;
-
-			assert.strictEqual(childCount, 2);
-
-			root.disconnect();
-		});
-    </script>
     <div id="string" data-bind="str">
       <div class="string"></div>
     </div>
