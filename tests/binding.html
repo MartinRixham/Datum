@@ -26,13 +26,6 @@
     <div id="qunit-fixture"></div>
     <div id="test-div" data-bind="test"></div>
     <script>
-		function query(query) {
-
-			return document.querySelector(query);
-		}
-
-		var scope = document.querySelector("body");
-
 		QUnit.test("Bind text", function(assert) {
 
 			var test =
@@ -41,9 +34,9 @@
 					text: function() { return "Hello World"; }
 				});
 
-			test.applyBinding(scope, "test");
+			test.applyBinding(document.body, "test");
 
-			assert.strictEqual(query("#test-div").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#test-div").innerHTML, "Hello World");
 		});
     </script>
     <input type="text" id="test-input" data-bind="input" />
@@ -56,9 +49,9 @@
 					value: function() { return "Hello World"; }
 				});
 
-			input.applyBinding(scope, "input");
+			input.applyBinding(document.body, "input");
 
-			assert.strictEqual(query("#test-input").value, "Hello World");
+			assert.strictEqual(document.querySelector("#test-input").value, "Hello World");
 		});
     </script>
     <input type="text" id="value-input" data-bind="valueInput" />
@@ -73,9 +66,9 @@
 					value: datum
 				});
 
-			valueInput.applyBinding(scope, "valueInput");
+			valueInput.applyBinding(document.body, "valueInput");
 
-			var element = query("#value-input");
+			var element = document.querySelector("#value-input");
 
 			element.value = "Hello World";
 			element.dispatchEvent(new Event("change"));
@@ -96,7 +89,7 @@
 				}
 			});
 
-			binding.applyBinding(scope, "sumpt", {});
+			binding.applyBinding(document.body, "sumpt", {});
 
 			binding.test.thingy(document.createElement("DIV"));
 

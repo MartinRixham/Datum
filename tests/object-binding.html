@@ -33,11 +33,6 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
     <script>
-		function query(query) {
-
-			return document.querySelector(query);
-		}
-
 		// To preserve atomicity prototypes must be
 		// reassigned after each test.
 		QUnit.module("", {
@@ -68,9 +63,9 @@
 				this.with = null;
 			}
 
-			var outer = query("#outer");
+			var outer = document.querySelector("#outer");
 
-			var element = query("#with");
+			var element = document.querySelector("#with");
 
 			var root = new BindingRoot(new WithObject());
 
@@ -90,9 +85,9 @@
 				this.remove = {};
 			}
 
-			var element = query("#remove");
+			var element = document.querySelector("#remove");
 
-			var inner = query("#inner");
+			var inner = document.querySelector("#inner");
 
 			var remove = new RemoveObject();
 
@@ -122,9 +117,9 @@
 
 			replace.replace = {};
 
-			var element = query("#replace");
+			var element = document.querySelector("#replace");
 
-			var inner = query("#inner-replace");
+			var inner = document.querySelector("#inner-replace");
 
 			assert.ok(element.contains(inner));
 
@@ -154,7 +149,7 @@
 				})
 			};
 
-			assert.strictEqual(query("#text").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#text").innerHTML, "Hello World");
 
 			root.disconnect();
 		});
@@ -171,10 +166,10 @@
 				this.multi = null;
 			}
 
-			var outer = query("#multi-outer");
+			var outer = document.querySelector("#multi-outer");
 
-			var one = query("#one");
-			var two = query("#two");
+			var one = document.querySelector("#one");
+			var two = document.querySelector("#two");
 
 			var root = new BindingRoot(new MultipleObject());
 
@@ -196,10 +191,10 @@
 				this.removeMulti = {};
 			}
 
-			var element = query("#multi-remove");
+			var element = document.querySelector("#multi-remove");
 
-			var one = query("#remove-one");
-			var two = query("#remove-two");
+			var one = document.querySelector("#remove-one");
+			var two = document.querySelector("#remove-two");
 
 			var remove = new RemoveObject();
 
@@ -231,10 +226,10 @@
 
 			replace.Multireplace = {};
 
-			var element = query("#multi-replace");
+			var element = document.querySelector("#multi-replace");
 
-			var one = query("#replace-one");
-			var two = query("#replace-two");
+			var one = document.querySelector("#replace-one");
+			var two = document.querySelector("#replace-two");
 
 			assert.ok(element.contains(one));
 			assert.ok(element.contains(two));
@@ -267,11 +262,11 @@
 
 			reremove.reremove = {};
 
-			var inner = query("#inner-reremove");
+			var inner = document.querySelector("#inner-reremove");
 
 			reremove.reremove = null;
 
-			var element = query("#reremove");
+			var element = document.querySelector("#reremove");
 
 			assert.ok(!element.contains(inner));
 
@@ -289,9 +284,9 @@
 				this.renull = null;
 			}
 
-			var element = query("#renull");
+			var element = document.querySelector("#renull");
 
-			var inner = query("#inner-renull");
+			var inner = document.querySelector("#inner-renull");
 
 			var renull = new RenullObject();
 
@@ -315,9 +310,9 @@
 				this.renew = {};
 			}
 
-			var element = query("#renew");
+			var element = document.querySelector("#renew");
 
-			var inner = query("#inner-renew");
+			var inner = document.querySelector("#inner-renew");
 
 			var renew = new RenewObject();
 
@@ -360,7 +355,7 @@
 			catch (e) {}
 			finally {
 
-				var text = query("#subobject-text");
+				var text = document.querySelector("#subobject-text");
 
 				assert.notEqual(text.innerHTML, "Hello World");
 
@@ -394,7 +389,7 @@
 
 			var root = new BindingRoot(new SubscopeObject());
 
-			var text = query("#subscope-text");
+			var text = document.querySelector("#subscope-text");
 
 			assert.notEqual(text.innerHTML, "Hello World");
 

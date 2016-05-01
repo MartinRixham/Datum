@@ -41,12 +41,7 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
     <script>
-		function query(query) {
-
-			return document.querySelector(query);
-		}
-
-		var fixture = query("#qunit-fixture");
+		var fixture = document.querySelector("#qunit-fixture");
 
 		// To preserve atomicity prototypes must be
 		// reassigned after each test.
@@ -93,7 +88,7 @@
 			setTimeout(function() {
 
 				assert.strictEqual(
-					query("#test-div").innerHTML,
+					document.querySelector("#test-div").innerHTML,
 					"Hello World");
 
 				done();
@@ -136,7 +131,7 @@
 			setTimeout(function() {
 
 				assert.strictEqual(
-					query("#test-div").innerHTML,
+					document.querySelector("#test-div").innerHTML,
 					"Hello World");
 				done();
 
@@ -180,7 +175,7 @@
 			setTimeout(function() {
 
 				assert.strictEqual(
-					query("#test-div").innerHTML,
+					document.querySelector("#test-div").innerHTML,
 					"Hello World");
 				done();
 
@@ -239,7 +234,7 @@
 
 			setTimeout(function() {
 
-				var element = query("#test-div");
+				var element = document.querySelector("#test-div");
 
 				element.value = "Hello World";
 				element.dispatchEvent(new Event("change"));
@@ -298,7 +293,7 @@
 
 				div.setAttribute("data-bind", "second");
 
-				var inner = query("#inner");
+				var inner = document.querySelector("#inner");
 
 				inner.appendChild(div);
 
@@ -309,7 +304,7 @@
 					assert.strictEqual(count, 1);
 
 					assert.strictEqual(
-						query("#third").innerHTML,
+						document.querySelector("#third").innerHTML,
 						"Hello World");
 
 					done();
@@ -345,7 +340,7 @@
 
 			var root = new BindingRoot(arrayObject);
 
-			var element = query("#array");
+			var element = document.querySelector("#array");
 
 			fixture.appendChild(element);
 
@@ -430,7 +425,7 @@
 					];
 			}
 
-			var element = query("#replaced");
+			var element = document.querySelector("#replaced");
 
 			fixture.appendChild(element);
 

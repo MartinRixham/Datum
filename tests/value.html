@@ -19,14 +19,6 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-		function query(query) {
-
-			return document.querySelector(query);
-		}
-
-		var scope = document.querySelector("body");
-    </script>
     <input type="text" id="value-input" data-bind="valueInput" />
     <script>
 		QUnit.test("Update data from input", function(assert) {
@@ -44,9 +36,9 @@
 					return datum();
 				});
 
-			valueInput.applyBinding(scope, "valueInput");
+			valueInput.applyBinding(document.body, "valueInput");
 
-			var element = query("#value-input");
+			var element = document.querySelector("#value-input");
 
 			element.value = "Hello World";
 			element.dispatchEvent(new Event("change"));
@@ -62,9 +54,9 @@
 
 			var input = new Value(function() { return datum(); });
 
-			input.applyBinding(scope, "testInput");
+			input.applyBinding(document.body, "testInput");
 
-			assert.strictEqual(query("#input").value, "Hello World");
+			assert.strictEqual(document.querySelector("#input").value, "Hello World");
 		});
     </script>
     <input type="text" id="input-value" data-bind="inputValue" />
@@ -75,11 +67,11 @@
 
 			var input = new Value(function() { return datum(); });
 
-			input.applyBinding(scope, "inputValue");
+			input.applyBinding(document.body, "inputValue");
 
 			datum("Hello World");
 
-			assert.strictEqual(query("#input-value").value, "Hello World");
+			assert.strictEqual(document.querySelector("#input-value").value, "Hello World");
 		});
     </script>
     <input type="text" id="input1" data-bind="multiInput" />
@@ -89,10 +81,10 @@
 
 			var input = new Value(function() { return "Hello World"; });
 
-			input.applyBinding(scope, "multiInput");
+			input.applyBinding(document.body, "multiInput");
 
-			assert.strictEqual(query("#input1").value, "Hello World");
-			assert.strictEqual(query("#input2").value, "Hello World");
+			assert.strictEqual(document.querySelector("#input1").value, "Hello World");
+			assert.strictEqual(document.querySelector("#input2").value, "Hello World");
 		});
     </script>
     <input type="text" id="send" data-bind="sync" />
@@ -113,14 +105,14 @@
 					return datum();
 				});
 
-			valueInput.applyBinding(scope, "sync");
+			valueInput.applyBinding(document.body, "sync");
 
-			var sender = query("#send");
+			var sender = document.querySelector("#send");
 
 			sender.value = "Hello World";
 			sender.dispatchEvent(new Event("change"));
 
-			assert.strictEqual(query("#receive").value, "Hello World");
+			assert.strictEqual(document.querySelector("#receive").value, "Hello World");
 		});
     </script>
     <input type="text" data-bind="single" />
@@ -140,7 +132,7 @@
 					return datum();
 				});
 
-			value.applyBinding(scope, "single");
+			value.applyBinding(document.body, "single");
 
 			assert.strictEqual(count, 2);
 		});
@@ -162,7 +154,7 @@
 					return datum();
 				});
 
-			value.applyBinding(scope, "twice");
+			value.applyBinding(document.body, "twice");
 
 			count = 0;
 
@@ -181,9 +173,9 @@
 					return element.id;
 				});
 
-			input.applyBinding(scope, "element");
+			input.applyBinding(document.body, "element");
 
-			assert.strictEqual(query("#element").value, "element");
+			assert.strictEqual(document.querySelector("#element").value, "element");
 		});
     </script>
 	<script>
@@ -196,7 +188,7 @@
 				callCount++;
 			});
 
-			value.applyBinding(scope, "thingy", {});
+			value.applyBinding(document.body, "thingy", {});
 
 			value.test.call(document.createElement("DIV"));
 

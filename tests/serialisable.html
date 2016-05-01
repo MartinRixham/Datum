@@ -33,11 +33,6 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
     <script>
-		function query(query) {
-
-			return document.querySelector(query);
-		}
-
 		QUnit.module("", {
 
 			teardown: function() {
@@ -119,7 +114,7 @@
 
 			function ToJSONObject() {
 
-				this._scope = query("body");
+				this._scope = document.querySelector("body");
 			}
 
 			var toJSONObject = new ToJSONObject();

@@ -19,14 +19,6 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-		function query(query) {
-
-			return document.querySelector(query);
-		}
-
-		var scope = document.querySelector("body");
-    </script>
     <div id="function" data-bind="function"></div>
     <script>
 		QUnit.test("Bind function", function(assert) {
@@ -37,11 +29,11 @@
 
 			var text = new Text(func);
 
-			text.applyBinding(scope, "function");
+			text.applyBinding(document.body, "function");
 
 			datum("Hello World");
 
-			assert.strictEqual(query("#function").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#function").innerHTML, "Hello World");
 		});
     </script>
     <div id="one" data-bind="two"></div>
@@ -53,12 +45,12 @@
 
 			var text = new Text(function() { return datum(); });
 
-			text.applyBinding(scope, "two");
+			text.applyBinding(document.body, "two");
 
 			datum("Hello World");
 
-			assert.strictEqual(query("#two").innerHTML, "Hello World");
-			assert.strictEqual(query("#one").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#two").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#one").innerHTML, "Hello World");
 		});
     </script>
     <div data-bind="single"></div>
@@ -79,7 +71,7 @@
 					return datum();
 				});
 
-				text.applyBinding(scope, "single");
+				text.applyBinding(document.body, "single");
 
 				assert.strictEqual(count, 2);
 			});
@@ -103,7 +95,7 @@
 						return datum();
 					});
 
-				text.applyBinding(scope, "twice");
+				text.applyBinding(document.body, "twice");
 
 				count = 0;
 
@@ -118,9 +110,9 @@
 
 			var text = new Text(function(element) { return element.id; });
 
-			text.applyBinding(scope, "element");
+			text.applyBinding(document.body, "element");
 
-			assert.strictEqual(query("#element").innerHTML, "element");
+			assert.strictEqual(document.querySelector("#element").innerHTML, "element");
 		});
     </script>
 	<script>
@@ -133,7 +125,7 @@
 				callCount++;
 			});
 
-			text.applyBinding(scope, "thingy", {});
+			text.applyBinding(document.body, "thingy", {});
 
 			text.test.call(document.createElement("DIV"));
 

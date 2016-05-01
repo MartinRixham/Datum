@@ -41,11 +41,6 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
     <script>
-		function query(query) {
-
-			return document.querySelector(query);
-		}
-
 		QUnit.module("", {
 
 			teardown: function() {
@@ -82,9 +77,9 @@
 				this.each = [];
 			}
 
-			var element = query("#each");
+			var element = document.querySelector("#each");
 
-			var inner = query("#inner-each_0");
+			var inner = document.querySelector("#inner-each_0");
 
 			var each = new ArrayBindingObject();
 
@@ -110,9 +105,9 @@
 
 			var root = new BindingRoot(one);
 
-			var element = query("#one");
+			var element = document.querySelector("#one");
 
-			var inner = query("#inner-one_0");
+			var inner = document.querySelector("#inner-one_0");
 
 			assert.ok(element.contains(inner));
 
@@ -134,7 +129,7 @@
 
 			var root = new BindingRoot(two);
 
-			var element = query("#two");
+			var element = document.querySelector("#two");
 
 			var childCount = element.querySelectorAll(".two").length;
 
@@ -156,7 +151,7 @@
 
 			var remove = new RemoveObject();
 
-			var element = query("#remove");
+			var element = document.querySelector("#remove");
 
 			var root = new BindingRoot(remove);
 
@@ -184,7 +179,7 @@
 
 			after.after = [{}, {}];
 
-			var element = query("#after");
+			var element = document.querySelector("#after");
 
 			var childCount = element.querySelectorAll(".after").length;
 
@@ -210,7 +205,7 @@
 
 			reassign.reassign = [{}, {}];
 
-			var element = query("#reassign");
+			var element = document.querySelector("#reassign");
 
 			var childCount = element.querySelectorAll(".reassign").length;
 
@@ -230,7 +225,7 @@
 				this.removeAll = [];
 			}
 
-			var element = query("#remove-all");
+			var element = document.querySelector("#remove-all");
 
 			var each = new RemoveAll();
 
@@ -297,7 +292,7 @@
 
 			var root = new BindingRoot(inside);
 
-			var element = query("#inside-one_0");
+			var element = document.querySelector("#inside-one_0");
 
 			assert.strictEqual(element.innerHTML, "Hello World");
 
@@ -319,7 +314,7 @@
 
 			var root = new BindingRoot(thenumber);
 
-			var element = query("#number-outer");
+			var element = document.querySelector("#number-outer");
 
 			var one = element.querySelector("#number_0");
 			var two = element.querySelector("#number_1");
@@ -345,7 +340,7 @@
 
 			var root = new BindingRoot(name);
 
-			var element = query("#number-name");
+			var element = document.querySelector("#number-name");
 
 			var one = element.querySelector("[name=name_0]");
 			var two = element.querySelector("[name=name_1]");
@@ -373,7 +368,7 @@
 
 			var root = new BindingRoot(subnumber);
 
-			var element = query("#subnumber");
+			var element = document.querySelector("#subnumber");
 
 			var one = element.querySelector("#inner-subnumber_0");
 
@@ -402,7 +397,7 @@
 
 			assert.strictEqual(push.push.length, 2);
 
-			var element = query("#push");
+			var element = document.querySelector("#push");
 
 			var childCount = element.querySelectorAll(".push").length;
 
@@ -426,7 +421,7 @@
 
 			var root = new BindingRoot(str);
 
-			var element = query("#string");
+			var element = document.querySelector("#string");
 
 			var childCount = element.querySelectorAll(".string").length;
 
@@ -454,7 +449,7 @@
 
 			assert.strictEqual(pop.pop.length, 1);
 
-			var element = query("#pop");
+			var element = document.querySelector("#pop");
 
 			var childCount = element.querySelectorAll(".pop").length;
 
@@ -493,7 +488,7 @@
 
 			assert.strictEqual(shift.shift.length, 1);
 
-			var element = query("#shift");
+			var element = document.querySelector("#shift");
 
 			var children = element.querySelectorAll(".shift");
 
@@ -531,7 +526,7 @@
 
 			assert.strictEqual(unshift.unshift.length, 2);
 
-			var element = query("#unshift");
+			var element = document.querySelector("#unshift");
 
 			var children = element.querySelectorAll(".unshift");
 
@@ -557,7 +552,7 @@
 
 			var root = new BindingRoot(nullObject);
 
-			var element = query("#null");
+			var element = document.querySelector("#null");
 
 			var childCount = element.querySelectorAll(".null").length;
 
@@ -585,7 +580,7 @@
 
 			assert.strictEqual(spliceRemove.spliceRemove.length, 2);
 
-			var element = query("#splice-remove");
+			var element = document.querySelector("#splice-remove");
 
 			var childCount =
 				element.querySelectorAll(".splice-remove").length;
@@ -614,7 +609,7 @@
 
 			assert.strictEqual(spliceRemoveTwo.spliceRemoveTwo.length, 1);
 
-			var element = query("#splice-remove-two");
+			var element = document.querySelector("#splice-remove-two");
 
 			var childCount =
 				element.querySelectorAll(".splice-remove-two").length;
@@ -648,7 +643,7 @@
 
 			assert.strictEqual(spliceAdd.spliceAdd.length, 3);
 
-			var element = query("#splice-add");
+			var element = document.querySelector("#splice-add");
 
 			var children = element.querySelectorAll(".splice-add");
 
@@ -692,7 +687,7 @@
 
 			assert.strictEqual(spliceAddTwo.spliceAddTwo.length, 4);
 
-			var element = query("#splice-add-two");
+			var element = document.querySelector("#splice-add-two");
 
 			var children = element.querySelectorAll(".splice-add-two");
 
@@ -729,7 +724,7 @@
 
 			assert.strictEqual(spliceAddRemove.spliceAddRemove.length, 2);
 
-			var element = query("#splice-add-remove");
+			var element = document.querySelector("#splice-add-remove");
 
 			var children = element.querySelectorAll(".splice-add-remove");
 
@@ -761,7 +756,7 @@
 
 			var root = new BindingRoot(square);
 
-			var element = query("#square");
+			var element = document.querySelector("#square");
 
 			var childCount = element.querySelectorAll(".square").length;
 
@@ -792,7 +787,7 @@
 
 			var root = new BindingRoot(bindingObject);
 
-			var element = query("#binding");
+			var element = document.querySelector("#binding");
 
 			var children = element.children;
 
@@ -824,7 +819,7 @@
 					text: function() { return "Hello World"; }
 				}));
 
-			var element = query("#push-binding");
+			var element = document.querySelector("#push-binding");
 
 			var children = element.children;
 
@@ -854,7 +849,7 @@
 
 			assert.strictEqual(sortTwo.sortTwo.length, 2);
 
-			var element = query("#sort-two");
+			var element = document.querySelector("#sort-two");
 
 			var children = element.querySelectorAll(".sort-two");
 
@@ -888,7 +883,7 @@
 
 			assert.strictEqual(sortThree.sortThree.length, 3);
 
-			var element = query("#sort-three");
+			var element = document.querySelector("#sort-three");
 
 			var children = element.querySelectorAll(".sort-three");
 
@@ -937,7 +932,7 @@
 
 			assert.strictEqual(sortComparer.sortComparer.length, 3);
 
-			var element = query("#sort-comparer");
+			var element = document.querySelector("#sort-comparer");
 
 			var children = element.querySelectorAll(".sort-comparer");
 
@@ -973,7 +968,7 @@
 
 			assert.strictEqual(reverse.reverse.length, 3);
 
-			var element = query("#reverse");
+			var element = document.querySelector("#reverse");
 
 			var children = element.querySelectorAll(".reverse");
 

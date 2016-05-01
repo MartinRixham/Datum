@@ -33,11 +33,6 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
     <script>
-		function query(query) {
-
-			return document.querySelector(query);
-		}
-
 		// To preserve atomicity prototypes must be
 		// reassigned after each test.
 		QUnit.module("", {
@@ -73,7 +68,7 @@
 
 			var root = new BindingRoot(new TextObject());
 
-			assert.strictEqual(query("#test-div").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#test-div").innerHTML, "Hello World");
 
 			root.disconnect();
 		});
@@ -92,7 +87,7 @@
 
 			var root = new BindingRoot(new InputObject());
 
-			assert.strictEqual(query("#test-input").value, "Hello World");
+			assert.strictEqual(document.querySelector("#test-input").value, "Hello World");
 
 			root.disconnect();
 		});
@@ -115,7 +110,7 @@
 
 			var root = new BindingRoot(input);
 
-			var element = query("#value-input");
+			var element = document.querySelector("#value-input");
 
 			element.value = "Hello World";
 			element.dispatchEvent(new Event("change"));
@@ -151,10 +146,10 @@
 			var root = new BindingRoot(new TextObject());
 
 			assert.strictEqual(
-				query("#super-bind").innerHTML,
+				document.querySelector("#super-bind").innerHTML,
 				"Eh Up Planet");
 
-			assert.strictEqual(query("#sub").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#sub").innerHTML, "Hello World");
 
 			root.disconnect();
 		});
@@ -177,7 +172,7 @@
 
 			var root = new BindingRoot(new TextObject());
 
-			assert.notEqual(query("#non-sub").innerHTML, "Hello World");
+			assert.notEqual(document.querySelector("#non-sub").innerHTML, "Hello World");
 
 			root.disconnect();
 		});
@@ -204,7 +199,7 @@
 
 			plainObject.datum = "Hello World";
 
-			assert.strictEqual(query("#plain").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#plain").innerHTML, "Hello World");
 
 			root.disconnect();
 		});
@@ -231,7 +226,7 @@
 
 			plainObject.datum = "Hello World";
 
-			assert.strictEqual(query("#plainValue").value, "Hello World");
+			assert.strictEqual(document.querySelector("#plainValue").value, "Hello World");
 
 			root.disconnect();
 		});
@@ -262,7 +257,7 @@
 
 			var root = new BindingRoot(input);
 
-			var element = query("#plain-change");
+			var element = document.querySelector("#plain-change");
 
 			element.value = "Hello World";
 			element.dispatchEvent(new Event("change"));
@@ -319,7 +314,7 @@
 
 			after.datum = "Hello World";
 
-			assert.strictEqual(query("#after").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#after").innerHTML, "Hello World");
 
 			root.disconnect();
 		});
@@ -382,7 +377,7 @@
 			after.afterObject.datum = "Hello World";
 
 			assert.strictEqual(
-				query("#after-object").innerHTML,
+				document.querySelector("#after-object").innerHTML,
 				"Hello World");
 
 			root.disconnect();
@@ -414,7 +409,7 @@
 				}
 			}));
 
-			var element = query("#update-after");
+			var element = document.querySelector("#update-after");
 
 			element.value = "Hello World";
 			element.dispatchEvent(new Event("change"));
@@ -445,7 +440,7 @@
 
 			var root = new BindingRoot(scope);
 
-			var element = query("#scope");
+			var element = document.querySelector("#scope");
 
 			assert.notEqual(element.textContent, "Hello World");
 
