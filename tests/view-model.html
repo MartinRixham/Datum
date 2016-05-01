@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>View Model Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../src/Registry.js"></script>
+    <script src="../src/Subscriber.js"></script>
+    <script src="../src/UniqueRoot.js"></script>
+    <script src="../src/BindingRoot.js"></script>
+  	<script src="../src/ViewModel.js"></script>
+  	<script src="../src/Property.js"></script>
+    <script src="../src/ArrayBinding.js"></script>
+    <script src="../src/Serialisable.js"></script>
+    <script src="../src/ObjectBinding.js"></script>
+    <script src="../src/DomWatcher.js"></script>
+    <script src="../src/Binding.js"></script>
+    <script src="../src/Datum.js"></script>
+    <script src="../src/Dependant.js"></script>
+    <script src="../src/Text.js"></script>
+    <script src="../src/Value.js"></script>
+    <script src="../src/Init.js"></script>
+    <script src="../src/Update.js"></script>
+    <script src="../src/Click.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		// To preserve atomicity prototypes must be
+		// reassigned after each test.
+		QUnit.module("", {
+
+			teardown: function() {
+
+				Subscriber.prototype = new Registry();
+				Binding.prototype = new Subscriber();
+				Datum.prototype = new Subscriber();
+				Text.prototype = new Subscriber();
+				Value.prototype = new Subscriber();
+				Update.prototype = new Subscriber();
+				Init.prototype = new Subscriber();
+				UniqueRoot.prototype = new Subscriber();
+				BindingRoot.prototype = new UniqueRoot();
+				BindingRoot.ObjectBinding.prototype = new Subscriber();
+				BindingRoot.ViewModel.prototype = new Subscriber();
+				BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();
+			}
+		});
+    </script>
+    <input type="text" id="value-input" data-bind="valueInput" />
+    <script>
+		QUnit.test("Update data from input", function(assert) {
+
+			function InputObject() {
+
+				this.datum = new Datum();
+
+				this.valueInput = new Binding({
+
+					value: this.datum
+				});
+			}
+
+			var input = new InputObject();
+
+			var root = new BindingRoot(input);
+
+			var element = document.querySelector("#value-input");
+
+			element.value = "Hello World";
+			element.dispatchEvent(new Event("change"));
+
+			assert.strictEqual(input.datum(), "Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <div id="super-bind" data-bind="bind"></div>
+    <div id="super" data-bind="super">
+      <div id="sub" data-bind="sub"></div>
+    </div>
+    <script>
+		QUnit.test("Bind subobject", function(assert) {
+
+			function TextObject() {
+
+				this.bind = new Binding({
+
+					text: function() { return "Eh Up Planet"; }
+				});
+
+				this.super = {
+
+					sub: new Binding({
+
+						text: function() { return "Hello World"; }
+					})
+				};
+			}
+
+			var root = new BindingRoot(new TextObject());
+
+			assert.strictEqual(
+				document.querySelector("#super-bind").innerHTML,
+				"Eh Up Planet");
+
+			assert.strictEqual(document.querySelector("#sub").innerHTML, "Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <div data-bind="nonSuper"></div>
+    <div id="non-sub" data-bind="nonSub"></div>
+    <script>
+		QUnit.test("Fail to bind subobject outside of scope", function(assert) {
+
+			function TextObject() {
+
+				this.nonSuper = {
+
+					nonSub: new Binding({
+
+						text: function() { return "Hello World"; }
+					})
+				};
+			}
+
+			var root = new BindingRoot(new TextObject());
+
+			assert.notEqual(document.querySelector("#non-sub").innerHTML, "Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <div id="plain" data-bind="plain"></div>
+    <script>
+		QUnit.test("Update text from plain object", function(assert) {
+
+			function PlainObject() {
+
+				this.datum = null;
+
+				var self = this;
+
+				this.plain = new Binding({
+
+					text: function() { return self.datum; }
+				});
+			}
+
+			var plainObject = new PlainObject();
+
+			var root = new BindingRoot(plainObject);
+
+			plainObject.datum = "Hello World";
+
+			assert.strictEqual(document.querySelector("#plain").innerHTML, "Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <input type="text" id="plainValue" data-bind="plainValue" />
+    <script>
+		QUnit.test("Update value from plain object", function(assert) {
+
+			function PlainObject() {
+
+				this.datum = null;
+
+				var self = this;
+
+				this.plainValue = new Binding({
+
+					value: function() { return self.datum; }
+				});
+			}
+
+			var plainObject = new PlainObject();
+
+			var root = new BindingRoot(plainObject);
+
+			plainObject.datum = "Hello World";
+
+			assert.strictEqual(document.querySelector("#plainValue").value, "Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <input type="text" id="plain-change" data-bind="plainChange" />
+    <script>
+		QUnit.test("Update plain data from input", function(assert) {
+
+			function InputObject() {
+
+				this.datum = null;
+
+				this.plainChange = new Binding({
+
+					value: function(value) {
+
+						if (value) {
+
+							this.datum = value;
+						}
+
+						return this.datum;
+					}
+				});
+			}
+
+			var input = new InputObject();
+
+			var root = new BindingRoot(input);
+
+			var element = document.querySelector("#plain-change");
+
+			element.value = "Hello World";
+			element.dispatchEvent(new Event("change"));
+
+			assert.strictEqual(input.datum, "Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <div id="after" data-bind="after"></div>
+    <script>
+		QUnit.test("Create binding after root", function(assert) {
+
+			function After() {
+
+				this.datum = null;
+			}
+
+			var after = new After();
+
+			var root = new BindingRoot(after);
+
+			after.setProperty("after", new Binding({
+
+				text: function() { return after.datum; }
+			}));
+
+			after.datum = "Hello World";
+
+			assert.strictEqual(document.querySelector("#after").innerHTML, "Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <div data-bind="inner"></div>	
+    <div data-bind="outer"></div>
+	<script>
+		QUnit.test("Dependencies are aggressively collected.", function(assert) {
+
+			var count = 0;
+
+			function Only() {
+
+				this.datum = null;
+
+				this.inner = new Binding({
+
+					text: function() { count += 1; }
+				});
+			}
+
+			var only = new Only();
+
+			var root = new BindingRoot(only);
+
+			only.outer = new Binding({
+
+				text: function() { return only.datum; }
+			});
+
+			only.datum = "Hello World";
+
+			assert.strictEqual(count, 2);
+
+			root.disconnect();
+		});
+    </script>
+    <div data-bind="afterObject">
+      <div id="after-object" data-bind="after"></div>
+    </div>
+    <script>
+		QUnit.test("Bind subobject after root", function(assert) {
+
+			function AfterObject() {}
+
+			var after = new AfterObject();
+
+			var root = new BindingRoot(after);
+
+			after.setProperty("afterObject", {
+
+				datum: null,
+
+				after: new Binding({
+
+					text: function() { return after.afterObject.datum; }
+				})
+			});
+
+			after.afterObject.datum = "Hello World";
+
+			assert.strictEqual(
+				document.querySelector("#after-object").innerHTML,
+				"Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <input type="text" id="update-after" data-bind="updateAfter" />
+    <script>
+		QUnit.test("Update value bound after root", function(assert) {
+
+			function AfterUpdate() {
+
+				this.datum = null;
+			}
+
+			var after = new AfterUpdate();
+
+			var root = new BindingRoot(after);
+
+			after.setProperty("updateAfter", new Binding({
+
+				value: function(value) {
+
+					if (value) {
+
+						after.datum = value;
+					}
+
+					return after.datum;
+				}
+			}));
+
+			var element = document.querySelector("#update-after");
+
+			element.value = "Hello World";
+			element.dispatchEvent(new Event("change"));
+
+			assert.strictEqual(
+				after.datum,
+				"Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <div data-bind="scope">
+      <div data-bind="subscope">
+        <div id="scope" data-bind="text"></div>
+      </div>
+    </div>
+    <script>
+		QUnit.test("Bindings not applied in subscope.", function(assert) {
+
+			function ScopeObject() {
+
+				this.subscope = {};
+
+				this.text = new Text(function() { return "Hello World"; });
+			}
+
+			var scope = new ScopeObject();
+
+			var root = new BindingRoot(scope);
+
+			var element = document.querySelector("#scope");
+
+			assert.notEqual(element.textContent, "Hello World");
+
+			root.disconnect();
+		});
+    </script>
+    <div id="on-bind" data-bind="bindOn"></div>
+    <script>
+		QUnit.test("onBind is called when object is bound",function(assert) {
+
+			var elementId;
+
+			function OnBindObject() {
+
+				this.bindOn = {
+
+					onBind: function(element) {
+
+						elementId = element.id;
+					}
+				};
+			}
+
+			var root = new BindingRoot(new OnBindObject());
+
+			assert.strictEqual(elementId, "on-bind");
+
+			root.disconnect();
+		});
+    </script>
+    <div data-bind="bindOnce"></div>
+    <script>
+		QUnit.test("onBind is not recalled", function(assert) {
+
+			var count = 0;
+
+			function OnBindOnceObject() {
+
+				this.bindOnce = {
+
+					onBind: function() {
+
+						count++;
+					}
+				};
+			}
+
+			var onBindOnce = new OnBindOnceObject();
+
+			var root = new BindingRoot(onBindOnce);
+
+			onBindOnce.bindOnce.newBinding = new Binding({});
+
+			var done = assert.async();
+
+			setTimeout(function() {
+
+				assert.strictEqual(count, 1);
+
+				root.disconnect();
+
+				done();
+			});
+		});
+    </script>
+	<div data-bind="update"></div>
+	<script>
+		QUnit.test("Properties of unbound objects are tracked.", function(assert) {
+
+			var count = 0;
+
+			function Subproperty() {
+
+				this.subobject = {
+
+					property: "Hello World"
+				};
+
+				this.update = new Update(function() {
+
+					var value = this.subobject.property;
+
+					count++;
+				});
+			}
+
+			var subproperty = new Subproperty();
+
+			var root = new BindingRoot(subproperty);
+
+			subproperty.subobject.property = "Eh up planet.";
+
+			assert.strictEqual(count, 2);
+
+			root.disconnect();
+		});
+	</script>
+  </body>
+</html>
