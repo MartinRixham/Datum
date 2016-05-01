@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Array Binding Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+	  <script src="../src/Registry.js"></script>
+	  <script src="../src/Subscriber.js"></script>
+	  <script src="../src/UniqueRoot.js"></script>
+	  <script src="../src/BindingRoot.js"></script>
+	  <script src="../src/ViewModel.js"></script>
+	  <script src="../src/Serialisable.js"></script>
+	  <script src="../src/ArrayBinding.js"></script>
+	  <script src="../src/ArrayElement.js"></script>
+	  <script src="../src/Splice.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		QUnit.module("", {
+
+			teardown: function() {
+
+				Subscriber.prototype = new Registry();
+				UniqueRoot.prototype = new Subscriber();
+				BindingRoot.prototype = new UniqueRoot();
+				BindingRoot.ViewModel.prototype = new UniqueRoot();
+				BindingRoot.ArrayBinding.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.Splice.prototype = new Subscriber();
+			}
+		});
+    </script>
+    <div id="splice-remove" data-bind="spliceRemove">
+      <div class="splice-remove"></div>
+      <div class="splice-remove"></div>
+      <div class="splice-remove"></div>
+    </div>
+    <script>
+		QUnit.test("Remove element with splice", function(assert) {
+
+			var spliceRemove = [{}, {}, {}];
+
+			var element = document.querySelector(".splice-remove");
+
+			var arrayElement =
+				new BindingRoot.ArrayBinding.ArrayElement(element);
+
+			var binding =
+				new BindingRoot.ArrayBinding.Splice(spliceRemove, arrayElement, []);
+
+			binding.applyBinding(document.body, "spliceRemove");
+
+			spliceRemove.splice(1, 1);
+
+			assert.strictEqual(spliceRemove.length, 2);
+
+			var boundElement = document.querySelector("#splice-remove");
+
+			var childCount =
+				boundElement.querySelectorAll(".splice-remove").length;
+
+			assert.strictEqual(childCount, 2);
+		});
+    </script>
+    <div id="splice-remove-two" data-bind="spliceRemoveTwo">
+      <div class="splice-remove-two"></div>
+      <div class="splice-remove-two"></div>
+      <div class="splice-remove-two"></div>
+    </div>
+    <script>
+		QUnit.test("Remove two elements with splice", function(assert) {
+
+			var spliceRemoveTwo = [{}, {}, {}];
+
+			var element = document.querySelector(".splice-remove-two");
+
+			var arrayElement =
+				new BindingRoot.ArrayBinding.ArrayElement(element);
+
+			var binding =
+				new BindingRoot.ArrayBinding.Splice(spliceRemoveTwo, arrayElement, []);
+
+			binding.applyBinding(document.body, "spliceRemoveTwo");
+
+			spliceRemoveTwo.splice(1, 2);
+
+			assert.strictEqual(spliceRemoveTwo.length, 1);
+
+			var boundElement = document.querySelector("#splice-remove-two");
+			var childCount =
+				boundElement.querySelectorAll(".splice-remove-two").length;
+
+			assert.strictEqual(childCount, 1);
+		});
+    </script>
+    <div id="splice-add" data-bind="spliceAdd">
+      <div class="splice-add"></div>
+      <div class="splice-add"></div>
+    </div>
+    <script>
+		QUnit.test("Add element with splice", function(assert) {
+
+			var spliceAdd = [{}, {}];
+
+			var element = document.createElement("DIV");
+			element.className = "splice-add";
+			element.id = "new";
+
+			var arrayElement =
+				new BindingRoot.ArrayBinding.ArrayElement(element);
+
+			var binding =
+				new BindingRoot.ArrayBinding.Splice(spliceAdd, arrayElement, []);
+
+			binding.applyBinding(document.body, "spliceAdd");
+
+			spliceAdd.splice(1, 0, {});
+
+			assert.strictEqual(spliceAdd.length, 3);
+
+			var boundElement = document.querySelector("#splice-add");
+			var children = boundElement.querySelectorAll(".splice-add");
+
+			assert.strictEqual(children.length, 3);
+
+			assert.strictEqual(children[1].id, "new_0");
+		});
+    </script>
+    <div id="splice-add-two" data-bind="spliceAddTwo">
+      <div class="splice-add-two"></div>
+      <div class="splice-add-two"></div>
+    </div>
+    <script>
+		QUnit.test("Add two elements with splice", function(assert) {
+
+			var spliceAddTwo = [{}, {}];
+
+			var element = document.createElement("DIV");
+			element.className = "splice-add-two";
+			element.id = "new";
+
+			var arrayElement =
+				new BindingRoot.ArrayBinding.ArrayElement(element);
+
+			var binding =
+				new BindingRoot.ArrayBinding.Splice(spliceAddTwo, arrayElement, []);
+
+			binding.applyBinding(document.body, "spliceAddTwo");
+
+			spliceAddTwo.splice(1, 0, {}, {});
+
+			assert.strictEqual(spliceAddTwo.length, 4);
+
+			var boundElement = document.querySelector("#splice-add-two");
+
+			var children = boundElement.querySelectorAll(".splice-add-two");
+
+			assert.strictEqual(children.length, 4);
+
+			assert.strictEqual(children[1].id, "new_1");
+
+			assert.strictEqual(children[2].id, "new_0");
+		});
+    </script>
+    <div id="splice-add-remove" data-bind="spliceAddRemove">
+      <div class="splice-add-remove"></div>
+      <div class="splice-add-remove"></div>
+    </div>
+    <script>
+		QUnit.test("Add and remove element with splice", function(assert) {
+
+			var spliceAddRemove = [{}, {}];
+
+			var element = document.createElement("DIV");
+			element.className = "splice-add-remove";
+			element.id = "new";
+
+			var arrayElement =
+				new BindingRoot.ArrayBinding.ArrayElement(element);
+
+			var binding =
+				new BindingRoot.ArrayBinding.Splice(spliceAddRemove, arrayElement, []);
+
+			binding.applyBinding(document.body, "spliceAddRemove");
+
+			spliceAddRemove.splice(1, 1, {});
+
+			assert.strictEqual(spliceAddRemove.length, 2);
+
+			var boundElement = document.querySelector("#splice-add-remove");
+
+			var children = boundElement.querySelectorAll(".splice-add-remove");
+
+			assert.strictEqual(children.length, 2);
+
+			assert.strictEqual(children[1].id, "new_0");
+		});
+    </script>
+  </body>
+</html>
