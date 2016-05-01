@@ -1,4 +1,4 @@
-BindingRoot.ViewModel.ArrayBinding.ArrayElement = function(element) {
+BindingRoot.ArrayBinding.ArrayElement = function(element) {
 
 	var index = 0;
 

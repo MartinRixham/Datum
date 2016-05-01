@@ -1,4 +1,4 @@
-BindingRoot.ViewModel.ArrayBinding.Pop = function(model) {
+BindingRoot.ArrayBinding.Pop = function(model) {
 
 	this.applyBinding = function(scope, name) {
 
@@ -19,4 +19,4 @@ BindingRoot.ViewModel.ArrayBinding.Pop = function(model) {
 	this.removeBinding = function() {};
 };
 
-BindingRoot.ViewModel.ArrayBinding.Pop.prototype = new Subscriber();
+BindingRoot.ArrayBinding.Pop.prototype = new Subscriber();

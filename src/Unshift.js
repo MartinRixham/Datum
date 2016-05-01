@@ -1,4 +1,4 @@
-BindingRoot.ViewModel.ArrayBinding.Unshift = function(model, arrayElement, bindings) {
+BindingRoot.ArrayBinding.Unshift = function(model, arrayElement, bindings) {
 
 	this.applyBinding = function(scope, name) {
 
@@ -40,4 +40,4 @@ BindingRoot.ViewModel.ArrayBinding.Unshift = function(model, arrayElement, bindi
 	this.removeBinding = function() {};
 };
 
-BindingRoot.ViewModel.ArrayBinding.Unshift.prototype = new Subscriber();
+BindingRoot.ArrayBinding.Unshift.prototype = new Subscriber();

@@ -1,4 +1,4 @@
-BindingRoot.ViewModel.ArrayBinding.Sort = function(model) {
+BindingRoot.ArrayBinding.Sort = function(model) {
 
 	this.applyBinding = function(scope, name) {
 
@@ -59,4 +59,4 @@ BindingRoot.ViewModel.ArrayBinding.Sort = function(model) {
 	this.removeBinding = function() {};
 };
 
-BindingRoot.ViewModel.ArrayBinding.Sort.prototype = new Subscriber();
+BindingRoot.ArrayBinding.Sort.prototype = new Subscriber();

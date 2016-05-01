@@ -1,4 +1,4 @@
-BindingRoot.ViewModel.ArrayBinding.Splice = function(model, arrayElement, properties) {
+BindingRoot.ArrayBinding.Splice = function(model, arrayElement, properties) {
 
 	this.applyBinding = function(scope, name) {
 
@@ -48,4 +48,4 @@ BindingRoot.ViewModel.ArrayBinding.Splice = function(model, arrayElement, proper
 	this.removeBinding = function() {};
 };
 
-BindingRoot.ViewModel.ArrayBinding.Splice.prototype = new Subscriber();
+BindingRoot.ArrayBinding.Splice.prototype = new Subscriber();

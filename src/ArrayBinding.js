@@ -1,7 +1,7 @@
 // The array binding is applied when an array is bound to an element.
 // It copies the contents of the element to which it is bound
 // once for each element of the array.
-BindingRoot.ViewModel.ArrayBinding = function(model) {
+BindingRoot.ArrayBinding = function(model) {
 
 	var currentElement = null;
 
@@ -78,18 +78,18 @@ BindingRoot.ViewModel.ArrayBinding = function(model) {
 
 		element.removeChild(child);
 
-		arrayElement = new BindingRoot.ViewModel.ArrayBinding.ArrayElement(child);
+		arrayElement = new BindingRoot.ArrayBinding.ArrayElement(child);
 
 		append(model, element);
 
 		bindings.push(
-			new BindingRoot.ViewModel.ArrayBinding.Push(model, arrayElement),
-			new BindingRoot.ViewModel.ArrayBinding.Pop(model),
-			new BindingRoot.ViewModel.ArrayBinding.Shift(model),
-			new BindingRoot.ViewModel.ArrayBinding.Unshift(model, arrayElement, properties),
-			new BindingRoot.ViewModel.ArrayBinding.Splice(model, arrayElement, properties),
-			new BindingRoot.ViewModel.ArrayBinding.Sort(model),
-			new BindingRoot.ViewModel.ArrayBinding.Reverse(model));
+			new BindingRoot.ArrayBinding.Push(model, arrayElement),
+			new BindingRoot.ArrayBinding.Pop(model),
+			new BindingRoot.ArrayBinding.Shift(model),
+			new BindingRoot.ArrayBinding.Unshift(model, arrayElement, properties),
+			new BindingRoot.ArrayBinding.Splice(model, arrayElement, properties),
+			new BindingRoot.ArrayBinding.Sort(model),
+			new BindingRoot.ArrayBinding.Reverse(model));
 	}
 
 	function append(array, element) {
@@ -110,7 +110,7 @@ BindingRoot.ViewModel.ArrayBinding = function(model) {
 
 				if (property instanceof Array) {
 
-					properties.push(new BindingRoot.ViewModel.ArrayBinding(property));
+					properties.push(new BindingRoot.ArrayBinding(property));
 				}
 				else {
 
@@ -137,4 +137,4 @@ BindingRoot.ViewModel.ArrayBinding = function(model) {
 	};
 };
 
-BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();
+BindingRoot.ArrayBinding.prototype = new Subscriber();

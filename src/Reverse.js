@@ -1,4 +1,4 @@
-BindingRoot.ViewModel.ArrayBinding.Reverse = function(model) {
+BindingRoot.ArrayBinding.Reverse = function(model) {
 
 	this.applyBinding = function(scope, name) {
 
@@ -31,4 +31,4 @@ BindingRoot.ViewModel.ArrayBinding.Reverse = function(model) {
 	this.removeBinding = function() {};
 };
 
-BindingRoot.ViewModel.ArrayBinding.Reverse.prototype = new Subscriber();
+BindingRoot.ArrayBinding.Reverse.prototype = new Subscriber();

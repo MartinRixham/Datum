@@ -9,28 +9,9 @@
     <script src="../src/Subscriber.js"></script>
     <script src="../src/UniqueRoot.js"></script>
     <script src="../src/BindingRoot.js"></script>
-    <script src="../src/ViewModel.js"></script>
-    <script src="../src/Property.js"></script>
-    <script src="../src/Binding.js"></script>
     <script src="../src/ArrayBinding.js"></script>
     <script src="../src/ArrayElement.js"></script>
-    <script src="../src/Push.js"></script>
     <script src="../src/Pop.js"></script>
-    <script src="../src/Shift.js"></script>
-    <script src="../src/Unshift.js"></script>
-    <script src="../src/Splice.js"></script>
-    <script src="../src/Sort.js"></script>
-    <script src="../src/Reverse.js"></script>
-    <script src="../src/ObjectBinding.js"></script>
-  	<script src="../src/Serialisable.js"></script>
-    <script src="../src/DomWatcher.js"></script>
-    <script src="../src/Datum.js"></script>
-    <script src="../src/Dependant.js"></script>
-    <script src="../src/Text.js"></script>
-    <script src="../src/Value.js"></script>
-    <script src="../src/Init.js"></script>
-    <script src="../src/Update.js"></script>
-    <script src="../src/Click.js"></script>
   </head>
   <body>
     <style>
@@ -46,23 +27,10 @@
 			teardown: function() {
 
 				Subscriber.prototype = new Registry();
-				Binding.prototype = new Subscriber();
-				Datum.prototype = new Subscriber();
-				Text.prototype = new Subscriber();
-				Value.prototype = new Subscriber();
-				Update.prototype = new Subscriber();
 				UniqueRoot.prototype = new Subscriber();
 				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ObjectBinding.prototype = new Subscriber();
-				BindingRoot.ViewModel.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Push.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Pop.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Shift.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Unshift.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Splice.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Sort.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Reverse.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.Pop.prototype = new Subscriber();
 			}
 		});
     </script>
@@ -75,13 +43,7 @@
 
 			var pop = [{}, {}];
 
-			var element = document.querySelector(".push");
-
-			var arrayElement =
-				new BindingRoot.ViewModel.ArrayBinding.ArrayElement(element);
-
-			var binding =
-				new BindingRoot.ViewModel.ArrayBinding.Pop(pop, arrayElement);
+			var binding = new BindingRoot.ArrayBinding.Pop(pop);
 
 			binding.applyBinding(document.body, "pop");
 

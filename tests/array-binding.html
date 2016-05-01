@@ -55,14 +55,14 @@
 				BindingRoot.prototype = new UniqueRoot();
 				BindingRoot.ObjectBinding.prototype = new Subscriber();
 				BindingRoot.ViewModel.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Push.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Pop.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Shift.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Unshift.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Splice.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Sort.prototype = new Subscriber();
-				BindingRoot.ViewModel.ArrayBinding.Reverse.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.Push.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.Pop.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.Shift.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.Unshift.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.Splice.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.Sort.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.Reverse.prototype = new Subscriber();
 			}
 		});
     </script>
@@ -398,47 +398,6 @@
 			var childCount = element.querySelectorAll(".string").length;
 
 			assert.strictEqual(childCount, 2);
-
-			root.disconnect();
-		});
-    </script>
-    <div id="shift" data-bind="shift">
-      <div>
-        <div class="shift" data-bind="shiftText"></div>
-      </div>
-    </div>
-    <script>
-		QUnit.test("Remove first element on array shift", function(assert) {
-
-			function ShiftObject() {
-
-				this.shift =
-					[
-						{},
-						{
-							shiftText: new Text(function() {
-
-								return "Hello World";
-							})
-						}
-					];
-			}
-
-			var shift = new ShiftObject();
-
-			var root = new BindingRoot(shift);
-
-			shift.shift.shift();
-
-			assert.strictEqual(shift.shift.length, 1);
-
-			var element = document.querySelector("#shift");
-
-			var children = element.querySelectorAll(".shift");
-
-			assert.strictEqual(children.length, 1);
-
-			assert.strictEqual(children[0].innerHTML, "Hello World");
 
 			root.disconnect();
 		});

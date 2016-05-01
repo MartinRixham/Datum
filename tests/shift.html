@@ -2,18 +2,16 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Push Tests</title>
+    <title>Shift Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
 	  <script src="../src/Registry.js"></script>
 	  <script src="../src/Subscriber.js"></script>
 	  <script src="../src/UniqueRoot.js"></script>
 	  <script src="../src/BindingRoot.js"></script>
-	  <script src="../src/ViewModel.js"></script>
-	  <script src="../src/Serialisable.js"></script>
 	  <script src="../src/ArrayBinding.js"></script>
 	  <script src="../src/ArrayElement.js"></script>
-	  <script src="../src/Push.js"></script>
+	  <script src="../src/Shift.js"></script>
   </head>
   <body>
     <style>
@@ -31,38 +29,49 @@
 				Subscriber.prototype = new Registry();
 				UniqueRoot.prototype = new Subscriber();
 				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ViewModel.prototype = new UniqueRoot();
 				BindingRoot.ArrayBinding.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Push.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.Shift.prototype = new Subscriber();
 			}
 		});
     </script>
-    <div id="push" data-bind="push">
-      <div class="push"></div>
+    <div id="shift" data-bind="shift">
+      <div>
+        <div class="shift"></div>
+	  </div>
+	  <div>
+        <div class="shift" id="second-shift"></div>
+      </div>
     </div>
     <script>
-		QUnit.test("Add element when object pushed to array", function(assert) {
+		QUnit.test("Remove first element on array shift", function(assert) {
 
-			var push = [{}];
+			var shift =
+				[
+					{
+						count: "first"
+					},
+					{
+						count: "second"
+					}
+				];
 
-			var element = document.querySelector(".push");
+			var binding = new BindingRoot.ArrayBinding.Shift(shift);
 
-			var arrayElement =
-				new BindingRoot.ArrayBinding.ArrayElement(element);
+			binding.applyBinding(document.body, "shift");
 
-			var binding =
-				new BindingRoot.ArrayBinding.Push(push, arrayElement);
+			shift.shift();
 
-			binding.applyBinding(document.body, "push");
+			assert.strictEqual(shift.length, 1);
 
-			push.push({});
+			assert.strictEqual(shift[0].count, "second");
 
-			assert.strictEqual(push.length, 2);
+			var boundElement = document.querySelector("#shift");
+			var children = boundElement.querySelectorAll(".shift");
 
-			var boundElement = document.querySelector("#push");
-			var childCount = boundElement.querySelectorAll(".push").length;
+			assert.strictEqual(children.length, 1);
 
-			assert.strictEqual(childCount, 2);
+			assert.strictEqual(children[0].id, "second-shift");
+
 		});
     </script>
   </body>

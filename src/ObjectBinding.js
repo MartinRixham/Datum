@@ -6,7 +6,7 @@ BindingRoot.ObjectBinding = function(property) {
 
 	if (property instanceof Array) {
 
-		this.binding = new BindingRoot.ViewModel.ArrayBinding(property);
+		this.binding = new BindingRoot.ArrayBinding(property);
 	}
 	else if (property) {
 
@@ -72,7 +72,7 @@ BindingRoot.ObjectBinding = function(property) {
 
 					if (property instanceof Array) {
 
-						self.binding = new BindingRoot.ViewModel.ArrayBinding(property);
+						self.binding = new BindingRoot.ArrayBinding(property);
 					}
 					else {
 

@@ -1,4 +1,4 @@
-BindingRoot.ViewModel.ArrayBinding.Push = function(model, arrayElement) {
+BindingRoot.ArrayBinding.Push = function(model, arrayElement) {
 
 	this.applyBinding = function(scope, name) {
 
@@ -38,4 +38,4 @@ BindingRoot.ViewModel.ArrayBinding.Push = function(model, arrayElement) {
 	this.removeBinding = function() {};
 };
 
-BindingRoot.ViewModel.ArrayBinding.Push.prototype = new Subscriber();
+BindingRoot.ArrayBinding.Push.prototype = new Subscriber();

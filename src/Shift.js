@@ -1,4 +1,4 @@
-BindingRoot.ViewModel.ArrayBinding.Shift = function(model) {
+BindingRoot.ArrayBinding.Shift = function(model) {
 
 	this.applyBinding = function(scope, name) {
 
@@ -19,4 +19,4 @@ BindingRoot.ViewModel.ArrayBinding.Shift = function(model) {
 	this.removeBinding = function() {};
 };
 
-BindingRoot.ViewModel.ArrayBinding.Shift.prototype = new Subscriber();
+BindingRoot.ArrayBinding.Shift.prototype = new Subscriber();
