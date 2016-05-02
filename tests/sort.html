@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Array Binding Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+	  <script src="../src/Registry.js"></script>
+	  <script src="../src/Subscriber.js"></script>
+	  <script src="../src/UniqueRoot.js"></script>
+	  <script src="../src/BindingRoot.js"></script>
+	  <script src="../src/ArrayBinding.js"></script>
+	  <script src="../src/ArrayElement.js"></script>
+	  <script src="../src/Sort.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		QUnit.module("", {
+
+			teardown: function() {
+
+				Subscriber.prototype = new Registry();
+				UniqueRoot.prototype = new Subscriber();
+				BindingRoot.prototype = new UniqueRoot();
+				BindingRoot.ArrayBinding.prototype = new Subscriber();
+				BindingRoot.ArrayBinding.Sort.prototype = new Subscriber();
+			}
+		});
+    </script>
+    <div id="sort-two" data-bind="sortTwo">
+      <div class="sort-two" id="sort-two-child_0"></div>
+      <div class="sort-two" id="sort-two-child_1"></div>
+    </div>
+    <script>
+		QUnit.test("Sort two element bound array", function(assert) {
+
+			var sortTwo = [2, 1];
+
+			var binding =
+				new BindingRoot.ArrayBinding.Sort(sortTwo);
+
+			binding.applyBinding(document.body, "sortTwo");
+
+			sortTwo.sort();
+
+			assert.strictEqual(sortTwo.length, 2);
+
+			var boundElement = document.querySelector("#sort-two");
+
+			var children = boundElement.querySelectorAll(".sort-two");
+
+			assert.strictEqual(children.length, 2);
+
+			assert.strictEqual(sortTwo[0], 1);
+			assert.strictEqual(sortTwo[1], 2);
+
+			assert.strictEqual(children[0].id, "sort-two-child_1");
+			assert.strictEqual(children[1].id, "sort-two-child_0");
+		});
+    </script>
+      <div id="sort-three" data-bind="sortThree">
+        <div class="sort-three" id="sort-three-child_0"></div>
+        <div class="sort-three" id="sort-three-child_1"></div>
+        <div class="sort-three" id="sort-three-child_2"></div>
+      </div>
+    <script>
+		QUnit.test("Sort three element bound array", function(assert) {
+
+			var sortThree = [2, 3, 1];
+
+			var binding =
+				new BindingRoot.ArrayBinding.Sort(sortThree);
+
+			binding.applyBinding(document.body, "sortThree");
+
+			sortThree.sort();
+
+			assert.strictEqual(sortThree.length, 3);
+
+			var boundElement = document.querySelector("#sort-three");
+			var children = boundElement.querySelectorAll(".sort-three");
+
+			assert.strictEqual(children.length, 3);
+
+			assert.strictEqual(sortThree[0], 1);
+			assert.strictEqual(sortThree[1], 2);
+			assert.strictEqual(sortThree[2], 3);
+
+			assert.strictEqual(children[0].id, "sort-three-child_2");
+			assert.strictEqual(children[1].id, "sort-three-child_0");
+			assert.strictEqual(children[2].id, "sort-three-child_1");
+		});
+    </script>
+    <div id="sort-comparer" data-bind="sortComparer">
+      <div class="sort-comparer" id="sort-comparer-child_0"></div>
+      <div class="sort-comparer" id="sort-comparer-child_1"></div>
+      <div class="sort-comparer" id="sort-comparer-child_2"></div>
+    </div>
+    <script>
+		QUnit.test("Sort three element array with a compare function", function(assert) {
+
+			var sortComparer = ["am", "me.", "I"];
+
+			var binding =
+				new BindingRoot.ArrayBinding.Sort(sortComparer);
+
+			binding.applyBinding(document.body, "sortComparer");
+
+			sortComparer.sort(function(a, b) {
+
+				if (a.length > b.length) {
+
+					return 1;
+				}
+
+				if (a.length < b.length) {
+
+					return -1;
+				}
+
+				return 0;
+			});
+
+			assert.strictEqual(sortComparer.length, 3);
+
+			var element = document.querySelector("#sort-comparer");
+
+			var children = element.querySelectorAll(".sort-comparer");
+
+			assert.strictEqual(children.length, 3);
+
+			assert.strictEqual(sortComparer[0], "I");
+			assert.strictEqual(sortComparer[1], "am");
+			assert.strictEqual(sortComparer[2], "me.");
+
+			assert.strictEqual(children[0].id, "sort-comparer-child_2");
+			assert.strictEqual(children[1].id, "sort-comparer-child_0");
+			assert.strictEqual(children[2].id, "sort-comparer-child_1");
+		});
+    </script>
+  </body>
+</html>
