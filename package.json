@@ -1,6 +1,7 @@
 {
   "name": "Datum",
-  "version": "0.1.0",
+  "version": "0.0.0",
+  "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-contrib-jshint": "~1.0.0",
@@ -9,5 +10,14 @@
     "grunt-jscs": "~2.8.0",
     "grunt-contrib-qunit": "~1.1.0",
     "qunitjs": "~1.23.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/MartinRixham/Datum.git"
+  },
+  "author": "Martin Rixham",
+  "license": "LGPLv3",
+  "bugs": {
+    "url": "https://github.com/MartinRixham/Datum/issues"
   }
 }
