@@ -1,30 +1,35 @@
-function Init(init) {
+define(["Subscriber"], function Init(Subscriber) {
 
-	this.applyBinding = function(scope, name, model) {
+	function Init(init) {
 
-		var elements = this.getAllMatchingElements(scope, name);
+		this.applyBinding = function(scope, name, model) {
 
-		for (var i = 0; i < elements.length; i++) {
+			var elements = this.getAllMatchingElements(scope, name);
 
-			var element = elements[i];
+			for (var i = 0; i < elements.length; i++) {
 
-			if (!element.callbacks) {
+				var element = elements[i];
 
-				element.callbacks = [];
+				if (!element.callbacks) {
+
+					element.callbacks = [];
+				}
+
+				var alreadyBound = element.callbacks.indexOf(init) + 1;
+
+				if (!alreadyBound && this.isInScope(element, scope)) {
+
+					init.call(model, element);
+
+					element.callbacks.push(init);
+				}
 			}
+		};
 
-			var alreadyBound = element.callbacks.indexOf(init) + 1;
+		this.removeBinding = function() {};
+	}
 
-			if (!alreadyBound && this.isInScope(element, scope)) {
+	Init.prototype = new Subscriber();
 
-				init.call(model, element);
-
-				element.callbacks.push(init);
-			}
-		}
-	};
-
-	this.removeBinding = function() {};
-}
-
-Init.prototype = new Subscriber();
+	return Init;
+});

@@ -1,41 +1,47 @@
-BindingRoot.ArrayBinding.Push = function(model, arrayElement) {
+define(["ViewModel", "Subscriber"], function(ViewModel, Subscriber) {
 
-	this.applyBinding = function(scope, name) {
+	function Push(model, arrayElement) {
 
-		var element = this.getMatchingElement(scope, name);
+		this.applyBinding = function(scope, name) {
 
-		var originalPush = model.push;
+			var element = this.getMatchingElement(scope, name);
 
-		var self = this;
+			var originalPush = model.push;
 
-		model.push = function() {
+			var self = this;
 
-			originalPush.apply(model, arguments);
+			model.push = function() {
 
-			append(element, arguments);
+				originalPush.apply(model, arguments);
 
-			model.subscribableLength = model.length;
+				append(element, arguments);
 
-			self.rebindDataStructure();
+				model.subscribableLength = model.length;
+
+				self.rebindDataStructure();
+			};
 		};
-	};
 
-	function append(element, array) {
+		function append(element, array) {
 
-		for (var i = 0; i < array.length; i++) {
+			for (var i = 0; i < array.length; i++) {
 
-			var property = array[i];
+				var property = array[i];
 
-			element.appendChild(arrayElement.clone());
+				element.appendChild(arrayElement.clone());
 
-			if (property && typeof(property) == "object") {
+				if (property && typeof(property) == "object") {
 
-				new BindingRoot.ViewModel(property);
+					new ViewModel(property);
+				}
 			}
 		}
+
+		this.removeBinding = function() {
+		};
 	}
 
-	this.removeBinding = function() {};
-};
+	Push.prototype = new Subscriber();
 
-BindingRoot.ArrayBinding.Push.prototype = new Subscriber();
+	return Push;
+});

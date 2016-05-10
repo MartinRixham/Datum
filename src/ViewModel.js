@@ -1,116 +1,121 @@
-BindingRoot.ViewModel = function(model) {
+define(["Subscriber"], function(Subscriber) {
 
-	new BindingRoot.ViewModel.Serialisable(model);
+	function ViewModel(model) {
 
-	var properties = {};
+		new BindingRoot.ViewModel.Serialisable(model);
 
-	var bindings = {};
+		var properties = {};
 
-	this.applyBinding = function(scope, name) {
+		var bindings = {};
 
-		var element;
+		this.applyBinding = function(scope, name) {
 
-		if (scope) {
+			var element;
 
-			var elements = this.getAllMatchingElements(scope, name);
+			if (scope) {
 
-			if (elements.length > 1) {
+				var elements = this.getAllMatchingElements(scope, name);
 
-				throw new Error("Objects can only be bound to one element.");
+				if (elements.length > 1) {
+
+					throw new Error("Objects can only be bound to one element.");
+				}
+				else if (elements.length) {
+
+					element = elements[0];
+				}
 			}
-			else if (elements.length) {
+			else {
 
-				element = elements[0];
+				element = document.body;
 			}
-		}
-		else {
 
-			element = document.body;
-		}
+			if (element) {
 
-		if (element) {
+				var self = this;
 
-			var self = this;
+				element._rebind = function() {
 
-			element._rebind = function() {
-
-				self.applyBinding(scope, name);
-			};
-		}
-
-		if (model.onBind) {
-
-			model.onBind(element);
-		}
-
-		var key;
-
-		for (key in properties) {
-
-			if (!model[key]) {
-
-				properties[key].removeBinding();
-
-				delete properties[key];
+					self.applyBinding(scope, name);
+				};
 			}
-		}
 
-		for (key in model) {
+			if (model.onBind) {
 
-			if (isNew(key) && key != "_scope") {
+				model.onBind(element);
+			}
 
-				if (properties[key]) {
+			var key;
+
+			for (key in properties) {
+
+				if (!model[key]) {
 
 					properties[key].removeBinding();
-				}
 
-				var property = model[key];
-
-				if (property && property.applyBinding && property.removeBinding) {
-
-					bindings[key] = property;
-				}
-				else if (typeof(property) != "function") {
-
-					properties[key] = new BindingRoot.ViewModel.Property(model[key]);
+					delete properties[key];
 				}
 			}
+
+			for (key in model) {
+
+				if (isNew(key) && key != "_scope") {
+
+					if (properties[key]) {
+
+						properties[key].removeBinding();
+					}
+
+					var property = model[key];
+
+					if (property && property.applyBinding && property.removeBinding) {
+
+						bindings[key] = property;
+					}
+					else if (typeof(property) != "function") {
+
+						properties[key] = new BindingRoot.ViewModel.Property(model[key]);
+					}
+				}
+			}
+
+			for (key in properties) {
+
+				properties[key].applyBinding(element, key, model);
+			}
+
+			for (key in bindings) {
+
+				bindings[key].applyBinding(element, key, model);
+			}
+		};
+
+		function isNew(key) {
+
+			var property = properties[key];
+
+			return !property || property.isOlderThan(model[key]);
 		}
 
-		for (key in properties) {
+		this.removeBinding = function() {
 
-			properties[key].applyBinding(element, key, model);
-		}
+			for (var key in properties) {
 
-		for (key in bindings) {
+				properties[key].removeBinding();
+			}
+		};
 
-			bindings[key].applyBinding(element, key, model);
-		}
-	};
+		var self = this;
 
-	function isNew(key) {
+		model.setProperty = function(name, property) {
 
-		var property = properties[key];
+			model[name] = property;
 
-		return !property || property.isOlderThan(model[key]);
+			self.rebindDataStructure();
+		};
 	}
 
-	this.removeBinding = function() {
+	ViewModel.prototype = new Subscriber();
 
-		for (var key in properties) {
-
-			properties[key].removeBinding();
-		}
-	};
-
-	var self = this;
-
-	model.setProperty = function(name, property) {
-
-		model[name] = property;
-
-		self.rebindDataStructure();
-	};
-};
-
-BindingRoot.ViewModel.prototype = new Subscriber();
+	return ViewModel;
+});

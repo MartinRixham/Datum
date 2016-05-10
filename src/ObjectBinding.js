@@ -1,107 +1,117 @@
-// The object binding is the binding that is applied automatically
-// and by convention whenever a plain object is bound to an element.
-// Its effect is to remove all child elements from the DOM
-// when the object is null.
-BindingRoot.ObjectBinding = function(property) {
+define([
+	"ArrayBinding",
+	"ViewModel",
+	"Subscriber"],
+function(
+	ArrayBinding,
+	ViewModel,
+	Subscriber) {
 
-	if (property instanceof Array) {
+	// The object binding is the binding that is applied automatically
+	// and by convention whenever a plain object is bound to an element.
+	// Its effect is to remove all child elements from the DOM
+	// when the object is null.
+	function ObjectBinding(property) {
 
-		this.binding = new BindingRoot.ArrayBinding(property);
-	}
-	else if (property) {
+		if (property instanceof Array) {
 
-		this.binding = new BindingRoot.ViewModel(property);
-	}
-
-	this.applyBinding = function(scope, key, model) {
-
-		var element;
-
-		var elements = this.getAllMatchingElements(scope, key);
-
-		if (elements.length > 1) {
-
-			throw new Error("Objects can only be bound to one element.");
+			this.binding = new ArrayBinding(property);
 		}
-		else if (elements.length) {
+		else if (property) {
 
-			element = elements[0];
+			this.binding = new ViewModel(property);
 		}
 
-		if (element) {
+		this.applyBinding = function(scope, key, model) {
 
-			var children = [];
+			var element;
 
-			for (var i = 0; i < element.childNodes.length; i++) {
+			var elements = this.getAllMatchingElements(scope, key);
 
-				children[i] = element.childNodes[i];
+			if (elements.length > 1) {
+
+				throw new Error("Objects can only be bound to one element.");
+			}
+			else if (elements.length) {
+
+				element = elements[0];
 			}
 
-			this.requestRegistrations();
+			if (element) {
 
-			property = model[key];
+				var children = [];
 
-			if (!property) {
+				for (var i = 0; i < element.childNodes.length; i++) {
 
-				for (var j = element.childNodes.length - 1; j >= 0; j--) {
-
-					element.removeChild(element.childNodes[j]);
+					children[i] = element.childNodes[i];
 				}
+
+				this.requestRegistrations();
+
+				property = model[key];
+
+				if (!property) {
+
+					for (var j = element.childNodes.length - 1; j >= 0; j--) {
+
+						element.removeChild(element.childNodes[j]);
+					}
+				}
+
+				var self = this;
+
+				this.assignUpdater(function(property) {
+
+					for (var i = element.childNodes.length - 1; i >= 0; i--) {
+
+						element.removeChild(element.childNodes[i]);
+					}
+
+					if (property) {
+
+						children.forEach(function(child) {
+
+							element.appendChild(child);
+						});
+
+						if (self.binding) {
+
+							self.binding.removeBinding();
+						}
+
+						if (property instanceof Array) {
+
+							self.binding = new ArrayBinding(property);
+						}
+						else {
+
+							self.binding = new ViewModel(property);
+						}
+
+						self.binding.applyBinding(scope, key, model);
+					}
+				},
+				this,
+				element);
 			}
 
-			var self = this;
+			if (!element || this.isInScope(element, scope)) {
 
-			this.assignUpdater(function(property) {
+				if (this.binding) {
 
-				for (var i = element.childNodes.length - 1; i >= 0; i--) {
-
-					element.removeChild(element.childNodes[i]);
+					this.binding.applyBinding(scope, key, model);
 				}
+			}
+		};
 
-				if (property) {
-
-					children.forEach(function(child) {
-
-						element.appendChild(child);
-					});
-
-					if (self.binding) {
-
-						self.binding.removeBinding();
-					}
-
-					if (property instanceof Array) {
-
-						self.binding = new BindingRoot.ArrayBinding(property);
-					}
-					else {
-
-						self.binding = new BindingRoot.ViewModel(property);
-					}
-
-					self.binding.applyBinding(scope, key, model);
-				}
-			},
-			this,
-			element);
-		}
-
-		if (!element || this.isInScope(element, scope)) {
+		this.removeBinding = function() {
 
 			if (this.binding) {
 
-				this.binding.applyBinding(scope, key, model);
+				this.binding.removeBinding();
 			}
-		}
-	};
+		};
+	}
 
-	this.removeBinding = function() {
-
-		if (this.binding) {
-
-			this.binding.removeBinding();
-		}
-	};
-};
-
-BindingRoot.ObjectBinding.prototype = new Subscriber();
+	ObjectBinding.prototype = new Subscriber();
+});

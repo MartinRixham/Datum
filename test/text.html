@@ -5,11 +5,7 @@
     <title>Text Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-    <script src="../src/Registry.js"></script>
-    <script src="../src/Subscriber.js"></script>
-    <script src="../src/Datum.js"></script>
-    <script src="../src/Dependant.js"></script>
-    <script src="../src/Text.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
@@ -19,13 +15,24 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
+    <script>
+	requirejs.config({
+
+		baseUrl: "../src"
+	});
+    </script>
     <div id="function" data-bind="function"></div>
     <script>
+	require(["Datum", "Text"], function(Datum, Text) {
+
 		QUnit.test("Bind function", function(assert) {
 
 			var datum = new Datum();
 
-			function func() { return datum(); }
+			function func() {
+
+				return datum();
+			}
 
 			var text = new Text(func);
 
@@ -35,15 +42,20 @@
 
 			assert.strictEqual(document.querySelector("#function").innerHTML, "Hello World");
 		});
+	});
     </script>
     <div id="one" data-bind="two"></div>
     <div id="two" data-bind="two"></div>
     <script>
+	require(["Datum", "Text"], function(Datum, Text) {
+
 		QUnit.test("Bind to two elements", function(assert) {
 
 			var datum = new Datum();
 
-			var text = new Text(function() { return datum(); });
+			var text = new Text(function() {
+				return datum();
+			});
 
 			text.applyBinding(document.body, "two");
 
@@ -52,70 +64,82 @@
 			assert.strictEqual(document.querySelector("#two").innerHTML, "Hello World");
 			assert.strictEqual(document.querySelector("#one").innerHTML, "Hello World");
 		});
+	});
     </script>
     <div data-bind="single"></div>
     <div data-bind="single"></div>
     <script>
-		QUnit.test(
-			"Callback called once per element on init",
-			function(assert) {
+	require(["Datum", "Text"], function(Datum, Text) {
 
-				var count = 0;
+		QUnit.test("Callback called once per element on init", function(assert) {
 
-				var datum = new Datum();
+			var count = 0;
 
-				var text = new Text(function() {
+			var datum = new Datum();
+
+			var text = new Text(function() {
+
+				count += 1;
+
+				return datum();
+			});
+
+			text.applyBinding(document.body, "single");
+
+			assert.strictEqual(count, 2);
+		});
+	});
+    </script>
+    <div data-bind="twice"></div>
+    <div data-bind="twice"></div>
+    <script>
+	require(["Datum", "Text"], function(Datum, Text) {
+
+		QUnit.test("Callback called once per element on update", function(assert) {
+
+			var count = 0;
+
+			var datum = new Datum();
+
+			var text =
+				new Text(function() {
 
 					count += 1;
 
 					return datum();
 				});
 
-				text.applyBinding(document.body, "single");
+			text.applyBinding(document.body, "twice");
 
-				assert.strictEqual(count, 2);
-			});
-    </script>
-    <div data-bind="twice"></div>
-    <div data-bind="twice"></div>
-    <script>
-		QUnit.test(
-			"Callback called once per element on update",
-			function(assert) {
+			count = 0;
 
-				var count = 0;
+			datum("Hello World");
 
-				var datum = new Datum();
-
-				var text =
-					new Text(function() {
-
-						count += 1;
-
-						return datum();
-					});
-
-				text.applyBinding(document.body, "twice");
-
-				count = 0;
-
-				datum("Hello World");
-
-				assert.strictEqual(count, 2);
-			});
+			assert.strictEqual(count, 2);
+		});
+	});
     </script>
     <div id="element" data-bind="element"></div>
     <script>
+	require(["Text"], function(Text) {
+
 		QUnit.test("Access element from callback", function(assert) {
 
-			var text = new Text(function(element) { return element.id; });
+			var text = new Text(function(element) {
+
+				return element.id;
+			});
 
 			text.applyBinding(document.body, "element");
 
 			assert.strictEqual(document.querySelector("#element").innerHTML, "element");
 		});
+
+	});
     </script>
 	<script>
+	require(["Text"], function(Text) {
+
 		QUnit.test("Callback called from test handle", function(assert) {
 
 			var callCount = 0;
@@ -131,6 +155,7 @@
 
 			assert.strictEqual(callCount, 1);
 		});
+	});
 	</script>
   </body>
 </html>

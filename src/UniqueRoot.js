@@ -1,19 +1,24 @@
-function UniqueRoot() {
+define(["Subscriber"], function(Subscriber) {
 
-	var flag = false;
+	function UniqueRoot() {
 
-	this.assertUniqueness = function() {
+		var flag = false;
 
-		if (flag) {
+		this.assertUniqueness = function() {
 
-			throw new Error(
-				"The binding root is unique and cannot be instantiated multiple times.");
-		}
-		else {
+			if (flag) {
 
-			flag = true;
-		}
-	};
-}
+				throw new Error(
+					"The binding root is unique and cannot be instantiated multiple times.");
+			}
+			else {
 
-UniqueRoot.prototype = new Subscriber();
+				flag = true;
+			}
+		};
+	}
+
+	UniqueRoot.prototype = new Subscriber();
+
+	return UniqueRoot;
+});

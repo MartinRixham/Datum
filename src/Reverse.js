@@ -1,34 +1,40 @@
-BindingRoot.ArrayBinding.Reverse = function(model) {
+define(["Subscriber"], function(Subscriber) {
 
-	this.applyBinding = function(scope, name) {
+	function Reverse(model) {
 
-		var element = this.getMatchingElement(scope, name);
+		this.applyBinding = function(scope, name) {
 
-		var originalReverse = model.reverse;
+			var element = this.getMatchingElement(scope, name);
 
-		model.reverse = function() {
+			var originalReverse = model.reverse;
 
-			var children = [];
+			model.reverse = function() {
 
-			for (var i = element.children.length - 1; i >= 0; i--) {
+				var children = [];
 
-				var child = element.children[i];
+				for (var i = element.children.length - 1; i >= 0; i--) {
 
-				children[i] = child;
+					var child = element.children[i];
 
-				element.removeChild(child);
-			}
+					children[i] = child;
 
-			for (i = children.length - 1; i >= 0; i--) {
+					element.removeChild(child);
+				}
 
-				element.appendChild(children[i]);
-			}
+				for (i = children.length - 1; i >= 0; i--) {
 
-			originalReverse.apply(model, arguments);
+					element.appendChild(children[i]);
+				}
+
+				originalReverse.apply(model, arguments);
+			};
 		};
-	};
 
-	this.removeBinding = function() {};
-};
+		this.removeBinding = function() {
+		};
+	}
 
-BindingRoot.ArrayBinding.Reverse.prototype = new Subscriber();
+	Reverse.prototype = new Subscriber();
+
+	return Reverse;
+});

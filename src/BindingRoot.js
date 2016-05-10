@@ -1,22 +1,34 @@
-function BindingRoot(model) {
+define([
+	"ViewModel",
+	"DonWatcher",
+	"UniqueRoot"],
+function BindingRoot(
+	ViewModel,
+	DomWatcher,
+	UniqueRoot) {
 
-	this.assertUniqueness();
+	function BindingRoot(model) {
 
-	var rootViewModel = new BindingRoot.ViewModel(model);
+		this.assertUniqueness();
 
-	rootViewModel.applyBinding();
-
-	this.rebindDataStructure(function() {
+		var rootViewModel = new ViewModel(model);
 
 		rootViewModel.applyBinding();
-	});
 
-	var domWatcher = new BindingRoot.DomWatcher(document.body);
+		this.rebindDataStructure(function() {
 
-	this.disconnect = function() {
+			rootViewModel.applyBinding();
+		});
 
-		domWatcher.disconnect();
-	};
-}
+		var domWatcher = new DomWatcher(document.body);
 
-BindingRoot.prototype = new UniqueRoot();
+		this.disconnect = function() {
+
+			domWatcher.disconnect();
+		};
+	}
+
+	BindingRoot.prototype = new UniqueRoot();
+
+	return BindingRoot;
+});

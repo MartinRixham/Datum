@@ -1,140 +1,169 @@
-// The array binding is applied when an array is bound to an element.
-// It copies the contents of the element to which it is bound
-// once for each element of the array.
-BindingRoot.ArrayBinding = function(model) {
+define([
+	"Property",
+	"ViewModel",
+	"ArrayElement",
+	"Push",
+	"Pop",
+	"Shift",
+	"Unshift",
+	"Splice",
+	"Sort",
+	"Reverse",
+	"Subscriber"],
+function(
+	Property,
+	ViewModel,
+	ArrayElement,
+	Push,
+	Pop,
+	Shift,
+	Unshift,
+	Splice,
+	Sort,
+	Reverse,
+	Subscriber) {
 
-	var currentElement = null;
+	// The array binding is applied when an array is bound to an element.
+	// It copies the contents of the element to which it is bound
+	// once for each element of the array.
+	 function ArrayBinding(model) {
 
-	var properties = [];
+		var currentElement = null;
 
-	var bindings = [];
+		var properties = [];
 
-	model.subscribableLength = model.length;
+		var bindings = [];
 
-	var lengthBinding = new BindingRoot.ViewModel.Property(model.subscribableLength);
+		model.subscribableLength = model.length;
 
-	var arrayElement = null;
+		var lengthBinding = new Property(model.subscribableLength);
 
-	this.applyBinding = function(scope, name) {
+		var arrayElement = null;
 
-		var element = this.getMatchingElement(scope, name);
+		this.applyBinding = function(scope, name) {
 
-		if (element) {
+			var element = this.getMatchingElement(scope, name);
 
-			if (element == currentElement) {
+			if (element) {
 
-				refreshBindings(element);
+				if (element == currentElement) {
+
+					refreshBindings(element);
+				}
+				else {
+
+					bind(element);
+				}
 			}
-			else {
 
-				bind(element);
+			lengthBinding.applyBinding(element, "subscribableLength", model);
+
+			for (var i = 0; i < properties.length; i++) {
+
+				properties[i].applyBinding(element, i);
+			}
+
+			for (var j = 0; j < bindings.length; j++) {
+
+				bindings[j].applyBinding(scope, name);
+			}
+		};
+
+		function refreshBindings(element) {
+
+			for (var k = 0; k < model.length; k++) {
+
+				if (model[k].applyBinding) {
+
+					model[k].applyBinding(
+						element,
+						k,
+						model);
+				}
+				else if (element.children[k]) {
+
+					properties[k] = new ViewModel(model[k]);
+				}
 			}
 		}
 
-		lengthBinding.applyBinding(element, "subscribableLength", model);
+		function bind(element) {
 
-		for (var i = 0; i < properties.length; i++) {
+			element._rebind = function() {
+			};
 
-			properties[i].applyBinding(element, i);
-		}
+			currentElement = element;
 
-		for (var j = 0; j < bindings.length; j++) {
+			if (element.children.length != 1) {
 
-			bindings[j].applyBinding(scope, name);
-		}
-	};
-
-	function refreshBindings(element) {
-
-		for (var k = 0; k < model.length; k++) {
-
-			if (model[k].applyBinding) {
-
-				model[k].applyBinding(
-					element,
-					k,
-					model);
+				throw new Error(
+					"An array must be bound to an element with exactly one child.");
 			}
-			else if (element.children[k]) {
 
-				properties[k] = new BindingRoot.ViewModel(model[k]);
+			var child = element.children[0];
+
+			element.removeChild(child);
+
+			arrayElement = new ArrayElement(child);
+
+			append(model, element);
+
+			bindings.push(
+				new Push(model, arrayElement),
+				new Pop(model),
+				new Shift(model),
+				new Unshift(model, arrayElement, properties),
+				new Splice(model, arrayElement, properties),
+				new Sort(model),
+				new Reverse(model));
+		}
+
+		function append(array, element) {
+
+			for (var i = 0; i < array.length; i++) {
+
+				var property = array[i];
+
+				var newElement = arrayElement.clone();
+
+				element.appendChild(newElement);
+
+				if (property && property.applyBinding && property.removeBinding) {
+
+					properties.push(property);
+				}
+				else if (property && typeof(property) == "object") {
+
+					if (property instanceof Array) {
+
+						properties.push(new ArrayBinding(property));
+					}
+					else {
+
+						properties.push(new ViewModel(property));
+					}
+				}
 			}
 		}
-	}
 
-	function bind(element) {
+		this.removeBinding = function() {
 
-		element._rebind = function() {};
+			var element = currentElement;
 
-		currentElement = element;
+			var children = element.children;
 
-		if (element.children.length != 1) {
+			for (var i = children.length - 1; i >= 0; i--) {
 
-			throw new Error(
-				"An array must be bound to an element with exactly one child.");
-		}
-
-		var child = element.children[0];
-
-		element.removeChild(child);
-
-		arrayElement = new BindingRoot.ArrayBinding.ArrayElement(child);
-
-		append(model, element);
-
-		bindings.push(
-			new BindingRoot.ArrayBinding.Push(model, arrayElement),
-			new BindingRoot.ArrayBinding.Pop(model),
-			new BindingRoot.ArrayBinding.Shift(model),
-			new BindingRoot.ArrayBinding.Unshift(model, arrayElement, properties),
-			new BindingRoot.ArrayBinding.Splice(model, arrayElement, properties),
-			new BindingRoot.ArrayBinding.Sort(model),
-			new BindingRoot.ArrayBinding.Reverse(model));
-	}
-
-	function append(array, element) {
-
-		for (var i = 0; i < array.length; i++) {
-
-			var property = array[i];
+				element.removeChild(children[i]);
+			}
 
 			var newElement = arrayElement.clone();
 
 			element.appendChild(newElement);
-
-			if (property && property.applyBinding && property.removeBinding) {
-
-				properties.push(property);
-			}
-			else if (property && typeof(property) == "object") {
-
-				if (property instanceof Array) {
-
-					properties.push(new BindingRoot.ArrayBinding(property));
-				}
-				else {
-
-					properties.push(new BindingRoot.ViewModel(property));
-				}
-			}
-		}
+		};
 	}
 
-	this.removeBinding = function() {
+	ArrayBinding.prototype = new Subscriber();
 
-		var element = currentElement;
-
-		var children = element.children;
-
-		for (var i = children.length - 1; i >= 0; i--) {
-
-			element.removeChild(children[i]);
-		}
-
-		var newElement = arrayElement.clone();
-
-		element.appendChild(newElement);
-	};
-};
-
-BindingRoot.ArrayBinding.prototype = new Subscriber();
+	return ArrayBinding;
+});

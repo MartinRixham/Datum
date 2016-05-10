@@ -1,45 +1,50 @@
-BindingRoot.DomWatcher = function(scope) {
+define([], function() {
 
-	var flag = false;
+	 function DomWatcher(scope) {
 
-	var observer = new MutationObserver(function(mutations) {
+		var flag = false;
 
-		if (flag) {
+		var observer = new MutationObserver(function(mutations) {
 
-			return;
-		}
-		else {
+			if (flag) {
 
-			flag = true;
-		}
+				return;
+			}
+			else {
 
-		var mutation = mutations[0];
+				flag = true;
+			}
 
-		var notTextMutation = mutation.target.children.length;
+			var mutation = mutations[0];
 
-		if (notTextMutation) {
+			var notTextMutation = mutation.target.children.length;
 
-			var element = mutation.target;
+			if (notTextMutation) {
 
-			while (element) {
+				var element = mutation.target;
 
-				if (element._rebind) {
+				while (element) {
 
-					element._rebind();
-					break;
-				}
-				else {
+					if (element._rebind) {
 
-					element = element.parentElement;
+						element._rebind();
+						break;
+					}
+					else {
+
+						element = element.parentElement;
+					}
 				}
 			}
-		}
-	});
+		});
 
-	observer.observe(scope, { childList: true, subtree: true });
+		observer.observe(scope, { childList: true, subtree: true });
 
-	this.disconnect = function() {
+		this.disconnect = function() {
 
-		observer.disconnect();
-	};
-};
+			observer.disconnect();
+		};
+	}
+
+	return DomWatcher;
+});

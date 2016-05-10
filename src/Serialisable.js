@@ -1,40 +1,45 @@
-BindingRoot.ViewModel.Serialisable = function(model) {
+define([], function() {
 
-	if (!model.toJSON)
-	model.toJSON = function() {
+	function Serialisable(model) {
 
-		var json = {};
+		if (!model.toJSON)
+		model.toJSON = function() {
 
-		if (model instanceof Array) {
+			var json = {};
 
-			json = [];
-		}
+			if (model instanceof Array) {
 
-		for (var key in model) {
-
-			var property = model[key];
-
-			if (key == "_scope") {
-
-				continue;
+				json = [];
 			}
 
-			if (property &&
-				property.toJSON &&
-				typeof(property) == "object" &&
-				(!property.applyBinding || property instanceof Array)) {
+			for (var key in model) {
 
-				json[key] = property.toJSON();
+				var property = model[key];
+
+				if (key == "_scope") {
+
+					continue;
+				}
+
+				if (property &&
+					property.toJSON &&
+					typeof(property) == "object" &&
+					(!property.applyBinding || property instanceof Array)) {
+
+					json[key] = property.toJSON();
+				}
+
+				if (!property ||
+					(typeof(property) != "object" &&
+					typeof(property) != "function")) {
+
+					json[key] = property;
+				}
 			}
 
-			if (!property ||
-				(typeof(property) != "object" &&
-				typeof(property) != "function")) {
+			return json;
+		};
+	}
 
-				json[key] = property;
-			}
-		}
-
-		return json;
-	};
-};
+	return Serialisable;
+});

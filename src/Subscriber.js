@@ -1,46 +1,51 @@
-function Subscriber() {
+define(["Registry"], function(Registry) {
 
-	this.isInScope = function(element, scope) {
+	function Subscriber() {
 
-		element = element.parentElement;
+		this.isInScope = function(element, scope) {
 
-		if (!element) {
+			element = element.parentElement;
 
-			return true;
-		}
-		else if (element._rebind) {
+			if (!element) {
 
-			return element == scope;
-		}
-		else {
+				return true;
+			}
+			else if (element._rebind) {
 
-			return this.isInScope(element, scope);
-		}
-	};
+				return element == scope;
+			}
+			else {
 
-	this.getAllMatchingElements = function(scope, key) {
+				return this.isInScope(element, scope);
+			}
+		};
 
-		if (isNaN(key)) {
+		this.getAllMatchingElements = function(scope, key) {
 
-			return scope.querySelectorAll("[data-bind=" + key + "]");
-		}
-		else {
+			if (isNaN(key)) {
 
-			return [scope.children[key]];
-		}
-	};
+				return scope.querySelectorAll("[data-bind=" + key + "]");
+			}
+			else {
 
-	this.getMatchingElement = function(scope, key) {
+				return [scope.children[key]];
+			}
+		};
 
-		if (isNaN(key)) {
+		this.getMatchingElement = function(scope, key) {
 
-			return scope.querySelector("[data-bind=" + key + "]");
-		}
-		else {
+			if (isNaN(key)) {
 
-			return scope.children[key];
-		}
-	};
-}
+				return scope.querySelector("[data-bind=" + key + "]");
+			}
+			else {
 
-Subscriber.prototype = new Registry();
+				return scope.children[key];
+			}
+		};
+	}
+
+	Subscriber.prototype = new Registry();
+
+	return Subscriber;
+});

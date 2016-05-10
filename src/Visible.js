@@ -1,54 +1,60 @@
-function Visible(visible) {
+define(["Subscriber"], function Visible(Subscriber) {
 
-	var self = this;
+	function Visible(visible) {
 
-	this.applyBinding = function(scope, name, model) {
+		var self = this;
 
-		var elements = this.getAllMatchingElements(scope, name);
+		this.applyBinding = function(scope, name, model) {
 
-		for (var i = 0; i < elements.length; i++) {
+			var elements = this.getAllMatchingElements(scope, name);
 
-			var element = elements[i];
+			for (var i = 0; i < elements.length; i++) {
 
-			if (this.isInScope(element, scope)) {
+				var element = elements[i];
 
-				this.requestRegistrations();
+				if (this.isInScope(element, scope)) {
 
-				if(!visible.call(model, element)) {
+					this.requestRegistrations();
 
-					element.style.display = "none";
+					if (!visible.call(model, element)) {
+
+						element.style.display = "none";
+					}
+
+					applyCallback(element, model);
 				}
-
-				applyCallback(element, model);
 			}
+		};
+
+		function applyCallback(element, model) {
+
+			self.assignUpdater(function() {
+
+				if (!visible._running) {
+
+					visible._running = true;
+
+					if (visible.call(model, element)) {
+
+						element.style.display = null;
+					}
+					else {
+
+						element.style.display = "none";
+					}
+
+					visible._running = false;
+				}
+			},
+			visible,
+			element);
 		}
-	};
 
-	function applyCallback(element, model) {
-
-		self.assignUpdater(function() {
-
-			if (!visible._running) {
-
-				visible._running = true;
-
-				if(visible.call(model, element)) {
-
-					element.style.display = null;
-				}
-				else {
-
-					element.style.display = "none";
-				}
-
-				visible._running = false;
-			}
-		},
-		visible,
-		element);
+		this.removeBinding = function() {
+		};
 	}
 
-	this.removeBinding = function() {};
-}
+	Visible.prototype = new Subscriber();
 
-Visible.prototype = new Subscriber();
+	return Visible;
+});

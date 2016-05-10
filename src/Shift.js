@@ -1,22 +1,28 @@
-BindingRoot.ArrayBinding.Shift = function(model) {
+define(["Subscriber"], function(Subscriber) {
 
-	this.applyBinding = function(scope, name) {
+	function Shift(model) {
 
-		var element = this.getMatchingElement(scope, name);
+		this.applyBinding = function(scope, name) {
 
-		var originalShift = model.shift;
+			var element = this.getMatchingElement(scope, name);
 
-		model.shift = function() {
+			var originalShift = model.shift;
 
-			originalShift.apply(model, arguments);
+			model.shift = function() {
 
-			element.removeChild(element.firstElementChild);
+				originalShift.apply(model, arguments);
 
-			model.subscribableLength = model.length;
+				element.removeChild(element.firstElementChild);
+
+				model.subscribableLength = model.length;
+			};
 		};
-	};
 
-	this.removeBinding = function() {};
-};
+		this.removeBinding = function() {
+		};
+	}
 
-BindingRoot.ArrayBinding.Shift.prototype = new Subscriber();
+	Shift.prototype = new Subscriber();
+
+	return Shift;
+});

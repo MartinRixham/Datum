@@ -1,14 +1,28 @@
-Datum.Dependant = function(callback, binding, element) {
+define([], function() {
 
-	this.callback = callback;
+	 function Dependant(callback, binding, element) {
 
-	this.binding = binding;
+		this.getCallback = function() {
 
-	this.element = element;
+			return callback;
+		};
 
-	this.equals = function(other) {
+		this.getBinding = function() {
 
-		return this.binding == other.binding &&
-			this.element == other.element;
-	};
-};
+			return binding;
+		};
+
+		this.getElement = function() {
+
+			return element;
+		};
+
+		this.equals = function(other) {
+
+			return binding == other.getBinding() &&
+				element == other.getElement();
+		};
+	}
+
+	return Dependant;
+});

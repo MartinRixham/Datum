@@ -1,51 +1,57 @@
-BindingRoot.ArrayBinding.Splice = function(model, arrayElement, properties) {
+define(["Subscriber"], function(Subscriber) {
 
-	this.applyBinding = function(scope, name) {
+	function Splice(model, arrayElement, properties) {
 
-		var element = this.getMatchingElement(scope, name);
+		this.applyBinding = function(scope, name) {
 
-		var originalSplice = model.splice;
+			var element = this.getMatchingElement(scope, name);
 
-		var self = this;
+			var originalSplice = model.splice;
 
-		model.splice = function(start, deleteCount) {
+			var self = this;
 
-			originalSplice.apply(model, arguments);
+			model.splice = function(start, deleteCount) {
 
-			for (var i = deleteCount - 1; i >= 0; i--) {
+				originalSplice.apply(model, arguments);
 
-				element.removeChild(element.children[start + i]);
-			}
+				for (var i = deleteCount - 1; i >= 0; i--) {
 
-			var newObjects =
-				Array.prototype.slice.call(arguments, 2);
+					element.removeChild(element.children[start + i]);
+				}
 
-			insertBefore(start, newObjects, element);
+				var newObjects =
+					Array.prototype.slice.call(arguments, 2);
 
-			model.subscribableLength = model.length;
+				insertBefore(start, newObjects, element);
 
-			self.rebindDataStructure();
+				model.subscribableLength = model.length;
+
+				self.rebindDataStructure();
+			};
 		};
-	};
 
-	function insertBefore(index, array, element) {
+		function insertBefore(index, array, element) {
 
-		for (var i = array.length - 1; i >= 0; i--) {
+			for (var i = array.length - 1; i >= 0; i--) {
 
-			var property = array[i];
+				var property = array[i];
 
-			var newElement = arrayElement.clone();
+				var newElement = arrayElement.clone();
 
-			element.insertBefore(newElement, element.children[index]);
+				element.insertBefore(newElement, element.children[index]);
 
-			if (property && typeof(property) == "object") {
+				if (property && typeof(property) == "object") {
 
-				properties.splice(index - 1, 0, new BindingRoot.ViewModel(property));
+					properties.splice(index - 1, 0, new BindingRoot.ViewModel(property));
+				}
 			}
 		}
+
+		this.removeBinding = function() {
+		};
 	}
 
-	this.removeBinding = function() {};
-};
+	Splice.prototype = new Subscriber();
 
-BindingRoot.ArrayBinding.Splice.prototype = new Subscriber();
+	return Splice;
+});

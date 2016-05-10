@@ -1,62 +1,68 @@
-BindingRoot.ArrayBinding.Sort = function(model) {
+define(["Subscriber"], function(Subscriber) {
 
-	this.applyBinding = function(scope, name) {
+	function Sort(model) {
 
-		var element = this.getMatchingElement(scope, name);
+		this.applyBinding = function(scope, name) {
 
-		model.sort = function(compareFunction) {
+			var element = this.getMatchingElement(scope, name);
 
-			var modelElementPairs = [];
+			model.sort = function(compareFunction) {
 
-			for (var i = 0; i < model.length; i++) {
+				var modelElementPairs = [];
 
-				modelElementPairs.push({
+				for (var i = 0; i < model.length; i++) {
 
-					model: model[i],
-					element: element.children[i]
-				});
-			}
+					modelElementPairs.push({
 
-			for (i = element.children.length - 1; i >= 0; i--) {
+						model: model[i],
+						element: element.children[i]
+					});
+				}
 
-				element.removeChild(element.children[i]);
-			}
+				for (i = element.children.length - 1; i >= 0; i--) {
 
-			if (compareFunction) {
+					element.removeChild(element.children[i]);
+				}
 
-				modelElementPairs.sort(function(a, b) {
+				if (compareFunction) {
 
-					return compareFunction(a.model, b.model);
-				});
-			}
-			else {
+					modelElementPairs.sort(function(a, b) {
 
-				modelElementPairs.sort(function(a, b) {
+						return compareFunction(a.model, b.model);
+					});
+				}
+				else {
 
-					if (a.model > b.model) {
+					modelElementPairs.sort(function(a, b) {
 
-						return 1;
-					}
+						if (a.model > b.model) {
 
-					if (a.model < b.model) {
+							return 1;
+						}
 
-						return -1;
-					}
+						if (a.model < b.model) {
 
-					return 0;
-				});
-			}
+							return -1;
+						}
 
-			for (i = 0; i < modelElementPairs.length; i++) {
+						return 0;
+					});
+				}
 
-				element.appendChild(modelElementPairs[i].element);
+				for (i = 0; i < modelElementPairs.length; i++) {
 
-				model[i] = modelElementPairs[i].model;
-			}
+					element.appendChild(modelElementPairs[i].element);
+
+					model[i] = modelElementPairs[i].model;
+				}
+			};
 		};
-	};
 
-	this.removeBinding = function() {};
-};
+		this.removeBinding = function() {
+		};
+	}
 
-BindingRoot.ArrayBinding.Sort.prototype = new Subscriber();
+	Sort.prototype = new Subscriber();
+
+	return Sort;
+});

@@ -1,59 +1,64 @@
-function Datum(datum) {
+define(["Dependant", "Subscriber"], function Datum(Dependant, Subscriber) {
 
-	var dependants = [];
+	function Datum(datum) {
 
-	var self = this;
+		var dependants = [];
 
-	function provider(value) {
+		var self = this;
 
-		if (typeof value != "undefined") {
+		function provider(value) {
 
-			self.rebindDataStructure();
+			if (typeof value != "undefined") {
 
-			datum = value;
+				self.rebindDataStructure();
 
-			for (var i = 0; i < dependants.length; i++) {
+				datum = value;
 
-				var dependant = dependants[i];
+				for (var i = 0; i < dependants.length; i++) {
 
-				if (!document.contains(dependant.element)) {
+					var dependant = dependants[i];
 
-					dependants.splice(i, 1);
-				}
-			}
+					if (!document.contains(dependant.getElement())) {
 
-			for (var j = 0; j < dependants.length; j++) {
-
-				dependants[j].callback(value);
-			}
-		}
-		else if (self.registeringAssigners()) {
-
-			self.registerUpdaterAssigner(function(callback, binding, element) {
-
-				var dependant = new Datum.Dependant(callback, binding, element);
-
-				var containsBinding = false;
-
-				for (var k = 0; k < dependants.length; k++) {
-
-					if (dependants[k].equals(dependant)) {
-
-						containsBinding = true;
+						dependants.splice(i, 1);
 					}
 				}
 
-				if (!containsBinding) {
+				for (var j = 0; j < dependants.length; j++) {
 
-					dependants.push(dependant);
+					dependants[j].getCallback()(value);
 				}
-			});
+			}
+			else if (self.registeringAssigners()) {
+
+				self.registerUpdaterAssigner(function(callback, binding, element) {
+
+					var dependant = new Dependant(callback, binding, element);
+
+					var containsBinding = false;
+
+					for (var k = 0; k < dependants.length; k++) {
+
+						if (dependants[k].equals(dependant)) {
+
+							containsBinding = true;
+						}
+					}
+
+					if (!containsBinding) {
+
+						dependants.push(dependant);
+					}
+				});
+			}
+
+			return datum;
 		}
 
-		return datum;
+		return provider;
 	}
 
-	return provider;
-}
+	Datum.prototype = new Subscriber();
 
-Datum.prototype = new Subscriber();
+	return Datum;
+});

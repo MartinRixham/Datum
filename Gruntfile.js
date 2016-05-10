@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON("package.json"),
 		jshint: {
 
-			all: ["src/*.js", "tests/*.html", "examples/**/*.js"],
+			all: ["src/*.js", "test/*.html", "examples/**/*.js"],
 			options: {
 
 				extract: "auto"
@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 		},
 		jscs: {
 
-			src: ["src/*.js", "tests", "examples/**/*.js"],
+			src: ["src/*.js", "test", "examples/**/*.js"],
 			options: {
 
 				config: ".jscsrc",
@@ -25,24 +25,14 @@ module.exports = function(grunt) {
 		},
 		qunit: {
 
-			all: ["tests/*"]
+			all: ["test/*"]
 		},
-		concat: {
+		"concat-define": {
 
 			options: {
 
-				separator: "\n",
-			},
-			dist: {
-
-				src: [
-
-					"src/Registry.js", 
-					"src/Subscriber.js", 
-					"src/UniqueRoot.js", 
-					"src/*.js"
-				],
-				dest: "target/Datum.js"
+				sourceRootDirectory: "src",
+				outputFile: "target/Datum.js"
 			}
 		},
 		uglify: {
@@ -53,10 +43,7 @@ module.exports = function(grunt) {
 
 					"target/Datum.min.js": [
 		
-						"src/Registry.js",
-						"src/Subscriber.js", 
-						"src/UniqueRoot.js", 
-						"src/*.js"
+						"target/Datum.js"
 					]
 				}
 			}
@@ -66,8 +53,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-jscs");
 	grunt.loadNpmTasks('grunt-contrib-qunit');
-	grunt.loadNpmTasks("grunt-contrib-concat");
+	grunt.loadNpmTasks("grunt-concat-define");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 
-	grunt.registerTask("default", ["jshint", "jscs", "qunit", "concat", "uglify"]);
+	grunt.registerTask("default", ["jshint", "jscs", "qunit", "concat-define", "uglify"]);
 };

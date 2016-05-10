@@ -1,22 +1,28 @@
-BindingRoot.ArrayBinding.Pop = function(model) {
+define(["Subscriber"], function(Subscriber) {
 
-	this.applyBinding = function(scope, name) {
+	function Pop(model) {
 
-		var element = this.getMatchingElement(scope, name);
+		this.applyBinding = function(scope, name) {
 
-		var originalPop = model.pop;
+			var element = this.getMatchingElement(scope, name);
 
-		model.pop = function() {
+			var originalPop = model.pop;
 
-			originalPop.apply(model, arguments);
+			model.pop = function() {
 
-			element.removeChild(element.lastElementChild);
+				originalPop.apply(model, arguments);
 
-			model.subscribableLength = model.length;
+				element.removeChild(element.lastElementChild);
+
+				model.subscribableLength = model.length;
+			};
 		};
-	};
 
-	this.removeBinding = function() {};
-};
+		this.removeBinding = function() {
+		};
+	}
 
-BindingRoot.ArrayBinding.Pop.prototype = new Subscriber();
+	Pop.prototype = new Subscriber();
+
+	return Pop;
+});

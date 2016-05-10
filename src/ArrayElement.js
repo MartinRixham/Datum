@@ -1,38 +1,43 @@
-BindingRoot.ArrayBinding.ArrayElement = function(element) {
+define([], function() {
 
-	var index = 0;
+	function ArrayElement(element) {
 
-	this.clone = function() {
+		var index = 0;
 
-		var clone = element.cloneNode(true);
+		this.clone = function() {
 
-		number(clone, index);
+			var clone = element.cloneNode(true);
 
-		index++;
+			number(clone, index);
 
-		return clone;
-	};
+			index++;
 
-	function number(element, index) {
+			return clone;
+		};
 
-		if (element.id) {
+		function number(element, index) {
 
-			element.id = element.id + "_" + index;
-		}
+			if (element.id) {
 
-		if (element.hasAttribute && element.hasAttribute("name")) {
+				element.id = element.id + "_" + index;
+			}
 
-			var name = element.getAttribute("name") + "_" + index;
+			if (element.hasAttribute && element.hasAttribute("name")) {
 
-			element.setAttribute("name", name);
-		}
+				var name = element.getAttribute("name") + "_" + index;
 
-		if (element.children) {
+				element.setAttribute("name", name);
+			}
 
-			for (var i = 0; i < element.children.length; i++) {
+			if (element.children) {
 
-				number(element.children[i], index);
+				for (var i = 0; i < element.children.length; i++) {
+
+					number(element.children[i], index);
+				}
 			}
 		}
 	}
-};
+
+	return ArrayElement;
+});

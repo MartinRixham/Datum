@@ -1,43 +1,49 @@
-BindingRoot.ArrayBinding.Unshift = function(model, arrayElement, properties) {
+define(["ViewModel", "Subscriber"], function(ViewModel, Subscriber) {
 
-	this.applyBinding = function(scope, name) {
+	function Unshift(model, arrayElement, properties) {
 
-		var element = this.getMatchingElement(scope, name);
+		this.applyBinding = function(scope, name) {
 
-		var originalUnshift = model.unshift;
+			var element = this.getMatchingElement(scope, name);
 
-		var self = this;
+			var originalUnshift = model.unshift;
 
-		model.unshift = function() {
+			var self = this;
 
-			originalUnshift.apply(model, arguments);
+			model.unshift = function() {
 
-			insertAtBeginning(arguments, element);
+				originalUnshift.apply(model, arguments);
 
-			model.subscribableLength = model.length;
+				insertAtBeginning(arguments, element);
 
-			self.rebindDataStructure();
+				model.subscribableLength = model.length;
+
+				self.rebindDataStructure();
+			};
 		};
-	};
 
-	function insertAtBeginning(array, element) {
+		function insertAtBeginning(array, element) {
 
-		for (var i = array.length - 1; i >= 0; i--) {
+			for (var i = array.length - 1; i >= 0; i--) {
 
-			var property = array[i];
+				var property = array[i];
 
-			var newElement = arrayElement.clone();
+				var newElement = arrayElement.clone();
 
-			element.insertBefore(newElement, element.children[0]);
+				element.insertBefore(newElement, element.children[0]);
 
-			if (property && typeof(property) == "object") {
+				if (property && typeof(property) == "object") {
 
-				properties.unshift(new BindingRoot.ViewModel(property));
+					properties.unshift(new ViewModel(property));
+				}
 			}
 		}
+
+		this.removeBinding = function() {
+		};
 	}
 
-	this.removeBinding = function() {};
-};
+	Unshift.prototype = new Subscriber();
 
-BindingRoot.ArrayBinding.Unshift.prototype = new Subscriber();
+	return Unshift;
+});

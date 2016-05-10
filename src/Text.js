@@ -1,58 +1,64 @@
-function Text(text) {
+define(["Subscriber"], function Text(Subscriber) {
 
-	var parentModel = null;
+	function Text(text) {
 
-	var self = this;
+		var parentModel = null;
 
-	this.requestRebind();
+		var self = this;
 
-	this.applyBinding = function(scope, name, model) {
+		this.requestRebind();
 
-		parentModel = model;
+		this.applyBinding = function(scope, name, model) {
 
-		var elements = this.getAllMatchingElements(scope, name);
+			parentModel = model;
 
-		for (var i = 0; i < elements.length; i++) {
+			var elements = this.getAllMatchingElements(scope, name);
 
-			var element = elements[i];
+			for (var i = 0; i < elements.length; i++) {
 
-			if (this.isInScope(element, scope)) {
+				var element = elements[i];
 
-				this.requestRegistrations();
+				if (this.isInScope(element, scope)) {
 
-				element.textContent = text.call(model, element);
+					this.requestRegistrations();
 
-				createCallback(model, element);
+					element.textContent = text.call(model, element);
+
+					createCallback(model, element);
+				}
 			}
+		};
+
+		function createCallback(model, element) {
+
+			self.assignUpdater(function() {
+
+				if (!text._running) {
+
+					text._running = true;
+
+					element.textContent = text.call(model, element);
+
+					text._running = false;
+				}
+			},
+			text,
+			element);
 		}
-	};
 
-	function createCallback(model, element) {
+		this.removeBinding = function() {
+		};
 
-		self.assignUpdater(function() {
+		this.test = {
 
-			if (!text._running) {
+			call: function(element) {
 
-				text._running = true;
-
-				element.textContent = text.call(model, element);
-
-				text._running = false;
+				text.call(parentModel, element);
 			}
-		},
-		text,
-		element);
+		};
 	}
 
-	this.removeBinding = function() {};
+	Text.prototype = new Subscriber();
 
-	this.test = {
-
-		call: function(element) {
-
-			text.call(parentModel, element);
-		}
-	};
-}
-
-Text.prototype = new Subscriber();
+	return Text;
+});
