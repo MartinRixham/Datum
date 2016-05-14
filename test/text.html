@@ -15,17 +15,21 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-	requirejs.config({
+	<script>
+		var i = 0;
 
-		baseUrl: "../src"
-	});
-    </script>
+		function getRequire() {
+
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <div id="function" data-bind="function"></div>
     <script>
-	require(["Datum", "Text"], function(Datum, Text) {
+	QUnit.test("Bind function", function(assert) {
 
-		QUnit.test("Bind function", function(assert) {
+		var done = assert.async();
+
+		getRequire()(["Datum", "Text"], function(Datum, Text) {
 
 			var datum = new Datum();
 
@@ -41,15 +45,19 @@
 			datum("Hello World");
 
 			assert.strictEqual(document.querySelector("#function").innerHTML, "Hello World");
+
+			done();
 		});
 	});
     </script>
     <div id="one" data-bind="two"></div>
     <div id="two" data-bind="two"></div>
     <script>
-	require(["Datum", "Text"], function(Datum, Text) {
+	QUnit.test("Bind to two elements", function(assert) {
 
-		QUnit.test("Bind to two elements", function(assert) {
+		var done = assert.async();
+
+		getRequire()(["Datum", "Text"], function(Datum, Text) {
 
 			var datum = new Datum();
 
@@ -63,15 +71,19 @@
 
 			assert.strictEqual(document.querySelector("#two").innerHTML, "Hello World");
 			assert.strictEqual(document.querySelector("#one").innerHTML, "Hello World");
+
+			done();
 		});
 	});
     </script>
     <div data-bind="single"></div>
     <div data-bind="single"></div>
     <script>
-	require(["Datum", "Text"], function(Datum, Text) {
+	QUnit.test("Callback called once per element on init", function(assert) {
 
-		QUnit.test("Callback called once per element on init", function(assert) {
+		var done = assert.async();
+
+		getRequire()(["Datum", "Text"], function(Datum, Text) {
 
 			var count = 0;
 
@@ -87,15 +99,19 @@
 			text.applyBinding(document.body, "single");
 
 			assert.strictEqual(count, 2);
+
+			done();
 		});
 	});
     </script>
     <div data-bind="twice"></div>
     <div data-bind="twice"></div>
     <script>
-	require(["Datum", "Text"], function(Datum, Text) {
+	QUnit.test("Callback called once per element on update", function(assert) {
 
-		QUnit.test("Callback called once per element on update", function(assert) {
+		var done = assert.async();
+
+		getRequire()(["Datum", "Text"], function(Datum, Text) {
 
 			var count = 0;
 
@@ -116,14 +132,18 @@
 			datum("Hello World");
 
 			assert.strictEqual(count, 2);
+
+			done();
 		});
 	});
     </script>
     <div id="element" data-bind="element"></div>
     <script>
-	require(["Text"], function(Text) {
+	QUnit.test("Access element from callback", function(assert) {
 
-		QUnit.test("Access element from callback", function(assert) {
+		var done = assert.async();
+
+		getRequire()(["Text"], function(Text) {
 
 			var text = new Text(function(element) {
 
@@ -133,14 +153,17 @@
 			text.applyBinding(document.body, "element");
 
 			assert.strictEqual(document.querySelector("#element").innerHTML, "element");
-		});
 
+			done();
+		});
 	});
     </script>
 	<script>
-	require(["Text"], function(Text) {
+	QUnit.test("Callback called from test handle", function(assert) {
 
-		QUnit.test("Callback called from test handle", function(assert) {
+		var done = assert.async();
+
+		getRequire()(["Text"], function(Text) {
 
 			var callCount = 0;
 
@@ -154,6 +177,8 @@
 			text.test.call(document.createElement("DIV"));
 
 			assert.strictEqual(callCount, 1);
+
+			done();
 		});
 	});
 	</script>

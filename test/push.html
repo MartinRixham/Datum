@@ -5,15 +5,7 @@
     <title>Push Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-	  <script src="../src/Registry.js"></script>
-	  <script src="../src/Subscriber.js"></script>
-	  <script src="../src/UniqueRoot.js"></script>
-	  <script src="../src/BindingRoot.js"></script>
-	  <script src="../src/ViewModel.js"></script>
-	  <script src="../src/Serialisable.js"></script>
-	  <script src="../src/ArrayBinding.js"></script>
-	  <script src="../src/ArrayElement.js"></script>
-	  <script src="../src/Push.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
@@ -23,35 +15,33 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-		QUnit.module("", {
+	<script>
+		var i = 0;
 
-			teardown: function() {
+		function getRequire() {
 
-				Subscriber.prototype = new Registry();
-				UniqueRoot.prototype = new Subscriber();
-				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ViewModel.prototype = new UniqueRoot();
-				BindingRoot.ArrayBinding.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Push.prototype = new Subscriber();
-			}
-		});
-    </script>
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <div id="push" data-bind="push">
       <div class="push"></div>
     </div>
     <script>
-		QUnit.test("Add element when object pushed to array", function(assert) {
+	QUnit.test("Add element when object pushed to array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayElement", "Push"], function(ArrayElement, Push) {
 
 			var push = [{}];
 
 			var element = document.querySelector(".push");
 
 			var arrayElement =
-				new BindingRoot.ArrayBinding.ArrayElement(element);
+				new ArrayElement(element);
 
 			var binding =
-				new BindingRoot.ArrayBinding.Push(push, arrayElement);
+				new Push(push, arrayElement);
 
 			binding.applyBinding(document.body, "push");
 
@@ -63,7 +53,10 @@
 			var childCount = boundElement.querySelectorAll(".push").length;
 
 			assert.strictEqual(childCount, 2);
+
+			done();
 		});
+	});
     </script>
   </body>
 </html>

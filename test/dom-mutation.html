@@ -5,32 +5,7 @@
     <title>Dom Mutation Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-	  <script src="../src/Registry.js"></script>
-	  <script src="../src/Subscriber.js"></script>
-	  <script src="../src/UniqueRoot.js"></script>
-	  <script src="../src/BindingRoot.js"></script>
-	  <script src="../src/ViewModel.js"></script>
-	  <script src="../src/Property.js"></script>
-	  <script src="../src/Binding.js"></script>
-	  <script src="../src/ArrayBinding.js"></script>
-	  <script src="../src/ArrayElement.js"></script>
-	  <script src="../src/Push.js"></script>
-	  <script src="../src/Pop.js"></script>
-	  <script src="../src/Shift.js"></script>
-	  <script src="../src/Unshift.js"></script>
-	  <script src="../src/Splice.js"></script>
-	  <script src="../src/Sort.js"></script>
-	  <script src="../src/Reverse.js"></script>
-	  <script src="../src/ObjectBinding.js"></script>
-	  <script src="../src/Serialisable.js"></script>
-	  <script src="../src/DomWatcher.js"></script>
-	  <script src="../src/Datum.js"></script>
-	  <script src="../src/Dependant.js"></script>
-	  <script src="../src/Text.js"></script>
-	  <script src="../src/Value.js"></script>
-	  <script src="../src/Init.js"></script>
-	  <script src="../src/Update.js"></script>
-	  <script src="../src/Click.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
@@ -40,36 +15,28 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
+	<script>
+		var i = 0;
+
+		function getRequire() {
+
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <script>
-		var fixture = document.querySelector("#qunit-fixture");
+	QUnit.test("Bind to inserted element", function(assert) {
 
-		// To preserve atomicity prototypes must be
-		// reassigned after each test.
-		QUnit.module("", {
+		var done = assert.async();
 
-			teardown: function() {
-
-				Subscriber.prototype = new Registry();
-				Binding.prototype = new Subscriber();
-				Datum.prototype = new Subscriber();
-				Text.prototype = new Subscriber();
-				Value.prototype = new Subscriber();
-				UniqueRoot.prototype = new Subscriber();
-				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ObjectBinding.prototype = new Subscriber();
-				BindingRoot.ViewModel.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.prototype = new Subscriber();
-			}
-		});
-    </script>
-    <script>
-		QUnit.test("Bind to inserted element", function(assert) {
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			function TextObject() {
 
 				this.test = new Binding({
 
-					text: function() { return "Hello World"; }
+					text: function() {
+						return "Hello World";
+					}
 				});
 			}
 
@@ -81,9 +48,7 @@
 
 			div.setAttribute("data-bind", "test");
 
-			fixture.appendChild(div);
-
-			var done = assert.async();
+			document.querySelector("#qunit-fixture").appendChild(div);
 
 			setTimeout(function() {
 
@@ -96,9 +61,14 @@
 				root.disconnect();
 			});
 		});
+	});
     </script>
     <script>
-		QUnit.test("Bind datum to inserted element", function(assert) {
+	QUnit.test("Bind datum to inserted element", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			function TextObject() {
 
@@ -108,7 +78,9 @@
 
 				this.test = new Binding({
 
-					text: function() { return self.datum; }
+					text: function() {
+						return self.datum;
+					}
 				});
 			}
 
@@ -122,11 +94,9 @@
 
 			div.setAttribute("data-bind", "test");
 
-			fixture.appendChild(div);
+			document.querySelector("#qunit-fixture").appendChild(div);
 
 			textObject.datum = "Hello World";
-
-			var done = assert.async();
 
 			setTimeout(function() {
 
@@ -138,9 +108,14 @@
 				root.disconnect();
 			});
 		});
+	});
     </script>
     <script>
-		QUnit.test("Bind to replaced element", function(assert) {
+	QUnit.test("Bind to replaced element", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			var firstDiv = document.createElement("div");
 
@@ -148,17 +123,19 @@
 
 			firstDiv.setAttribute("data-bind", "test");
 
-			fixture.appendChild(firstDiv);
+			document.querySelector("#qunit-fixture").appendChild(firstDiv);
 
 			function TextObject() {
 
 				this.test = new Binding({
 
-					text: function() { return "Hello World"; }
+					text: function() {
+						return "Hello World";
+					}
 				});
 			}
 
-			root = new BindingRoot(new TextObject());
+			 var root = new BindingRoot(new TextObject());
 
 			var div = document.createElement("div");
 
@@ -166,11 +143,9 @@
 
 			div.setAttribute("data-bind", "test");
 
-			fixture.removeChild(firstDiv);
+			document.querySelector("#qunit-fixture").removeChild(firstDiv);
 
-			fixture.appendChild(div);
-
-			var done = assert.async();
+			document.querySelector("#qunit-fixture").appendChild(div);
 
 			setTimeout(function() {
 
@@ -182,19 +157,22 @@
 				root.disconnect();
 			});
 		});
+	});
     </script>
     <script>
-		QUnit.test("Bind value to replaced element", function(assert) {
+	QUnit.test("Bind value to replaced element", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			var firstInput = document.createElement("input");
 
 			firstInput.id = "first";
-
 			firstInput.setAttribute("type", "text");
-
 			firstInput.setAttribute("data-bind", "test");
 
-			fixture.appendChild(firstInput);
+			document.querySelector("#qunit-fixture").appendChild(firstInput);
 
 			function TextObject() {
 
@@ -223,14 +201,12 @@
 			var input = document.createElement("input");
 
 			input.id = "test-div";
-
 			input.setAttribute("type", "text");
-
 			input.setAttribute("data-bind", "test");
 
-			fixture.removeChild(firstInput);
+			document.querySelector("#qunit-fixture").removeChild(firstInput);
 
-			fixture.appendChild(input);
+			document.querySelector("#qunit-fixture").appendChild(input);
 
 			setTimeout(function() {
 
@@ -239,8 +215,6 @@
 				element.value = "Hello World";
 				element.dispatchEvent(new Event("change"));
 			});
-
-			var done = assert.async();
 
 			setTimeout(function() {
 
@@ -252,66 +226,70 @@
 				root.disconnect();
 			});
 		});
+	});
     </script>
     <div data-bind="first"></div>
     <div id="inner" data-bind="inner">
       <div id="second" data-bind="second"></div>
     </div>
     <script>
-		QUnit.test(
-			"Bindings outside of the mutation are not reapplied",
-			function(assert) {
+	QUnit.test("Bindings outside of the mutation are not reapplied", function(assert) {
 
-				var count = 0;
+		var done = assert.async();
 
-				function OuterObject() {
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
-					this.first = new Binding({
+			var count = 0;
+
+			function OuterObject() {
+
+				this.first = new Binding({
+
+					text: function() {
+
+						count += 1;
+
+						return "Hello World";
+					}
+				});
+
+				this.inner = {
+
+					second: new Binding({
 
 						text: function() {
-
-							count += 1;
-
 							return "Hello World";
 						}
-					});
+					})
+				};
+			}
 
-					this.inner = {
+			var root = new BindingRoot(new OuterObject());
 
-						second: new Binding({
+			var div = document.createElement("div");
 
-							text: function() { return "Hello World"; }
-						})
-					};
-				}
+			div.id = "third";
 
-				var root = new BindingRoot(new OuterObject());
+			div.setAttribute("data-bind", "second");
 
-				var div = document.createElement("div");
+			var inner = document.querySelector("#inner");
 
-				div.id = "third";
+			inner.appendChild(div);
 
-				div.setAttribute("data-bind", "second");
+			setTimeout(function() {
 
-				var inner = document.querySelector("#inner");
+				assert.strictEqual(count, 1);
 
-				inner.appendChild(div);
+				assert.strictEqual(
+					document.querySelector("#third").innerHTML,
+					"Hello World");
 
-				var done = assert.async();
+				done();
 
-				setTimeout(function() {
-
-					assert.strictEqual(count, 1);
-
-					assert.strictEqual(
-						document.querySelector("#third").innerHTML,
-						"Hello World");
-
-					done();
-
-					root.disconnect();
-				});
+				root.disconnect();
 			});
+		});
+	});
     </script>
     <div id="array" data-bind="thearray">
       <div>
@@ -319,7 +297,11 @@
       </div>
     </div>
     <script>
-		QUnit.test("Bind array to inserted element", function(assert) {
+	QUnit.test("Bind array to inserted element", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			function ArrayObject() {
 
@@ -329,7 +311,9 @@
 							datum: "Thingy",
 							text: new Binding({
 
-								text: function() { return this.datum; }
+								text: function() {
+									return this.datum;
+								}
 							})
 						},
 						{}
@@ -342,9 +326,7 @@
 
 			var element = document.querySelector("#array");
 
-			fixture.appendChild(element);
-
-			var done = assert.async();
+			document.querySelector("#qunit-fixture").appendChild(element);
 
 			setTimeout(function() {
 
@@ -361,9 +343,14 @@
 				root.disconnect();
 			});
 		});
+	});
     </script>
     <script>
-		QUnit.test("Bind null object to inserted element", function(assert) {
+	QUnit.test("Bind null object to inserted element", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function NullObject() {
 
@@ -375,7 +362,6 @@
 			var element = document.createElement("div");
 
 			element.id = "null";
-
 			element.setAttribute("data-bind", "thenull");
 
 			var div = document.createElement("div");
@@ -384,13 +370,12 @@
 
 			element.appendChild(div);
 
-			fixture.appendChild(element);
-
-			var done = assert.async();
+			document.querySelector("#qunit-fixture").appendChild(element);
 
 			setTimeout(function() {
 
-				var childCount = fixture.querySelectorAll(".null").length;
+				var childCount =
+					document.querySelector("#qunit-fixture").querySelectorAll(".null").length;
 
 				assert.strictEqual(childCount, 0);
 
@@ -399,6 +384,7 @@
 				root.disconnect();
 			});
 		});
+	});
     </script>
     <div id="replaced" data-bind="replaced">
       <div>
@@ -406,7 +392,11 @@
       </div>
     </div>
     <script>
-		QUnit.test("Rebind array to replaced element", function(assert) {
+	QUnit.test("Rebind array to replaced element", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			function ArrayObject() {
 
@@ -427,19 +417,18 @@
 
 			var element = document.querySelector("#replaced");
 
-			fixture.appendChild(element);
+			document.querySelector("#qunit-fixture").appendChild(element);
 
 			var root = new BindingRoot(new ArrayObject());
 
-			fixture.removeChild(element);
+			document.querySelector("#qunit-fixture").removeChild(element);
 
-			fixture.appendChild(element);
-
-			var done = assert.async();
+			document.querySelector("#qunit-fixture").appendChild(element);
 
 			setTimeout(function() {
 
-				var children = fixture.querySelectorAll(".replaced");
+				var children =
+					document.querySelector("#qunit-fixture").querySelectorAll(".replaced");
 
 				assert.strictEqual(children.length, 2);
 
@@ -450,6 +439,7 @@
 				root.disconnect();
 			});
 		});
+	});
     </script>
   </body>
 </html>

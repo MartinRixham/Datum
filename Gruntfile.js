@@ -20,11 +20,16 @@ module.exports = function(grunt) {
  				esnext: false,
 				verbose: true,
 				fix: false,
-				extract: ["tests/*.html"]
+				extract: ["test/*.html"]
 			}
 		},
 		qunit: {
 
+			options: {
+
+				timeout: 10000,
+				inject: "bridge.js"
+			},
 			all: ["test/*"]
 		},
 		"concat-define": {
@@ -42,7 +47,7 @@ module.exports = function(grunt) {
 				files: {
 
 					"target/Datum.min.js": [
-		
+
 						"target/Datum.js"
 					]
 				}

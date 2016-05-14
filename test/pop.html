@@ -5,45 +5,38 @@
     <title>Pop Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-    <script src="../src/Registry.js"></script>
-    <script src="../src/Subscriber.js"></script>
-    <script src="../src/UniqueRoot.js"></script>
-    <script src="../src/BindingRoot.js"></script>
-    <script src="../src/ArrayBinding.js"></script>
-    <script src="../src/ArrayElement.js"></script>
-    <script src="../src/Pop.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
-		#qunit ~ * {
-			display: none;
-		}
+	    #qunit ~ * {
+		    display: none;
+	    }
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-		QUnit.module("", {
+	<script>
+		var i = 0;
 
-			teardown: function() {
+		function getRequire() {
 
-				Subscriber.prototype = new Registry();
-				UniqueRoot.prototype = new Subscriber();
-				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ArrayBinding.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Pop.prototype = new Subscriber();
-			}
-		});
-    </script>
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <div id="pop" data-bind="pop">
       <div class="pop"></div>
       <div class="pop"></div>
     </div>
     <script>
-		QUnit.test("Remove element when object popped from array", function(assert) {
+	QUnit.test("Remove element when object popped from array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Pop_"], function(Pop) {
 
 			var pop = [{}, {}];
 
-			var binding = new BindingRoot.ArrayBinding.Pop(pop);
+			var binding = new Pop(pop);
 
 			binding.applyBinding(document.body, "pop");
 
@@ -55,7 +48,10 @@
 			var childCount = boundElement.querySelectorAll(".pop").length;
 
 			assert.strictEqual(childCount, 1);
+
+			done();
 		});
+	});
     </script>
   </body>
 </html>

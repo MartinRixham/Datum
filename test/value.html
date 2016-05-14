@@ -5,23 +5,31 @@
     <title>Value Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-    <script src="../src/Registry.js"></script>
-    <script src="../src/Subscriber.js"></script>
-    <script src="../src/Datum.js"></script>
-    <script src="../src/Dependant.js"></script>
-    <script src="../src/Value.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
 		#qunit ~ * {
-				display: none;
+			display: none;
 		}
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
+	<script>
+		var i = 0;
+
+		function getRequire() {
+
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <input type="text" id="value-input" data-bind="valueInput" />
     <script>
-		QUnit.test("Update data from input", function(assert) {
+	QUnit.test("Update data from input", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Datum", "Value"], function(Datum, Value) {
 
 			var datum = new Datum();
 
@@ -44,53 +52,88 @@
 			element.dispatchEvent(new Event("change"));
 
 			assert.strictEqual(datum(), "Hello World");
+
+			done();
 		});
+	});
     </script>
     <input type="text" id="input" data-bind="testInput" />
     <script>
-		QUnit.test("Bind value from datum", function(assert) {
+	QUnit.test("Bind value from datum", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Datum", "Value"], function(Datum, Value) {
 
 			var datum = new Datum("Hello World");
 
-			var input = new Value(function() { return datum(); });
+			var input = new Value(function() {
+				return datum();
+			});
 
 			input.applyBinding(document.body, "testInput");
 
 			assert.strictEqual(document.querySelector("#input").value, "Hello World");
+
+			done();
 		});
+	});
     </script>
     <input type="text" id="input-value" data-bind="inputValue" />
     <script>
-		QUnit.test("Change value after binding", function(assert) {
+	QUnit.test("Change value after binding", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Datum", "Value"], function(Datum, Value) {
 
 			var datum = new Datum();
 
-			var input = new Value(function() { return datum(); });
+			var input = new Value(function() {
+				return datum();
+			});
 
 			input.applyBinding(document.body, "inputValue");
 
 			datum("Hello World");
 
 			assert.strictEqual(document.querySelector("#input-value").value, "Hello World");
+
+			done();
 		});
+	});
     </script>
     <input type="text" id="input1" data-bind="multiInput" />
     <input type="text" id="input2" data-bind="multiInput" />
     <script>
-		QUnit.test("Bind value to two inputs", function(assert) {
+	QUnit.test("Bind value to two inputs", function(assert) {
 
-			var input = new Value(function() { return "Hello World"; });
+		var done = assert.async();
+
+		require(["Value"], function(Value) {
+
+			var input = new Value(function() {
+
+				return "Hello World";
+			});
 
 			input.applyBinding(document.body, "multiInput");
 
 			assert.strictEqual(document.querySelector("#input1").value, "Hello World");
 			assert.strictEqual(document.querySelector("#input2").value, "Hello World");
+
+			done();
 		});
+	});
     </script>
     <input type="text" id="send" data-bind="sync" />
     <input type="text" id="receive" data-bind="sync" />
     <script>
-		QUnit.test("Synchronise inputs", function(assert) {
+	QUnit.test("Synchronise inputs", function(assert) {
+
+		var done = assert.async();
+
+		require(["Datum", "Value"], function(Datum, Value) {
 
 			var datum = new Datum();
 
@@ -113,12 +156,19 @@
 			sender.dispatchEvent(new Event("change"));
 
 			assert.strictEqual(document.querySelector("#receive").value, "Hello World");
+
+			done();
 		});
+	});
     </script>
     <input type="text" data-bind="single" />
     <input type="text" data-bind="single" />
     <script>
-		QUnit.test("Callback called once per element on init", function(assert) {
+	QUnit.test("Callback called once per element on init", function(assert) {
+
+		var done = assert.async();
+
+		require(["Datum", "Value"], function(Datum, Value) {
 
 			var count = 0;
 
@@ -135,12 +185,19 @@
 			value.applyBinding(document.body, "single");
 
 			assert.strictEqual(count, 2);
+
+			done();
 		});
+	});
     </script>
     <div data-bind="twice"></div>
     <div data-bind="twice"></div>
     <script>
-		QUnit.test("Callback called once per element on update", function(assert) {
+	QUnit.test("Callback called once per element on update", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Datum", "Value"], function(Datum, Value) {
 
 			var count = 0;
 
@@ -161,11 +218,18 @@
 			datum("Hello World");
 
 			assert.strictEqual(count, 2);
+
+			done();
 		});
+	});
     </script>
     <input type="text" id="element" data-bind="element" />
     <script>
-		QUnit.test("Bind value from datum", function(assert) {
+	QUnit.test("Bind value from datum", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Value"], function(Value) {
 
 			var input =
 				new Value(function(value, element) {
@@ -176,10 +240,17 @@
 			input.applyBinding(document.body, "element");
 
 			assert.strictEqual(document.querySelector("#element").value, "element");
+
+			done();
 		});
+	});
     </script>
 	<script>
-		QUnit.test("Callback called from test handle.", function(assert) {
+	QUnit.test("Callback called from test handle.", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Value"], function(Value) {
 
 			var callCount = 0;
 
@@ -193,7 +264,10 @@
 			value.test.call(document.createElement("DIV"));
 
 			assert.strictEqual(callCount, 1);
+
+			done();
 		});
+	});
 	</script>
   </body>
 </html>

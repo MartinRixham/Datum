@@ -5,12 +5,7 @@
     <title>Array Element Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-    <script src="../src/Registry.js"></script>
-    <script src="../src/Subscriber.js"></script>
-    <script src="../src/UniqueRoot.js"></script>
-    <script src="../src/BindingRoot.js"></script>
-    <script src="../src/ArrayBinding.js"></script>
-    <script src="../src/ArrayElement.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
@@ -20,31 +15,51 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
+	<script>
+		var i = 0;
+
+		function getRequire() {
+
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <div id="number"></div>
 	<script>
-		QUnit.test("Number ids", function(assert) {
+	QUnit.test("Number ids", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayElement"], function(ArrayElement) {
 
 			var element = document.querySelector("#number");
 
-			var arrayElement =
-				new BindingRoot.ArrayBinding.ArrayElement(element);
+			var arrayElement = new ArrayElement(element);
 
 			assert.strictEqual(arrayElement.clone().id, "number_0");
 			assert.strictEqual(arrayElement.clone().id, "number_1");
+
+			done();
 		});
+	});
     </script>
     <input name="name" id="name" />
     <script>
-		QUnit.test("Number names", function(assert) {
+	QUnit.test("Number names", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayElement"], function(ArrayElement) {
 
 			var element = document.querySelector("#name");
 
-			var arrayElement =
-				new BindingRoot.ArrayBinding.ArrayElement(element);
+			var arrayElement = new ArrayElement(element);
 
 			assert.strictEqual(arrayElement.clone().name, "name_0");
 			assert.strictEqual(arrayElement.clone().name, "name_1");
+
+			done();
 		});
+	});
     </script>
     <div id="subnumber" data-bind="subnumber">
       <div>
@@ -52,19 +67,25 @@
       </div>
     </div>
     <script>
-		QUnit.test("Number ids on subelements", function(assert) {
+	QUnit.test("Number ids on subelements", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayElement"], function(ArrayElement) {
 
 			var element = document.querySelector("#subnumber");
 
-			var arrayElement =
-				new BindingRoot.ArrayBinding.ArrayElement(element);
+			var arrayElement = new ArrayElement(element);
 
 			var newElement = arrayElement.clone();
 
 			var one = newElement.querySelector("#inner-subnumber_0");
 
 			assert.ok(one);
+
+			done();
 		});
+	});
     </script>
   </body>
 </html>

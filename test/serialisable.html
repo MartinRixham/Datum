@@ -5,53 +5,25 @@
     <title>Serialisable Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-    <script src="../src/Registry.js"></script>
-    <script src="../src/Subscriber.js"></script>
-    <script src="../src/UniqueRoot.js"></script>
-    <script src="../src/BindingRoot.js"></script>
-    <script src="../src/ViewModel.js"></script>
-    <script src="../src/Property.js"></script>
-    <script src="../src/ArrayBinding.js"></script>
-    <script src="../src/ObjectBinding.js"></script>
-    <script src="../src/Serialisable.js"></script>
-    <script src="../src/DomWatcher.js"></script>
-    <script src="../src/Binding.js"></script>
-    <script src="../src/Datum.js"></script>
-    <script src="../src/Dependant.js"></script>
-    <script src="../src/Text.js"></script>
-    <script src="../src/Value.js"></script>
-    <script src="../src/Init.js"></script>
-    <script src="../src/Update.js"></script>
-    <script src="../src/Click.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
-    <style>
-		#qunit ~ * {
-			display: none;
-		}
-    </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-		QUnit.module("", {
+	<script>
+		var i = 0;
 
-			teardown: function() {
+		function getRequire() {
 
-				Subscriber.prototype = new Registry();
-				Binding.prototype = new Subscriber();
-				Datum.prototype = new Subscriber();
-				Text.prototype = new Subscriber();
-				Value.prototype = new Subscriber();
-				UniqueRoot.prototype = new Subscriber();
-				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ObjectBinding.prototype = new Subscriber();
-				BindingRoot.ViewModel.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.prototype = new Subscriber();
-			}
-		});
-    </script>
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <script>
-		QUnit.test("toJSON returns an object", function(assert) {
+	QUnit.test("toJSON returns an object", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function ToJSONObject() {
 
@@ -62,10 +34,17 @@
 			new BindingRoot(toJSONObject);
 
 			assert.ok(toJSONObject.toJSON());
+
+			done();
 		});
+	});
     </script>
     <script>
-		QUnit.test("toJSON returns an object with data property", function(assert) {
+	QUnit.test("toJSON returns an object with data property", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Serialisable"], function(Serialisable) {
 
 			function ToJSONObject() {
 
@@ -74,28 +53,43 @@
 
 			var toJSONObject = new ToJSONObject();
 
-			new BindingRoot.ViewModel.Serialisable(toJSONObject);
+			new Serialisable(toJSONObject);
 
 			assert.strictEqual(toJSONObject.toJSON().jsonProperty, "thingy");
+
+			done();
 		});
+	});
     </script>
     <script>
-		QUnit.test("toJSON returns an object without method", function(assert) {
+	QUnit.test("toJSON returns an object without method", function(assert) {
+
+		var done = assert.async();
+
+		require(["Serialisable"], function(Serialisable) {
 
 			function ToJSONObject() {
 
-				this.method = function() {};
+				this.method = function() {
+				};
 			}
 
 			var toJSONObject = new ToJSONObject();
 
-			new BindingRoot.ViewModel.Serialisable(toJSONObject);
+			new Serialisable(toJSONObject);
 
 			assert.ok(!toJSONObject.toJSON().method);
+
+			done();
 		});
+	});
     </script>
     <script>
-		QUnit.test("toJSON returns an object without binding", function(assert) {
+	QUnit.test("toJSON returns an object without binding", function(assert) {
+
+		var done = assert.async();
+
+		require(["Binding", "Serialisable"], function(Binding, Serialisable) {
 
 			function ToJSONObject() {
 
@@ -104,13 +98,20 @@
 
 			var toJSONObject = new ToJSONObject();
 
-			new BindingRoot.ViewModel.Serialisable(toJSONObject);
+			new Serialisable(toJSONObject);
 
 			assert.ok(!toJSONObject.toJSON().binding);
+
+			done();
 		});
+	});
     </script>
     <script>
-		QUnit.test("toJSON returns an object without scope element", function(assert) {
+	QUnit.test("toJSON returns an object without scope element", function(assert) {
+
+		var done = assert.async();
+
+		require(["Serialisable"], function(Serialisable) {
 
 			function ToJSONObject() {
 
@@ -119,13 +120,20 @@
 
 			var toJSONObject = new ToJSONObject();
 
-			new BindingRoot.ViewModel.Serialisable(toJSONObject);
+			new Serialisable(toJSONObject);
 
 			assert.ok(!toJSONObject.toJSON()._scope);
+
+			done();
 		});
+	});
     </script>
     <script>
-		QUnit.test("toJSON uses custom toJSON method", function(assert) {
+	QUnit.test("toJSON uses custom toJSON method", function(assert) {
+
+		var done = assert.async();
+
+		require(["Serialisable"], function(Serialisable) {
 
 			var json = { thingy: "thingy" };
 
@@ -142,10 +150,13 @@
 
 			var toJSONObject = new ToJSONObject();
 
-			new BindingRoot.ViewModel.Serialisable(toJSONObject);
+			new Serialisable(toJSONObject);
 
 			assert.strictEqual(toJSONObject.toJSON().child, json);
+
+			done();
 		});
+	});
     </script>
   </body>
 </html>

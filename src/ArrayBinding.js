@@ -1,9 +1,10 @@
 define([
 	"Property",
 	"ViewModel",
+	"ObjectBinding",
 	"ArrayElement",
 	"Push",
-	"Pop",
+	"Pop_",
 	"Shift",
 	"Unshift",
 	"Splice",
@@ -13,6 +14,7 @@ define([
 function(
 	Property,
 	ViewModel,
+	ObjectBinding,
 	ArrayElement,
 	Push,
 	Pop,
@@ -26,7 +28,7 @@ function(
 	// The array binding is applied when an array is bound to an element.
 	// It copies the contents of the element to which it is bound
 	// once for each element of the array.
-	 function ArrayBinding(model) {
+	function ArrayBinding(model) {
 
 		var currentElement = null;
 
@@ -164,6 +166,9 @@ function(
 	}
 
 	ArrayBinding.prototype = new Subscriber();
+
+	// Break circular dependency.
+	ObjectBinding.ArrayBinding = ArrayBinding;
 
 	return ArrayBinding;
 });

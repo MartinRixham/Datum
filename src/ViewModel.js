@@ -1,8 +1,17 @@
-define(["Subscriber"], function(Subscriber) {
+define([
+	"Serialisable",
+	"Property",
+	"Subscriber",
+	"ObjectBinding"],
+function(
+	Serialisable,
+	Property,
+	Subscriber,
+	ObjectBinding) {
 
 	function ViewModel(model) {
 
-		new BindingRoot.ViewModel.Serialisable(model);
+		new Serialisable(model);
 
 		var properties = {};
 
@@ -74,7 +83,7 @@ define(["Subscriber"], function(Subscriber) {
 					}
 					else if (typeof(property) != "function") {
 
-						properties[key] = new BindingRoot.ViewModel.Property(model[key]);
+						properties[key] = new Property(model[key]);
 					}
 				}
 			}
@@ -116,6 +125,9 @@ define(["Subscriber"], function(Subscriber) {
 	}
 
 	ViewModel.prototype = new Subscriber();
+
+	// Break circular dependency.
+	ObjectBinding.ViewModel = ViewModel;
 
 	return ViewModel;
 });

@@ -5,15 +5,7 @@
     <title>Splice Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-	  <script src="../src/Registry.js"></script>
-	  <script src="../src/Subscriber.js"></script>
-	  <script src="../src/UniqueRoot.js"></script>
-	  <script src="../src/BindingRoot.js"></script>
-	  <script src="../src/ViewModel.js"></script>
-	  <script src="../src/Serialisable.js"></script>
-	  <script src="../src/ArrayBinding.js"></script>
-	  <script src="../src/ArrayElement.js"></script>
-	  <script src="../src/Splice.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
@@ -23,37 +15,33 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-		QUnit.module("", {
+	<script>
+		var i = 0;
 
-			teardown: function() {
+		function getRequire() {
 
-				Subscriber.prototype = new Registry();
-				UniqueRoot.prototype = new Subscriber();
-				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ViewModel.prototype = new UniqueRoot();
-				BindingRoot.ArrayBinding.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Splice.prototype = new Subscriber();
-			}
-		});
-    </script>
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <div id="splice-remove" data-bind="spliceRemove">
       <div class="splice-remove"></div>
       <div class="splice-remove"></div>
       <div class="splice-remove"></div>
     </div>
     <script>
-		QUnit.test("Remove element with splice", function(assert) {
+	QUnit.test("Remove element with splice", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayElement", "Splice"], function(ArrayElement, Splice) {
 
 			var spliceRemove = [{}, {}, {}];
 
 			var element = document.querySelector(".splice-remove");
 
-			var arrayElement =
-				new BindingRoot.ArrayBinding.ArrayElement(element);
+			var arrayElement = new ArrayElement(element);
 
-			var binding =
-				new BindingRoot.ArrayBinding.Splice(spliceRemove, arrayElement, []);
+			var binding = new Splice(spliceRemove, arrayElement, []);
 
 			binding.applyBinding(document.body, "spliceRemove");
 
@@ -67,7 +55,10 @@
 				boundElement.querySelectorAll(".splice-remove").length;
 
 			assert.strictEqual(childCount, 2);
+
+			done();
 		});
+	});
     </script>
     <div id="splice-remove-two" data-bind="spliceRemoveTwo">
       <div class="splice-remove-two"></div>
@@ -75,17 +66,19 @@
       <div class="splice-remove-two"></div>
     </div>
     <script>
-		QUnit.test("Remove two elements with splice", function(assert) {
+	QUnit.test("Remove two elements with splice", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayElement", "Splice"], function(ArrayElement, Splice) {
 
 			var spliceRemoveTwo = [{}, {}, {}];
 
 			var element = document.querySelector(".splice-remove-two");
 
-			var arrayElement =
-				new BindingRoot.ArrayBinding.ArrayElement(element);
+			var arrayElement = new ArrayElement(element);
 
-			var binding =
-				new BindingRoot.ArrayBinding.Splice(spliceRemoveTwo, arrayElement, []);
+			var binding = new Splice(spliceRemoveTwo, arrayElement, []);
 
 			binding.applyBinding(document.body, "spliceRemoveTwo");
 
@@ -98,14 +91,21 @@
 				boundElement.querySelectorAll(".splice-remove-two").length;
 
 			assert.strictEqual(childCount, 1);
+
+			done();
 		});
+	});
     </script>
     <div id="splice-add" data-bind="spliceAdd">
       <div class="splice-add"></div>
       <div class="splice-add"></div>
     </div>
     <script>
-		QUnit.test("Add element with splice", function(assert) {
+	QUnit.test("Add element with splice", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayElement", "Splice"], function(ArrayElement, Splice) {
 
 			var spliceAdd = [{}, {}];
 
@@ -113,11 +113,9 @@
 			element.className = "splice-add";
 			element.id = "new";
 
-			var arrayElement =
-				new BindingRoot.ArrayBinding.ArrayElement(element);
+			var arrayElement = new ArrayElement(element);
 
-			var binding =
-				new BindingRoot.ArrayBinding.Splice(spliceAdd, arrayElement, []);
+			var binding = new Splice(spliceAdd, arrayElement, []);
 
 			binding.applyBinding(document.body, "spliceAdd");
 
@@ -131,14 +129,21 @@
 			assert.strictEqual(children.length, 3);
 
 			assert.strictEqual(children[1].id, "new_0");
+
+			done();
 		});
+	});
     </script>
     <div id="splice-add-two" data-bind="spliceAddTwo">
       <div class="splice-add-two"></div>
       <div class="splice-add-two"></div>
     </div>
     <script>
-		QUnit.test("Add two elements with splice", function(assert) {
+	QUnit.test("Add two elements with splice", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayElement", "Splice"], function(ArrayElement, Splice) {
 
 			var spliceAddTwo = [{}, {}];
 
@@ -146,11 +151,9 @@
 			element.className = "splice-add-two";
 			element.id = "new";
 
-			var arrayElement =
-				new BindingRoot.ArrayBinding.ArrayElement(element);
+			var arrayElement = new ArrayElement(element);
 
-			var binding =
-				new BindingRoot.ArrayBinding.Splice(spliceAddTwo, arrayElement, []);
+			var binding = new Splice(spliceAddTwo, arrayElement, []);
 
 			binding.applyBinding(document.body, "spliceAddTwo");
 
@@ -165,16 +168,22 @@
 			assert.strictEqual(children.length, 4);
 
 			assert.strictEqual(children[1].id, "new_1");
-
 			assert.strictEqual(children[2].id, "new_0");
+
+			done();
 		});
+	});
     </script>
     <div id="splice-add-remove" data-bind="spliceAddRemove">
       <div class="splice-add-remove"></div>
       <div class="splice-add-remove"></div>
     </div>
     <script>
-		QUnit.test("Add and remove element with splice", function(assert) {
+	QUnit.test("Add and remove element with splice", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayElement", "Splice"], function(ArrayElement, Splice) {
 
 			var spliceAddRemove = [{}, {}];
 
@@ -182,11 +191,9 @@
 			element.className = "splice-add-remove";
 			element.id = "new";
 
-			var arrayElement =
-				new BindingRoot.ArrayBinding.ArrayElement(element);
+			var arrayElement = new ArrayElement(element);
 
-			var binding =
-				new BindingRoot.ArrayBinding.Splice(spliceAddRemove, arrayElement, []);
+			var binding = new Splice(spliceAddRemove, arrayElement, []);
 
 			binding.applyBinding(document.body, "spliceAddRemove");
 
@@ -201,7 +208,10 @@
 			assert.strictEqual(children.length, 2);
 
 			assert.strictEqual(children[1].id, "new_0");
+
+			done();
 		});
+	});
     </script>
   </body>
 </html>

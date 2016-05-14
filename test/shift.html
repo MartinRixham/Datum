@@ -5,13 +5,7 @@
     <title>Shift Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-	  <script src="../src/Registry.js"></script>
-	  <script src="../src/Subscriber.js"></script>
-	  <script src="../src/UniqueRoot.js"></script>
-	  <script src="../src/BindingRoot.js"></script>
-	  <script src="../src/ArrayBinding.js"></script>
-	  <script src="../src/ArrayElement.js"></script>
-	  <script src="../src/Shift.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
@@ -21,19 +15,14 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-		QUnit.module("", {
+	<script>
+		var i = 0;
 
-			teardown: function() {
+		function getRequire() {
 
-				Subscriber.prototype = new Registry();
-				UniqueRoot.prototype = new Subscriber();
-				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ArrayBinding.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Shift.prototype = new Subscriber();
-			}
-		});
-    </script>
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <div id="shift" data-bind="shift">
       <div>
         <div class="shift"></div>
@@ -43,19 +32,15 @@
       </div>
     </div>
     <script>
-		QUnit.test("Remove first element on array shift", function(assert) {
+	QUnit.test("Remove first element on array shift", function(assert) {
 
-			var shift =
-				[
-					{
-						count: "first"
-					},
-					{
-						count: "second"
-					}
-				];
+		var done = assert.async();
 
-			var binding = new BindingRoot.ArrayBinding.Shift(shift);
+		getRequire()(["Shift"], function(Shift) {
+
+			var shift = [{ count: "first" }, { count: "second" }];
+
+			var binding = new Shift(shift);
 
 			binding.applyBinding(document.body, "shift");
 
@@ -72,7 +57,9 @@
 
 			assert.strictEqual(children[0].id, "second-shift");
 
+			done();
 		});
+	});
     </script>
   </body>
 </html>

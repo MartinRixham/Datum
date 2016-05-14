@@ -1,11 +1,4 @@
-define([
-	"ArrayBinding",
-	"ViewModel",
-	"Subscriber"],
-function(
-	ArrayBinding,
-	ViewModel,
-	Subscriber) {
+define(["Subscriber"], function(Subscriber) {
 
 	// The object binding is the binding that is applied automatically
 	// and by convention whenever a plain object is bound to an element.
@@ -15,11 +8,11 @@ function(
 
 		if (property instanceof Array) {
 
-			this.binding = new ArrayBinding(property);
+			this.binding = new ObjectBinding.ArrayBinding(property);
 		}
 		else if (property) {
 
-			this.binding = new ViewModel(property);
+			this.binding = new ObjectBinding.ViewModel(property);
 		}
 
 		this.applyBinding = function(scope, key, model) {
@@ -81,11 +74,11 @@ function(
 
 						if (property instanceof Array) {
 
-							self.binding = new ArrayBinding(property);
+							self.binding = new ObjectBinding.ArrayBinding(property);
 						}
 						else {
 
-							self.binding = new ViewModel(property);
+							self.binding = new ObjectBinding.ViewModel(property);
 						}
 
 						self.binding.applyBinding(scope, key, model);
@@ -114,4 +107,6 @@ function(
 	}
 
 	ObjectBinding.prototype = new Subscriber();
+
+	return ObjectBinding;
 });

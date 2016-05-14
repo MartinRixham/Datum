@@ -5,25 +5,7 @@
     <title>Recursion Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-    <script src="../src/Registry.js"></script>
-    <script src="../src/Subscriber.js"></script>
-    <script src="../src/UniqueRoot.js"></script>
-    <script src="../src/BindingRoot.js"></script>
-    <script src="../src/ViewModel.js"></script>
-    <script src="../src/Property.js"></script>
-    <script src="../src/ArrayBinding.js"></script>
-    <script src="../src/ObjectBinding.js"></script>
-    <script src="../src/Serialisable.js"></script>
-    <script src="../src/DomWatcher.js"></script>
-    <script src="../src/Binding.js"></script>
-    <script src="../src/Datum.js"></script>
-    <script src="../src/Dependant.js"></script>
-    <script src="../src/Text.js"></script>
-    <script src="../src/Value.js"></script>
-    <script src="../src/Init.js"></script>
-    <script src="../src/Update.js"></script>
-    <script src="../src/Click.js"></script>
-    <script src="../src/Visible.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
@@ -33,28 +15,22 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-		QUnit.module("", {
+	<script>
+		var i = 0;
 
-			teardown: function() {
+		function getRequire() {
 
-				Subscriber.prototype = new Registry();
-				Binding.prototype = new Subscriber();
-				Datum.prototype = new Subscriber();
-				Text.prototype = new Subscriber();
-				Value.prototype = new Subscriber();
-				UniqueRoot.prototype = new Subscriber();
-				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ObjectBinding.prototype = new Subscriber();
-				BindingRoot.ViewModel.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.prototype = new Subscriber();
-			}
-		});
-    </script>
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
 	<div data-bind="firstText"></div>
 	<div data-bind="secondText"></div>
 	<script>
-		QUnit.test("Text dependencies don't cause infinite recusion", function(assert) {
+	QUnit.test("Text dependencies don't cause infinite recursion", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Text", "BindingRoot"], function(Text, BindingRoot) {
 
 			function Texts() {
 
@@ -82,12 +58,19 @@
 			new BindingRoot(texts);
 
 			assert.ok(texts);
+
+			done();
 		});
+	});
 	</script>
 	<div data-bind="firstValue"></div>
 	<div data-bind="secondValue"></div>
 	<script>
-		QUnit.test("Value dependencies don't cause infinite recusion", function(assert) {
+	QUnit.test("Value dependencies don't cause infinite recursion", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Value", "BindingRoot"], function(Value, BindingRoot) {
 
 			function Values() {
 
@@ -115,12 +98,19 @@
 			new BindingRoot(values);
 
 			assert.ok(values);
+
+			done();
 		});
+	});
 	</script>
 	<div data-bind="firstVisible"></div>
 	<div data-bind="secondVisible"></div>
 	<script>
-		QUnit.test("Visible dependencies don't cause infinite recusion", function(assert) {
+	QUnit.test("Visible dependencies don't cause infinite recursion", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Visible", "BindingRoot"], function(Visible, BindingRoot) {
 
 			function Visibles() {
 
@@ -148,7 +138,10 @@
 			new BindingRoot(visibles);
 
 			assert.ok(visibles);
+
+			done();
 		});
+	});
 	</script>
   </body>
 </html>

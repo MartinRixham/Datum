@@ -1,4 +1,4 @@
-define(["ObjectBinding"], function(ObjectBinding) {
+define(["ObjectBinding", "Datum"], function(ObjectBinding, Datum) {
 
 	function Property(property) {
 
@@ -45,6 +45,8 @@ define(["ObjectBinding"], function(ObjectBinding) {
 			return !property || !other || property != other;
 		};
 	}
+
+	ObjectBinding.Property = Property;
 
 	return Property;
 });

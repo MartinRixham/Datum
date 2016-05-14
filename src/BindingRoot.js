@@ -1,7 +1,8 @@
 define([
 	"ViewModel",
-	"DonWatcher",
-	"UniqueRoot"],
+	"DomWatcher",
+	"UniqueRoot",
+	"ArrayBinding"],
 function BindingRoot(
 	ViewModel,
 	DomWatcher,

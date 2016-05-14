@@ -5,13 +5,7 @@
     <title>Sort Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-	  <script src="../src/Registry.js"></script>
-	  <script src="../src/Subscriber.js"></script>
-	  <script src="../src/UniqueRoot.js"></script>
-	  <script src="../src/BindingRoot.js"></script>
-	  <script src="../src/ArrayBinding.js"></script>
-	  <script src="../src/ArrayElement.js"></script>
-	  <script src="../src/Sort.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
@@ -21,30 +15,28 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-		QUnit.module("", {
+	<script>
+		var i = 0;
 
-			teardown: function() {
+		function getRequire() {
 
-				Subscriber.prototype = new Registry();
-				UniqueRoot.prototype = new Subscriber();
-				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ArrayBinding.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Sort.prototype = new Subscriber();
-			}
-		});
-    </script>
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <div id="sort-two" data-bind="sortTwo">
       <div class="sort-two" id="sort-two-child_0"></div>
       <div class="sort-two" id="sort-two-child_1"></div>
     </div>
     <script>
-		QUnit.test("Sort two element bound array", function(assert) {
+	QUnit.test("Sort two element bound array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Sort"], function(Sort) {
 
 			var sortTwo = [2, 1];
 
-			var binding =
-				new BindingRoot.ArrayBinding.Sort(sortTwo);
+			var binding = new Sort(sortTwo);
 
 			binding.applyBinding(document.body, "sortTwo");
 
@@ -63,7 +55,10 @@
 
 			assert.strictEqual(children[0].id, "sort-two-child_1");
 			assert.strictEqual(children[1].id, "sort-two-child_0");
+
+			done();
 		});
+	});
     </script>
       <div id="sort-three" data-bind="sortThree">
         <div class="sort-three" id="sort-three-child_0"></div>
@@ -71,12 +66,15 @@
         <div class="sort-three" id="sort-three-child_2"></div>
       </div>
     <script>
-		QUnit.test("Sort three element bound array", function(assert) {
+	QUnit.test("Sort three element bound array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Sort"], function(Sort) {
 
 			var sortThree = [2, 3, 1];
 
-			var binding =
-				new BindingRoot.ArrayBinding.Sort(sortThree);
+			var binding = new Sort(sortThree);
 
 			binding.applyBinding(document.body, "sortThree");
 
@@ -96,7 +94,10 @@
 			assert.strictEqual(children[0].id, "sort-three-child_2");
 			assert.strictEqual(children[1].id, "sort-three-child_0");
 			assert.strictEqual(children[2].id, "sort-three-child_1");
+
+			done();
 		});
+	});
     </script>
     <div id="sort-comparer" data-bind="sortComparer">
       <div class="sort-comparer" id="sort-comparer-child_0"></div>
@@ -104,12 +105,15 @@
       <div class="sort-comparer" id="sort-comparer-child_2"></div>
     </div>
     <script>
-		QUnit.test("Sort three element array with a compare function", function(assert) {
+	QUnit.test("Sort three element array with a compare function", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Sort"], function(Sort) {
 
 			var sortComparer = ["am", "me.", "I"];
 
-			var binding =
-				new BindingRoot.ArrayBinding.Sort(sortComparer);
+			var binding = new Sort(sortComparer);
 
 			binding.applyBinding(document.body, "sortComparer");
 
@@ -143,7 +147,10 @@
 			assert.strictEqual(children[0].id, "sort-comparer-child_2");
 			assert.strictEqual(children[1].id, "sort-comparer-child_0");
 			assert.strictEqual(children[2].id, "sort-comparer-child_1");
+
+			done();
 		});
+	});
     </script>
   </body>
 </html>

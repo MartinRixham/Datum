@@ -5,72 +5,33 @@
     <title>Array Binding Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-    <script src="../src/Registry.js"></script>
-    <script src="../src/Subscriber.js"></script>
-    <script src="../src/UniqueRoot.js"></script>
-    <script src="../src/BindingRoot.js"></script>
-    <script src="../src/ViewModel.js"></script>
-    <script src="../src/Property.js"></script>
-    <script src="../src/Binding.js"></script>
-    <script src="../src/ArrayBinding.js"></script>
-    <script src="../src/ArrayElement.js"></script>
-    <script src="../src/Push.js"></script>
-    <script src="../src/Pop.js"></script>
-    <script src="../src/Shift.js"></script>
-    <script src="../src/Unshift.js"></script>
-    <script src="../src/Splice.js"></script>
-    <script src="../src/Sort.js"></script>
-    <script src="../src/Reverse.js"></script>
-    <script src="../src/ObjectBinding.js"></script>
-  	<script src="../src/Serialisable.js"></script>
-    <script src="../src/DomWatcher.js"></script>
-    <script src="../src/Datum.js"></script>
-    <script src="../src/Dependant.js"></script>
-    <script src="../src/Text.js"></script>
-    <script src="../src/Value.js"></script>
-    <script src="../src/Init.js"></script>
-    <script src="../src/Update.js"></script>
-    <script src="../src/Click.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
-		#qunit ~ * {
-			display: none;
-		}
+	    #qunit ~ * {
+		    display: none;
+	    }
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-		QUnit.module("", {
+	<script>
+		var i = 0;
 
-			teardown: function() {
+		function getRequire() {
 
-				Subscriber.prototype = new Registry();
-				Binding.prototype = new Subscriber();
-				Datum.prototype = new Subscriber();
-				Text.prototype = new Subscriber();
-				Value.prototype = new Subscriber();
-				Update.prototype = new Subscriber();
-				UniqueRoot.prototype = new Subscriber();
-				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ObjectBinding.prototype = new Subscriber();
-				BindingRoot.ViewModel.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Push.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Pop.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Shift.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Unshift.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Splice.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Sort.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.Reverse.prototype = new Subscriber();
-			}
-		});
-    </script>
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <div id="each" data-bind="each">
       <div id="inner-each"></div>
     </div>
     <script>
-		QUnit.test("Remove element when bound to empty array", function(assert) {
+	QUnit.test("Remove element when bound to empty array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function ArrayBindingObject() {
 
@@ -88,13 +49,20 @@
 			assert.ok(!element.contains(inner));
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="one" data-bind="one">
       <div id="inner-one"></div>
     </div>
     <script>
-		QUnit.test("One element when array length one", function(assert) {
+	QUnit.test("One element when array length one", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function OneObject() {
 
@@ -112,13 +80,20 @@
 			assert.ok(element.contains(inner));
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="two" data-bind="two">
       <div class="two"></div>
     </div>
     <script>
-		QUnit.test("Two elements when array length two", function(assert) {
+	QUnit.test("Two elements when array length two", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function TwoObject() {
 
@@ -136,13 +111,20 @@
 			assert.strictEqual(childCount, 2);
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="remove" data-bind="remove">
       <div id="remove-one"></div>
     </div>
     <script>
-		QUnit.test("Remove elements when array set to null", function(assert) {
+	QUnit.test("Remove elements when array set to null", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function RemoveObject() {
 
@@ -160,13 +142,20 @@
 			assert.strictEqual(element.children.length, 0);
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="after" data-bind="after">
       <div class="after"></div>
     </div>
     <script>
-		QUnit.test("Bind array after root", function(assert) {
+	QUnit.test("Bind array after root", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function AfterObject() {
 
@@ -186,13 +175,20 @@
 			assert.strictEqual(childCount, 2);
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="reassign" data-bind="reassign">
       <div class="reassign"></div>
     </div>
     <script>
-		QUnit.test("Reassign array", function(assert) {
+	QUnit.test("Reassign array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function ReassignObject() {
 
@@ -212,13 +208,20 @@
 			assert.strictEqual(childCount, 2);
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="remove-all" data-bind="removeAll">
       <div id="removeOne"></div>
     </div>
     <script>
-		QUnit.test("Remove element when bound to empty array", function(assert) {
+	QUnit.test("Remove element when bound to empty array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function RemoveAll() {
 
@@ -234,14 +237,21 @@
 			assert.strictEqual(element.children.length, 0);
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div data-bind="onlyOne">
       <div></div>
       <div></div>
     </div>
     <script>
-		QUnit.test("Exception if multiple elements", function(assert) {
+	QUnit.test("Exception if multiple elements", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			var exception;
 
@@ -267,7 +277,10 @@
 			assert.strictEqual(
 				exception.message,
 				"An array must be bound to an element with exactly one child.");
+
+			done();
 		});
+	});
     </script>
     <div id="inside" data-bind="inside">
       <div>
@@ -275,7 +288,11 @@
       </div>
     </div>
     <script>
-		QUnit.test("Apply binding inside array", function(assert) {
+	QUnit.test("Apply binding inside array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			function InsideObject() {
 
@@ -283,7 +300,9 @@
 
 					innerAll: new Binding({
 
-						text: function() { return "Hello World"; }
+						text: function() {
+							return "Hello World";
+						}
 					})
 				}];
 			}
@@ -297,13 +316,20 @@
 			assert.strictEqual(element.innerHTML, "Hello World");
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="string" data-bind="str">
       <div class="string"></div>
     </div>
     <script>
-		QUnit.test("Bind to string array", function(assert) {
+	QUnit.test("Bind to string array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function StringObject() {
 
@@ -321,13 +347,20 @@
 			assert.strictEqual(childCount, 2);
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="null" data-bind="nullProperty">
       <div class="null"></div>
     </div>
     <script>
-		QUnit.test("Bind array with null element", function(assert) {
+	QUnit.test("Bind array with null element", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function NullObject() {
 
@@ -345,7 +378,10 @@
 			assert.strictEqual(childCount, 2);
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="square" data-bind="square">
       <div>
@@ -353,7 +389,11 @@
       </div>
     </div>
     <script>
-		QUnit.test("Bind square array", function(assert) {
+	QUnit.test("Bind square array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function SquareObject() {
 
@@ -375,13 +415,20 @@
 			assert.strictEqual(childCount, 4);
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="binding" data-bind="binding">
       <div></div>
     </div>
     <script>
-		QUnit.test("Bind array containing binding", function(assert) {
+	QUnit.test("Bind array containing binding", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			function BindingObject() {
 
@@ -390,7 +437,9 @@
 						{},
 						new Binding({
 
-							text: function() { return "Hello World"; }
+							text: function() {
+								return "Hello World";
+							}
 						})
 					];
 			}
@@ -408,13 +457,20 @@
 			assert.strictEqual(children[1].innerHTML, "Hello World");
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="push-binding" data-bind="pushBinding">
       <div></div>
     </div>
     <script>
-		QUnit.test("Push binding to bound array", function(assert) {
+	QUnit.test("Push binding to bound array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			function PushBindingObject() {
 
@@ -428,7 +484,9 @@
 			pushBindingObject.pushBinding.push(
 				new Binding({
 
-					text: function() { return "Hello World"; }
+					text: function() {
+						return "Hello World";
+					}
 				}));
 
 			var element = document.querySelector("#push-binding");
@@ -440,14 +498,21 @@
 			assert.strictEqual(children[1].innerHTML, "Hello World");
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="length" data-bind="length">
       <div class="length"></div>
     </div>
     <div data-bind="update"></div>
     <script>
-		QUnit.test("Update subscribable length when array updated", function(assert) {
+	QUnit.test("Update subscribable length when array updated", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			var lengthUpdateCount = 0;
 
@@ -471,19 +536,18 @@
 			var root = new BindingRoot(length);
 
 			length.length.push({});
-
 			length.length.pop();
-
 			length.length.unshift({});
-
 			length.length.shift();
-
 			length.length.splice(0);
 
 			assert.strictEqual(lengthUpdateCount, 6);
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div data-bind="twice">
       <div data-bind="twiceArray">
@@ -491,7 +555,11 @@
       </div>
     </div>
     <script>
-		QUnit.test("One element bound twice to an array", function(assert) {
+	QUnit.test("One element bound twice to an array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot", "Text"], function(BindingRoot, Text) {
 
 			function TwiceObject() {
 
@@ -507,7 +575,12 @@
 
 			twice.twice = {
 
-				twiceArray: [{}, new Text(function() { return "Hello world."; }), {}]
+				twiceArray:
+					[
+						{},
+						new Text(function() { return "Hello world.";}),
+						{}
+					]
 			};
 
 			var childCount = document.querySelectorAll(".twice").length;
@@ -515,7 +588,10 @@
 			assert.strictEqual(childCount, 3);
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
   </body>
 </html>

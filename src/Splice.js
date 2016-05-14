@@ -1,4 +1,4 @@
-define(["Subscriber"], function(Subscriber) {
+define(["Subscriber", "ViewModel"], function(Subscriber, ViewModel) {
 
 	function Splice(model, arrayElement, properties) {
 
@@ -42,7 +42,7 @@ define(["Subscriber"], function(Subscriber) {
 
 				if (property && typeof(property) == "object") {
 
-					properties.splice(index - 1, 0, new BindingRoot.ViewModel(property));
+					properties.splice(index - 1, 0, new ViewModel(property));
 				}
 			}
 		}

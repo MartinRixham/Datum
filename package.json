@@ -3,13 +3,13 @@
   "version": "0.0.0",
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-concat-define": "^0.1.0",
-    "grunt-contrib-jshint": "~1.0.0",
-    "grunt-contrib-qunit": "~1.1.0",
-    "grunt-contrib-uglify": "~1.0.1",
-    "grunt-jscs": "~2.8.0",
-    "qunitjs": "~1.23.0",
+    "grunt": "^0.4.5",
+    "grunt-concat-define": "^0.3.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-qunit": "^1.2.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-jscs": "^2.8.0",
+    "qunitjs": "^1.23.0",
     "requirejs": "^2.2.0"
   },
   "repository": {

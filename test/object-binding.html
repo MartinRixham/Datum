@@ -5,24 +5,7 @@
     <title>Object Binding Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-    <script src="../src/Registry.js"></script>
-    <script src="../src/Subscriber.js"></script>
-    <script src="../src/UniqueRoot.js"></script>
-    <script src="../src/BindingRoot.js"></script>
-  	<script src="../src/ViewModel.js"></script>
-  	<script src="../src/Property.js"></script>
-    <script src="../src/ArrayBinding.js"></script>
-    <script src="../src/ObjectBinding.js"></script>
-    <script src="../src/Serialisable.js"></script>
-    <script src="../src/DomWatcher.js"></script>
-    <script src="../src/Binding.js"></script>
-    <script src="../src/Datum.js"></script>
-    <script src="../src/Dependant.js"></script>
-    <script src="../src/Text.js"></script>
-    <script src="../src/Value.js"></script>
-    <script src="../src/Init.js"></script>
-    <script src="../src/Update.js"></script>
-    <script src="../src/Click.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
@@ -32,31 +15,23 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-		// To preserve atomicity prototypes must be
-		// reassigned after each test.
-		QUnit.module("", {
+	<script>
+		var i = 0;
 
-			teardown: function() {
+		function getRequire() {
 
-				Subscriber.prototype = new Registry();
-				Binding.prototype = new Subscriber();
-				Datum.prototype = new Subscriber();
-				Text.prototype = new Subscriber();
-				Value.prototype = new Subscriber();
-				UniqueRoot.prototype = new Subscriber();
-				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ObjectBinding.prototype = new Subscriber();
-				BindingRoot.ViewModel.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.prototype = new Subscriber();
-			}
-		});
-    </script>
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <div id="outer" data-bind="with">
       <div id="with"></div>
     </div>
     <script>
-		QUnit.test("Remove element bound to null", function(assert) {
+	QUnit.test("Remove element bound to null", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function WithObject() {
 
@@ -72,13 +47,20 @@
 			assert.ok(!outer.contains(element));
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="remove" data-bind="remove">
       <div id="inner"></div>
     </div>
     <script>
-		QUnit.test("Remove element when object set to null", function(assert) {
+	QUnit.test("Remove element when object set to null", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function RemoveObject() {
 
@@ -98,13 +80,20 @@
 			assert.ok(!element.contains(inner));
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="replace" data-bind="replace">
       <div id="inner-replace"></div>
     </div>
     <script>
-		QUnit.test("Replace element when object added", function(assert) {
+	QUnit.test("Replace element when object added", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function ReplaceObject() {
 
@@ -124,13 +113,20 @@
 			assert.ok(element.contains(inner));
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div data-bind="bind">
       <div id="text" data-bind="text"></div>
     </div>
     <script>
-		QUnit.test("Apply binding when object added", function(assert) {
+	QUnit.test("Apply binding when object added", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot", "Binding"], function(BindingRoot, Binding) {
 
 			function ApplyObject() {
 
@@ -145,21 +141,30 @@
 
 				text: new Binding({
 
-					text: function() { return "Hello World"; }
+					text: function() {
+						return "Hello World";
+					}
 				})
 			};
 
 			assert.strictEqual(document.querySelector("#text").innerHTML, "Hello World");
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="multi-outer" data-bind="multi">
       <div id="one"></div>
       <div id="two"></div>
     </div>
     <script>
-		QUnit.test("Remove all elements when bound to null", function(assert) {
+	QUnit.test("Remove all elements when bound to null", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function MultipleObject() {
 
@@ -177,14 +182,21 @@
 			assert.ok(!outer.contains(two));
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="multi-remove" data-bind="removeMulti">
       <div id="remove-one"></div>
       <div id="remove-two"></div>
     </div>
     <script>
-		QUnit.test("Remove all elements when object set to null", function(assert) {
+	QUnit.test("Remove all elements when object set to null", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function RemoveObject() {
 
@@ -206,14 +218,21 @@
 			assert.ok(!element.contains(two));
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="multi-replace" data-bind="Multireplace">
       <div id="replace-one"></div>
       <div id="replace-two"></div>
     </div>
     <script>
-		QUnit.test("Replace all elements when object added", function(assert) {
+	QUnit.test("Replace all elements when object added", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function ReplaceObject() {
 
@@ -243,13 +262,20 @@
 			assert.ok(one.nextSibiling = two);
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="reremove" data-bind="reremove">
       <div id="inner-reremove"></div>
     </div>
     <script>
-		QUnit.test("Reremove element", function(assert) {
+	QUnit.test("Reremove element", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function ReremoveObject() {
 
@@ -271,13 +297,20 @@
 			assert.ok(!element.contains(inner));
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="renull" data-bind="renull">
       <div id="inner-null"></div>
     </div>
     <script>
-		QUnit.test("Reset object to null", function(assert) {
+	QUnit.test("Reset object to null", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function RenullObject() {
 
@@ -297,13 +330,20 @@
 			assert.ok(!element.contains(inner));
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div id="renew" data-bind="renew">
       <div id="inner-renew"></div>
     </div>
     <script>
-		QUnit.test("Reassign object", function(assert) {
+	QUnit.test("Reassign object", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function RenewObject() {
 
@@ -323,14 +363,21 @@
 			assert.ok(element.children.length == 1);
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <div data-bind="object"></div>
     <div data-bind="subobject">
       <div id="subobject-text" data-bind="text"></div>
     </div>
     <script>
-		QUnit.test("Subobjects not bound outside of scope", function(assert) {
+	QUnit.test("Subobjects not bound outside of scope", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			function SubobjectObject() {
 
@@ -340,7 +387,9 @@
 
 						text: new Binding({
 
-							text: function() { return "Hello World"; }
+							text: function() {
+								return "Hello World";
+							}
 						})
 					}
 				};
@@ -352,7 +401,8 @@
 
 				root = new BindingRoot(new SubobjectObject());
 			}
-			catch (e) {}
+			catch (e) {
+			}
 			finally {
 
 				var text = document.querySelector("#subobject-text");
@@ -363,8 +413,11 @@
 
 					root.disconnect();
 				}
+
+				done();
 			}
 		});
+	});
     </script>
     <div data-bind="subscope">
       <div data-bind="subscopeobject">
@@ -372,7 +425,11 @@
       </div>
     </div>
     <script>
-		QUnit.test("Subobjects not bound inside subscope", function(assert) {
+	QUnit.test("Subobjects not bound inside subscope", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			function SubscopeObject() {
 
@@ -382,7 +439,9 @@
 
 					text: new Binding({
 
-						text: function() { return "Hello World"; }
+						text: function() {
+							return "Hello World";
+						}
 					})
 				};
 			}
@@ -394,7 +453,10 @@
 			assert.notEqual(text.innerHTML, "Hello World");
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
   </body>
 </html>

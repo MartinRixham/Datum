@@ -5,24 +5,7 @@
     <title>Binding Root Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-    <script src="../src/Registry.js"></script>
-    <script src="../src/Subscriber.js"></script>
-    <script src="../src/UniqueRoot.js"></script>
-    <script src="../src/BindingRoot.js"></script>
-  	<script src="../src/ViewModel.js"></script>
-  	<script src="../src/Property.js"></script>
-    <script src="../src/ArrayBinding.js"></script>
-    <script src="../src/Serialisable.js"></script>
-    <script src="../src/ObjectBinding.js"></script>
-    <script src="../src/DomWatcher.js"></script>
-    <script src="../src/Binding.js"></script>
-    <script src="../src/Datum.js"></script>
-    <script src="../src/Dependant.js"></script>
-    <script src="../src/Text.js"></script>
-    <script src="../src/Value.js"></script>
-    <script src="../src/Init.js"></script>
-    <script src="../src/Update.js"></script>
-    <script src="../src/Click.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
   </head>
   <body>
     <style>
@@ -32,37 +15,29 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script>
-		// To preserve atomicity prototypes must be
-		// reassigned after each test.
-		QUnit.module("", {
+	<script>
+		var i = 0;
 
-			teardown: function() {
+		function getRequire() {
 
-				Subscriber.prototype = new Registry();
-				Binding.prototype = new Subscriber();
-				Datum.prototype = new Subscriber();
-				Text.prototype = new Subscriber();
-				Value.prototype = new Subscriber();
-				Update.prototype = new Subscriber();
-				Init.prototype = new Subscriber();
-				UniqueRoot.prototype = new Subscriber();
-				BindingRoot.prototype = new UniqueRoot();
-				BindingRoot.ObjectBinding.prototype = new Subscriber();
-				BindingRoot.ViewModel.prototype = new Subscriber();
-				BindingRoot.ArrayBinding.prototype = new Subscriber();
-			}
-		});
-    </script>
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
     <div id="test-div" data-bind="test"></div>
     <script>
-		QUnit.test("Bind text", function(assert) {
+	QUnit.test("Bind text", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			function TextObject() {
 
 				this.test = new Binding({
 
-					text: function() { return "Hello World"; }
+					text: function() {
+						return "Hello World";
+					}
 				});
 			}
 
@@ -71,17 +46,26 @@
 			assert.strictEqual(document.querySelector("#test-div").innerHTML, "Hello World");
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <input type="text" id="test-input" data-bind="input" />
     <script>
-		QUnit.test("Bind value", function(assert) {
+	QUnit.test("Bind value", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			function InputObject() {
 
 				this.input = new Binding({
 
-					value: function() { return "Hello World"; }
+					value: function() {
+						return "Hello World";
+					}
 				});
 			}
 
@@ -90,10 +74,17 @@
 			assert.strictEqual(document.querySelector("#test-input").value, "Hello World");
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
     <script>
-		QUnit.test("Constructor can only be called once.", function(assert) {
+	QUnit.test("Constructor can only be called once.", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["BindingRoot"], function(BindingRoot) {
 
 			var exception = null;
 
@@ -104,7 +95,7 @@
 				root = new BindingRoot({});
 				new BindingRoot({});
 			}
-			catch(ex) {
+			catch (ex) {
 
 				exception = ex;
 			}
@@ -117,7 +108,10 @@
 				"cannot be instantiated multiple times.");
 
 			root.disconnect();
+
+			done();
 		});
+	});
     </script>
   </body>
 </html>
