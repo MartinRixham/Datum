@@ -182,5 +182,24 @@
 		});
 	});
 	</script>
+	<div id="unbind" data-bind="unbind"></div>
+  	<script>
+	QUnit.test("Unbind callback", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Text"], function(Text) {
+
+			var text = new Text(function() { return "Hello world."; });
+
+			text.applyBinding(document.body, "unbind");
+			text.removeBinding();
+
+			assert.strictEqual(document.querySelector("#unbind").innerHTML, "");
+
+			done();
+		});
+	});
+	</script>
   </body>
 </html>

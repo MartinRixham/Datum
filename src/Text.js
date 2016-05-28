@@ -2,9 +2,9 @@ define(["Subscriber"], function Text(Subscriber) {
 
 	function Text(text) {
 
-		var parentModel = null;
+		var parentModel;
 
-		var self = this;
+		var boundElements = [];
 
 		this.requestRebind();
 
@@ -27,7 +27,11 @@ define(["Subscriber"], function Text(Subscriber) {
 					createCallback(model, element);
 				}
 			}
+
+			boundElements = elements;
 		};
+
+		var self = this;
 
 		function createCallback(model, element) {
 
@@ -47,6 +51,14 @@ define(["Subscriber"], function Text(Subscriber) {
 		}
 
 		this.removeBinding = function() {
+
+			for (var i = 0; i < boundElements.length; i++) {
+
+				boundElements[i].textContent = "";
+			}
+
+			boundElements = [];
+			parentModel = null;
 		};
 
 		this.test = {
