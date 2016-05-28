@@ -5,8 +5,8 @@ define([
 	"Init",
 	"Update",
 	"Visible",
-	"Subscriber"],
-function Binding(
+	"Subscriber"
+], function Binding(
 	Text,
 	Value,
 	Click,

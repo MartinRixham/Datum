@@ -3,32 +3,13 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Form Example</title>
-		<script src="../../src/Registry.js"></script>
-		<script src="../../src/Subscriber.js"></script>
-		<script src="../../src/UniqueRoot.js"></script>
-		<script src="../../src/BindingRoot.js"></script>
-		<script src="../../src/ViewModel.js"></script>
-		<script src="../../src/Property.js"></script>
-		<script src="../../src/Binding.js"></script>
-		<script src="../../src/ArrayBinding.js"></script>
-		<script src="../../src/ArrayElement.js"></script>
-		<script src="../../src/Push.js"></script>
-		<script src="../../src/Pop.js"></script>
-		<script src="../../src/Shift.js"></script>
-		<script src="../../src/Unshift.js"></script>
-		<script src="../../src/Splice.js"></script>
-		<script src="../../src/Sort.js"></script>
-		<script src="../../src/Reverse.js"></script>
-		<script src="../../src/ObjectBinding.js"></script>
-		<script src="../../src/Serialisable.js"></script>
-		<script src="../../src/DomWatcher.js"></script>
-		<script src="../../src/Datum.js"></script>
-		<script src="../../src/Dependant.js"></script>
-		<script src="../../src/Text.js"></script>
-		<script src="../../src/Value.js"></script>
-		<script src="../../src/Init.js"></script>
-		<script src="../../src/Update.js"></script>
-		<script src="../../src/Click.js"></script>
+		<script src="../../node_modules/requirejs/require.js"></script>
+		<script>
+			requirejs.config({
+
+				baseUrl: "../../src"
+			});
+		</script>
 		<script src="Form.js"></script>
 		<style>
 			body {
@@ -111,9 +92,9 @@
 			</div>
 			<div class="date" data-bind="date">
 				<label>Give a date</label>
-				<input type="number" data-bind="day" />	
-				/ <input type="number" data-bind="month" />	
-				/ <input type="number" data-bind="year" />	
+				<input type="number" data-bind="day" />
+				/ <input type="number" data-bind="month" />
+				/ <input type="number" data-bind="year" />
 			</div>
 			<a class="hide-date" data-bind="hideDate"></a>
 			<div data-bind="yesnos">

@@ -2,8 +2,8 @@ define([
 	"Serialisable",
 	"Property",
 	"Subscriber",
-	"ObjectBinding"],
-function(
+	"ObjectBinding"
+], function(
 	Serialisable,
 	Property,
 	Subscriber,

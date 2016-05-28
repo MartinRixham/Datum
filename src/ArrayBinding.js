@@ -10,8 +10,8 @@ define([
 	"Splice",
 	"Sort",
 	"Reverse",
-	"Subscriber"],
-function(
+	"Subscriber"
+], function(
 	Property,
 	ViewModel,
 	ObjectBinding,
