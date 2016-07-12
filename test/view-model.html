@@ -250,40 +250,6 @@
 		});
 	});
     </script>
-    <div id="after" data-bind="after"></div>
-    <script>
-	QUnit.test("Create binding after root", function(assert) {
-
-		var done = assert.async();
-
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
-
-			function After() {
-
-				this.datum = null;
-			}
-
-			var after = new After();
-
-			var root = new BindingRoot(after);
-
-			after.setProperty("after", new Binding({
-
-				text: function() {
-					return after.datum;
-				}
-			}));
-
-			after.datum = "Hello World";
-
-			assert.strictEqual(document.querySelector("#after").innerHTML, "Hello World");
-
-			root.disconnect();
-
-			done();
-		});
-	});
-    </script>
     <div data-bind="inner"></div>
     <div data-bind="outer"></div>
 	<script>
@@ -321,92 +287,6 @@
 			only.datum = "Hello World";
 
 			assert.strictEqual(count, 2);
-
-			root.disconnect();
-
-			done();
-		});
-	});
-    </script>
-    <div data-bind="afterObject">
-      <div id="after-object" data-bind="after"></div>
-    </div>
-    <script>
-	QUnit.test("Bind subobject after root", function(assert) {
-
-		var done = assert.async();
-
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
-
-			function AfterObject() {
-			}
-
-			var after = new AfterObject();
-
-			var root = new BindingRoot(after);
-
-			after.setProperty("afterObject", {
-
-				datum: null,
-
-				after: new Binding({
-
-					text: function() {
-						return after.afterObject.datum;
-					}
-				})
-			});
-
-			after.afterObject.datum = "Hello World";
-
-			assert.strictEqual(
-				document.querySelector("#after-object").innerHTML,
-				"Hello World");
-
-			root.disconnect();
-
-			done();
-		});
-	});
-    </script>
-    <input type="text" id="update-after" data-bind="updateAfter" />
-    <script>
-	QUnit.test("Update value bound after root", function(assert) {
-
-		var done = assert.async();
-
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
-
-			function AfterUpdate() {
-
-				this.datum = null;
-			}
-
-			var after = new AfterUpdate();
-
-			var root = new BindingRoot(after);
-
-			after.setProperty("updateAfter", new Binding({
-
-				value: function(value) {
-
-					if (value) {
-
-						after.datum = value;
-					}
-
-					return after.datum;
-				}
-			}));
-
-			var element = document.querySelector("#update-after");
-
-			element.value = "Hello World";
-			element.dispatchEvent(new Event("change"));
-
-			assert.strictEqual(
-				after.datum,
-				"Hello World");
 
 			root.disconnect();
 

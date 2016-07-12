@@ -113,15 +113,6 @@ define([
 				properties[key].removeBinding();
 			}
 		};
-
-		var self = this;
-
-		model.setProperty = function(name, property) {
-
-			model[name] = property;
-
-			self.rebindDataStructure();
-		};
 	}
 
 	ViewModel.prototype = new Subscriber();
