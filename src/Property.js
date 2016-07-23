@@ -1,10 +1,10 @@
-define(["ObjectBinding", "Datum"], function(ObjectBinding, Datum) {
+define(["Datum"], function(Datum) {
 
 	function Property(property) {
 
-		if (typeof(property) == "object") {
+		if (property && typeof(property) == "object") {
 
-			this.objectBinding = new ObjectBinding(property);
+			this.objectBinding = new Property.ViewModel(property);
 		}
 
 		this.applyBinding = function(scope, key, model) {
@@ -24,9 +24,11 @@ define(["ObjectBinding", "Datum"], function(ObjectBinding, Datum) {
 			Object.defineProperty(model, key, {
 
 				get: function() {
+
 					return datum();
 				},
 				set: function(value) {
+
 					datum(value);
 				}
 			});
@@ -45,8 +47,6 @@ define(["ObjectBinding", "Datum"], function(ObjectBinding, Datum) {
 			return !property || !other || property != other;
 		};
 	}
-
-	ObjectBinding.Property = Property;
 
 	return Property;
 });

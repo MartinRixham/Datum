@@ -1,13 +1,11 @@
 define([
 	"Serialisable",
 	"Property",
-	"Subscriber",
-	"ObjectBinding"
+	"Subscriber"
 ], function(
 	Serialisable,
 	Property,
-	Subscriber,
-	ObjectBinding) {
+	Subscriber) {
 
 	function ViewModel(model) {
 
@@ -117,8 +115,7 @@ define([
 
 	ViewModel.prototype = new Subscriber();
 
-	// Break circular dependency.
-	ObjectBinding.ViewModel = ViewModel;
+	Property.ViewModel = ViewModel;
 
 	return ViewModel;
 });
