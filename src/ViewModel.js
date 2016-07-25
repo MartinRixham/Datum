@@ -15,31 +15,13 @@ define([
 
 		var bindings = {};
 
+		var self = this;
+
 		this.applyBinding = function(scope, name) {
 
-			var element;
-
-			if (scope) {
-
-				var elements = this.getAllMatchingElements(scope, name);
-
-				if (elements.length > 1) {
-
-					throw new Error("Objects can only be bound to one element.");
-				}
-				else if (elements.length) {
-
-					element = elements[0];
-				}
-			}
-			else {
-
-				element = document.body;
-			}
+			var element = getElement(scope, name);
 
 			if (element) {
-
-				var self = this;
 
 				element._rebind = function() {
 
@@ -47,14 +29,44 @@ define([
 				};
 			}
 
+			callBindingCallback(element);
+			unbindOldProperties();
+			createNewProperties();
+			bindProperties(element);
+		};
+
+		function getElement(scope, name) {
+
+			if (scope) {
+
+				var elements = self.getAllMatchingElements(scope, name);
+
+				if (elements.length > 1) {
+
+					throw new Error("Objects can only be bound to one element.");
+				}
+				else if (elements.length) {
+
+					return elements[0];
+				}
+			}
+			else {
+
+				return document.body;
+			}
+		}
+
+		function callBindingCallback(element) {
+
 			if (model.onBind) {
 
 				model.onBind(element);
 			}
+		}
 
-			var key;
+		function unbindOldProperties() {
 
-			for (key in properties) {
+			for (var key in properties) {
 
 				if (!model[key]) {
 
@@ -63,8 +75,11 @@ define([
 					delete properties[key];
 				}
 			}
+		}
 
-			for (key in model) {
+		function createNewProperties() {
+
+			for (var key in model) {
 
 				if (isNew(key) && key != "_scope") {
 
@@ -85,6 +100,18 @@ define([
 					}
 				}
 			}
+		}
+
+		function isNew(key) {
+
+			var property = properties[key];
+
+			return !property || property.isOlderThan(model[key]);
+		}
+
+		function bindProperties(element) {
+
+			var key;
 
 			for (key in properties) {
 
@@ -95,13 +122,6 @@ define([
 
 				bindings[key].applyBinding(element, key, model);
 			}
-		};
-
-		function isNew(key) {
-
-			var property = properties[key];
-
-			return !property || property.isOlderThan(model[key]);
 		}
 
 		this.removeBinding = function() {
