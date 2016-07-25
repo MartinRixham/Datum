@@ -8,14 +8,6 @@ require(["Binding", "Click", "BindingRoot"], function(Binding, Click, BindingRoo
 
 		this.date = new DatePicker();
 
-		this.yesnos =
-			[
-				new YesNoQuestion("Is this the first question?"),
-				new YesNoQuestion("Is this the second question?")
-			];
-
-		this.theNewQuestion = "";
-
 		this.input1 = new Binding({
 
 			value: function(value) {
@@ -50,55 +42,6 @@ require(["Binding", "Click", "BindingRoot"], function(Binding, Click, BindingRoo
 			}
 		});
 
-		this.hideDate = new Binding({
-
-			click: function() {
-
-				if (this.date) {
-
-					this.date = null;
-				}
-				else {
-
-					this.date = new DatePicker();
-				}
-			},
-
-			text: function() {
-
-				if (this.date) {
-
-					return "Hide";
-				}
-				else {
-
-					return "Show";
-				}
-			}
-		});
-
-		this.newQuestion = new Binding({
-
-			value: function(value) {
-
-				if (value) {
-
-					this.theNewQuestion = value;
-				}
-
-				return this.theNewQuestion;
-			}
-		});
-
-		this.addQuestion = new Binding({
-
-			click: function() {
-
-				this.yesnos.push(new YesNoQuestion(this.theNewQuestion + "?"));
-				this.theNewQuestion = "";
-			}
-		});
-
 		this.go = new Binding({
 
 			click: function() {
@@ -112,14 +55,6 @@ require(["Binding", "Click", "BindingRoot"], function(Binding, Click, BindingRoo
 				};
 				request.send();
 			}
-		});
-
-		this.sort = new Click(function() {
-
-			this.yesnos.sort(function(a, b) {
-
-				return a.compareTo(b);
-			});
 		});
 	}
 
@@ -183,58 +118,6 @@ require(["Binding", "Click", "BindingRoot"], function(Binding, Click, BindingRoo
 				return this.theyear;
 			}
 		});
-	}
-
-	function YesNoQuestion(question) {
-
-		this.thequestion = question;
-
-		this.answer = "no answer given";
-
-		this.yesno = new Binding({
-
-			value: function(value) {
-
-				if (value) {
-
-					this.answer = value;
-				}
-			},
-			text: function() {
-
-				return this.answer;
-			}
-		});
-
-		this.question = new Binding({
-
-			text: function() {
-
-				return this.thequestion;
-			}
-		});
-
-		this.compareTo = function(other) {
-
-			var thisQuestion =
-				this.thequestion.toUpperCase();
-
-			var otherQuestion =
-				other.thequestion.toUpperCase();
-
-			if (thisQuestion > otherQuestion) {
-
-				return 1;
-			}
-			else if (thisQuestion < otherQuestion) {
-
-				return -1;
-			}
-			else {
-
-				return 0;
-			}
-		};
 	}
 
 	new BindingRoot(form = new Form());
