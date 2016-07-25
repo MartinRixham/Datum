@@ -189,6 +189,7 @@
 				this.plainValue = new Binding({
 
 					value: function() {
+
 						return self.datum;
 					}
 				});
@@ -208,6 +209,52 @@
 		});
 	});
     </script>
+		<div id="one" data-bind="two">
+		  <input type="text" data-bind="input" />
+		</div>
+		<div id="two" data-bind="two">
+		  <input type="text" data-bind="input" />
+		</div>
+		<script>
+			QUnit.test("Bind view model to two elements", function(assert) {
+
+				var done = assert.async();
+
+				getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+
+					function TwoObject() {
+
+						this.datum = null;
+
+						var self = this;
+
+						this.two = {
+
+							input: new Binding({
+
+								value: function() {
+
+									return self.datum;
+								}
+							})
+						};
+					}
+
+					var two = new TwoObject();
+
+					var root = new BindingRoot(two);
+
+					two.datum = "Hello World";
+
+					assert.strictEqual(document.querySelector("#one input").value, "Hello World");
+					assert.strictEqual(document.querySelector("#two input").value, "Hello World");
+
+					root.disconnect();
+
+					done();
+				});
+			});
+		</script>
     <input type="text" id="plain-change" data-bind="plainChange" />
     <script>
 	QUnit.test("Update plain data from input", function(assert) {
@@ -405,14 +452,7 @@
 
 		var done = assert.async();
 
-		getRequire()([
-			"Update",
-			"Binding",
-			"BindingRoot"
-		], function(
-			Update,
-			Binding,
-			BindingRoot) {
+		getRequire()(["Update", "BindingRoot"], function(Update, BindingRoot) {
 
 			var count = 0;
 

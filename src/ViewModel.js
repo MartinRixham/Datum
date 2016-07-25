@@ -19,7 +19,35 @@ define([
 
 		this.applyBinding = function(scope, name) {
 
-			var element = getElement(scope, name);
+			var elements = getElements(scope, name);
+
+			for (var i = 0; i < elements.length; i++) {
+
+				var element = elements[i];
+
+				createRebinder(element, scope, name);
+				callBindingCallback(element);
+				unbindOldProperties();
+				createNewProperties();
+				bindProperties(element);
+			}
+		};
+
+		function getElements(scope, name) {
+
+			if (scope) {
+
+				var elements = self.getAllMatchingElements(scope, name);
+
+				return elements.length ? elements : [null];
+			}
+			else {
+
+				return [document.body];
+			}
+		}
+
+		function createRebinder(element, scope, name) {
 
 			if (element) {
 
@@ -27,32 +55,6 @@ define([
 
 					self.applyBinding(scope, name);
 				};
-			}
-
-			callBindingCallback(element);
-			unbindOldProperties();
-			createNewProperties();
-			bindProperties(element);
-		};
-
-		function getElement(scope, name) {
-
-			if (scope) {
-
-				var elements = self.getAllMatchingElements(scope, name);
-
-				if (elements.length > 1) {
-
-					throw new Error("Objects can only be bound to one element.");
-				}
-				else if (elements.length) {
-
-					return elements[0];
-				}
-			}
-			else {
-
-				return document.body;
 			}
 		}
 
