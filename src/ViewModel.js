@@ -13,8 +13,6 @@ define([
 
 		var properties = {};
 
-		var bindings = {};
-
 		var self = this;
 
 		this.applyBinding = function(scope, name) {
@@ -94,7 +92,7 @@ define([
 
 					if (property && property.applyBinding && property.removeBinding) {
 
-						bindings[key] = property;
+						properties[key] = property;
 					}
 					else if (typeof(property) != "function") {
 
@@ -108,21 +106,16 @@ define([
 
 			var property = properties[key];
 
-			return !property || property.isOlderThan(model[key]);
+			return !property ||
+				property.isOlderThan &&
+				property.isOlderThan(model[key]);
 		}
 
 		function bindProperties(element) {
 
-			var key;
-
-			for (key in properties) {
+			for (var key in properties) {
 
 				properties[key].applyBinding(element, key, model);
-			}
-
-			for (key in bindings) {
-
-				bindings[key].applyBinding(element, key, model);
 			}
 		}
 
