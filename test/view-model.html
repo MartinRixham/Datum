@@ -29,21 +29,19 @@
 
 		var done = assert.async();
 
-		getRequire()(["Datum", "Binding", "BindingRoot"], function(Datum, Binding, BindingRoot) {
+		getRequire()(["Datum", "Value", "ViewModel"], function(Datum, Value, ViewModel) {
 
 			function InputObject() {
 
 				this.datum = new Datum();
 
-				this.valueInput = new Binding({
-
-					value: this.datum
-				});
+				this.valueInput = new Value(this.datum);
 			}
 
 			var input = new InputObject();
 
-			var root = new BindingRoot(input);
+			var viewModel = new ViewModel(input);
+			viewModel.applyBinding();
 
 			var element = document.querySelector("#value-input");
 
@@ -51,8 +49,6 @@
 			element.dispatchEvent(new Event("change"));
 
 			assert.strictEqual(input.datum(), "Hello World");
-
-			root.disconnect();
 
 			done();
 		});
@@ -67,37 +63,33 @@
 
 		var done = assert.async();
 
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		getRequire()(["Text", "ViewModel"], function(Text, ViewModel) {
 
 			function TextObject() {
 
-				this.bind = new Binding({
+				this.bind =
+					new Text(function() {
 
-					text: function() {
 						return "Eh Up Planet";
-					}
-				});
+					});
 
 				this.super = {
 
-					sub: new Binding({
+					sub: new Text(function() {
 
-						text: function() {
-							return "Hello World";
-						}
+						return "Hello World";
 					})
 				};
 			}
 
-			var root = new BindingRoot(new TextObject());
+			var viewModel = new ViewModel(new TextObject());
+			viewModel.applyBinding();
 
 			assert.strictEqual(
 				document.querySelector("#super-bind").innerHTML,
 				"Eh Up Planet");
 
 			assert.strictEqual(document.querySelector("#sub").innerHTML, "Hello World");
-
-			root.disconnect();
 
 			done();
 		});
@@ -110,26 +102,23 @@
 
 		var done = assert.async();
 
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		getRequire()(["Text", "ViewModel"], function(Text, ViewModel) {
 
 			function TextObject() {
 
 				this.nonSuper = {
 
-					nonSub: new Binding({
+					nonSub: new Text(function() {
 
-						text: function() {
-							return "Hello World";
-						}
+						return "Hello World";
 					})
 				};
 			}
 
-			var root = new BindingRoot(new TextObject());
+			var viewModel = new ViewModel(new TextObject());
+			viewModel.applyBinding();
 
 			assert.notEqual(document.querySelector("#non-sub").innerHTML, "Hello World");
-
-			root.disconnect();
 
 			done();
 		});
@@ -141,7 +130,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		getRequire()(["Text", "ViewModel"], function(Text, ViewModel) {
 
 			function PlainObject() {
 
@@ -149,24 +138,21 @@
 
 				var self = this;
 
-				this.plain = new Binding({
-
-					text: function() {
+				this.plain =
+					new Text(function() {
 
 						return self.datum;
-					}
-				});
+					});
 			}
 
 			var plainObject = new PlainObject();
 
-			var root = new BindingRoot(plainObject);
+			var viewModel = new ViewModel(plainObject);
+			viewModel.applyBinding();
 
 			plainObject.datum = "Hello World";
 
 			assert.strictEqual(document.querySelector("#plain").innerHTML, "Hello World");
-
-			root.disconnect();
 
 			done();
 		});
@@ -178,7 +164,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		getRequire()(["Value", "ViewModel"], function(Value, ViewModel) {
 
 			function PlainObject() {
 
@@ -186,24 +172,21 @@
 
 				var self = this;
 
-				this.plainValue = new Binding({
-
-					value: function() {
+				this.plainValue =
+					new Value(function() {
 
 						return self.datum;
-					}
-				});
+					});
 			}
 
 			var plainObject = new PlainObject();
 
-			var root = new BindingRoot(plainObject);
+			var viewModel = new ViewModel(plainObject);
+			viewModel.applyBinding();
 
 			plainObject.datum = "Hello World";
 
 			assert.strictEqual(document.querySelector("#plainValue").value, "Hello World");
-
-			root.disconnect();
 
 			done();
 		});
@@ -220,7 +203,7 @@
 
 				var done = assert.async();
 
-				getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+				getRequire()(["Value", "ViewModel"], function(Value, ViewModel) {
 
 					function TwoObject() {
 
@@ -230,26 +213,23 @@
 
 						this.two = {
 
-							input: new Binding({
-
-								value: function() {
+							input:
+								new Value(function() {
 
 									return self.datum;
-								}
-							})
+								})
 						};
 					}
 
 					var two = new TwoObject();
 
-					var root = new BindingRoot(two);
+					var viewModel = new ViewModel(two);
+					viewModel.applyBinding();
 
 					two.datum = "Hello World";
 
 					assert.strictEqual(document.querySelector("#one input").value, "Hello World");
 					assert.strictEqual(document.querySelector("#two input").value, "Hello World");
-
-					root.disconnect();
 
 					done();
 				});
@@ -261,15 +241,14 @@
 
 		var done = assert.async();
 
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		getRequire()(["Value", "ViewModel"], function(Value, ViewModel) {
 
 			function InputObject() {
 
 				this.datum = null;
 
-				this.plainChange = new Binding({
-
-					value: function(value) {
+				this.plainChange =
+					new Value(function(value) {
 
 						if (value) {
 
@@ -277,13 +256,13 @@
 						}
 
 						return this.datum;
-					}
-				});
+					});
 			}
 
 			var input = new InputObject();
 
-			var root = new BindingRoot(input);
+			var viewModel = new ViewModel(input);
+			viewModel.applyBinding();
 
 			var element = document.querySelector("#plain-change");
 
@@ -291,8 +270,6 @@
 			element.dispatchEvent(new Event("change"));
 
 			assert.strictEqual(input.datum, "Hello World");
-
-			root.disconnect();
 
 			done();
 		});
@@ -305,7 +282,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		getRequire()(["Text", "BindingRoot"], function(Text, BindingRoot) {
 
 			var count = 0;
 
@@ -313,24 +290,22 @@
 
 				this.datum = null;
 
-				this.inner = new Binding({
+				this.inner =
+					new Text(function() {
 
-					text: function() {
 						count += 1;
-					}
-				});
+					});
 			}
 
 			var only = new Only();
 
 			var root = new BindingRoot(only);
 
-			only.outer = new Binding({
+			only.outer =
+				new Text(function() {
 
-				text: function() {
 					return only.datum;
-				}
-			});
+				});
 
 			only.datum = "Hello World";
 
@@ -352,26 +327,26 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "BindingRoot"], function(Text, BindingRoot) {
+		getRequire()(["Text", "ViewModel"], function(Text, ViewModel) {
 
 			function ScopeObject() {
 
 				this.subscope = {};
 
 				this.text = new Text(function() {
+
 					return "Hello World";
 				});
 			}
 
 			var scope = new ScopeObject();
 
-			var root = new BindingRoot(scope);
+			var viewModel = new ViewModel(scope);
+			viewModel.applyBinding();
 
 			var element = document.querySelector("#scope");
 
 			assert.notEqual(element.textContent, "Hello World");
-
-			root.disconnect();
 
 			done();
 		});
@@ -383,7 +358,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		getRequire()(["ViewModel"], function(ViewModel) {
 
 			var elementId;
 
@@ -398,11 +373,10 @@
 				};
 			}
 
-			var root = new BindingRoot(new OnBindObject());
+			var viewModel = new ViewModel(new OnBindObject());
+			viewModel.applyBinding();
 
 			assert.strictEqual(elementId, "on-bind");
-
-			root.disconnect();
 
 			done();
 		});
@@ -414,7 +388,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		getRequire()(["Binding", "ViewModel"], function(Binding, ViewModel) {
 
 			var count = 0;
 
@@ -431,15 +405,14 @@
 
 			var onBindOnce = new OnBindOnceObject();
 
-			var root = new BindingRoot(onBindOnce);
+			var viewModel = new ViewModel(onBindOnce);
+			viewModel.applyBinding();
 
 			onBindOnce.bindOnce.newBinding = new Binding({});
 
 			setTimeout(function() {
 
 				assert.strictEqual(count, 1);
-
-				root.disconnect();
 
 				done();
 			});
@@ -452,7 +425,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Update", "BindingRoot"], function(Update, BindingRoot) {
+		getRequire()(["Update", "ViewModel"], function(Update, ViewModel) {
 
 			var count = 0;
 
@@ -473,13 +446,12 @@
 
 			var subproperty = new Subproperty();
 
-			var root = new BindingRoot(subproperty);
+			var viewModel = new ViewModel(subproperty);
+			viewModel.applyBinding();
 
 			subproperty.subobject.property = "Eh up planet.";
 
 			assert.strictEqual(count, 2);
-
-			root.disconnect();
 
 			done();
 		});
