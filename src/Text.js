@@ -12,7 +12,7 @@ define(["Subscriber"], function Text(Subscriber) {
 
 			parentModel = model;
 
-			var elements = this.getAllMatchingElements(scope, name);
+			var elements = this.getMatchingElements(scope, name);
 
 			for (var i = 0; i < elements.length; i++) {
 

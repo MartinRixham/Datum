@@ -44,9 +44,7 @@
 			var root = new BindingRoot(new TextObject());
 
 			var div = document.createElement("div");
-
 			div.id = "test-div";
-
 			div.setAttribute("data-bind", "test");
 
 			document.querySelector("#qunit-fixture").appendChild(div);
@@ -56,9 +54,7 @@
 				assert.strictEqual(
 					document.querySelector("#test-div").innerHTML,
 					"Hello World");
-
 				done();
-
 				root.disconnect();
 			});
 		});
@@ -91,9 +87,7 @@
 			var root = new BindingRoot(textObject);
 
 			var div = document.createElement("div");
-
 			div.id = "test-div";
-
 			div.setAttribute("data-bind", "test");
 
 			document.querySelector("#qunit-fixture").appendChild(div);
@@ -106,7 +100,6 @@
 					document.querySelector("#test-div").innerHTML,
 					"Hello World");
 				done();
-
 				root.disconnect();
 			});
 		});
@@ -120,9 +113,7 @@
 		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			var firstDiv = document.createElement("div");
-
 			firstDiv.id = "first";
-
 			firstDiv.setAttribute("data-bind", "test");
 
 			document.querySelector("#qunit-fixture").appendChild(firstDiv);
@@ -141,13 +132,10 @@
 			 var root = new BindingRoot(new TextObject());
 
 			var div = document.createElement("div");
-
 			div.id = "test-div";
-
 			div.setAttribute("data-bind", "test");
 
 			document.querySelector("#qunit-fixture").removeChild(firstDiv);
-
 			document.querySelector("#qunit-fixture").appendChild(div);
 
 			setTimeout(function() {
@@ -156,7 +144,6 @@
 					document.querySelector("#test-div").innerHTML,
 					"Hello World");
 				done();
-
 				root.disconnect();
 			});
 		});
@@ -208,7 +195,6 @@
 			input.setAttribute("data-bind", "test");
 
 			document.querySelector("#qunit-fixture").removeChild(firstInput);
-
 			document.querySelector("#qunit-fixture").appendChild(input);
 
 			setTimeout(function() {
@@ -268,9 +254,7 @@
 			var root = new BindingRoot(new OuterObject());
 
 			var div = document.createElement("div");
-
 			div.id = "third";
-
 			div.setAttribute("data-bind", "second");
 
 			var inner = document.querySelector("#inner");
@@ -280,11 +264,9 @@
 			setTimeout(function() {
 
 				assert.strictEqual(count, 1);
-
 				assert.strictEqual(
 					document.querySelector("#third").innerHTML,
 					"Hello World");
-
 				done();
 				root.disconnect();
 			});

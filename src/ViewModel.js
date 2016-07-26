@@ -35,7 +35,7 @@ define([
 
 			if (scope) {
 
-				var elements = self.getAllMatchingElements(scope, name);
+				var elements = self.getMatchingElements(scope, name);
 
 				return elements.length ? elements : [null];
 			}

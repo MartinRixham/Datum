@@ -20,7 +20,7 @@ define(["Registry"], function(Registry) {
 			}
 		};
 
-		this.getAllMatchingElements = function(scope, key) {
+		this.getMatchingElements = function(scope, key) {
 
 			if (isNaN(key)) {
 
@@ -29,18 +29,6 @@ define(["Registry"], function(Registry) {
 			else {
 
 				return [scope.children[key]];
-			}
-		};
-
-		this.getMatchingElement = function(scope, key) {
-
-			if (isNaN(key)) {
-
-				return scope.querySelector("[data-bind=" + key + "]");
-			}
-			else {
-
-				return scope.children[key];
 			}
 		};
 	}
