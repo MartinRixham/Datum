@@ -2,18 +2,7 @@ define([], function() {
 
 	 function DomWatcher(scope) {
 
-		var flag = false;
-
 		var observer = new MutationObserver(function(mutations) {
-
-			if (flag) {
-
-				return;
-			}
-			else {
-
-				flag = true;
-			}
 
 			var mutation = mutations[0];
 
