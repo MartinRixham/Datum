@@ -1,19 +1,25 @@
 define(["Datum"], function(Datum) {
 
-	function Property(property) {
+	function Property(property, createViewModel) {
 
-		if (property && typeof(property) == "object") {
+		var binding = null;
 
-			this.objectBinding = new Property.ViewModel(property);
+		if (property && property.applyBinding && property.removeBinding) {
+
+			binding = property;
+		}
+		else if (property && typeof(property) == "object") {
+
+			binding = createViewModel(property);
 		}
 
 		this.applyBinding = function(scope, key, model) {
 
 			injectProperty(model, key);
 
-			if (this.objectBinding) {
+			if (binding) {
 
-				this.objectBinding.applyBinding(scope, key, model);
+				binding.applyBinding(scope, key, model);
 			}
 		};
 
@@ -36,9 +42,9 @@ define(["Datum"], function(Datum) {
 
 		this.removeBinding = function() {
 
-			if (this.objectBinding) {
+			if (binding) {
 
-				this.objectBinding.removeBinding();
+				binding.removeBinding();
 			}
 		};
 

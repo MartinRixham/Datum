@@ -71,13 +71,14 @@ define([
 				if (!model[key]) {
 
 					properties[key].removeBinding();
-
 					delete properties[key];
 				}
 			}
 		}
 
 		function createNewProperties() {
+
+			function createViewModel(model) { return new ViewModel(model); }
 
 			for (var key in model) {
 
@@ -90,13 +91,9 @@ define([
 
 					var property = model[key];
 
-					if (property && property.applyBinding && property.removeBinding) {
+					if (typeof(property) != "function") {
 
-						properties[key] = property;
-					}
-					else if (typeof(property) != "function") {
-
-						properties[key] = new Property(model[key]);
+						properties[key] = new Property(property, createViewModel);
 					}
 				}
 			}
@@ -129,8 +126,6 @@ define([
 	}
 
 	ViewModel.prototype = new Subscriber();
-
-	Property.ViewModel = ViewModel;
 
 	return ViewModel;
 });

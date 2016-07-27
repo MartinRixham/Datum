@@ -15,14 +15,14 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-	<script>
-		var i = 0;
+    <script>
+			var i = 0;
 
-		function getRequire() {
+			function getRequire() {
 
-			return require.config({ baseUrl: "../src", context: i++ });
-		}
-	</script>
+				return require.config({ baseUrl: "../src", context: i++ });
+			}
+    </script>
     <input type="text" id="value-input" data-bind="valueInput" />
     <script>
 	QUnit.test("Update data from input", function(assert) {

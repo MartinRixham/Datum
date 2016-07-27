@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Property Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+			var i = 0;
+
+			function getRequire() {
+
+				return require.config({ baseUrl: "../src", context: i++ });
+			}
+    </script>
+    <script>
+	QUnit.test("A string is not a view model", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Property"], function(Property) {
+
+			var applyBindingWasCalled = false;
+
+			function createViewModel() {
+
+				return {
+
+					applyBinding: function() {
+
+						applyBindingWasCalled = true;
+					}
+				};
+			}
+
+			var property = new Property("thingy", createViewModel);
+			property.applyBinding(document.body, "key", { key: "thingy" });
+
+			assert.ok(!applyBindingWasCalled);
+
+			done();
+		});
+	});
+    </script>
+		<script>
+	QUnit.test("An empty object is  a view model", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Property"], function(Property) {
+
+			var applyBindingWasCalled = false;
+
+			function createViewModel() {
+
+				return {
+
+					applyBinding: function() {
+
+						applyBindingWasCalled = true;
+					}
+				};
+			}
+
+			var property = new Property({}, createViewModel);
+			property.applyBinding(document.body, "key", { key: {} });
+
+			assert.ok(applyBindingWasCalled);
+
+			done();
+		});
+	});
+		</script>
+		<script>
+	QUnit.test("A binding is not a view model", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Text", "Property"], function(Text, Property) {
+
+			var applyBindingWasCalled = false;
+
+			function createViewModel() {
+
+				return {
+
+					applyBinding: function() {
+
+						applyBindingWasCalled = true;
+					}
+				};
+			}
+
+			var text = new Text(function() { return ""; });
+
+			var property = new Property(text, createViewModel);
+			property.applyBinding(document.body, "key", { key: text });
+
+			assert.ok(!applyBindingWasCalled);
+
+			done();
+		});
+	});
+		</script>
+  </body>
+</html>
