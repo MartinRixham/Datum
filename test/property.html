@@ -24,11 +24,18 @@
 			}
     </script>
     <script>
-	QUnit.test("A string is not a view model", function(assert) {
+	QUnit.test("A string is a property and is not a view model", function(assert) {
 
 		var done = assert.async();
 
 		getRequire()(["Property"], function(Property) {
+
+			var injectPropertyWasCalled = false;
+
+			function injectProperty() {
+
+				injectPropertyWasCalled = true;
+			}
 
 			var applyBindingWasCalled = false;
 
@@ -43,9 +50,10 @@
 				};
 			}
 
-			var property = new Property("thingy", createViewModel);
+			var property = new Property("thingy", injectProperty, createViewModel);
 			property.applyBinding(document.body, "key", { key: "thingy" });
 
+			assert.ok(injectPropertyWasCalled);
 			assert.ok(!applyBindingWasCalled);
 
 			done();
@@ -59,6 +67,13 @@
 
 		getRequire()(["Property"], function(Property) {
 
+			var injectPropertyWasCalled = false;
+
+			function injectProperty() {
+
+				injectPropertyWasCalled = true;
+			}
+
 			var applyBindingWasCalled = false;
 
 			function createViewModel() {
@@ -72,9 +87,10 @@
 				};
 			}
 
-			var property = new Property({}, createViewModel);
+			var property = new Property({}, injectProperty, createViewModel);
 			property.applyBinding(document.body, "key", { key: {} });
 
+			assert.ok(injectPropertyWasCalled);
 			assert.ok(applyBindingWasCalled);
 
 			done();
@@ -87,6 +103,13 @@
 		var done = assert.async();
 
 		getRequire()(["Text", "Property"], function(Text, Property) {
+
+			var injectPropertyWasCalled = false;
+
+			function injectProperty() {
+
+				injectPropertyWasCalled = true;
+			}
 
 			var applyBindingWasCalled = false;
 
@@ -103,9 +126,10 @@
 
 			var text = new Text(function() { return ""; });
 
-			var property = new Property(text, createViewModel);
+			var property = new Property(text, injectProperty, createViewModel);
 			property.applyBinding(document.body, "key", { key: text });
 
+			assert.ok(injectPropertyWasCalled);
 			assert.ok(!applyBindingWasCalled);
 
 			done();

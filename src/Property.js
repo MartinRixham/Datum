@@ -1,6 +1,6 @@
-define(["Datum"], function(Datum) {
+define([], function() {
 
-	function Property(property, createViewModel) {
+	function Property(property, injectProperty, createViewModel) {
 
 		var binding = null;
 
@@ -22,23 +22,6 @@ define(["Datum"], function(Datum) {
 				binding.applyBinding(scope, key, model);
 			}
 		};
-
-		function injectProperty(model, key) {
-
-			var datum = new Datum(property);
-
-			Object.defineProperty(model, key, {
-
-				get: function() {
-
-					return datum();
-				},
-				set: function(value) {
-
-					datum(value);
-				}
-			});
-		}
 
 		this.removeBinding = function() {
 
