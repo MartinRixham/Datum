@@ -1,12 +1,12 @@
 define([
 	"Serialisable",
-	"Datum",
 	"Property",
+	"PropertyType",
 	"Subscriber"
 ], function(
 	Serialisable,
-	Datum,
 	Property,
+	PropertyType,
 	Subscriber) {
 
 	function ViewModel(model) {
@@ -93,7 +93,7 @@ define([
 
 					if (typeof(property) != "function") {
 
-						properties[key] = createProperty(property);
+						properties[key] = new Property(property, createPropertyType());
 					}
 				}
 			}
@@ -108,31 +108,9 @@ define([
 				property.isOlderThan(model[key]);
 		}
 
-		function createProperty(property) {
+		function createPropertyType() {
 
-			function injectProperty(model, key) {
-
-				var datum = new Datum(property);
-
-				Object.defineProperty(model, key, {
-
-					get: function() {
-
-						return datum();
-					},
-					set: function(value) {
-
-						datum(value);
-					}
-				});
-			}
-
-			function createViewModel(model) {
-
-				return new ViewModel(model);
-			}
-
-			return new Property(property, injectProperty, createViewModel);
+			return new PropertyType(function(model) { return new ViewModel(model); });
 		}
 
 		function bindProperties(element) {

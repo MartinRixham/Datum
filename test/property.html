@@ -24,117 +24,89 @@
 			}
     </script>
     <script>
+	function FakePropertyType() {
+
+		this.injectPropertyWasCalled = false;
+
+		this.applyBindingWasCalled = false;
+
+		this.injectProperty = function() {
+
+			this.injectPropertyWasCalled = true;
+		};
+
+		this.createViewModel = function() {
+
+			var self = this;
+
+			return {
+
+				applyBinding: function() {
+
+					self.applyBindingWasCalled = true;
+				}
+			};
+		};
+	}
+    </script>
+    <script>
 	QUnit.test("A string is a property and is not a view model", function(assert) {
 
 		var done = assert.async();
 
 		getRequire()(["Property"], function(Property) {
 
-			var injectPropertyWasCalled = false;
+			var propertyType = new FakePropertyType();
 
-			function injectProperty() {
-
-				injectPropertyWasCalled = true;
-			}
-
-			var applyBindingWasCalled = false;
-
-			function createViewModel() {
-
-				return {
-
-					applyBinding: function() {
-
-						applyBindingWasCalled = true;
-					}
-				};
-			}
-
-			var property = new Property("thingy", injectProperty, createViewModel);
+			var property = new Property("thingy", propertyType);
 			property.applyBinding(document.body, "key", { key: "thingy" });
 
-			assert.ok(injectPropertyWasCalled);
-			assert.ok(!applyBindingWasCalled);
+			assert.ok(propertyType.injectPropertyWasCalled);
+			assert.ok(!propertyType.applyBindingWasCalled);
 
 			done();
 		});
 	});
     </script>
-		<script>
+    <script>
 	QUnit.test("An empty object is  a view model", function(assert) {
 
 		var done = assert.async();
 
 		getRequire()(["Property"], function(Property) {
 
-			var injectPropertyWasCalled = false;
+			var propertyType = new FakePropertyType();
 
-			function injectProperty() {
-
-				injectPropertyWasCalled = true;
-			}
-
-			var applyBindingWasCalled = false;
-
-			function createViewModel() {
-
-				return {
-
-					applyBinding: function() {
-
-						applyBindingWasCalled = true;
-					}
-				};
-			}
-
-			var property = new Property({}, injectProperty, createViewModel);
+			var property = new Property({}, propertyType);
 			property.applyBinding(document.body, "key", { key: {} });
 
-			assert.ok(injectPropertyWasCalled);
-			assert.ok(applyBindingWasCalled);
+			assert.ok(propertyType.injectPropertyWasCalled);
+			assert.ok(propertyType.applyBindingWasCalled);
 
 			done();
 		});
 	});
-		</script>
-		<script>
+    </script>
+    <script>
 	QUnit.test("A binding is not a view model", function(assert) {
 
 		var done = assert.async();
 
 		getRequire()(["Text", "Property"], function(Text, Property) {
 
-			var injectPropertyWasCalled = false;
-
-			function injectProperty() {
-
-				injectPropertyWasCalled = true;
-			}
-
-			var applyBindingWasCalled = false;
-
-			function createViewModel() {
-
-				return {
-
-					applyBinding: function() {
-
-						applyBindingWasCalled = true;
-					}
-				};
-			}
+			var propertyType = new FakePropertyType();
 
 			var text = new Text(function() { return ""; });
 
-			var property = new Property(text, injectProperty, createViewModel);
+			var property = new Property(text, propertyType);
 			property.applyBinding(document.body, "key", { key: text });
 
-			assert.ok(injectPropertyWasCalled);
-			assert.ok(!applyBindingWasCalled);
+			assert.ok(propertyType.injectPropertyWasCalled);
+			assert.ok(!propertyType.applyBindingWasCalled);
 
 			done();
 		});
 	});
-		</script>
+    </script>
   </body>
 </html>

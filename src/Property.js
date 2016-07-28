@@ -1,6 +1,6 @@
 define([], function() {
 
-	function Property(property, injectProperty, createViewModel) {
+	function Property(property, propertyType) {
 
 		var binding = null;
 
@@ -10,12 +10,12 @@ define([], function() {
 		}
 		else if (property && typeof(property) == "object") {
 
-			binding = createViewModel(property);
+			binding = propertyType.createViewModel(property);
 		}
 
 		this.applyBinding = function(scope, key, model) {
 
-			injectProperty(model, key);
+			propertyType.injectProperty(property, model, key);
 
 			if (binding) {
 
