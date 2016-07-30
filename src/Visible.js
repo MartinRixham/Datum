@@ -2,56 +2,29 @@ define(["Subscriber"], function Visible(Subscriber) {
 
 	function Visible(visible) {
 
-		var self = this;
+		this.updateElement = function(model, element) {
 
-		this.applyBinding = function(scope, name, model) {
+			if (visible.call(model, element)) {
 
-			var elements = this.getMatchingElements(scope, name);
+				element.style.display = null;
+			}
+			else {
 
-			for (var i = 0; i < elements.length; i++) {
-
-				var element = elements[i];
-
-				if (this.isInScope(element, scope)) {
-
-					this.requestRegistrations();
-
-					if (!visible.call(model, element)) {
-
-						element.style.display = "none";
-					}
-
-					applyCallback(element, model);
-				}
+				element.style.display = "none";
 			}
 		};
 
-		function applyCallback(element, model) {
+		this.resetElement = function(element) {
 
-			self.assignUpdater(function() {
-
-				if (!visible._running) {
-
-					visible._running = true;
-
-					if (visible.call(model, element)) {
-
-						element.style.display = null;
-					}
-					else {
-
-						element.style.display = "none";
-					}
-
-					visible._running = false;
-				}
-			},
-			visible,
-			element);
-		}
-
-		this.removeBinding = function() {
+			element.style.display = null;
 		};
+
+		this.call = function() {
+
+			visible.apply(this, arguments);
+		};
+
+		return new Binder(this);
 	}
 
 	Visible.prototype = new Subscriber();
