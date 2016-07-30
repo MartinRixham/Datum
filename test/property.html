@@ -50,7 +50,7 @@
 	}
     </script>
     <script>
-	QUnit.test("A string is a property and is not a view model", function(assert) {
+	QUnit.test("A string is a property", function(assert) {
 
 		var done = assert.async();
 
@@ -69,7 +69,7 @@
 	});
     </script>
     <script>
-	QUnit.test("An empty object is  a view model", function(assert) {
+	QUnit.test("An empty object is a property and a view model", function(assert) {
 
 		var done = assert.async();
 
@@ -88,7 +88,7 @@
 	});
     </script>
     <script>
-	QUnit.test("A binding is not a view model", function(assert) {
+	QUnit.test("A binding is a property", function(assert) {
 
 		var done = assert.async();
 
@@ -108,5 +108,24 @@
 		});
 	});
     </script>
+	<script>
+		QUnit.test("A function is not anything", function(assert) {
+
+			var done = assert.async();
+
+			getRequire()(["Text", "Property"], function(Text, Property) {
+
+				var propertyType = new FakePropertyType();
+
+				var property = new Property(function() {}, propertyType);
+				property.applyBinding(document.body, "key", { key: function() {} });
+
+				assert.ok(!propertyType.injectPropertyWasCalled);
+				assert.ok(!propertyType.applyBindingWasCalled);
+
+				done();
+			});
+		});
+	</script>
   </body>
 </html>

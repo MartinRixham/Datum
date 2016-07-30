@@ -15,7 +15,10 @@ define([], function() {
 
 		this.applyBinding = function(scope, key, model) {
 
-			propertyType.injectProperty(property, model, key);
+			if (typeof(property) != "function") {
+
+				propertyType.injectProperty(property, model, key);
+			}
 
 			if (binding) {
 

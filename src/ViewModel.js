@@ -89,12 +89,7 @@ define([
 						properties[key].removeBinding();
 					}
 
-					var property = model[key];
-
-					if (typeof(property) != "function") {
-
-						properties[key] = new Property(property, createPropertyType());
-					}
+					properties[key] = new Property(model[key], createPropertyType());
 				}
 			}
 		}
