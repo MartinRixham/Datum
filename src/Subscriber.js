@@ -24,7 +24,7 @@ define(["Registry"], function(Registry) {
 
 			if (isNaN(key)) {
 
-				return scope.querySelectorAll("[data-bind=" + key + "]");
+				return [].slice.call(scope.querySelectorAll("[data-bind=" + key + "]"));
 			}
 			else {
 

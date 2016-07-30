@@ -14,6 +14,8 @@ define(["Subscriber"], function Text(Subscriber) {
 
 			var elements = this.getMatchingElements(scope, name);
 
+			removeOldBindings(elements);
+
 			for (var i = 0; i < elements.length; i++) {
 
 				var element = elements[i];
@@ -21,15 +23,33 @@ define(["Subscriber"], function Text(Subscriber) {
 				if (this.isInScope(element, scope)) {
 
 					this.requestRegistrations();
-
 					element.textContent = text.call(model, element);
-
 					createCallback(model, element);
 				}
 			}
 
 			boundElements = elements;
 		};
+
+		function removeOldBindings(elements) {
+
+			for (var i = 0; i < boundElements.length; i++) {
+
+				var boundElement = boundElements[i];
+
+				if (doesNotContain(elements, boundElement)) {
+
+					resetElement(boundElement);
+				}
+			}
+		}
+
+		function doesNotContain(array, element) {
+
+			var contains = array.indexOf(element) + 1;
+
+			return !contains;
+		}
 
 		var self = this;
 
@@ -40,9 +60,7 @@ define(["Subscriber"], function Text(Subscriber) {
 				if (!text._running) {
 
 					text._running = true;
-
 					element.textContent = text.call(model, element);
-
 					text._running = false;
 				}
 			},
@@ -54,12 +72,17 @@ define(["Subscriber"], function Text(Subscriber) {
 
 			for (var i = 0; i < boundElements.length; i++) {
 
-				boundElements[i].textContent = "";
+				resetElement(boundElements[i]);
 			}
 
 			boundElements = [];
 			parentModel = null;
 		};
+
+		function resetElement(element) {
+
+			element.textContent = "";
+		}
 
 		this.test = {
 
