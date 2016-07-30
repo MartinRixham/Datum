@@ -37,11 +37,8 @@ define(["Subscriber"], function Update(Subscriber) {
 				if (!alreadyBound && this.isInScope(element, scope)) {
 
 					this.requestRegistrations();
-
 					update.call(model, element);
-
 					applyCallback(element, model);
-
 					element.callbacks.push(update);
 				}
 			}

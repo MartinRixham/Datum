@@ -1,4 +1,4 @@
-define(["Subscriber"], function Visible(Subscriber) {
+define(["Binder"], function Visible(Binder) {
 
 	function Visible(visible) {
 
@@ -26,8 +26,6 @@ define(["Subscriber"], function Visible(Subscriber) {
 
 		return new Binder(this);
 	}
-
-	Visible.prototype = new Subscriber();
 
 	return Visible;
 });

@@ -1,35 +1,27 @@
-define(["Subscriber"], function Value(Subscriber) {
+define(["Binder"], function Value(Binder) {
 
 	function Value(value) {
 
-		var parentModel = null;
+		this.updateElement = function(model, element) {
 
-		var self = this;
+			var evaluated = value.call(model, undefined, element);
 
-		this.applyBinding = function(scope, name, model) {
+			if (typeof(evaluated) != "undefined") {
 
-			parentModel = model;
-
-			var elements = this.getMatchingElements(scope, name);
-
-			for (var i = 0; i < elements.length; i++) {
-
-				var element = elements[i];
-
-				if (this.isInScope(element, scope)) {
-
-					this.requestRegistrations();
-
-					var evaluated = value.call(model, undefined, element);
-
-					if (typeof(evaluated) != "undefined") {
-
-						element.value = evaluated;
-					}
-
-					addCallbacks(element, model);
-				}
+				element.value = evaluated;
 			}
+
+			addCallbacks(element, model);
+		};
+
+		this.resetElement = function(element) {
+
+			var thingy = element;
+		};
+
+		this.call = function() {
+
+			value.apply(this, arguments);
 		};
 
 		function addCallbacks(element, model) {
@@ -50,40 +42,10 @@ define(["Subscriber"], function Value(Subscriber) {
 
 				element.callbacks.push(value);
 			}
-
-			createCallback(element, model);
 		}
 
-		function createCallback(element, model) {
-
-			self.assignUpdater(function() {
-
-				if (!value._running) {
-
-					value._running = true;
-
-					element.value = value.call(model, undefined, element);
-
-					value._running = false;
-				}
-			},
-			value,
-			element);
-		}
-
-		this.removeBinding = function() {
-		};
-
-		this.test = {
-
-			call: function(element) {
-
-				value.call(parentModel, element);
-			}
-		};
+		return new Binder(this);
 	}
-
-	Value.prototype = new Subscriber();
 
 	return Value;
 });

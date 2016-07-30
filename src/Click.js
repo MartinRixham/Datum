@@ -28,7 +28,6 @@ define(["Subscriber"], function Click(Subscriber) {
 				if (!alreadyBound && this.isInScope(element, scope)) {
 
 					addListener(element, model);
-
 					element.callbacks.push(click);
 				}
 			}
