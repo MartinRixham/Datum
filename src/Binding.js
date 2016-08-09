@@ -1,5 +1,6 @@
 define([
-	"Text",
+	"Binder",
+	"TextBinding",
 	"Value",
 	"Click",
 	"Init",
@@ -7,7 +8,8 @@ define([
 	"Visible",
 	"Subscriber"
 ], function Binding(
-	Text,
+	Binder,
+	TextBinding,
 	Value,
 	Click,
 	Init,
@@ -21,7 +23,7 @@ define([
 
 		if (callbacks.text) {
 
-			bindings.push(new Text(callbacks.text));
+			bindings.push(new Binder(new TextBinding(callbacks.text)));
 		}
 
 		if (callbacks.value) {

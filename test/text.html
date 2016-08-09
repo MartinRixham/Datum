@@ -210,34 +210,34 @@
 		<div data-bind="scope"></div>
 	</div>
 	<script>
-		QUnit.test("Bind to new scope", function(assert) {
+	QUnit.test("Bind to new scope", function(assert) {
 
-			var done = assert.async();
+		var done = assert.async();
 
-			getRequire()(["Text"], function(Text) {
+		getRequire()(["Text"], function(Text) {
 
-				var text = new Text(function() { return "Hello world."; });
+			var text = new Text(function() { return "Hello world."; });
 
-				var firstScope = document.querySelector("#first-scope");
-				text.applyBinding(firstScope, "scope");
+			var firstScope = document.querySelector("#first-scope");
+			text.applyBinding(firstScope, "scope");
 
-				assert.strictEqual(
-					document.querySelector("#first-scope > div").innerHTML,
-					"Hello world.");
+			assert.strictEqual(
+				document.querySelector("#first-scope > div").innerHTML,
+				"Hello world.");
 
-				var secondScope = document.querySelector("#second-scope");
-				text.applyBinding(secondScope, "scope");
+			var secondScope = document.querySelector("#second-scope");
+			text.applyBinding(secondScope, "scope");
 
-				assert.strictEqual(
-					document.querySelector("#first-scope > div").innerHTML,
-					"");
-				assert.strictEqual(
-					document.querySelector("#second-scope > div").innerHTML,
-					"Hello world.");
+			assert.strictEqual(
+				document.querySelector("#first-scope > div").innerHTML,
+				"");
+			assert.strictEqual(
+				document.querySelector("#second-scope > div").innerHTML,
+				"Hello world.");
 
-				done();
-			});
+			done();
 		});
+	});
 	</script>
   </body>
 </html>
