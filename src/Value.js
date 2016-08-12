@@ -2,6 +2,8 @@ define(["Binder"], function Value(Binder) {
 
 	function Value(value) {
 
+		this.setUpElement = function() {};
+
 		this.updateElement = function(model, element) {
 
 			var evaluated = value.call(model, undefined, element);
@@ -14,10 +16,7 @@ define(["Binder"], function Value(Binder) {
 			addCallbacks(element, model);
 		};
 
-		this.resetElement = function(element) {
-
-			var thingy = element;
-		};
+		this.resetElement = function() {};
 
 		this.call = function() {
 

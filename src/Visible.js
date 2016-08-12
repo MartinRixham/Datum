@@ -2,6 +2,8 @@ define(["Binder"], function Visible(Binder) {
 
 	function Visible(visible) {
 
+		this.setUpElement = function() {};
+
 		this.updateElement = function(model, element) {
 
 			if (visible.call(model, element)) {

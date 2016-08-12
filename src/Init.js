@@ -1,35 +1,23 @@
-define(["Subscriber"], function Init(Subscriber) {
+define(["Binder"], function Init(Binder) {
 
 	function Init(init) {
 
-		this.applyBinding = function(scope, name, model) {
+		this.setUpElement = function(model, element) {
 
-			var elements = this.getMatchingElements(scope, name);
-
-			for (var i = 0; i < elements.length; i++) {
-
-				var element = elements[i];
-
-				if (!element.callbacks) {
-
-					element.callbacks = [];
-				}
-
-				var alreadyBound = element.callbacks.indexOf(init) + 1;
-
-				if (!alreadyBound && this.isInScope(element, scope)) {
-
-					init.call(model, element);
-
-					element.callbacks.push(init);
-				}
-			}
+			init.call(model, element);
 		};
 
-		this.removeBinding = function() {};
-	}
+		this.updateElement = function() {};
 
-	Init.prototype = new Subscriber();
+		this.resetElement = function() {};
+
+		this.call = function() {
+
+			init.apply(this, arguments);
+		};
+
+		return new Binder(this);
+	}
 
 	return Init;
 });

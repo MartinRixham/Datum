@@ -15,18 +15,7 @@ define(["Subscriber"], function(Subscriber) {
 			var elements = this.getMatchingElements(scope, name);
 
 			removeOldBindings(elements);
-
-			for (var i = 0; i < elements.length; i++) {
-
-				var element = elements[i];
-
-				if (this.isInScope(element, scope)) {
-
-					this.requestRegistrations();
-					binding.updateElement(model, element);
-					createCallback(model, element);
-				}
-			}
+			bindElements(elements, scope, model);
 
 			boundElements = elements;
 		};
@@ -52,6 +41,29 @@ define(["Subscriber"], function(Subscriber) {
 		}
 
 		var self = this;
+
+		function bindElements(elements, scope, model) {
+
+			for (var i = 0; i < elements.length; i++) {
+
+				var element = elements[i];
+
+				if (self.isInScope(element, scope)) {
+
+					if (boundElements.indexOf(element) + 1) {
+
+						binding.updateElement(model, element);
+					}
+					else {
+
+						binding.setUpElement(model, element);
+						self.requestRegistrations();
+						binding.updateElement(model, element);
+						createCallback(model, element);
+					}
+				}
+			}
+		}
 
 		function createCallback(model, element) {
 
