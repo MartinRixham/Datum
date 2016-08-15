@@ -1,22 +1,8 @@
-define(["Binder"], function Init(Binder) {
+define(["InitBinding", "Binder"], function Init(InitBinding, Binder) {
 
 	function Init(init) {
 
-		this.setUpElement = function(model, element) {
-
-			init.call(model, element);
-		};
-
-		this.updateElement = function() {};
-
-		this.resetElement = function() {};
-
-		this.call = function() {
-
-			init.apply(this, arguments);
-		};
-
-		return new Binder(this);
+		return new Binder(new InitBinding(init));
 	}
 
 	return Init;

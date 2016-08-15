@@ -3,19 +3,17 @@ define([
 	"TextBinding",
 	"ValueBinding",
 	"Click",
-	"Init",
+	"InitBinding",
 	"Update",
-	"Visible",
-	"Subscriber"
+	"Visible"
 ], function Binding(
 	Binder,
 	TextBinding,
 	ValueBinding,
 	Click,
-	Init,
+	InitBinding,
 	Update,
-	Visible,
-	Subscriber) {
+	Visible) {
 
 	function Binding(callbacks) {
 
@@ -38,7 +36,7 @@ define([
 
 		if (callbacks.init) {
 
-			bindings.push(new Init(callbacks.init));
+			bindings.push(new Binder(new InitBinding(callbacks.init)));
 		}
 
 		if (callbacks.update) {
@@ -52,8 +50,6 @@ define([
 		}
 
 		var parentModel = null;
-
-		this.requestRebind();
 
 		// The binding interface is the most important internal interface in Datum.
 		// It has two methods applyBinding and removeBinding.
@@ -96,8 +92,6 @@ define([
 
 		this.test = test;
 	}
-
-	Binding.prototype = new Subscriber();
 
 	return Binding;
 });

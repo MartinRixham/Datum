@@ -1,6 +1,6 @@
 define([], function() {
 
-	function Value(value) {
+	function ValueBinding(value) {
 
 		this.setUpElement = function(model, element) {
 
@@ -28,5 +28,5 @@ define([], function() {
 		};
 	}
 
-	return Value;
+	return ValueBinding;
 });
