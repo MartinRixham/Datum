@@ -2,25 +2,42 @@ define([], function() {
 
 	function ValueBinding(value) {
 
+		var listeners = [];
+
 		this.setUpElement = function(model, element) {
 
-			element.addEventListener("change", function(event) {
+			function listener(event) {
 
 				value.call(model, event.target.value, element);
-			});
+			}
+
+			listeners.push({ "element": element, "listener": listener });
+			element.addEventListener("change", listener);
 		};
 
 		this.updateElement = function(model, element) {
 
-			var evaluated = value.call(model, undefined, element);
-
-			if (typeof(evaluated) != "undefined") {
-
-				element.value = evaluated;
-			}
+			element.value = value.call(model, undefined, element);
 		};
 
-		this.resetElement = function() {};
+		this.resetElement = function(element) {
+
+			var i;
+
+			for (i = 0; i < listeners.length; i++) {
+
+				var listener = listeners[i];
+
+				if (listener.element == element) {
+
+					element.removeEventListener("change", listener.listener);
+					element.value = "";
+					break;
+				}
+			}
+
+			listeners.splice(i, 1);
+		};
 
 		this.call = function() {
 
