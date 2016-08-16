@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>UpdateText Binding Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+	    #qunit ~ * {
+		    display: none;
+	    }
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+	<script>
+		var i = 0;
+
+		function getRequire() {
+
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+	</script>
+	<div id="callback"></div>
+	<script>
+	QUnit.test("Model and element passed on update", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["UpdateBinding"], function(UpdateBinding) {
+
+			var receivedModel;
+			var receivedElement;
+
+			var update =
+				new UpdateBinding(function(element) {
+
+					receivedModel = this;
+					receivedElement = element;
+				});
+
+			var element = document.querySelector("#callback");
+			var model = {};
+			update.updateElement(model, element);
+
+			assert.strictEqual(receivedElement, element);
+			assert.strictEqual(receivedModel, model);
+
+			done();
+		});
+	});
+	</script>
+ </body>
+</html>

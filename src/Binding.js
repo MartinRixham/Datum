@@ -4,7 +4,7 @@ define([
 	"ValueBinding",
 	"ClickBinding",
 	"InitBinding",
-	"Update",
+	"UpdateBinding",
 	"VisibleBinding"
 ], function Binding(
 	Binder,
@@ -12,7 +12,7 @@ define([
 	ValueBinding,
 	ClickBinding,
 	InitBinding,
-	Update,
+	UpdateBinding,
 	VisibleBinding) {
 
 	function Binding(callbacks) {
@@ -41,7 +41,7 @@ define([
 
 		if (callbacks.update) {
 
-			bindings.push(new Update(callbacks.update));
+			bindings.push(new Binder(new UpdateBinding(callbacks.update)));
 		}
 
 		if (callbacks.visible) {
