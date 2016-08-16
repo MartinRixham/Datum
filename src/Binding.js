@@ -2,7 +2,7 @@ define([
 	"Binder",
 	"TextBinding",
 	"ValueBinding",
-	"Click",
+	"ClickBinding",
 	"InitBinding",
 	"Update",
 	"Visible"
@@ -10,7 +10,7 @@ define([
 	Binder,
 	TextBinding,
 	ValueBinding,
-	Click,
+	ClickBinding,
 	InitBinding,
 	Update,
 	Visible) {
@@ -31,7 +31,7 @@ define([
 
 		if (callbacks.click) {
 
-			bindings.push(new Click(callbacks.click));
+			bindings.push(new Binder(new ClickBinding(callbacks.click)));
 		}
 
 		if (callbacks.init) {
