@@ -15,7 +15,7 @@ define([
 
 		rootViewModel.applyBinding();
 
-		this.rebindDataStructure(function() {
+		this.registerRebinder(function() {
 
 			rootViewModel.applyBinding();
 		});

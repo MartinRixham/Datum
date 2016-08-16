@@ -57,7 +57,6 @@
 		getRequire()(["Property"], function(Property) {
 
 			var propertyType = new FakePropertyType();
-
 			var property = new Property("thingy", propertyType);
 			property.applyBinding(document.body, "key", { key: "thingy" });
 
@@ -76,7 +75,6 @@
 		getRequire()(["Property"], function(Property) {
 
 			var propertyType = new FakePropertyType();
-
 			var property = new Property({}, propertyType);
 			property.applyBinding(document.body, "key", { key: {} });
 
@@ -95,9 +93,7 @@
 		getRequire()(["Text", "Property"], function(Text, Property) {
 
 			var propertyType = new FakePropertyType();
-
 			var text = new Text(function() { return ""; });
-
 			var property = new Property(text, propertyType);
 			property.applyBinding(document.body, "key", { key: text });
 
@@ -116,7 +112,6 @@
 			getRequire()(["Text", "Property"], function(Text, Property) {
 
 				var propertyType = new FakePropertyType();
-
 				var property = new Property(function() {}, propertyType);
 				property.applyBinding(document.body, "key", { key: function() {} });
 

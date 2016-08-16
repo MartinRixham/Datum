@@ -31,7 +31,6 @@ define([], function() {
 		this.requestRegistrations = function() {
 
 			registry = [];
-
 			registering = true;
 		};
 
@@ -50,27 +49,26 @@ define([], function() {
 			registering = false;
 		};
 
-		// These variables and the following two methods organise
+		// These variables and the following three methods organise
 		// the application of new bindings.
 		// After the binding root has performed the initial binding
 		// it supplies a rebinding callback to the registry.
 		// When a new binding is instantiated it requests a rebinding.
-		// The rebinding is initialised either by the next datum
-		// to be called or eventually by a callback supplied to setTimeout.
+		// The rebinding is then initialised by the next datum to be called.
 		var rebind = null;
 
 		var rebindRequested = false;
 
-		this.rebindDataStructure = function(callback) {
+		this.registerRebinder = function(callback) {
 
-			if (callback && !rebind) {
+			rebind = callback;
+		};
 
-				rebind = callback;
-			}
-			else if (rebind && rebindRequested) {
+		this.rebindDataStructure = function() {
+
+			if (rebind && rebindRequested) {
 
 				rebindRequested = false;
-
 				rebind();
 			}
 		};

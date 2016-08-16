@@ -5,7 +5,6 @@ define([], function() {
 		var observer = new MutationObserver(function(mutations) {
 
 			var mutation = mutations[0];
-
 			var notTextMutation = mutation.target.children.length;
 
 			if (notTextMutation) {
