@@ -12,13 +12,25 @@ define(["Subscriber"], function(Subscriber) {
 
 			parentModel = model;
 
-			var elements = this.getMatchingElements(scope, name);
+			var elements = getMatchingElements(scope, name);
 
 			removeOldBindings(elements);
 			bindElements(elements, scope, model);
 
 			boundElements = elements;
 		};
+
+		function getMatchingElements(scope, key) {
+
+			if (isNaN(key)) {
+
+				return [].slice.call(scope.querySelectorAll("[data-bind=" + key + "]"));
+			}
+			else {
+
+				return [scope.children[key]];
+			}
+		}
 
 		function removeOldBindings(elements) {
 
@@ -48,7 +60,7 @@ define(["Subscriber"], function(Subscriber) {
 
 				var element = elements[i];
 
-				if (self.isInScope(element, scope)) {
+				if (isInScope(element, scope)) {
 
 					if (boundElements.indexOf(element) + 1) {
 
@@ -62,6 +74,24 @@ define(["Subscriber"], function(Subscriber) {
 						createCallback(model, element);
 					}
 				}
+			}
+		}
+
+		function isInScope(element, scope) {
+
+			element = element.parentElement;
+
+			if (!element) {
+
+				return true;
+			}
+			else if (element._rebind) {
+
+				return element == scope;
+			}
+			else {
+
+				return isInScope(element, scope);
 			}
 		}
 

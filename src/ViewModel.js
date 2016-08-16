@@ -15,8 +15,6 @@ define([
 
 		var properties = {};
 
-		var self = this;
-
 		this.applyBinding = function(scope, name) {
 
 			var elements = getElements(scope, name);
@@ -37,7 +35,7 @@ define([
 
 			if (scope) {
 
-				var elements = self.getMatchingElements(scope, name);
+				var elements = getMatchingElements(scope, name);
 
 				return elements.length ? elements : [null];
 			}
@@ -46,6 +44,20 @@ define([
 				return [document.body];
 			}
 		}
+
+		function getMatchingElements(scope, key) {
+
+			if (isNaN(key)) {
+
+				return [].slice.call(scope.querySelectorAll("[data-bind=" + key + "]"));
+			}
+			else {
+
+				return [scope.children[key]];
+			}
+		}
+
+		var self = this;
 
 		function createRebinder(element, scope, name) {
 
