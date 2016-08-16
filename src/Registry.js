@@ -14,7 +14,7 @@ define([], function() {
 		// instruct the registry to assign the updater
 		// which it supplies to the registry.
 		// The updater assigners will then be called to assign
-		// updater to any datum which supplied an assigner.
+		// the updater to any datum which supplied an assigner.
 		// If in the future the value of a datum which has been
 		// assigned the updater changes the datum will call the
 		// updater which will update the elements which are bound
