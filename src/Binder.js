@@ -15,7 +15,7 @@ define(["Subscriber"], function(Subscriber) {
 			var elements = getMatchingElements(scope, name);
 
 			removeOldBindings(elements);
-			bindElements(elements, scope, model);
+			bindElements(elements, scope, model, name);
 
 			boundElements = elements;
 		};
@@ -54,7 +54,7 @@ define(["Subscriber"], function(Subscriber) {
 
 		var self = this;
 
-		function bindElements(elements, scope, model) {
+		function bindElements(elements, scope, model, name) {
 
 			for (var i = 0; i < elements.length; i++) {
 
@@ -70,8 +70,8 @@ define(["Subscriber"], function(Subscriber) {
 
 						binding.setUpElement(model, element);
 						self.requestRegistrations();
-						binding.updateElement(model, element);
-						createCallback(model, element);
+						binding.updateElement(model, element, name);
+						createCallback(model, element, name);
 					}
 				}
 			}
@@ -95,14 +95,14 @@ define(["Subscriber"], function(Subscriber) {
 			}
 		}
 
-		function createCallback(model, element) {
+		function createCallback(model, element, name) {
 
 			self.assignUpdater(function() {
 
 				if (!self.running) {
 
 					self.running = true;
-					binding.updateElement(model, element);
+					binding.updateElement(model, element, name);
 					self.running = false;
 				}
 			},

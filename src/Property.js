@@ -2,7 +2,9 @@ define([], function() {
 
 	function Property(property, propertyType) {
 
-		var binding = null;
+		var binding;
+
+		var objectBinding;
 
 		if (property && property.applyBinding && property.removeBinding) {
 
@@ -11,6 +13,7 @@ define([], function() {
 		else if (property && typeof(property) == "object") {
 
 			binding = propertyType.createViewModel(property);
+			objectBinding = propertyType.createObjectBinding();
 		}
 
 		this.applyBinding = function(scope, key, model) {
@@ -24,6 +27,11 @@ define([], function() {
 
 				binding.applyBinding(scope, key, model);
 			}
+
+			if (objectBinding) {
+
+				objectBinding.applyBinding(scope, key, model);
+			}
 		};
 
 		this.removeBinding = function() {
@@ -31,6 +39,11 @@ define([], function() {
 			if (binding) {
 
 				binding.removeBinding();
+			}
+
+			if (objectBinding) {
+
+				objectBinding.removeBinding();
 			}
 		};
 

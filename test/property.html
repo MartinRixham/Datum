@@ -28,22 +28,35 @@
 
 		this.injectPropertyWasCalled = false;
 
-		this.applyBindingWasCalled = false;
+		this.viewModelBindingWasApplied = false;
+
+		this.objectBindingWasApplied = false;
 
 		this.injectProperty = function() {
 
 			this.injectPropertyWasCalled = true;
 		};
 
-		this.createViewModel = function() {
+		var self = this;
 
-			var self = this;
+		this.createViewModel = function() {
 
 			return {
 
 				applyBinding: function() {
 
-					self.applyBindingWasCalled = true;
+					self.viewModelBindingWasApplied = true;
+				}
+			};
+		};
+
+		this.createObjectBinding = function() {
+
+			return {
+
+				applyBinding: function() {
+
+					self.objectBindingWasApplied = true;
 				}
 			};
 		};
@@ -61,7 +74,8 @@
 			property.applyBinding(document.body, "key", { key: "thingy" });
 
 			assert.ok(propertyType.injectPropertyWasCalled);
-			assert.ok(!propertyType.applyBindingWasCalled);
+			assert.ok(!propertyType.viewModelBindingWasApplied);
+			assert.ok(!propertyType.objectBindingWasApplied);
 
 			done();
 		});
@@ -79,7 +93,8 @@
 			property.applyBinding(document.body, "key", { key: {} });
 
 			assert.ok(propertyType.injectPropertyWasCalled);
-			assert.ok(propertyType.applyBindingWasCalled);
+			assert.ok(propertyType.viewModelBindingWasApplied);
+			assert.ok(propertyType.objectBindingWasApplied);
 
 			done();
 		});
@@ -98,29 +113,31 @@
 			property.applyBinding(document.body, "key", { key: text });
 
 			assert.ok(propertyType.injectPropertyWasCalled);
-			assert.ok(!propertyType.applyBindingWasCalled);
+			assert.ok(!propertyType.viewModelBindingWasApplied);
+			assert.ok(!propertyType.objectBindingWasApplied);
 
 			done();
 		});
 	});
     </script>
-	<script>
-		QUnit.test("A function is not anything", function(assert) {
+    <script>
+	QUnit.test("A function is not anything", function(assert) {
 
-			var done = assert.async();
+		var done = assert.async();
 
-			getRequire()(["Text", "Property"], function(Text, Property) {
+		getRequire()(["Text", "Property"], function(Text, Property) {
 
-				var propertyType = new FakePropertyType();
-				var property = new Property(function() {}, propertyType);
-				property.applyBinding(document.body, "key", { key: function() {} });
+			var propertyType = new FakePropertyType();
+			var property = new Property(function() {}, propertyType);
+			property.applyBinding(document.body, "key", { key: function() {} });
 
-				assert.ok(!propertyType.injectPropertyWasCalled);
-				assert.ok(!propertyType.applyBindingWasCalled);
+			assert.ok(!propertyType.injectPropertyWasCalled);
+			assert.ok(!propertyType.viewModelBindingWasApplied);
+			assert.ok(!propertyType.objectBindingWasApplied);
 
-				done();
-			});
+			done();
 		});
-	</script>
+	});
+    </script>
   </body>
 </html>
