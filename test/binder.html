@@ -412,5 +412,55 @@
 		});
 	});
     </script>
+	<div data-bind="name">Hello world.</div>
+    <script>
+	QUnit.test("Get parameters from callbacks", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Binder"], function(Binder) {
+
+			var model = {};
+			var initialisedModel;
+			var initialisedElement;
+			var updatedModel;
+			var updatedElement;
+			var updateKey;
+			var resetElement;
+
+			var binding =
+				new Binder({
+
+					setUpElement: function(model, element) {
+
+						initialisedModel = model;
+						initialisedElement = element;
+					},
+					updateElement: function(model, element, key) {
+
+						updatedModel = model;
+						updatedElement = element;
+						updateKey = key;
+					},
+					resetElement: function(element) {
+
+						resetElement = element;
+					}
+				});
+
+			binding.applyBinding(document.body, "name", model);
+			binding.removeBinding();
+
+			assert.strictEqual(initialisedModel, model);
+			assert.strictEqual(initialisedElement.innerHTML, "Hello world.");
+			assert.strictEqual(updatedModel, model);
+			assert.strictEqual(updatedElement.innerHTML, "Hello world.");
+			assert.strictEqual(updateKey, "name");
+			assert.strictEqual(resetElement.innerHTML, "Hello world.");
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>
