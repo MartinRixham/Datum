@@ -17,7 +17,7 @@ define(["Subscriber"], function(Subscriber) {
 
 			if (!model) {
 
-				var children = element.children;
+				var children = element.childNodes;
 
 				for (var i = children.length - 1; i >= 0; i--) {
 

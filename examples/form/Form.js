@@ -42,6 +42,33 @@ require(["Binding", "Click", "BindingRoot"], function(Binding, Click, BindingRoo
 			}
 		});
 
+		this.hideDate = new Binding({
+
+			click: function() {
+
+				if (this.date) {
+
+					this.date = null;
+				}
+				else {
+
+					this.date = new DatePicker();
+				}
+			},
+
+			text: function() {
+
+				if (this.date) {
+
+					return "Hide";
+				}
+				else {
+
+					return "Show";
+				}
+			}
+		});
+
 		this.go = new Binding({
 
 			click: function() {
