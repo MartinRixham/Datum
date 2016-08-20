@@ -15,14 +15,14 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-	<script>
+    <script>
 		var i = 0;
 
 		function getRequire() {
 
 			return require.config({ baseUrl: "../src", context: i++ });
 		}
-	</script>
+    </script>
 	<div data-bind="firstText"></div>
 	<div data-bind="secondText"></div>
 	<script>

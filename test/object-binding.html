@@ -15,7 +15,7 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-	<script>
+    <script>
 		var i = 0;
 
 		function getRequire() {
@@ -44,11 +44,42 @@
 			binding.setUpElement(model, element);
 			binding.updateElement(model, element, "notObject");
 
-			assert.strictEqual(0, element.children.length);
+			assert.strictEqual(element.children.length, 0);
 
 			done();
 		});
 	});
 	</script>
+	<div id="notNull">
+		<div></div>
+		<div></div>
+	</div>
+    <script>
+	QUnit.test("Replace elements when object not null", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ObjectBinding"], function(ObjectBinding) {
+
+			var binding = new ObjectBinding();
+			var element = document.querySelector("#notNull");
+			var model = {
+
+				notNull: null
+			};
+
+			binding.setUpElement(model, element);
+			binding.updateElement(model, element, "notNull");
+
+			model.notNull = {};
+
+			binding.updateElement(model, element, "notNull");
+
+			assert.strictEqual(element.children.length, 2);
+
+			done();
+		});
+	});
+    </script>
  </body>
 </html>

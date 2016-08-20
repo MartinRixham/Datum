@@ -14,14 +14,30 @@ define(["Subscriber"], function(Subscriber) {
 		this.updateElement = function(parentModel, element, key) {
 
 			var model = parentModel[key];
+			var children;
 
-			if (!model) {
+			if (model) {
 
-				var children = element.childNodes;
+				for (var i = 0; i < elementChildren.length; i++) {
 
-				for (var i = children.length - 1; i >= 0; i--) {
+					if (elementChildren[i].element == element) {
 
-					element.removeChild(children[i]);
+						children = elementChildren[i].children;
+					}
+				}
+
+				for (var j = 0; j < children.length; j++) {
+
+					element.appendChild(children[j]);
+				}
+			}
+			else {
+
+				children = element.childNodes;
+
+				for (var k = children.length - 1; k >= 0; k--) {
+
+					element.removeChild(children[k]);
 				}
 			}
 		};
