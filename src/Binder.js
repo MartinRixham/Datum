@@ -1,4 +1,4 @@
-define(["Subscriber"], function(Subscriber) {
+define(["Dependant", "Subscriber"], function(Dependant, Subscriber) {
 
 	function Binder(binding) {
 
@@ -97,7 +97,7 @@ define(["Subscriber"], function(Subscriber) {
 
 		function createCallback(model, element, name) {
 
-			self.assignUpdater(function() {
+			function callback() {
 
 				if (!self.running) {
 
@@ -105,9 +105,9 @@ define(["Subscriber"], function(Subscriber) {
 					binding.updateElement(model, element, name);
 					self.running = false;
 				}
-			},
-			binding,
-			element);
+			}
+
+			self.assignUpdater(new Dependant(callback, binding, element));
 		}
 
 		this.removeBinding = function() {

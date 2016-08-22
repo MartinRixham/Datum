@@ -39,11 +39,11 @@ define([], function() {
 			return registering;
 		};
 
-		this.assignUpdater = function(updater, binding, element) {
+		this.assignUpdater = function(dependant) {
 
 			for (var i = 0; i < registry.length; i++) {
 
-				registry[i](updater, binding, element);
+				registry[i](dependant);
 			}
 
 			registering = false;

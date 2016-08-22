@@ -1,4 +1,4 @@
-define(["Dependant", "Subscriber"], function Datum(Dependant, Subscriber) {
+define(["Subscriber"], function Datum(Subscriber) {
 
 	function Datum(datum) {
 
@@ -31,9 +31,7 @@ define(["Dependant", "Subscriber"], function Datum(Dependant, Subscriber) {
 			}
 			else if (self.registeringAssigners()) {
 
-				self.registerUpdaterAssigner(function(callback, binding, element) {
-
-					var dependant = new Dependant(callback, binding, element);
+				self.registerUpdaterAssigner(function(dependant) {
 
 					var containsBinding = false;
 
