@@ -16,11 +16,6 @@ define([], function() {
 
 				var property = model[key];
 
-				if (key == "_scope") {
-
-					continue;
-				}
-
 				if (property &&
 					property.toJSON &&
 					typeof(property) == "object" &&

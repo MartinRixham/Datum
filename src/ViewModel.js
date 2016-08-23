@@ -94,7 +94,7 @@ define([
 
 			for (var key in model) {
 
-				if (isNew(key) && key != "_scope") {
+				if (isNew(key)) {
 
 					if (properties[key]) {
 
