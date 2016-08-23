@@ -1,26 +1,25 @@
 define([], function() {
 
-	 function Dependant(callback, binding, element) {
+	function Dependant(callback, binding, element) {
 
-		this.getCallback = function() {
+		this.call = function(value) {
 
-			return callback;
+			callback(value);
 		};
 
-		this.getBinding = function() {
+		this.removedFromDocument = function() {
 
-			return binding;
-		};
-
-		this.getElement = function() {
-
-			return element;
+			return !document.contains(element);
 		};
 
 		this.equals = function(other) {
 
-			return binding == other.getBinding() &&
-				element == other.getElement();
+			return other.hasEqual(binding, element);
+		};
+
+		this.hasEqual = function(otherBinding, otherElement) {
+
+			return binding == otherBinding && element == otherElement;
 		};
 	}
 

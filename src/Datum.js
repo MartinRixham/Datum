@@ -18,7 +18,7 @@ define(["Subscriber"], function Datum(Subscriber) {
 
 					var dependant = dependants[i];
 
-					if (!document.contains(dependant.getElement())) {
+					if (dependant.removedFromDocument()) {
 
 						dependants.splice(i, 1);
 					}
@@ -26,7 +26,7 @@ define(["Subscriber"], function Datum(Subscriber) {
 
 				for (var j = 0; j < dependants.length; j++) {
 
-					dependants[j].getCallback()(value);
+					dependants[j].call(value);
 				}
 			}
 			else if (self.registeringAssigners()) {
