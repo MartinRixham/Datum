@@ -21,9 +21,9 @@ define([], function() {
 			element.style.display = null;
 		};
 
-		this.call = function() {
+		this.call = function(parentModel, element) {
 
-			visible.apply(this, arguments);
+			visible.call(parentModel, element);
 		};
 	}
 

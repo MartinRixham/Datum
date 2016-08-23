@@ -14,9 +14,9 @@ define([], function() {
 			element.textContent = "";
 		};
 
-		this.call = function() {
+		this.call = function(parentModel, element) {
 
-			text.apply(this, arguments);
+			text.call(parentModel, element);
 		};
 	}
 

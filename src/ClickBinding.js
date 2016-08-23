@@ -34,6 +34,11 @@ define(["Subscriber"], function(Subscriber) {
 
 			listeners.splice(i, 1);
 		};
+
+		this.call = function(parentModel, element) {
+
+			click.call(parentModel, element);
+		};
 	}
 
 	ClickBinding.prototype = new Subscriber();

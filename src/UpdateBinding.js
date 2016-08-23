@@ -11,9 +11,9 @@ define([], function() {
 
 		this.resetElement = function() {};
 
-		this.call = function() {
+		this.call = function(parentModel, element) {
 
-			update.apply(this, arguments);
+			update.call(parentModel, element);
 		};
 	}
 
