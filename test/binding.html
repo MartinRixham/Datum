@@ -86,7 +86,7 @@
 			var valueInput =
 				new Binding({
 
-					value: datum
+					value: function(value) { datum.set(value); }
 				});
 
 			valueInput.applyBinding(document.body, "valueInput");
@@ -96,7 +96,7 @@
 			element.value = "Hello World";
 			element.dispatchEvent(new Event("change"));
 
-			assert.strictEqual(datum(), "Hello World");
+			assert.strictEqual(datum.get(), "Hello World");
 
 			done();
 		});

@@ -10,11 +10,11 @@ define(["Datum", "Binder", "ObjectBinding"], function(Datum, Binder, ObjectBindi
 
 				get: function() {
 
-					return datum();
+					return datum.get();
 				},
 				set: function(value) {
 
-					datum(value);
+					datum.set(value);
 				}
 			});
 		};

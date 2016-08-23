@@ -35,7 +35,7 @@
 
 				this.datum = new Datum();
 
-				this.valueInput = new Value(this.datum);
+				this.valueInput = new Value(function(value) { this.datum.set(value); });
 			}
 
 			var input = new InputObject();
@@ -48,7 +48,7 @@
 			element.value = "Hello World";
 			element.dispatchEvent(new Event("change"));
 
-			assert.strictEqual(input.datum(), "Hello World");
+			assert.strictEqual(input.datum.get(), "Hello World");
 
 			done();
 		});

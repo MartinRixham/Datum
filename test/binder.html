@@ -36,11 +36,11 @@
 			var binding =
 				new Binder(new TextBinding(function() {
 
-					return datum();
+					return datum.get();
 				}));
 			binding.applyBinding(document.body, "function");
 
-			datum("Hello World");
+			datum.set("Hello World");
 
 			assert.strictEqual(
 				document.querySelector("#function").innerHTML,
@@ -64,11 +64,11 @@
 			var binding =
 				new Binder(new TextBinding(function() {
 
-					return datum();
+					return datum.get();
 				}));
 			binding.applyBinding(document.body, "two");
 
-			datum("Hello World");
+			datum.set("Hello World");
 
 			assert.strictEqual(document.querySelector("#two").innerHTML, "Hello World");
 			assert.strictEqual(document.querySelector("#one").innerHTML, "Hello World");
@@ -93,8 +93,7 @@
 			var binder = new Binder(new TextBinding(function() {
 
 				count += 1;
-
-				return datum();
+				return datum.get();
 			}));
 			binder.applyBinding(document.body, "single");
 
@@ -120,13 +119,12 @@
 				new Binder(new TextBinding(function() {
 
 					count += 1;
-
-					return datum();
+					return datum.get();
 				}));
 			binding.applyBinding(document.body, "twice");
 
 			count = 0;
-			datum("Hello World");
+			datum.set("Hello World");
 
 			assert.strictEqual(count, 2);
 
@@ -250,12 +248,12 @@
 		getRequire()(["Datum", "InitBinding", "Binder"], function(Datum, InitBinding, Binder) {
 
 			var datum = new Datum();
-			datum("Hello World");
+			datum.set("Hello World");
 
 			var binding =
 				new Binder(new InitBinding(function(element) {
 
-					element.textContent = datum();
+					element.textContent = datum.get();
 				}));
 			binding.applyBinding(document.body, "init");
 
@@ -283,7 +281,7 @@
 				new Binder(new InitBinding(function() {
 
 					count += 1;
-					return datum();
+					return datum.get();
 				}));
 			binding.applyBinding(document.body, "initOnce");
 
@@ -309,12 +307,12 @@
 				new Binder(new InitBinding(function() {
 
 					count += 1;
-					return datum();
+					return datum.get();
 				}));
 			binding.applyBinding(document.body, "noUpdate");
 
 			count = 0;
-			datum("Hello World");
+			datum.set("Hello World");
 
 			assert.strictEqual(count, 0);
 
@@ -337,10 +335,10 @@
 
 					if (value) {
 
-						datum(value);
+						datum.set(value);
 					}
 
-					return datum();
+					return datum.get();
 				}));
 			binding.applyBinding(document.body, "valueInput");
 
@@ -348,7 +346,7 @@
 			element.value = "Hello World";
 			element.dispatchEvent(new Event("change"));
 
-			assert.strictEqual(datum(), "Hello World");
+			assert.strictEqual(datum.get(), "Hello World");
 
 			done();
 		});
@@ -367,11 +365,11 @@
 			var binding =
 				new Binder(new ValueBinding(function() {
 
-					return datum();
+					return datum.get();
 				}));
 			binding.applyBinding(document.body, "inputValue");
 
-			datum("Hello World");
+			datum.set("Hello World");
 
 			assert.strictEqual(document.querySelector("#input-value").value, "Hello World");
 
@@ -395,10 +393,10 @@
 
 					if (value) {
 
-						datum(value);
+						datum.set(value);
 					}
 
-					return datum();
+					return datum.get();
 				}));
 			binding.applyBinding(document.body, "sync");
 

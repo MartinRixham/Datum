@@ -4,34 +4,11 @@ define(["Subscriber"], function Datum(Subscriber) {
 
 		var dependants = [];
 
-		var self = this;
+		this.get = function() {
 
-		function provider(value) {
+			if (this.registeringAssigners()) {
 
-			if (typeof value != "undefined") {
-
-				self.rebindDataStructure();
-
-				datum = value;
-
-				for (var i = 0; i < dependants.length; i++) {
-
-					var dependant = dependants[i];
-
-					if (dependant.removedFromDocument()) {
-
-						dependants.splice(i, 1);
-					}
-				}
-
-				for (var j = 0; j < dependants.length; j++) {
-
-					dependants[j].call(value);
-				}
-			}
-			else if (self.registeringAssigners()) {
-
-				self.registerUpdaterAssigner(function(dependant) {
+				this.registerUpdaterAssigner(function(dependant) {
 
 					var containsBinding = false;
 
@@ -51,9 +28,29 @@ define(["Subscriber"], function Datum(Subscriber) {
 			}
 
 			return datum;
-		}
+		};
 
-		return provider;
+		this.set = function(value) {
+
+			this.rebindDataStructure();
+
+			datum = value;
+
+			for (var i = 0; i < dependants.length; i++) {
+
+				var dependant = dependants[i];
+
+				if (dependant.removedFromDocument()) {
+
+					dependants.splice(i, 1);
+				}
+			}
+
+			for (var j = 0; j < dependants.length; j++) {
+
+				dependants[j].call(value);
+			}
+		};
 	}
 
 	Datum.prototype = new Subscriber();
