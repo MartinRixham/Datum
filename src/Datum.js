@@ -1,4 +1,4 @@
-define(["Registry"], function Datum(Registry) {
+define(["Registry", "Rebinder"], function Datum(Registry, Rebinder) {
 
 	function Datum(datum) {
 
@@ -36,7 +36,7 @@ define(["Registry"], function Datum(Registry) {
 
 		this.set = function(value) {
 
-			new Registry().rebindDataStructure();
+			new Rebinder().rebindDataStructure();
 
 			datum = value;
 

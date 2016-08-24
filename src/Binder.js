@@ -1,4 +1,4 @@
-define(["Dependant", "Registry"], function(Dependant, Registry) {
+define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Registry) {
 
 	function Binder(binding) {
 
@@ -6,7 +6,7 @@ define(["Dependant", "Registry"], function(Dependant, Registry) {
 
 		var boundElements = [];
 
-		new Registry().requestRebind();
+		new Rebinder().requestRebind();
 
 		this.applyBinding = function(scope, name, model) {
 

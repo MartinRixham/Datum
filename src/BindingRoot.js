@@ -1,11 +1,11 @@
 define([
 	"ViewModel",
 	"DomWatcher",
-	"Registry"
+	"Rebinder"
 ], function BindingRoot(
 	ViewModel,
 	DomWatcher,
-	Registry) {
+	Rebinder) {
 
 	var flag = false;
 
@@ -25,7 +25,7 @@ define([
 
 		rootViewModel.applyBinding();
 
-		new Registry().registerRebinder(function() {
+		new Rebinder().registerRebinder(function() {
 
 			rootViewModel.applyBinding();
 		});
