@@ -1,17 +1,25 @@
 define([
 	"ViewModel",
 	"DomWatcher",
-	"UniqueRoot",
 	"Registry"
 ], function BindingRoot(
 	ViewModel,
 	DomWatcher,
-	UniqueRoot,
 	Registry) {
+
+	var flag = false;
 
 	function BindingRoot(model) {
 
-		this.assertUniqueness();
+		if (flag) {
+
+			throw new Error(
+				"The binding root is unique and cannot be instantiated multiple times.");
+		}
+		else {
+
+			flag = true;
+		}
 
 		var rootViewModel = new ViewModel(model);
 
@@ -29,8 +37,6 @@ define([
 			domWatcher.disconnect();
 		};
 	}
-
-	BindingRoot.prototype = new UniqueRoot();
 
 	return BindingRoot;
 });
