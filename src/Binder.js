@@ -1,4 +1,4 @@
-define(["Dependant", "Subscriber"], function(Dependant, Subscriber) {
+define(["Dependant", "Registry"], function(Dependant, Registry) {
 
 	function Binder(binding) {
 
@@ -6,7 +6,7 @@ define(["Dependant", "Subscriber"], function(Dependant, Subscriber) {
 
 		var boundElements = [];
 
-		this.requestRebind();
+		new Registry().requestRebind();
 
 		this.applyBinding = function(scope, name, model) {
 
@@ -69,7 +69,7 @@ define(["Dependant", "Subscriber"], function(Dependant, Subscriber) {
 					else {
 
 						binding.setUpElement(model, element);
-						self.requestRegistrations();
+						new Registry().requestRegistrations();
 						binding.updateElement(model, element, name);
 						createCallback(model, element, name);
 					}
@@ -107,7 +107,7 @@ define(["Dependant", "Subscriber"], function(Dependant, Subscriber) {
 				}
 			}
 
-			self.assignUpdater(new Dependant(callback, binding, element));
+			new Registry().assignUpdater(new Dependant(callback, binding, element));
 		}
 
 		this.removeBinding = function() {
@@ -129,8 +129,6 @@ define(["Dependant", "Subscriber"], function(Dependant, Subscriber) {
 			}
 		};
 	}
-
-	Binder.prototype = new Subscriber();
 
 	return Binder;
 });

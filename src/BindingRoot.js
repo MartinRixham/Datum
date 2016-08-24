@@ -1,11 +1,13 @@
 define([
 	"ViewModel",
 	"DomWatcher",
-	"UniqueRoot"
+	"UniqueRoot",
+	"Registry"
 ], function BindingRoot(
 	ViewModel,
 	DomWatcher,
-	UniqueRoot) {
+	UniqueRoot,
+	Registry) {
 
 	function BindingRoot(model) {
 
@@ -15,7 +17,7 @@ define([
 
 		rootViewModel.applyBinding();
 
-		this.registerRebinder(function() {
+		new Registry().registerRebinder(function() {
 
 			rootViewModel.applyBinding();
 		});

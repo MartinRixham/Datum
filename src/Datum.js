@@ -1,4 +1,4 @@
-define(["Subscriber"], function Datum(Subscriber) {
+define(["Registry"], function Datum(Registry) {
 
 	function Datum(datum) {
 
@@ -6,7 +6,7 @@ define(["Subscriber"], function Datum(Subscriber) {
 
 		this.get = function() {
 
-			this.registerUpdaterAssigner(assigner);
+			new Registry().registerUpdaterAssigner(assigner);
 
 			return datum;
 		};
@@ -36,7 +36,7 @@ define(["Subscriber"], function Datum(Subscriber) {
 
 		this.set = function(value) {
 
-			this.rebindDataStructure();
+			new Registry().rebindDataStructure();
 
 			datum = value;
 
@@ -65,8 +65,6 @@ define(["Subscriber"], function Datum(Subscriber) {
 			}
 		}
 	}
-
-	Datum.prototype = new Subscriber();
 
 	return Datum;
 });

@@ -1,4 +1,4 @@
-define(["Subscriber"], function(Subscriber) {
+define([], function() {
 
 	function ObjectBinding() {
 
@@ -55,8 +55,6 @@ define(["Subscriber"], function(Subscriber) {
 			}
 		};
 	}
-
-	ObjectBinding.prototype = new Subscriber();
 
 	return ObjectBinding;
 });

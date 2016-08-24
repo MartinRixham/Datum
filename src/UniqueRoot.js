@@ -1,4 +1,4 @@
-define(["Subscriber"], function(Subscriber) {
+define([], function() {
 
 	function UniqueRoot() {
 
@@ -17,8 +17,6 @@ define(["Subscriber"], function(Subscriber) {
 			}
 		};
 	}
-
-	UniqueRoot.prototype = new Subscriber();
 
 	return UniqueRoot;
 });

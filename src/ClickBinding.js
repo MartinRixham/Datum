@@ -1,4 +1,4 @@
-define(["Subscriber"], function(Subscriber) {
+define([], function() {
 
 	function ClickBinding(click) {
 
@@ -40,8 +40,6 @@ define(["Subscriber"], function(Subscriber) {
 			click.call(parentModel, element);
 		};
 	}
-
-	ClickBinding.prototype = new Subscriber();
 
 	return ClickBinding;
 });

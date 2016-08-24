@@ -1,13 +1,11 @@
 define([
 	"Serialisable",
 	"Property",
-	"PropertyType",
-	"Subscriber"
+	"PropertyType"
 ], function(
 	Serialisable,
 	Property,
-	PropertyType,
-	Subscriber) {
+	PropertyType) {
 
 	function ViewModel(model) {
 
@@ -136,8 +134,6 @@ define([
 			}
 		};
 	}
-
-	ViewModel.prototype = new Subscriber();
 
 	return ViewModel;
 });

@@ -1,8 +1,17 @@
 define([], function() {
 
+	var registry = [];
+
+	var registering = false;
+
+	var rebind = null;
+
+	var rebindRequested = false;
+
 	function Registry() {
 
-		// These variables and the following three methods
+		// The registry, the registering flag
+		// and the following three methods
 		// mediate the process of dependency tracking.
 		// When a binding callback is supplied to a binding
 		// the binding firstly requests registrations
@@ -19,10 +28,6 @@ define([], function() {
 		// assigned the updater changes the datum will call the
 		// updater which will update the elements which are bound
 		// to the binding.
-		var registry = [];
-
-		var registering = false;
-
 		this.registerUpdaterAssigner = function(assigner) {
 
 			if (registering) {
@@ -47,16 +52,13 @@ define([], function() {
 			registering = false;
 		};
 
-		// These variables and the following three methods organise
-		// the application of new bindings.
+		// The rebind callback, the rebind requested flag
+		// and the following three methods
+		// organise the application of new bindings.
 		// After the binding root has performed the initial binding
 		// it supplies a rebinding callback to the registry.
 		// When a new binding is instantiated it requests a rebinding.
 		// The rebinding is then initialised by the next datum to be called.
-		var rebind = null;
-
-		var rebindRequested = false;
-
 		this.registerRebinder = function(callback) {
 
 			rebind = callback;
