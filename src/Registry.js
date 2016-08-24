@@ -2,7 +2,7 @@ define([], function() {
 
 	function Registry() {
 
-		// These variables and the following four methods
+		// These variables and the following three methods
 		// mediate the process of dependency tracking.
 		// When a binding callback is supplied to a binding
 		// the binding firstly requests registrations
@@ -25,18 +25,16 @@ define([], function() {
 
 		this.registerUpdaterAssigner = function(assigner) {
 
-			registry.push(assigner);
+			if (registering) {
+
+				registry.push(assigner);
+			}
 		};
 
 		this.requestRegistrations = function() {
 
 			registry = [];
 			registering = true;
-		};
-
-		this.registeringAssigners = function() {
-
-			return registering;
 		};
 
 		this.assignUpdater = function(dependant) {
