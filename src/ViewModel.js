@@ -13,7 +13,9 @@ define([
 
 		var properties = {};
 
-		this.applyBinding = function(scope, name) {
+		this.applyBinding = applyBinding;
+
+		function applyBinding(scope, name) {
 
 			var elements = getElements(scope, name);
 
@@ -27,7 +29,7 @@ define([
 				createNewProperties();
 				bindProperties(element);
 			}
-		};
+		}
 
 		function getElements(scope, name) {
 
@@ -55,15 +57,13 @@ define([
 			}
 		}
 
-		var self = this;
-
 		function createRebinder(element, scope, name) {
 
 			if (element) {
 
 				element._rebind = function() {
 
-					self.applyBinding(scope, name);
+					applyBinding(scope, name);
 				};
 			}
 		}

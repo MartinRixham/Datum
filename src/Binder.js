@@ -6,6 +6,8 @@ define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Regi
 
 		var boundElements = [];
 
+		var running = false;
+
 		new Rebinder().requestRebind();
 
 		this.applyBinding = function(scope, name, model) {
@@ -52,8 +54,6 @@ define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Regi
 			return !contains;
 		}
 
-		var self = this;
-
 		function bindElements(elements, scope, model, name) {
 
 			for (var i = 0; i < elements.length; i++) {
@@ -99,11 +99,11 @@ define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Regi
 
 			function callback() {
 
-				if (!self.running) {
+				if (!running) {
 
-					self.running = true;
+					running = true;
 					binding.updateElement(model, element, name);
-					self.running = false;
+					running = false;
 				}
 			}
 
