@@ -4,12 +4,24 @@ define(["Registry", "Rebinder"], function Datum(Registry, Rebinder) {
 
 		var dependants = [];
 
-		this.get = function() {
+		function provider(value) {
+
+			if (typeof value == "undefined") {
+
+				return get();
+			}
+			else {
+
+				set(value);
+			}
+		}
+
+		function get() {
 
 			new Registry().registerUpdaterAssigner(assigner);
 
 			return datum;
-		};
+		}
 
 		function assigner(dependant) {
 
@@ -34,7 +46,7 @@ define(["Registry", "Rebinder"], function Datum(Registry, Rebinder) {
 			return !containsDependant;
 		}
 
-		this.set = function(value) {
+		function set(value) {
 
 			new Rebinder().rebindDataStructure();
 
@@ -42,7 +54,7 @@ define(["Registry", "Rebinder"], function Datum(Registry, Rebinder) {
 
 			forgetRemovedDependants();
 			updateDependants(value);
-		};
+		}
 
 		function forgetRemovedDependants() {
 
@@ -64,6 +76,8 @@ define(["Registry", "Rebinder"], function Datum(Registry, Rebinder) {
 				dependants[i].call(value);
 			}
 		}
+
+		return provider;
 	}
 
 	return Datum;
