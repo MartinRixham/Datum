@@ -1,6 +1,6 @@
 define([], function() {
 
-	 function DomWatcher(scope) {
+	function DomWatcher(scope) {
 
 		var observer = new MutationObserver(function(mutations) {
 
@@ -11,20 +11,21 @@ define([], function() {
 
 				var element = mutation.target;
 
-				while (element) {
-
-					if (element._rebind) {
-
-						element._rebind();
-						break;
-					}
-					else {
-
-						element = element.parentElement;
-					}
-				}
+				rebindElement(element);
 			}
 		});
+
+		function rebindElement(element) {
+
+			if (element && element._rebind) {
+
+				element._rebind();
+			}
+			else if (element) {
+
+				rebindElement(element.parentElement);
+			}
+		}
 
 		observer.observe(scope, { childList: true, subtree: true });
 
