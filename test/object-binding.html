@@ -9,9 +9,9 @@
   </head>
   <body>
     <style>
-	    #qunit ~ * {
-		    display: none;
-	    }
+		#qunit ~ * {
+			display: none;
+		}
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
@@ -22,12 +22,12 @@
 
 			return require.config({ baseUrl: "../src", context: i++ });
 		}
-	</script>
-	<div id="notObject">
-		<div></div>
-		<div></div>
-	</div>
-	<script>
+    </script>
+    <div id="notObject">
+      <div></div>
+      <div></div>
+    </div>
+    <script>
 	QUnit.test("Remove elements when object null", function(assert) {
 
 		var done = assert.async();
@@ -49,11 +49,11 @@
 			done();
 		});
 	});
-	</script>
-	<div id="notNull">
-		<div></div>
-		<div></div>
-	</div>
+    </script>
+    <div id="notNull">
+      <div></div>
+      <div></div>
+    </div>
     <script>
 	QUnit.test("Replace elements when object not null", function(assert) {
 
@@ -76,6 +76,42 @@
 			binding.updateElement(model, element, "notNull");
 
 			assert.strictEqual(element.children.length, 2);
+
+			done();
+		});
+	});
+    </script>
+    <div id="replace" data-bind="replace">
+      <div data-bind="text"></div>
+    </div>
+    <script>
+	QUnit.test("Template replaced when new object set.", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Text", "BindingRoot"], function(Text, BindingRoot) {
+
+			var count = 0;
+
+			function Replace() {
+
+				this.replace = null;
+			}
+
+			var replace = new Replace();
+			var root = new BindingRoot(replace);
+			var element = document.querySelector("#replace");
+
+			assert.strictEqual(element.children.length, 0);
+
+			replace.replace = {
+
+				text: new Text(function() { return "Hello world."; })
+			};
+
+			assert.strictEqual(element.children.length, 1);
+
+			root.disconnect();
 
 			done();
 		});

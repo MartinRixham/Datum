@@ -157,18 +157,16 @@
 		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			var firstInput = document.createElement("input");
-
 			firstInput.id = "first";
 			firstInput.setAttribute("type", "text");
 			firstInput.setAttribute("data-bind", "test");
 
-			document.querySelector("#qunit-fixture").appendChild(firstInput);
+			var fixture = document.querySelector("#qunit-fixture");
+			fixture.appendChild(firstInput);
 
 			function TextObject() {
 
 				this.datum = null;
-
-				var self = this;
 
 				this.test = new Binding({
 
@@ -176,31 +174,28 @@
 
 						if (value) {
 
-							self.datum = value;
+							this.datum = value;
 						}
 
-						return self.datum;
+						return this.datum;
 					}
 				});
 			}
 
 			var textObject = new TextObject();
-
 			var root = new BindingRoot(textObject);
 
-			var input = document.createElement("input");
+			var secondInput = document.createElement("input");
+			secondInput.id = "test-div";
+			secondInput.setAttribute("type", "text");
+			secondInput.setAttribute("data-bind", "test");
 
-			input.id = "test-div";
-			input.setAttribute("type", "text");
-			input.setAttribute("data-bind", "test");
-
-			document.querySelector("#qunit-fixture").removeChild(firstInput);
-			document.querySelector("#qunit-fixture").appendChild(input);
+			fixture.removeChild(firstInput);
+			fixture.appendChild(secondInput);
 
 			setTimeout(function() {
 
 				var element = document.querySelector("#test-div");
-
 				element.value = "Hello World";
 				element.dispatchEvent(new Event("change"));
 			});

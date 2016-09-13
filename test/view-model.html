@@ -192,49 +192,49 @@
 		});
 	});
     </script>
-		<div id="one" data-bind="two">
-		  <input type="text" data-bind="input" />
-		</div>
-		<div id="two" data-bind="two">
-		  <input type="text" data-bind="input" />
-		</div>
-		<script>
-			QUnit.test("Bind view model to two elements", function(assert) {
+    <div id="one" data-bind="two">
+      <input type="text" data-bind="input" />
+    </div>
+    <div id="two" data-bind="two">
+      <input type="text" data-bind="input" />
+    </div>
+    <script>
+	QUnit.test("Bind view model to two elements", function(assert) {
 
-				var done = assert.async();
+		var done = assert.async();
 
-				getRequire()(["Value", "ViewModel"], function(Value, ViewModel) {
+		getRequire()(["Value", "ViewModel"], function(Value, ViewModel) {
 
-					function TwoObject() {
+			function TwoObject() {
 
-						this.datum = null;
+				this.datum = null;
 
-						var self = this;
+				var self = this;
 
-						this.two = {
+				this.two = {
 
-							input:
-								new Value(function() {
+					input:
+						new Value(function() {
 
-									return self.datum;
-								})
-						};
-					}
+							return self.datum;
+						})
+				};
+			}
 
-					var two = new TwoObject();
+			var two = new TwoObject();
 
-					var viewModel = new ViewModel(two);
-					viewModel.applyBinding();
+			var viewModel = new ViewModel(two);
+			viewModel.applyBinding();
 
-					two.datum = "Hello World";
+			two.datum = "Hello World";
 
-					assert.strictEqual(document.querySelector("#one input").value, "Hello World");
-					assert.strictEqual(document.querySelector("#two input").value, "Hello World");
+			assert.strictEqual(document.querySelector("#one input").value, "Hello World");
+			assert.strictEqual(document.querySelector("#two input").value, "Hello World");
 
-					done();
-				});
-			});
-		</script>
+			done();
+		});
+	});
+    </script>
     <input type="text" id="plain-change" data-bind="plainChange" />
     <script>
 	QUnit.test("Update plain data from input", function(assert) {
@@ -277,7 +277,7 @@
     </script>
     <div data-bind="inner"></div>
     <div data-bind="outer"></div>
-	<script>
+    <script>
 	QUnit.test("Dependencies are aggressively collected.", function(assert) {
 
 		var done = assert.async();
@@ -298,7 +298,6 @@
 			}
 
 			var only = new Only();
-
 			var root = new BindingRoot(only);
 
 			only.outer =
@@ -306,6 +305,8 @@
 
 					return only.datum;
 				});
+
+			assert.strictEqual(count, 1);
 
 			only.datum = "Hello World";
 

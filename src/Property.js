@@ -10,10 +10,14 @@ define([], function() {
 
 			binding = property;
 		}
-		else if (property && typeof(property) == "object") {
+		else if (typeof(property) == "object") {
 
-			binding = propertyType.createViewModel(property);
 			objectBinding = propertyType.createObjectBinding();
+
+			if (property) {
+
+				binding = propertyType.createViewModel(property);
+			}
 		}
 
 		this.applyBinding = function(scope, key, model) {

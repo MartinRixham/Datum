@@ -27,7 +27,6 @@ module.exports = function(grunt) {
 
 			options: {
 
-				timeout: 10000,
 				inject: "bridge.js"
 			},
 			all: ["test/*"]
