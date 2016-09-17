@@ -48,12 +48,12 @@ define(["Registry", "Rebinder"], function Datum(Registry, Rebinder) {
 
 		function set(value) {
 
-			new Rebinder().rebindDataStructure();
-
 			datum = value;
 
 			forgetRemovedDependants();
 			updateDependants(value);
+
+			new Rebinder().rebindDataStructure();
 		}
 
 		function forgetRemovedDependants() {

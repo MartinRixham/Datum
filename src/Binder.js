@@ -64,14 +64,14 @@ define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Regi
 
 					if (boundElements.indexOf(element) + 1) {
 
-						binding.updateElement(model, element);
+						binding.updateElement(model, element, model && model[name]);
 					}
 					else {
 
 						binding.setUpElement(model, element);
 						new Registry().requestRegistrations();
-						binding.updateElement(model, element, name);
-						createCallback(model, element, name);
+						binding.updateElement(model, element, model && model[name]);
+						createCallback(model, element);
 					}
 				}
 			}
@@ -95,14 +95,14 @@ define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Regi
 			}
 		}
 
-		function createCallback(model, element, name) {
+		function createCallback(model, element) {
 
-			function callback() {
+			function callback(value) {
 
 				if (!running) {
 
 					running = true;
-					binding.updateElement(model, element, name);
+					binding.updateElement(model, element, value);
 					running = false;
 				}
 			}

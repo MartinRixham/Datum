@@ -80,7 +80,7 @@ define([
 
 			for (var key in properties) {
 
-				if (!model[key]) {
+				if (model[key] === undefined) {
 
 					properties[key].removeBinding();
 					delete properties[key];

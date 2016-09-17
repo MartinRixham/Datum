@@ -101,7 +101,7 @@
 	});
     </script>
     <script>
-	QUnit.test("A binding is a property", function(assert) {
+	QUnit.test("A binding is not a datum", function(assert) {
 
 		var done = assert.async();
 
@@ -112,7 +112,7 @@
 			var property = new Property(text, propertyType);
 			property.applyBinding(document.body, "key", { key: text });
 
-			assert.ok(propertyType.injectPropertyWasCalled);
+			assert.ok(!propertyType.injectPropertyWasCalled);
 			assert.ok(!propertyType.viewModelBindingWasApplied);
 			assert.ok(!propertyType.objectBindingWasApplied);
 

@@ -6,7 +6,9 @@ define([], function() {
 
 		var objectBinding;
 
-		if (property && property.applyBinding && property.removeBinding) {
+		var propertyInjected = false;
+
+		if (property && isBinding(property)) {
 
 			binding = property;
 		}
@@ -22,9 +24,10 @@ define([], function() {
 
 		this.applyBinding = function(scope, key, model) {
 
-			if (typeof(property) != "function") {
+			if (typeof(property) != "function" && !isBinding(property) && !propertyInjected) {
 
 				propertyType.injectProperty(property, model, key);
+				propertyInjected = true;
 			}
 
 			if (binding) {
@@ -37,6 +40,11 @@ define([], function() {
 				objectBinding.applyBinding(scope, key, model);
 			}
 		};
+
+		function isBinding(object) {
+
+			return object && object.applyBinding && object.removeBinding;
+		}
 
 		this.removeBinding = function() {
 
@@ -53,7 +61,13 @@ define([], function() {
 
 		this.isOlderThan = function(other) {
 
-			return !property || !other || property != other;
+			if (typeof property == "object" || typeof other == "object") {
+
+				return other && property != other;
+			} else {
+
+				return false;
+			}
 		};
 	}
 

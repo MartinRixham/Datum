@@ -42,7 +42,7 @@
 			};
 
 			binding.setUpElement(model, element);
-			binding.updateElement(model, element, "notObject");
+			binding.updateElement(model, element, null);
 
 			assert.strictEqual(element.children.length, 0);
 
@@ -85,13 +85,11 @@
       <div data-bind="text"></div>
     </div>
     <script>
-	QUnit.test("Template replaced when new object set.", function(assert) {
+	QUnit.test("Template replaced when new object set", function(assert) {
 
 		var done = assert.async();
 
 		getRequire()(["Text", "BindingRoot"], function(Text, BindingRoot) {
-
-			var count = 0;
 
 			function Replace() {
 

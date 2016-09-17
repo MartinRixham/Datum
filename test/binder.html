@@ -418,12 +418,12 @@
 
 		getRequire()(["Binder"], function(Binder) {
 
-			var model = {};
+			var model = { "name": "thingy" };
 			var initialisedModel;
 			var initialisedElement;
 			var updatedModel;
 			var updatedElement;
-			var updateKey;
+			var updateValue;
 			var resetElement;
 
 			var binding =
@@ -434,11 +434,11 @@
 						initialisedModel = model;
 						initialisedElement = element;
 					},
-					updateElement: function(model, element, key) {
+					updateElement: function(model, element, value) {
 
 						updatedModel = model;
 						updatedElement = element;
-						updateKey = key;
+						updateValue = value;
 					},
 					resetElement: function(element) {
 
@@ -453,7 +453,7 @@
 			assert.strictEqual(initialisedElement.innerHTML, "Hello world.");
 			assert.strictEqual(updatedModel, model);
 			assert.strictEqual(updatedElement.innerHTML, "Hello world.");
-			assert.strictEqual(updateKey, "name");
+			assert.strictEqual(updateValue, "thingy");
 			assert.strictEqual(resetElement.innerHTML, "Hello world.");
 
 			done();

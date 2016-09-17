@@ -164,7 +164,7 @@
 			var fixture = document.querySelector("#qunit-fixture");
 			fixture.appendChild(firstInput);
 
-			function TextObject() {
+			function ValueObject() {
 
 				this.datum = null;
 
@@ -182,8 +182,8 @@
 				});
 			}
 
-			var textObject = new TextObject();
-			var root = new BindingRoot(textObject);
+			var valueObject = new ValueObject();
+			var root = new BindingRoot(valueObject);
 
 			var secondInput = document.createElement("input");
 			secondInput.id = "test-div";
@@ -202,7 +202,7 @@
 
 			setTimeout(function() {
 
-				assert.strictEqual(textObject.datum, "Hello World");
+				assert.strictEqual(valueObject.datum, "Hello World");
 				done();
 				root.disconnect();
 			});

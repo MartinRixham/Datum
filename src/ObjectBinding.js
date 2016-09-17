@@ -11,9 +11,8 @@ define([], function() {
 			elementChildren.push({ "element": element, "children": children });
 		};
 
-		this.updateElement = function(parentModel, element, key) {
+		this.updateElement = function(parentModel, element, model) {
 
-			var model = parentModel[key];
 			var children;
 
 			if (model) {
