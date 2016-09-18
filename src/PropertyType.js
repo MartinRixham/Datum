@@ -2,21 +2,27 @@ define(["Datum", "Binder", "ObjectBinding"], function(Datum, Binder, ObjectBindi
 
 	function PropertyType(createViewModel) {
 
-		this.injectProperty = function(property, model, key) {
+		var injectedProperties = [];
 
-			var datum = new Datum(property);
+		this.injectProperty = function(model, key) {
 
-			Object.defineProperty(model, key, {
+			if (injectedProperties.indexOf(key) == -1) {
 
-				get: function() {
+				var datum = new Datum(model[key]);
+				injectedProperties.push(key);
 
-					return datum();
-				},
-				set: function(value) {
+				Object.defineProperty(model, key, {
 
-					datum(value);
-				}
-			});
+					get: function() {
+
+						return datum();
+					},
+					set: function(value) {
+
+						datum(value);
+					}
+				});
+			}
 		};
 
 		this.createViewModel = function(model) {

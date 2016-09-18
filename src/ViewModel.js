@@ -13,9 +13,17 @@ define([
 
 		var properties = {};
 
+		var propertyType =
+			new PropertyType(function(model) { return new ViewModel(model); });
+
 		this.applyBinding = applyBinding;
 
-		function applyBinding(scope, name) {
+		function applyBinding(scope, name, parentModel) {
+
+			if (parentModel) {
+
+				model = parentModel[name];
+			}
 
 			var elements = getElements(scope, name);
 
@@ -92,30 +100,11 @@ define([
 
 			for (var key in model) {
 
-				if (isNew(key)) {
+				if (!properties[key]) {
 
-					if (properties[key]) {
-
-						properties[key].removeBinding();
-					}
-
-					properties[key] = new Property(model[key], createPropertyType());
+					properties[key] = new Property(model[key], propertyType);
 				}
 			}
-		}
-
-		function isNew(key) {
-
-			var property = properties[key];
-
-			return !property ||
-				property.isOlderThan &&
-				property.isOlderThan(model[key]);
-		}
-
-		function createPropertyType() {
-
-			return new PropertyType(function(model) { return new ViewModel(model); });
 		}
 
 		function bindProperties(element) {

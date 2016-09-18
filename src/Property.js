@@ -2,42 +2,32 @@ define([], function() {
 
 	function Property(property, propertyType) {
 
-		var binding;
-
-		var objectBinding;
-
-		var propertyInjected = false;
+		var bindings = [];
 
 		if (property && isBinding(property)) {
 
-			binding = property;
+			bindings.push(property);
 		}
 		else if (typeof(property) == "object") {
 
-			objectBinding = propertyType.createObjectBinding();
+			bindings.push(propertyType.createObjectBinding());
 
 			if (property) {
 
-				binding = propertyType.createViewModel(property);
+				bindings.push(propertyType.createViewModel(property));
 			}
 		}
 
 		this.applyBinding = function(scope, key, model) {
 
-			if (typeof(property) != "function" && !isBinding(property) && !propertyInjected) {
+			if (typeof(property) != "function" && !isBinding(model[key])) {
 
-				propertyType.injectProperty(property, model, key);
-				propertyInjected = true;
+				propertyType.injectProperty(model, key);
 			}
 
-			if (binding) {
+			for (var i = 0; i < bindings.length; i++) {
 
-				binding.applyBinding(scope, key, model);
-			}
-
-			if (objectBinding) {
-
-				objectBinding.applyBinding(scope, key, model);
+				bindings[i].applyBinding(scope, key, model);
 			}
 		};
 
@@ -48,25 +38,9 @@ define([], function() {
 
 		this.removeBinding = function() {
 
-			if (binding) {
+			for (var i = 0; i < bindings.length; i++) {
 
-				binding.removeBinding();
-			}
-
-			if (objectBinding) {
-
-				objectBinding.removeBinding();
-			}
-		};
-
-		this.isOlderThan = function(other) {
-
-			if (typeof property == "object" || typeof other == "object") {
-
-				return other && property != other;
-			} else {
-
-				return false;
+				bindings[i].removeBinding();
 			}
 		};
 	}
