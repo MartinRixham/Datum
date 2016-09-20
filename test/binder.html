@@ -38,8 +38,8 @@
 
 					return datum();
 				}));
-			binding.applyBinding(document.body, "function");
 
+			binding.applyBinding(document.body, "function");
 			datum("Hello World");
 
 			assert.strictEqual(
@@ -66,8 +66,8 @@
 
 					return datum();
 				}));
-			binding.applyBinding(document.body, "two");
 
+			binding.applyBinding(document.body, "two");
 			datum("Hello World");
 
 			assert.strictEqual(document.querySelector("#two").innerHTML, "Hello World");
@@ -87,7 +87,6 @@
 		getRequire()(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
 
 			var count = 0;
-
 			var datum = new Datum();
 
 			var binder = new Binder(new TextBinding(function() {
@@ -95,6 +94,7 @@
 				count += 1;
 				return datum();
 			}));
+
 			binder.applyBinding(document.body, "single");
 
 			assert.strictEqual(count, 2);
@@ -121,8 +121,8 @@
 					count += 1;
 					return datum();
 				}));
-			binding.applyBinding(document.body, "twice");
 
+			binding.applyBinding(document.body, "twice");
 			count = 0;
 			datum("Hello World");
 
@@ -145,8 +145,8 @@
 
 					return element.id;
 				}));
-			binding.applyBinding(document.body, "element");
 
+			binding.applyBinding(document.body, "element");
 			assert.strictEqual(document.querySelector("#element").innerHTML, "element");
 
 			done();
@@ -167,8 +167,8 @@
 
 					callCount++;
 				}));
-			binding.applyBinding(document.body, "thingy", {});
 
+			binding.applyBinding(document.body, "thingy", {});
 			binding.test.call(document.createElement("DIV"));
 
 			assert.strictEqual(callCount, 1);
@@ -190,6 +190,7 @@
 
 					return "Hello world.";
 				}));
+
 			binding.applyBinding(document.body, "unbind");
 			binding.removeBinding();
 
@@ -455,6 +456,46 @@
 			assert.strictEqual(updatedElement.innerHTML, "Hello world.");
 			assert.strictEqual(updateValue, "thingy");
 			assert.strictEqual(resetElement.innerHTML, "Hello world.");
+
+			done();
+		});
+	});
+    </script>
+    <div data-bind="firstText"></div>
+    <div data-bind="secondText"></div>
+    <script>
+	QUnit.test("Dependencies don't cause infinite recursion", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["Text", "BindingRoot"], function(Text, BindingRoot) {
+
+			function Texts() {
+
+				this.text1 = "some text";
+				this.text2 = "some more text";
+
+				this.firstText =
+					new Text(function() {
+
+						this.text1 = this.text2;
+
+						return this.text1;
+					});
+
+				this.secondText =
+					new Text(function() {
+
+						this.text2 = this.text1;
+
+						return this.text2;
+					});
+			}
+
+			var texts = new Texts();
+			new BindingRoot(texts);
+
+			assert.ok(texts);
 
 			done();
 		});

@@ -203,6 +203,11 @@
 			setTimeout(function() {
 
 				assert.strictEqual(valueObject.datum, "Hello World");
+
+				valueObject.datum = "Eh up planet.";
+				var element = document.querySelector("#test-div");
+				assert.strictEqual(element.value, "Eh up planet.");
+
 				done();
 				root.disconnect();
 			});

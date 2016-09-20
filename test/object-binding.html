@@ -81,7 +81,7 @@
 		});
 	});
     </script>
-    <div id="replace" data-bind="replace">
+    <div id="replace-text" data-bind="replaceText">
       <div data-bind="text"></div>
     </div>
     <script>
@@ -93,21 +93,22 @@
 
 			function Replace() {
 
-				this.replace = null;
+				this.replaceText = null;
 			}
 
 			var replace = new Replace();
 			var root = new BindingRoot(replace);
-			var element = document.querySelector("#replace");
+			var element = document.querySelector("#replace-text");
 
 			assert.strictEqual(element.children.length, 0);
 
-			replace.replace = {
+			replace.replaceText = {
 
 				text: new Text(function() { return "Hello world."; })
 			};
 
 			assert.strictEqual(element.children.length, 1);
+			assert.strictEqual(element.children[0].textContent, "Hello world.");
 
 			root.disconnect();
 
@@ -115,5 +116,5 @@
 		});
 	});
     </script>
- </body>
+  </body>
 </html>
