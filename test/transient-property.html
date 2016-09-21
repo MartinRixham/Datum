@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Property Tests</title>
+    <title>Transient Property Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../node_modules/requirejs/require.js"></script>
@@ -16,26 +16,17 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
     <script>
-			var i = 0;
+		var i = 0;
 
-			function getRequire() {
+		function getRequire() {
 
-				return require.config({ baseUrl: "../src", context: i++ });
-			}
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
     </script>
     <script>
 	function FakePropertyType() {
 
-		this.injectPropertyWasCalled = false;
-
 		this.viewModelBindingWasApplied = false;
-
-		this.objectBindingWasApplied = false;
-
-		this.injectProperty = function() {
-
-			this.injectPropertyWasCalled = true;
-		};
 
 		var self = this;
 
@@ -49,72 +40,55 @@
 				}
 			};
 		};
-
-		this.createObjectBinding = function() {
-
-			return {
-
-				applyBinding: function() {
-
-					self.objectBindingWasApplied = true;
-				}
-			};
-		};
 	}
     </script>
     <script>
-	QUnit.test("A string is a property", function(assert) {
+	QUnit.test("A string is not a view model", function(assert) {
 
 		var done = assert.async();
 
-		getRequire()(["Property"], function(Property) {
+		getRequire()(["TransientProperty"], function(TransientProperty) {
 
 			var propertyType = new FakePropertyType();
-			var property = new Property("thingy", propertyType);
+			var property = new TransientProperty("thingy", propertyType);
 			property.applyBinding(document.body, "key", { key: "thingy" });
 
-			assert.ok(propertyType.injectPropertyWasCalled);
 			assert.ok(!propertyType.viewModelBindingWasApplied);
-			assert.ok(!propertyType.objectBindingWasApplied);
 
 			done();
 		});
 	});
     </script>
     <script>
-	QUnit.test("An empty object is a property and a view model", function(assert) {
+	QUnit.test("An empty object is a view model", function(assert) {
 
 		var done = assert.async();
 
-		getRequire()(["Property"], function(Property) {
+		getRequire()(["TransientProperty"], function(TransientProperty) {
 
 			var propertyType = new FakePropertyType();
-			var property = new Property({}, propertyType);
+			var property = new TransientProperty({}, propertyType);
 			property.applyBinding(document.body, "key", { key: {} });
 
-			assert.ok(propertyType.injectPropertyWasCalled);
 			assert.ok(propertyType.viewModelBindingWasApplied);
-			assert.ok(propertyType.objectBindingWasApplied);
 
 			done();
 		});
 	});
     </script>
     <script>
-	QUnit.test("A binding is not a datum", function(assert) {
+	QUnit.test("A binding is not a view model", function(assert) {
 
 		var done = assert.async();
 
-		getRequire()(["Text", "Property"], function(Text, Property) {
+		getRequire()(["Text", "TransientProperty"], function(Text, TransientProperty) {
 
 			var propertyType = new FakePropertyType();
 			var text = new Text(function() { return ""; });
-			var property = new Property(text, propertyType);
+			var property = new TransientProperty(text, propertyType);
 			property.applyBinding(document.body, "key", { key: text });
 
-			assert.ok(!propertyType.injectPropertyWasCalled);
 			assert.ok(!propertyType.viewModelBindingWasApplied);
-			assert.ok(!propertyType.objectBindingWasApplied);
 
 			done();
 		});
@@ -125,34 +99,30 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "Property"], function(Text, Property) {
+		getRequire()(["Text", "TransientProperty"], function(Text, TransientProperty) {
 
 			var propertyType = new FakePropertyType();
-			var property = new Property(function() {}, propertyType);
+			var property = new TransientProperty(function() {}, propertyType);
 			property.applyBinding(document.body, "key", { key: function() {} });
 
-			assert.ok(!propertyType.injectPropertyWasCalled);
 			assert.ok(!propertyType.viewModelBindingWasApplied);
-			assert.ok(!propertyType.objectBindingWasApplied);
 
 			done();
 		});
 	});
     </script>
     <script>
-	QUnit.test("null is an object", function(assert) {
+	QUnit.test("null is not a view model", function(assert) {
 
 		var done = assert.async();
 
-		getRequire()(["Text", "Property"], function(Text, Property) {
+		getRequire()(["Text", "TransientProperty"], function(Text, TransientProperty) {
 
 			var propertyType = new FakePropertyType();
-			var property = new Property(null, propertyType);
+			var property = new TransientProperty(null, propertyType);
 			property.applyBinding(document.body, "key", { key: null });
 
-			assert.ok(propertyType.injectPropertyWasCalled);
 			assert.ok(!propertyType.viewModelBindingWasApplied);
-			assert.ok(propertyType.objectBindingWasApplied);
 
 			done();
 		});

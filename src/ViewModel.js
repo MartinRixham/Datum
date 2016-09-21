@@ -1,17 +1,21 @@
 define([
 	"Serialisable",
-	"Property",
+	"TransientProperty",
+	"PermanentProperty",
 	"PropertyType"
 ], function(
 	Serialisable,
-	Property,
+	TransientProperty,
+	PermanentProperty,
 	PropertyType) {
 
 	function ViewModel(model) {
 
 		new Serialisable(model);
 
-		var properties = {};
+		var transientProperties = {};
+
+		var permanentProperties = {};
 
 		this.applyBinding = applyBinding;
 
@@ -26,7 +30,8 @@ define([
 				createRebinder(element, scope, name);
 				callBindingCallback(element);
 				unbindOldProperties();
-				createNewProperties();
+				createPermanentProperties();
+				createTransientProperties();
 				bindProperties(element);
 			}
 		}
@@ -78,35 +83,46 @@ define([
 
 		function unbindOldProperties() {
 
-			for (var key in properties) {
+			for (var key in transientProperties) {
 
-				if (model[key] === undefined) {
+				if (!model[key]) {
 
-					properties[key].removeBinding();
-					delete properties[key];
+					transientProperties[key].removeBinding();
+					delete transientProperties[key];
 				}
 			}
 		}
 
-		function createNewProperties() {
+		function createPermanentProperties() {
+
+			for (var key in model) {
+
+				if (!permanentProperties[key]) {
+
+					permanentProperties[key] = new PermanentProperty(model[key], createPropertyType());
+				}
+			}
+		}
+
+		function createTransientProperties() {
 
 			for (var key in model) {
 
 				if (isNew(key)) {
 
-					if (properties[key]) {
+					if (transientProperties[key]) {
 
-						properties[key].removeBinding();
+						transientProperties[key].removeBinding();
 					}
 
-					properties[key] = new Property(model[key], createPropertyType());
+					transientProperties[key] = new TransientProperty(model[key], createPropertyType());
 				}
 			}
 		}
 
 		function isNew(key) {
 
-			var property = properties[key];
+			var property = transientProperties[key];
 
 			return !property ||
 				property.isOlderThan &&
@@ -120,17 +136,31 @@ define([
 
 		function bindProperties(element) {
 
-			for (var key in properties) {
+			var key;
 
-				properties[key].applyBinding(element, key, model);
+			for (key in permanentProperties) {
+
+				permanentProperties[key].applyBinding(element, key, model);
+			}
+
+			for (key in transientProperties) {
+
+				transientProperties[key].applyBinding(element, key, model);
 			}
 		}
 
 		this.removeBinding = function() {
 
-			for (var key in properties) {
+			var key;
 
-				properties[key].removeBinding();
+			for (key in permanentProperties) {
+
+				permanentProperties[key].removeBinding();
+			}
+
+			for (key in transientProperties) {
+
+				transientProperties[key].removeBinding();
 			}
 		};
 	}
