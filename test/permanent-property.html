@@ -109,7 +109,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "PermanentProperty"], function(Text, PermanentProperty) {
+		getRequire()(["PermanentProperty"], function(PermanentProperty) {
 
 			var propertyType = new FakePropertyType();
 			var property = new PermanentProperty(function() {}, propertyType);
@@ -127,11 +127,29 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "PermanentProperty"], function(Text, PermanentProperty) {
+		getRequire()(["PermanentProperty"], function(PermanentProperty) {
 
 			var propertyType = new FakePropertyType();
 			var property = new PermanentProperty(null, propertyType);
 			property.applyBinding(document.body, "key", { key: null });
+
+			assert.ok(propertyType.injectPropertyWasCalled);
+			assert.ok(propertyType.objectBindingWasApplied);
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("An array is a datum", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["PermanentProperty"], function(PermanentProperty) {
+
+			var propertyType = new FakePropertyType();
+			var property = new PermanentProperty([], propertyType);
+			property.applyBinding(document.body, "key", { key: [] });
 
 			assert.ok(propertyType.injectPropertyWasCalled);
 			assert.ok(propertyType.objectBindingWasApplied);

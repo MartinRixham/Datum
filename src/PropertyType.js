@@ -1,4 +1,13 @@
-define(["Datum", "Binder", "ObjectBinding"], function(Datum, Binder, ObjectBinding) {
+define([
+	"Datum",
+	"Binder",
+	"ObjectBinding",
+	"ArrayBinding"
+], function(
+	Datum,
+	Binder,
+	ObjectBinding,
+	ArrayBinding) {
 
 	function PropertyType(createViewModel) {
 
@@ -27,6 +36,11 @@ define(["Datum", "Binder", "ObjectBinding"], function(Datum, Binder, ObjectBindi
 		this.createObjectBinding = function() {
 
 			return new Binder(new ObjectBinding());
+		};
+
+		this.createArrayBinding = function() {
+
+			return new Binder(new ArrayBinding());
 		};
 	}
 

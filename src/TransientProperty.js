@@ -8,7 +8,10 @@ define([], function() {
 
 			binding = property;
 		}
-		else if (property && typeof(property) == "object") {
+		else if (property instanceof Array) {
+
+			binding = propertyType.createArrayBinding(property);
+		} else if (property && typeof(property) == "object") {
 
 			binding = propertyType.createViewModel(property);
 		}

@@ -28,6 +28,8 @@
 
 		this.viewModelBindingWasApplied = false;
 
+		this.arrayBindingWasApplied = false;
+
 		var self = this;
 
 		this.createViewModel = function() {
@@ -37,6 +39,17 @@
 				applyBinding: function() {
 
 					self.viewModelBindingWasApplied = true;
+				}
+			};
+		};
+
+		this.createArrayBinding = function() {
+
+			return {
+
+				applyBinding: function() {
+
+					self.arrayBindingWasApplied = true;
 				}
 			};
 		};
@@ -54,6 +67,7 @@
 			property.applyBinding(document.body, "key", { key: "thingy" });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
+			assert.ok(!propertyType.arrayBindingWasApplied);
 
 			done();
 		});
@@ -71,6 +85,7 @@
 			property.applyBinding(document.body, "key", { key: {} });
 
 			assert.ok(propertyType.viewModelBindingWasApplied);
+			assert.ok(!propertyType.arrayBindingWasApplied);
 
 			done();
 		});
@@ -89,6 +104,7 @@
 			property.applyBinding(document.body, "key", { key: text });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
+			assert.ok(!propertyType.arrayBindingWasApplied);
 
 			done();
 		});
@@ -99,13 +115,14 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "TransientProperty"], function(Text, TransientProperty) {
+		getRequire()(["TransientProperty"], function(TransientProperty) {
 
 			var propertyType = new FakePropertyType();
 			var property = new TransientProperty(function() {}, propertyType);
 			property.applyBinding(document.body, "key", { key: function() {} });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
+			assert.ok(!propertyType.arrayBindingWasApplied);
 
 			done();
 		});
@@ -116,13 +133,32 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "TransientProperty"], function(Text, TransientProperty) {
+		getRequire()(["TransientProperty"], function(TransientProperty) {
 
 			var propertyType = new FakePropertyType();
 			var property = new TransientProperty(null, propertyType);
 			property.applyBinding(document.body, "key", { key: null });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
+			assert.ok(!propertyType.arrayBindingWasApplied);
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("An array is not a view model", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["TransientProperty"], function(TransientProperty) {
+
+			var propertyType = new FakePropertyType();
+			var property = new TransientProperty([], propertyType);
+			property.applyBinding(document.body, "key", { key: [] });
+
+			assert.ok(!propertyType.viewModelBindingWasApplied);
+			assert.ok(propertyType.arrayBindingWasApplied);
 
 			done();
 		});
