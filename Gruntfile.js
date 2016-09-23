@@ -31,6 +31,15 @@ module.exports = function(grunt) {
 			},
 			all: ["test/*"]
 		},
+ 		mkdir: {
+
+			all: {
+				options: {
+
+					create: ["target"]
+				},
+			},
+		},
 		"concat-define": {
 
 			options: {
@@ -56,9 +65,10 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-jscs");
-	grunt.loadNpmTasks('grunt-contrib-qunit');
+	grunt.loadNpmTasks("grunt-contrib-qunit");
+	grunt.loadNpmTasks("grunt-mkdir");
 	grunt.loadNpmTasks("grunt-concat-define");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 
-	grunt.registerTask("default", ["jshint", "jscs", "qunit", "concat-define", "uglify"]);
+	grunt.registerTask("default", ["jshint", "jscs", "qunit", "mkdir", "concat-define", "uglify"]);
 };
