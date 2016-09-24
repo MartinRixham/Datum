@@ -89,5 +89,39 @@
 		});
 	});
     </script>
+    <div id="two-children">
+      <div></div>
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Exception when two child elements", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayBinding"], function(ArrayBinding) {
+
+			var binding = new ArrayBinding();
+			var element = document.querySelector("#two-children");
+			var model = { children: [] };
+
+			var exception;
+
+			try {
+
+				binding.setUpElement(model, element, model.children);
+			}
+			catch (e) {
+
+				exception = e;
+			}
+
+			assert.strictEqual(
+				exception.message,
+				"An array must be bound to an element with exactly one child.");
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

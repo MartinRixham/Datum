@@ -4,6 +4,13 @@ define([], function() {
 
 		this.setUpElement = function(parentModel, element, model) {
 
+			if (element.children.length != 1) {
+
+				var message =
+					"An array must be bound to an element with exactly one child.";
+				throw new Error(message);
+			}
+
 			var child = element.children[0];
 
 			element.removeChild(child);
