@@ -4,20 +4,20 @@ define([], function() {
 
 		var listeners = [];
 
-		this.setUpElement = function(model, element) {
+		this.setUpElement = function(parentModel, element) {
 
 			function listener(event) {
 
-				value.call(model, event.target.value, element);
+				value.call(parentModel, event.target.value, element);
 			}
 
 			listeners.push({ "element": element, "listener": listener });
 			element.addEventListener("change", listener);
 		};
 
-		this.updateElement = function(model, element) {
+		this.updateElement = function(parentModel, element) {
 
-			element.value = value.call(model, undefined, element);
+			element.value = value.call(parentModel, undefined, element);
 		};
 
 		this.resetElement = function(element) {

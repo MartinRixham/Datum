@@ -50,7 +50,7 @@
 		});
 	});
     </script>
-    <div id="notNull">
+    <div id="not-null">
       <div></div>
       <div></div>
     </div>
@@ -62,18 +62,18 @@
 		getRequire()(["ObjectBinding"], function(ObjectBinding) {
 
 			var binding = new ObjectBinding();
-			var element = document.querySelector("#notNull");
+			var element = document.querySelector("#not-null");
 			var model = {
 
 				notNull: null
 			};
 
-			binding.setUpElement(model, element);
-			binding.updateElement(model, element, "notNull");
+			binding.setUpElement(model, element, model.notNull);
+			binding.updateElement(model, element, model.notNull);
 
 			model.notNull = {};
 
-			binding.updateElement(model, element, "notNull");
+			binding.updateElement(model, element, model.notNull);
 
 			assert.strictEqual(element.children.length, 2);
 

@@ -68,7 +68,7 @@ define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Regi
 					}
 					else {
 
-						binding.setUpElement(model, element);
+						binding.setUpElement(model, element, model && model[name]);
 						new Registry().requestRegistrations();
 						binding.updateElement(model, element, model && model[name]);
 						createCallback(model, element);

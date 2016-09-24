@@ -4,9 +4,9 @@ define([], function() {
 
 		this.setUpElement = function() {};
 
-		this.updateElement = function(model, element) {
+		this.updateElement = function(parentModel, element) {
 
-			element.textContent = text.call(model, element);
+			element.textContent = text.call(parentModel, element);
 		};
 
 		this.resetElement = function(element) {

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Array Binding Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var i = 0;
+
+		function getRequire() {
+
+			return require.config({ baseUrl: "../src", context: i++ });
+		}
+    </script>
+    <div id="zero">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Remove children when bound to empty array", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayBinding"], function(ArrayBinding) {
+
+			var binding = new ArrayBinding();
+			var element = document.querySelector("#zero");
+			var model = { zero: [] };
+
+			binding.setUpElement(model, element, model.zero);
+
+			assert.strictEqual(element.children.length, 0);
+
+			done();
+		});
+	});
+    </script>
+    <div id="one">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("One element when array length one", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayBinding"], function(ArrayBinding) {
+
+			var binding = new ArrayBinding();
+			var element = document.querySelector("#one");
+			var model = { one: [{}] };
+
+			binding.setUpElement(model, element, model.one);
+
+			assert.strictEqual(element.children.length, 1);
+
+			done();
+		});
+	});
+    </script>
+    <div id="two">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Two elements when array length two", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayBinding"], function(ArrayBinding) {
+
+			var binding = new ArrayBinding();
+			var element = document.querySelector("#two");
+			var model = { two: [{}, {}] };
+
+			binding.setUpElement(model, element, model.two);
+
+			assert.strictEqual(element.children.length, 2);
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>

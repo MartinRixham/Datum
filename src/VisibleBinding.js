@@ -4,9 +4,9 @@ define([], function() {
 
 		this.setUpElement = function() {};
 
-		this.updateElement = function(model, element) {
+		this.updateElement = function(parentModel, element) {
 
-			if (visible.call(model, element)) {
+			if (visible.call(parentModel, element)) {
 
 				element.style.display = null;
 			}
