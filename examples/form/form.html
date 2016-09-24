@@ -97,6 +97,23 @@
 				/ <input type="number" data-bind="year" />
 			</div>
 			<a class="hide-date" data-bind="hideDate"></a>
+			<div data-bind="yesnos">
+				<div>
+					<label data-bind="question"></label>
+					<span class="options">
+						<span>Yes</span>
+						<input type="radio" name="yesno" value="yes" data-bind="yesno" />
+						<span>No</span>
+						<input type="radio" name="yesno" value="no" data-bind="yesno" />
+						<span>Maybe</span>
+						<input type="radio" name="yesno" value="maybe" data-bind="yesno" />
+					</span>
+				</div>
+			</div>
+			<div class="new-question">
+				<input type="text" data-bind="newQuestion" />?
+				<a data-bind="addQuestion">Add Question</a>
+			</div>
 			<a class="go" data-bind="go">GO</a>
 		</form>
 	</body>

@@ -25,6 +25,14 @@ require(["Binding", "Click", "BindingRoot"], function(Binding, Click, BindingRoo
 			}
 		});
 
+		this.yesnos =
+			[
+				new YesNoQuestion("Is this the first question?"),
+				new YesNoQuestion("Is this the second question?")
+			];
+
+		this.theNewQuestion = "";
+
 		this.input2 = new Binding({
 
 			value: function(value) {
@@ -145,6 +153,58 @@ require(["Binding", "Click", "BindingRoot"], function(Binding, Click, BindingRoo
 				return this.theyear;
 			}
 		});
+	}
+
+	function YesNoQuestion(question) {
+
+		this.thequestion = question;
+
+		this.answer = "no answer given";
+
+		this.yesno = new Binding({
+
+			value: function(value) {
+
+				if (value) {
+
+					this.answer = value;
+				}
+			},
+			text: function() {
+
+				return this.answer;
+			}
+		});
+
+		this.question = new Binding({
+
+			text: function() {
+
+				return this.thequestion;
+			}
+		});
+
+		this.compareTo = function(other) {
+
+			var thisQuestion =
+				this.thequestion.toUpperCase();
+
+			var otherQuestion =
+				other.thequestion.toUpperCase();
+
+			if (thisQuestion > otherQuestion) {
+
+				return 1;
+			}
+			else if (thisQuestion < otherQuestion) {
+
+				return -1;
+			}
+			else {
+
+				return 0;
+			}
+		};
 	}
 
 	new BindingRoot(form = new Form());
