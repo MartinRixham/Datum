@@ -77,6 +77,28 @@ require(["Binding", "Click", "BindingRoot"], function(Binding, Click, BindingRoo
 			}
 		});
 
+		this.newQuestion = new Binding({
+
+			value: function(value) {
+
+				if (value) {
+
+					this.theNewQuestion = value;
+				}
+
+				return this.theNewQuestion;
+			}
+		});
+
+		this.addQuestion = new Binding({
+
+			click: function() {
+
+				this.yesnos.push(new YesNoQuestion(this.theNewQuestion + "?"));
+				this.theNewQuestion = "";
+			}
+		});
+
 		this.go = new Binding({
 
 			click: function() {

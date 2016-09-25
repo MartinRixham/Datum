@@ -2247,11 +2247,9 @@ require(["Text", "BindingRoot"], function(Text, BindingRoot) {
 	new BindingRoot(matrix = new Matrix());
 
 	var div = document.createElement("DIV");
-
 	var row = document.createElement("SPAN");
 
 	var character = document.createElement("SPAN");
-
 	character.className = "character";
 
 	var waterfall = document.querySelector("#waterfall");
@@ -2266,11 +2264,9 @@ require(["Text", "BindingRoot"], function(Text, BindingRoot) {
 
 		row.setAttribute("data-bind", rowNumber);
 
-		var newDiv = div.cloneNode();
-
-		var newRow = row.cloneNode();
-
-		var newCharacter = character.cloneNode();
+		var newDiv = div.cloneNode(true);
+		var newRow = row.cloneNode(true);
+		var newCharacter = character.cloneNode(true);
 
 		newRow.appendChild(document.createTextNode(" "));
 		newRow.appendChild(newCharacter);

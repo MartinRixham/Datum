@@ -40,7 +40,7 @@ define([
 
 		this.createArrayBinding = function() {
 
-			return new Binder(new ArrayBinding());
+			return new Binder(new ArrayBinding(this));
 		};
 	}
 

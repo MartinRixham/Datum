@@ -53,11 +53,11 @@
 
 		var done = assert.async();
 
-		getRequire()(["ArrayBinding"], function(ArrayBinding) {
+		getRequire()(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
 
 			var binding = new ArrayBinding();
 			var element = document.querySelector("#one");
-			var model = { one: [{}] };
+			var model = { one: [new Text(function() { return "Hello world."; })] };
 
 			binding.setUpElement(model, element, model.one);
 
@@ -75,11 +75,18 @@
 
 		var done = assert.async();
 
-		getRequire()(["ArrayBinding"], function(ArrayBinding) {
+		getRequire()(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
 
 			var binding = new ArrayBinding();
 			var element = document.querySelector("#two");
-			var model = { two: [{}, {}] };
+			var model =
+				{
+					two:
+						[
+							new Text(function() { return "Hello world."; }),
+							new Text(function() { return "Hello world."; })
+						]
+				};
 
 			binding.setUpElement(model, element, model.two);
 
@@ -118,6 +125,29 @@
 			assert.strictEqual(
 				exception.message,
 				"An array must be bound to an element with exactly one child.");
+
+			done();
+		});
+	});
+    </script>
+    <div id="bind">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Bind array element", function(assert) {
+
+		var done = assert.async();
+
+		getRequire()(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
+
+			var binding = new ArrayBinding();
+			var element = document.querySelector("#bind");
+			var model = { bind: [new Text(function() { return "Hello world."; })] };
+
+			binding.setUpElement(model, element, model.bind);
+			binding.updateElement(model, element, model.bind);
+
+			assert.strictEqual(element.children[0].innerHTML, "Hello world.");
 
 			done();
 		});
