@@ -18,9 +18,9 @@
     <script>
 		var i = 0;
 
-		function getRequire() {
+		function require(dependencies, factory) {
 
-			return require.config({ baseUrl: "../src", context: i++ });
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
     </script>
     <div id="zero">
@@ -31,7 +31,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ArrayBinding"], function(ArrayBinding) {
+		require(["ArrayBinding"], function(ArrayBinding) {
 
 			var binding = new ArrayBinding();
 			var element = document.querySelector("#zero");
@@ -53,7 +53,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
+		require(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
 
 			var binding = new ArrayBinding();
 			var element = document.querySelector("#one");
@@ -75,7 +75,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
+		require(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
 
 			var binding = new ArrayBinding();
 			var element = document.querySelector("#two");
@@ -105,7 +105,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ArrayBinding"], function(ArrayBinding) {
+		require(["ArrayBinding"], function(ArrayBinding) {
 
 			var binding = new ArrayBinding();
 			var element = document.querySelector("#two-children");
@@ -138,7 +138,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
+		require(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
 
 			var binding = new ArrayBinding();
 			var element = document.querySelector("#bind");

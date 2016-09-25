@@ -18,9 +18,9 @@
 	<script>
 		var i = 0;
 
-		function getRequire() {
+		function require(dependencies, factory) {
 
-			return require.config({ baseUrl: "../src", context: i++ });
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
 	</script>
     <div id="update"></div>
@@ -29,7 +29,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["TextBinding"], function(TextBinding) {
+		require(["TextBinding"], function(TextBinding) {
 
 			var text =
 				new TextBinding(function() {
@@ -52,7 +52,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["TextBinding"], function(TextBinding) {
+		require(["TextBinding"], function(TextBinding) {
 
 			var receivedModel;
 			var receivedElement;
@@ -81,7 +81,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["TextBinding"], function(TextBinding) {
+		require(["TextBinding"], function(TextBinding) {
 
 			var text =
 				new TextBinding(function() {

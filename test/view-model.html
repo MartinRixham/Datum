@@ -18,9 +18,9 @@
     <script>
 		var i = 0;
 
-		function getRequire() {
+		function require(dependencies, factory) {
 
-			return require.config({ baseUrl: "../src", context: i++ });
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
     </script>
     <input type="text" id="value-input" data-bind="valueInput" />
@@ -29,7 +29,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Datum", "Value", "ViewModel"], function(Datum, Value, ViewModel) {
+		require(["Datum", "Value", "ViewModel"], function(Datum, Value, ViewModel) {
 
 			function InputObject() {
 
@@ -63,7 +63,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "ViewModel"], function(Text, ViewModel) {
+		require(["Text", "ViewModel"], function(Text, ViewModel) {
 
 			function TextObject() {
 
@@ -102,7 +102,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "ViewModel"], function(Text, ViewModel) {
+		require(["Text", "ViewModel"], function(Text, ViewModel) {
 
 			function TextObject() {
 
@@ -130,7 +130,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "ViewModel"], function(Text, ViewModel) {
+		require(["Text", "ViewModel"], function(Text, ViewModel) {
 
 			function PlainObject() {
 
@@ -164,7 +164,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Value", "ViewModel"], function(Value, ViewModel) {
+		require(["Value", "ViewModel"], function(Value, ViewModel) {
 
 			function PlainObject() {
 
@@ -203,7 +203,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Value", "ViewModel"], function(Value, ViewModel) {
+		require(["Value", "ViewModel"], function(Value, ViewModel) {
 
 			function TwoObject() {
 
@@ -241,7 +241,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Value", "ViewModel"], function(Value, ViewModel) {
+		require(["Value", "ViewModel"], function(Value, ViewModel) {
 
 			function InputObject() {
 
@@ -282,7 +282,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "BindingRoot"], function(Text, BindingRoot) {
+		require(["Text", "BindingRoot"], function(Text, BindingRoot) {
 
 			var count = 0;
 
@@ -328,7 +328,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "ViewModel"], function(Text, ViewModel) {
+		require(["Text", "ViewModel"], function(Text, ViewModel) {
 
 			function ScopeObject() {
 
@@ -359,7 +359,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ViewModel"], function(ViewModel) {
+		require(["ViewModel"], function(ViewModel) {
 
 			var elementId;
 
@@ -389,7 +389,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Binding", "ViewModel"], function(Binding, ViewModel) {
+		require(["Binding", "ViewModel"], function(Binding, ViewModel) {
 
 			var count = 0;
 
@@ -426,7 +426,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Update", "ViewModel"], function(Update, ViewModel) {
+		require(["Update", "ViewModel"], function(Update, ViewModel) {
 
 			var count = 0;
 

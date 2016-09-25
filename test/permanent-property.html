@@ -18,9 +18,9 @@
     <script>
 		var i = 0;
 
-		function getRequire() {
+		function require(dependencies, factory) {
 
-			return require.config({ baseUrl: "../src", context: i++ });
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
     </script>
     <script>
@@ -54,7 +54,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["PermanentProperty"], function(PermanentProperty) {
+		require(["PermanentProperty"], function(PermanentProperty) {
 
 			var propertyType = new FakePropertyType();
 			var property = new PermanentProperty("thingy", propertyType);
@@ -72,7 +72,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["PermanentProperty"], function(PermanentProperty) {
+		require(["PermanentProperty"], function(PermanentProperty) {
 
 			var propertyType = new FakePropertyType();
 			var property = new PermanentProperty({}, propertyType);
@@ -90,7 +90,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "PermanentProperty"], function(Text, PermanentProperty) {
+		require(["Text", "PermanentProperty"], function(Text, PermanentProperty) {
 
 			var propertyType = new FakePropertyType();
 			var text = new Text(function() { return ""; });
@@ -109,7 +109,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["PermanentProperty"], function(PermanentProperty) {
+		require(["PermanentProperty"], function(PermanentProperty) {
 
 			var propertyType = new FakePropertyType();
 			var property = new PermanentProperty(function() {}, propertyType);
@@ -127,7 +127,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["PermanentProperty"], function(PermanentProperty) {
+		require(["PermanentProperty"], function(PermanentProperty) {
 
 			var propertyType = new FakePropertyType();
 			var property = new PermanentProperty(null, propertyType);
@@ -145,7 +145,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["PermanentProperty"], function(PermanentProperty) {
+		require(["PermanentProperty"], function(PermanentProperty) {
 
 			var propertyType = new FakePropertyType();
 			var property = new PermanentProperty([], propertyType);

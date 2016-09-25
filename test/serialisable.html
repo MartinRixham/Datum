@@ -11,19 +11,19 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
     <script>
-			var i = 0;
+		var i = 0;
 
-			function getRequire() {
+		function require(dependencies, factory) {
 
-				return require.config({ baseUrl: "../src", context: i++ });
-			}
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
+		}
     </script>
     <script>
 	QUnit.test("toJSON returns an object", function(assert) {
 
 		var done = assert.async();
 
-		getRequire()(["BindingRoot"], function(BindingRoot) {
+		require(["BindingRoot"], function(BindingRoot) {
 
 			function ToJSONObject() {}
 
@@ -42,7 +42,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Serialisable"], function(Serialisable) {
+		require(["Serialisable"], function(Serialisable) {
 
 			function ToJSONObject() {
 

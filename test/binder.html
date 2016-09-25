@@ -18,9 +18,9 @@
 	<script>
 		var i = 0;
 
-		function getRequire() {
+		function require(dependencies, factory) {
 
-			return require.config({ baseUrl: "../src", context: i++ });
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
 	</script>
     <div id="function" data-bind="function"></div>
@@ -29,7 +29,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
+		require(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
 
 			var datum = new Datum();
 
@@ -57,7 +57,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
+		require(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
 
 			var datum = new Datum();
 
@@ -84,7 +84,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
+		require(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
 
 			var count = 0;
 			var datum = new Datum();
@@ -110,7 +110,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
+		require(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
 
 			var count = 0;
 			var datum = new Datum();
@@ -138,7 +138,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["TextBinding", "Binder"], function(TextBinding, Binder) {
+		require(["TextBinding", "Binder"], function(TextBinding, Binder) {
 
 			var binding =
 				new Binder(new TextBinding(function(element) {
@@ -158,7 +158,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["TextBinding", "Binder"], function(TextBinding, Binder) {
+		require(["TextBinding", "Binder"], function(TextBinding, Binder) {
 
 			var callCount = 0;
 
@@ -183,7 +183,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["TextBinding", "Binder"], function(TextBinding, Binder) {
+		require(["TextBinding", "Binder"], function(TextBinding, Binder) {
 
 			var binding =
 				new Binder(new TextBinding(function() {
@@ -211,7 +211,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["TextBinding", "Binder"], function(TextBinding, Binder) {
+		require(["TextBinding", "Binder"], function(TextBinding, Binder) {
 
 			var binding =
 				new Binder(new TextBinding(function() {
@@ -246,7 +246,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Datum", "InitBinding", "Binder"], function(Datum, InitBinding, Binder) {
+		require(["Datum", "InitBinding", "Binder"], function(Datum, InitBinding, Binder) {
 
 			var datum = new Datum();
 			datum("Hello World");
@@ -273,7 +273,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Datum", "InitBinding", "Binder"], function(Datum, InitBinding, Binder) {
+		require(["Datum", "InitBinding", "Binder"], function(Datum, InitBinding, Binder) {
 
 			var count = 0;
 			var datum = new Datum();
@@ -299,7 +299,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Datum", "InitBinding", "Binder"], function(Datum, InitBinding, Binder) {
+		require(["Datum", "InitBinding", "Binder"], function(Datum, InitBinding, Binder) {
 
 			var count = 0;
 			var datum = new Datum();
@@ -327,7 +327,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Datum", "ValueBinding", "Binder"], function(Datum, ValueBinding, Binder) {
+		require(["Datum", "ValueBinding", "Binder"], function(Datum, ValueBinding, Binder) {
 
 			var datum = new Datum();
 
@@ -359,7 +359,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Datum", "ValueBinding", "Binder"], function(Datum, ValueBinding, Binder) {
+		require(["Datum", "ValueBinding", "Binder"], function(Datum, ValueBinding, Binder) {
 
 			var datum = new Datum();
 
@@ -417,7 +417,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Binder"], function(Binder) {
+		require(["Binder"], function(Binder) {
 
 			var model = { "name": "thingy" };
 			var initialisedModel;
@@ -468,7 +468,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "BindingRoot"], function(Text, BindingRoot) {
+		require(["Text", "BindingRoot"], function(Text, BindingRoot) {
 
 			function Texts() {
 

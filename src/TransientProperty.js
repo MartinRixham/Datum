@@ -11,7 +11,8 @@ define([], function() {
 		else if (property instanceof Array) {
 
 			binding = propertyType.createArrayBinding(property);
-		} else if (property && typeof(property) == "object") {
+		}
+		else if (property && typeof(property) == "object") {
 
 			binding = propertyType.createViewModel(property);
 		}
@@ -24,7 +25,7 @@ define([], function() {
 			}
 		};
 
-		function isBinding(object) {
+		function isBinding(object){
 
 			return object && object.applyBinding && object.removeBinding;
 		}
@@ -42,7 +43,8 @@ define([], function() {
 			if (typeof property == "object" || typeof other == "object") {
 
 				return other && property != other;
-			} else {
+			}
+			else {
 
 				return false;
 			}

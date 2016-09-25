@@ -18,9 +18,9 @@
 	<script>
 		var i = 0;
 
-		function getRequire() {
+		function require(dependencies, factory) {
 
-			return require.config({ baseUrl: "../src", context: i++ });
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
 	</script>
 	<input id="init" value="Hello world." />
@@ -29,7 +29,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ValueBinding"], function(ValueBinding) {
+		require(["ValueBinding"], function(ValueBinding) {
 
 			var receivedValue;
 
@@ -55,7 +55,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ValueBinding"], function(ValueBinding) {
+		require(["ValueBinding"], function(ValueBinding) {
 
 			var value =
 				new ValueBinding(function() {
@@ -78,7 +78,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ValueBinding"], function(ValueBinding) {
+		require(["ValueBinding"], function(ValueBinding) {
 
 			var receivedValue;
 
@@ -106,7 +106,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ValueBinding"], function(ValueBinding) {
+		require(["ValueBinding"], function(ValueBinding) {
 
 			var receivedModel;
 			var receivedElement;

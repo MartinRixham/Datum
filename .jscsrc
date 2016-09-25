@@ -17,13 +17,14 @@
 	"disallowTrailingWhitespace": true,
 	"disallowUnusedParams": true,
 	"disallowYodaConditions": true,
-	"maximumLineLength": 90,
+	"maximumLineLength": { "value": 90, "tabSize": 4, "allExcept": ["require"] },
 	"maximumNumberOfLines": 200,
 	"requireCamelCaseOrUpperCaseIdentifiers": true,
 	"requireCapitalizedConstructors": true,
 	"requireCommaBeforeLineBreak": true,
 	"requireDotNotation": true,
 	"requireFunctionDeclarations": true,
+	"requireKeywordsOnNewLine": ["else"],
 	"requireLineBreakAfterVariableAssignment": true,
 	"requireLineFeedAtFileEnd": true,
 	"requireOperatorBeforeLineBreak": true,
@@ -38,3 +39,4 @@
 	"validateQuoteMarks": "\"",
 	"validateParameterSeparator": ", "
 }
+

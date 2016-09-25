@@ -18,9 +18,9 @@
     <script>
 		var i = 0;
 
-		function getRequire() {
+		function require(dependencies, factory) {
 
-			return require.config({ baseUrl: "../src", context: i++ });
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
     </script>
     <div id="test-div" data-bind="test"></div>
@@ -29,7 +29,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		require(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			function TextObject() {
 
@@ -58,7 +58,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		require(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
 
 			function InputObject() {
 
@@ -86,7 +86,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["BindingRoot"], function(BindingRoot) {
+		require(["BindingRoot"], function(BindingRoot) {
 
 			var exception = null;
 

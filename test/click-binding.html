@@ -18,9 +18,9 @@
 	<script>
 		var i = 0;
 
-		function getRequire() {
+		function require(dependencies, factory) {
 
-			return require.config({ baseUrl: "../src", context: i++ });
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
 	</script>
 	<div id="init"></div>
@@ -29,7 +29,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ClickBinding"], function(ClickBinding) {
+		require(["ClickBinding"], function(ClickBinding) {
 
 			var receivedElement;
 
@@ -55,7 +55,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ClickBinding"], function(ClickBinding) {
+		require(["ClickBinding"], function(ClickBinding) {
 
 			var clicked;
 

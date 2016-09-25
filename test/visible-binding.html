@@ -18,9 +18,9 @@
 	<script>
 		var i = 0;
 
-		function getRequire() {
+		function require(dependencies, factory) {
 
-			return require.config({ baseUrl: "../src", context: i++ });
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
 	</script>
     <div id="invisible"></div>
@@ -29,7 +29,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["VisibleBinding"], function(VisibleBinding) {
+		require(["VisibleBinding"], function(VisibleBinding) {
 
 			var visible =
 				new VisibleBinding(function() {
@@ -53,7 +53,7 @@
 
 			var done = assert.async();
 
-			getRequire()(["VisibleBinding"], function(VisibleBinding) {
+			require(["VisibleBinding"], function(VisibleBinding) {
 
 				var visible =
 					new VisibleBinding(function() {
@@ -77,7 +77,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["VisibleBinding"], function(VisibleBinding) {
+		require(["VisibleBinding"], function(VisibleBinding) {
 
 			var receivedModel;
 			var receivedElement;
@@ -106,7 +106,7 @@
 
 			var done = assert.async();
 
-			getRequire()(["VisibleBinding"], function(VisibleBinding) {
+			require(["VisibleBinding"], function(VisibleBinding) {
 
 				var visible =
 					new VisibleBinding(function() {

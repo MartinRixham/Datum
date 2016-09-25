@@ -18,9 +18,9 @@
     <script>
 		var i = 0;
 
-		function getRequire() {
+		function require(dependencies, factory) {
 
-			return require.config({ baseUrl: "../src", context: i++ });
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
     </script>
     <div id="notObject">
@@ -32,7 +32,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ObjectBinding"], function(ObjectBinding) {
+		require(["ObjectBinding"], function(ObjectBinding) {
 
 			var binding = new ObjectBinding();
 			var element = document.querySelector("#notObject");
@@ -59,7 +59,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["ObjectBinding"], function(ObjectBinding) {
+		require(["ObjectBinding"], function(ObjectBinding) {
 
 			var binding = new ObjectBinding();
 			var element = document.querySelector("#not-null");
@@ -89,7 +89,7 @@
 
 		var done = assert.async();
 
-		getRequire()(["Text", "BindingRoot"], function(Text, BindingRoot) {
+		require(["Text", "BindingRoot"], function(Text, BindingRoot) {
 
 			function Replace() {
 

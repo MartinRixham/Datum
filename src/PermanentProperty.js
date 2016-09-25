@@ -13,7 +13,9 @@ define([], function() {
 
 		this.applyBinding = function(scope, key, model) {
 
-			if (typeof(property) != "function" && !isBinding(property) && !propertyInjected) {
+			if (typeof(property) != "function" &&
+				!isBinding(property) &&
+				!propertyInjected) {
 
 				propertyType.injectProperty(property, model, key);
 				propertyInjected = true;

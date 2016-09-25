@@ -99,7 +99,8 @@ define([
 
 				if (!permanentProperties[key]) {
 
-					permanentProperties[key] = new PermanentProperty(model[key], createPropertyType());
+					permanentProperties[key] =
+						new PermanentProperty(model[key], createPropertyType());
 				}
 			}
 		}
@@ -115,7 +116,8 @@ define([
 						transientProperties[key].removeBinding();
 					}
 
-					transientProperties[key] = new TransientProperty(model[key], createPropertyType());
+					transientProperties[key] =
+						new TransientProperty(model[key], createPropertyType());
 				}
 			}
 		}
