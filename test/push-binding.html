@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Update Binding Tests</title>
+    <title>Push Binding Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../node_modules/requirejs/require.js"></script>
@@ -23,30 +23,26 @@
 			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
 	</script>
-	<div id="callback"></div>
+    <div id="push">
+      <div></div>
+    </div>
 	<script>
-	QUnit.test("Model and element passed on update", function(assert) {
+	QUnit.test("Push element to array", function(assert) {
 
 		var done = assert.async();
 
-		require(["UpdateBinding"], function(UpdateBinding) {
+		require(["PushBinding"], function(PushBinding) {
 
-			var receivedModel;
-			var receivedElement;
+			var binding = new PushBinding();
+			var element = document.querySelector("#push");
+			var model = { push: [{}] };
 
-			var update =
-				new UpdateBinding(function(element) {
+			binding.setUpElement(model, element, model.push);
 
-					receivedModel = this;
-					receivedElement = element;
-				});
+			model.push.push({});
 
-			var element = document.querySelector("#callback");
-			var model = {};
-			update.updateElement(model, element);
-
-			assert.strictEqual(receivedElement, element);
-			assert.strictEqual(receivedModel, model);
+			assert.strictEqual(model.push.length, 2);
+			assert.strictEqual(element.children.length, 2);
 
 			done();
 		});
