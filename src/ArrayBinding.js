@@ -1,4 +1,4 @@
-define(["TransientProperty"], function(TransientProperty) {
+define(["ArrayElement", "TransientProperty"], function(ArrayElement, TransientProperty) {
 
 	function ArrayBinding(propertyType) {
 
@@ -16,12 +16,13 @@ define(["TransientProperty"], function(TransientProperty) {
 			}
 
 			var child = element.children[0];
+			var arrayElement = new ArrayElement(child);
 
 			element.removeChild(child);
 
 			for (var i = 0; i < model.length; i++) {
 
-				element.appendChild(child.cloneNode(true));
+				element.appendChild(arrayElement.clone());
 				properties[i] = new TransientProperty(model[i], propertyType);
 			}
 		};

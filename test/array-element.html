@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Array Element Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
+		}
+    </script>
+    <div id="number"></div>
+    <script>
+	QUnit.test("Number ids", function(assert) {
+
+		var done = assert.async();
+
+		require(["ArrayElement"], function(ArrayElement) {
+
+			var element = document.querySelector("#number");
+			var arrayElement = new ArrayElement(element);
+
+			assert.strictEqual(arrayElement.clone().id, "number_0");
+			assert.strictEqual(arrayElement.clone().id, "number_1");
+
+			done();
+		});
+	});
+    </script>
+    <input name="name" id="name" />
+    <script>
+	QUnit.test("Number names", function(assert) {
+
+		var done = assert.async();
+
+		require(["ArrayElement"], function(ArrayElement) {
+
+			var element = document.querySelector("#name");
+			var arrayElement = new ArrayElement(element);
+
+			assert.strictEqual(arrayElement.clone().name, "name_0");
+			assert.strictEqual(arrayElement.clone().name, "name_1");
+
+			done();
+		});
+	});
+    </script>
+      <div id="subnumber" data-bind="subnumber">
+        <div>
+          <div id="inner-subnumber"></div>
+        </div>
+      </div>
+    <script>
+	QUnit.test("Number ids on subelements", function(assert) {
+
+		var done = assert.async();
+
+		require(["ArrayElement"], function(ArrayElement) {
+
+			var element = document.querySelector("#subnumber");
+			var arrayElement = new ArrayElement(element);
+			var newElement = arrayElement.clone();
+			var one = newElement.querySelector("#inner-subnumber_0");
+
+			assert.ok(one);
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>
