@@ -31,17 +31,18 @@
 
 		var done = assert.async();
 
-		require(["PushBinding"], function(PushBinding) {
+		require(["Push", "ArrayElement"], function(Push, ArrayElement) {
 
-			var binding = new PushBinding();
 			var element = document.querySelector("#push");
-			var model = { push: [{}] };
+			var child = new ArrayElement(element.firstElementChild);
 
-			binding.setUpElement(model, element, model.push);
+			var model = [{}];
+			var elementChildren = [{ element: element, child: child }];
+			new Push(model, elementChildren);
 
-			model.push.push({});
+			model.push({});
 
-			assert.strictEqual(model.push.length, 2);
+			assert.strictEqual(model.length, 2);
 			assert.strictEqual(element.children.length, 2);
 
 			done();

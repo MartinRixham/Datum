@@ -33,9 +33,9 @@
 
 		require(["ArrayBinding"], function(ArrayBinding) {
 
-			var binding = new ArrayBinding();
-			var element = document.querySelector("#zero");
 			var model = { zero: [] };
+			var binding = new ArrayBinding(model.zero);
+			var element = document.querySelector("#zero");
 
 			binding.setUpElement(model, element, model.zero);
 
@@ -55,9 +55,9 @@
 
 		require(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
 
-			var binding = new ArrayBinding();
-			var element = document.querySelector("#one");
 			var model = { one: [new Text(function() { return "Hello world."; })] };
+			var binding = new ArrayBinding(model.one);
+			var element = document.querySelector("#one");
 
 			binding.setUpElement(model, element, model.one);
 
@@ -77,16 +77,16 @@
 
 		require(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
 
-			var binding = new ArrayBinding();
-			var element = document.querySelector("#two");
 			var model =
-				{
-					two:
-						[
-							new Text(function() { return "Hello world."; }),
-							new Text(function() { return "Hello world."; })
-						]
-				};
+			{
+				two:
+					[
+						new Text(function() { return "Hello world."; }),
+						new Text(function() { return "Hello world."; })
+					]
+			};
+			var binding = new ArrayBinding(model.two);
+			var element = document.querySelector("#two");
 
 			binding.setUpElement(model, element, model.two);
 
@@ -107,9 +107,9 @@
 
 		require(["ArrayBinding"], function(ArrayBinding) {
 
-			var binding = new ArrayBinding();
-			var element = document.querySelector("#two-children");
 			var model = { children: [] };
+			var binding = new ArrayBinding(model.children);
+			var element = document.querySelector("#two-children");
 
 			var exception;
 
@@ -140,9 +140,9 @@
 
 		require(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
 
-			var binding = new ArrayBinding();
-			var element = document.querySelector("#bind");
 			var model = { bind: [new Text(function() { return "Hello world."; })] };
+			var binding = new ArrayBinding(model.bind);
+			var element = document.querySelector("#bind");
 
 			binding.setUpElement(model, element, model.bind);
 			binding.updateElement(model, element, model.bind);

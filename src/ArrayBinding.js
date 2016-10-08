@@ -1,12 +1,39 @@
-define(["ArrayElement", "TransientProperty"], function(ArrayElement, TransientProperty) {
+define([
+	"ArrayElement",
+	"TransientProperty",
+	"Push"
+], function(
+	ArrayElement,
+	TransientProperty,
+	Push) {
 
-	function ArrayBinding(propertyType) {
+	function ArrayBinding(model, propertyType) {
 
 		var properties = [];
+
+		var elementChildren = [];
+
+		(function createArrayMethods() {
+
+			new Push(model, elementChildren);
+		})();
 
 		this.setUpElement = function(parentModel, element, model) {
 
 			element._rebind = function() {};
+
+			checkElementHasOnlyOneChild(element);
+
+			var child = getChildFromDOM(element);
+
+			for (var i = 0; i < model.length; i++) {
+
+				element.appendChild(child.clone());
+				properties[i] = new TransientProperty(model[i], propertyType);
+			}
+		};
+
+		function checkElementHasOnlyOneChild(element) {
 
 			if (element.children.length != 1) {
 
@@ -14,18 +41,16 @@ define(["ArrayElement", "TransientProperty"], function(ArrayElement, TransientPr
 					"An array must be bound to an element with exactly one child.";
 				throw new Error(message);
 			}
+		}
+
+		function getChildFromDOM(element) {
 
 			var child = element.children[0];
-			var arrayElement = new ArrayElement(child);
 
 			element.removeChild(child);
 
-			for (var i = 0; i < model.length; i++) {
-
-				element.appendChild(arrayElement.clone());
-				properties[i] = new TransientProperty(model[i], propertyType);
-			}
-		};
+			return new ArrayElement(child);
+		}
 
 		this.updateElement = function(parentModel, element, value) {
 

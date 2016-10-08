@@ -38,9 +38,9 @@ define([
 			return new Binder(new ObjectBinding());
 		};
 
-		this.createArrayBinding = function() {
+		this.createArrayBinding = function(model) {
 
-			return new Binder(new ArrayBinding(this));
+			return new Binder(new ArrayBinding(model, this));
 		};
 	}
 
