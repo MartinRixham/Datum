@@ -11,11 +11,11 @@ define([
 
 	function ViewModel(model) {
 
-		new Serialisable(model);
-
 		var transientProperties = {};
 
 		var permanentProperties = {};
+
+		new Serialisable(model);
 
 		this.applyBinding = applyBinding;
 

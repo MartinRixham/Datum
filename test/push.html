@@ -49,5 +49,31 @@
 		});
 	});
 	</script>
+	<div id="two">
+		<div></div>
+	</div>
+	<script>
+		QUnit.test("Push two elements to array", function(assert) {
+
+			var done = assert.async();
+
+			require(["Push", "ArrayElement"], function(Push, ArrayElement) {
+
+				var element = document.querySelector("#two");
+				var child = new ArrayElement(element.firstElementChild);
+
+				var model = [{}];
+				var elementChildren = [{ element: element, child: child }];
+				new Push(model, elementChildren);
+
+				model.push({},{});
+
+				assert.strictEqual(model.length, 3);
+				assert.strictEqual(element.children.length, 3);
+
+				done();
+			});
+		});
+	</script>
  </body>
 </html>
