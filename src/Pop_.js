@@ -17,13 +17,13 @@ define([], function() {
 
 				var element = elementChildren[i].element;
 
-				if (element.firstElementChild) {
+				if (element.lastElementChild) {
 
-					element.removeChild(element.firstElementChild);
+					element.removeChild(element.lastElementChild);
 				}
-
-				originalPop.apply(this, arguments);
 			}
+
+			originalPop.apply(this, arguments);
 		};
 	}
 

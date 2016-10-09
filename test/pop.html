@@ -60,7 +60,7 @@
 		var done = assert.async();
 
 		require([
-			"Pop",
+			"Pop_",
 			"ArrayElement",
 			"TransientProperty"
 		], function(
@@ -97,7 +97,7 @@
 
 		var done = assert.async();
 
-		require(["Pop", "ArrayElement"], function(Pop, ArrayElement) {
+		require(["Pop_", "ArrayElement"], function(Pop, ArrayElement) {
 
 			var element = document.querySelector("#empty");
 			var child = new ArrayElement(element.firstElementChild);
@@ -115,6 +115,51 @@
 			assert.strictEqual(model.length, 0);
 			assert.strictEqual(properties.length, 0);
 			assert.strictEqual(element.children.length, 0);
+
+			done();
+		});
+	});
+	</script>
+	<div id="two">
+		<div>first</div>
+	</div>
+	<script>
+	QUnit.test("Pop element from array length two", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"Pop_",
+			"ArrayElement",
+			"TransientProperty"
+		], function(
+			Pop,
+			ArrayElement,
+			TransientProperty) {
+
+			var element = document.querySelector("#two");
+			var child = new ArrayElement(element.firstElementChild);
+			var div = document.createElement("DIV");
+
+			element.appendChild(div);
+
+			var model = [{ hello: "Hello world." }, {}];
+			var properties =
+				[
+					new TransientProperty(model[0], new FakePropertyType()),
+					new TransientProperty(model[1], new FakePropertyType())
+				];
+			var elementChildren = [{ element: element, child: child }];
+
+			new Pop(model, elementChildren, properties);
+
+			model.pop();
+
+			assert.strictEqual(model.length, 1);
+			assert.strictEqual(model[0].hello, "Hello world.");
+			assert.strictEqual(properties.length, 1);
+			assert.strictEqual(element.children.length, 1);
+			assert.strictEqual(element.children[0].innerHTML, "first");
 
 			done();
 		});

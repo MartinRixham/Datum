@@ -2,7 +2,7 @@ define([
 	"ArrayElement",
 	"TransientProperty",
 	"Push",
-	"Pop"
+	"Pop_"
 ], function(
 	ArrayElement,
 	TransientProperty,
