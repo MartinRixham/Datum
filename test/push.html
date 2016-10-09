@@ -23,6 +23,26 @@
 			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
 	</script>
+	<script>
+		function FakePropertyType() {
+
+			this.createViewModel = function() {
+
+				return {
+
+					applyBinding: function() {}
+				};
+			};
+
+			this.createArrayBinding = function() {
+
+				return {
+
+					applyBinding: function() {}
+				};
+			};
+		}
+	</script>
     <div id="push">
       <div></div>
     </div>
@@ -38,7 +58,7 @@
 
 			var model = [{}];
 			var elementChildren = [{ element: element, child: child }];
-			new Push(model, elementChildren);
+			new Push(model, elementChildren, [], new FakePropertyType());
 
 			model.push({});
 
@@ -64,7 +84,7 @@
 
 				var model = [{}];
 				var elementChildren = [{ element: element, child: child }];
-				new Push(model, elementChildren);
+				new Push(model, elementChildren, [], new FakePropertyType());
 
 				model.push({},{});
 
@@ -75,5 +95,32 @@
 			});
 		});
 	</script>
+    <div id="bind">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Bind pushed element", function(assert) {
+
+		var done = assert.async();
+
+		require(["Push", "ArrayElement", "Text"], function(Push, ArrayElement, Text) {
+
+			var element = document.querySelector("#bind");
+			var child = new ArrayElement(element.firstElementChild);
+
+			var model = [{}];
+			var properties = [{}];
+			var elementChildren = [{ element: element, child: child }];
+			new Push(model, elementChildren, properties, new FakePropertyType());
+
+			model.push(new Text(function() { return "Hello world." }));
+
+			assert.strictEqual(properties.length, 2);
+			assert.strictEqual(element.children[1].innerHTML, "Hello world.");
+
+			done();
+		});
+	});
+   </script>
  </body>
 </html>

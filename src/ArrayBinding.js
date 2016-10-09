@@ -15,7 +15,7 @@ define([
 
 		(function createArrayMethods() {
 
-			new Push(model, elementChildren);
+			new Push(model, elementChildren, properties, propertyType);
 		})();
 
 		this.setUpElement = function(parentModel, element, model) {
