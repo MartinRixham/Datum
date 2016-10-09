@@ -89,5 +89,36 @@
 		});
 	});
 	</script>
+	<div id="empty">
+		<div></div>
+	</div>
+	<script>
+	QUnit.test("Pop from empty array", function(assert) {
+
+		var done = assert.async();
+
+		require(["Pop", "ArrayElement"], function(Pop, ArrayElement) {
+
+			var element = document.querySelector("#empty");
+			var child = new ArrayElement(element.firstElementChild);
+
+			element.removeChild(element.firstElementChild);
+
+			var model = [];
+			var properties = [];
+			var elementChildren = [{ element: element, child: child }];
+
+			new Pop(model, elementChildren, properties);
+
+			model.pop();
+
+			assert.strictEqual(model.length, 0);
+			assert.strictEqual(properties.length, 0);
+			assert.strictEqual(element.children.length, 0);
+
+			done();
+		});
+	});
+	</script>
  </body>
 </html>

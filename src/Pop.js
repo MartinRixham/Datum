@@ -8,13 +8,19 @@ define([], function() {
 
 			var property = properties.pop();
 
-			property.removeBinding();
+			if (property) {
+
+				property.removeBinding();
+			}
 
 			for (var i = 0; i < elementChildren.length; i++) {
 
 				var element = elementChildren[i].element;
 
-				element.removeChild(element.firstElementChild);
+				if (element.firstElementChild) {
+
+					element.removeChild(element.firstElementChild);
+				}
 
 				originalPop.apply(this, arguments);
 			}
