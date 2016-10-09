@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pop Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+	<script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
+		}
+	</script>
+    <div id="pop">
+      <div></div>
+    </div>
+	<script>
+	QUnit.test("Pop element from array", function(assert) {
+
+		var done = assert.async();
+
+		require(["Pop", "ArrayElement"], function(Pop, ArrayElement) {
+
+			var element = document.querySelector("#pop");
+			var child = new ArrayElement(element.firstElementChild);
+
+			var model = [{}];
+			var elementChildren = [{ element: element, child: child }];
+			new Pop(model, elementChildren, []);
+
+			model.pop();
+
+			assert.strictEqual(model.length, 0);
+			assert.strictEqual(element.children.length, 0);
+
+			done();
+		});
+	});
+	</script>
+ </body>
+</html>

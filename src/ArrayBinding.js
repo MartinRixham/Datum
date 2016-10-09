@@ -1,11 +1,13 @@
 define([
 	"ArrayElement",
 	"TransientProperty",
-	"Push"
+	"Push",
+	"Pop"
 ], function(
 	ArrayElement,
 	TransientProperty,
-	Push) {
+	Push,
+	Pop) {
 
 	function ArrayBinding(model, propertyType) {
 
@@ -16,6 +18,7 @@ define([
 		(function createArrayMethods() {
 
 			new Push(model, elementChildren, properties, propertyType);
+			new Pop(model, elementChildren, properties);
 		})();
 
 		this.setUpElement = function(parentModel, element, model) {
