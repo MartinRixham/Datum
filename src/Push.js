@@ -19,7 +19,7 @@ define(["TransientProperty"], function(TransientProperty) {
 					var child = elementChildren[i].child;
 
 					element.appendChild(child.clone());
-					property.applyBinding(element, properties.length - 1, model)
+					property.applyBinding(element, properties.length - 1, model);
 				}
 			}
 

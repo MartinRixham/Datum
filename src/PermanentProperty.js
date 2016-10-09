@@ -1,6 +1,6 @@
 define([], function() {
 
-	function Property(property, propertyType) {
+	function PermanentProperty(property, propertyType) {
 
 		var objectBinding;
 
@@ -41,5 +41,5 @@ define([], function() {
 		};
 	}
 
-	return Property;
+	return PermanentProperty;
 });

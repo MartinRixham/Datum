@@ -81,6 +81,38 @@
 		});
 	});
     </script>
+    <div id="not-twice">
+      <div></div>
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Replace elements only once when object not null twice", function(assert) {
+
+		var done = assert.async();
+
+		require(["ObjectBinding"], function(ObjectBinding) {
+
+			var binding = new ObjectBinding();
+			var element = document.querySelector("#not-twice");
+			var model = {
+
+				notNull: null
+			};
+
+			binding.setUpElement(model, element, model.notNull);
+			binding.updateElement(model, element, model.notNull);
+
+			model.notNull = {};
+
+			binding.updateElement(model, element, model.notNull);
+			binding.updateElement(model, element, model.notNull);
+
+			assert.strictEqual(element.children.length, 2);
+
+			done();
+		});
+	});
+    </script>
     <div id="replace-text" data-bind="replaceText">
       <div data-bind="text"></div>
     </div>

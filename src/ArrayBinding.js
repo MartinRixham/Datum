@@ -26,10 +26,12 @@ define([
 
 			var child = getChildFromDOM(element);
 
+			elementChildren.push({ element: element, child: child });
+
 			for (var i = 0; i < model.length; i++) {
 
 				element.appendChild(child.clone());
-				properties[i] = new TransientProperty(model[i], propertyType);
+				properties.push(new TransientProperty(model[i], propertyType));
 			}
 		};
 

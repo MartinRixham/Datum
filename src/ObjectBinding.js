@@ -25,9 +25,12 @@ define([], function() {
 					}
 				}
 
-				for (var j = 0; j < children.length; j++) {
+				if (!element.childNodes.length) {
 
-					element.appendChild(children[j]);
+					for (var j = 0; j < children.length; j++) {
+
+						element.appendChild(children[j].cloneNode(true));
+					}
 				}
 			}
 			else {
