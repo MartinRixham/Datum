@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Unshift Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+	<script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
+		}
+	</script>
+	<script>
+		function FakePropertyType() {
+
+			this.createViewModel = function() {
+
+				return {
+
+					applyBinding: function() {}
+				};
+			};
+
+			this.createArrayBinding = function() {
+
+				return {
+
+					applyBinding: function() {}
+				};
+			};
+		}
+	</script>
+    <div id="unshift">
+      <div></div>
+    </div>
+	<script>
+	QUnit.test("Unshift element to array", function(assert) {
+
+		var done = assert.async();
+
+		require(["Unshift", "ArrayElement"], function(Unshift, ArrayElement) {
+
+			var element = document.querySelector("#unshift");
+			var child = new ArrayElement(element.firstElementChild);
+
+			var model = [{}];
+			var elementChildren = [{ element: element, child: child }];
+			new Unshift(model, elementChildren, [], new FakePropertyType());
+
+			model.unshift({});
+
+			assert.strictEqual(model.length, 2);
+			assert.strictEqual(element.children.length, 2);
+
+			done();
+		});
+	});
+	</script>
+	<div id="two">
+		<div></div>
+	</div>
+	<script>
+		QUnit.test("Unshift two elements to array", function(assert) {
+
+			var done = assert.async();
+
+			require(["Unshift", "ArrayElement"], function(Unshift, ArrayElement) {
+
+				var element = document.querySelector("#two");
+				var child = new ArrayElement(element.firstElementChild);
+
+				var model = [{}];
+				var elementChildren = [{ element: element, child: child }];
+				new Unshift(model, elementChildren, [], new FakePropertyType());
+
+				model.unshift({},{});
+
+				assert.strictEqual(model.length, 3);
+				assert.strictEqual(element.children.length, 3);
+
+				done();
+			});
+		});
+	</script>
+    <div id="bind">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Bind unshifted element", function(assert) {
+
+		var done = assert.async();
+
+		require(["Unshift", "ArrayElement", "Text"], function(Unshift, ArrayElement, Text) {
+
+			var element = document.querySelector("#bind");
+			var child = new ArrayElement(element.firstElementChild);
+
+			var model = [{}];
+			var properties = [{}];
+			var elementChildren = [{ element: element, child: child }];
+			new Unshift(model, elementChildren, properties, new FakePropertyType());
+
+			model.unshift(new Text(function() { return "Hello world."; }));
+
+			assert.strictEqual(properties.length, 2);
+			assert.strictEqual(element.children[1].innerHTML, "Hello world.");
+
+			done();
+		});
+	});
+   </script>
+ </body>
+</html>
