@@ -15,6 +15,14 @@ define([
 
 		var elementChildren = [];
 
+		(function createProperties() {
+
+			for (var i = 0; i < model.length; i++) {
+
+				properties.push(new TransientProperty(model[i], propertyType));
+			}
+		})();
+
 		(function createArrayMethods() {
 
 			new Push(model, elementChildren, properties, propertyType);
@@ -34,7 +42,6 @@ define([
 			for (var i = 0; i < model.length; i++) {
 
 				element.appendChild(child.clone());
-				properties.push(new TransientProperty(model[i], propertyType));
 			}
 		};
 
