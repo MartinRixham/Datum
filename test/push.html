@@ -44,7 +44,7 @@
 		}
 	</script>
     <div id="push">
-      <div></div>
+      <div id="child"></div>
     </div>
 	<script>
 	QUnit.test("Push element to array", function(assert) {
@@ -64,6 +64,7 @@
 
 			assert.strictEqual(model.length, 2);
 			assert.strictEqual(element.children.length, 2);
+			assert.strictEqual(element.children[1].id, "child_0");
 
 			done();
 		});
