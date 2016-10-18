@@ -15,17 +15,17 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-	<script>
+    <script>
 		var i = 0;
 
 		function require(dependencies, factory) {
 
 			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
-	</script>
+    </script>
     <div id="none">
     </div>
-	<script>
+    <script>
 	QUnit.test("Reverse empty array", function(assert) {
 
 		var done = assert.async();
@@ -40,7 +40,7 @@
 
 			new Reverse(model, elementChildren, properties);
 
-			model.pop();
+			model.reverse();
 
 			assert.strictEqual(model.length, 0);
 			assert.strictEqual(properties.length, 0);
@@ -49,6 +49,83 @@
 			done();
 		});
 	});
-	</script>
- </body>
+    </script>
+    <div id="one">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Reverse array length one", function(assert) {
+
+		var done = assert.async();
+
+		require(["Reverse", "ArrayElement"], function(Reverse, ArrayElement) {
+
+			var element = document.querySelector("#one");
+			var child = new ArrayElement(element.firstElementChild);
+
+			var model = [{}];
+			var properties = [{}];
+			var elementChildren = [{ element: element, child: child }];
+
+			new Reverse(model, elementChildren, properties);
+
+			model.reverse();
+
+			assert.strictEqual(model.length, 1);
+			assert.strictEqual(properties.length, 1);
+			assert.strictEqual(element.children.length, 1);
+
+			done();
+		});
+	});
+    </script>
+    <div id="two">
+      <div>one</div>
+      <div>two</div>
+    </div>
+    <script>
+	QUnit.test("Reverse array length two", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"Reverse",
+			"ArrayElement",
+			"Text"
+		], function(
+			Reverse,
+			ArrayElement,
+			Text) {
+
+			var element = document.querySelector("#two");
+			var child = new ArrayElement(element.firstElementChild);
+
+			var one = new Text(function() { return "one"; });
+			var two = new Text(function() { return "two"; });
+			var model = [one, two];
+
+			var properties = ["one", "two"];
+			var elementChildren = [{ element: element, child: child }];
+
+			new Reverse(model, elementChildren, properties);
+
+			model.reverse();
+
+			assert.strictEqual(model.length, 2);
+			assert.strictEqual(model[0], two);
+			assert.strictEqual(model[1], one);
+
+			assert.strictEqual(properties.length, 2);
+			assert.strictEqual(properties[0], "two");
+			assert.strictEqual(properties[1], "one");
+
+			assert.strictEqual(element.children.length, 2);
+			assert.strictEqual(element.children[0].textContent, "two");
+			assert.strictEqual(element.children[1].textContent, "one");
+
+			done();
+		});
+	});
+    </script>
+  </body>
 </html>
