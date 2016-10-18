@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Reverse Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+	<script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
+		}
+	</script>
+    <div id="none">
+    </div>
+	<script>
+	QUnit.test("Reverse empty array", function(assert) {
+
+		var done = assert.async();
+
+		require(["Reverse"], function(Reverse) {
+
+			var element = document.querySelector("#none");
+
+			var model = [];
+			var properties = [];
+			var elementChildren = [];
+
+			new Reverse(model, elementChildren, properties);
+
+			model.pop();
+
+			assert.strictEqual(model.length, 0);
+			assert.strictEqual(properties.length, 0);
+			assert.strictEqual(element.children.length, 0);
+
+			done();
+		});
+	});
+	</script>
+ </body>
+</html>
