@@ -6,20 +6,20 @@ define(["TransientProperty"], function(TransientProperty) {
 
 		model.unshift = function() {
 
-			for (var j = 0; j < arguments.length; j++) {
+			for (var i = arguments.length - 1; i >= 0; i--) {
 
-				var model = arguments[j];
+				var model = arguments[i];
 				var property = new TransientProperty(model, propertyType);
 
 				properties.unshift(property);
 
-				for (var i = 0; i < elementChildren.length; i++) {
+				for (var j = 0; j < elementChildren.length; j++) {
 
-					var element = elementChildren[i].element;
-					var child = elementChildren[i].child;
+					var element = elementChildren[j].element;
+					var child = elementChildren[j].child;
 
 					element.insertBefore(child.clone(), element.firstChild);
-					property.applyBinding(element, properties.length - 1, model);
+					property.applyBinding(element, 0, model);
 				}
 			}
 

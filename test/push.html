@@ -78,19 +78,31 @@
 
 			var done = assert.async();
 
-			require(["Push", "ArrayElement"], function(Push, ArrayElement) {
+			require([
+				"Push",
+				"ArrayElement",
+				"Text"
+			], function(
+				Push,
+				ArrayElement,
+				Text) {
 
 				var element = document.querySelector("#two");
 				var child = new ArrayElement(element.firstElementChild);
 
 				var model = [{}];
 				var elementChildren = [{ element: element, child: child }];
-				new Push(model, elementChildren, [], new FakePropertyType());
+				var properties = [{}];
+				new Push(model, elementChildren, properties, new FakePropertyType());
 
-				model.push({},{});
+				model.push(
+					new Text(function() { return "one"; }),
+					new Text(function() { return "two"; }));
 
 				assert.strictEqual(model.length, 3);
 				assert.strictEqual(element.children.length, 3);
+				assert.strictEqual(element.children[1].textContent, "one");
+				assert.strictEqual(element.children[2].textContent, "two");
 
 				done();
 			});
@@ -110,8 +122,8 @@
 			var child = new ArrayElement(element.firstElementChild);
 
 			var model = [{}];
-			var properties = [{}];
 			var elementChildren = [{ element: element, child: child }];
+			var properties = [{}];
 			new Push(model, elementChildren, properties, new FakePropertyType());
 
 			model.push(new Text(function() { return "Hello world."; }));

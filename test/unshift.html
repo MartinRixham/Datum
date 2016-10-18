@@ -78,19 +78,31 @@
 
 			var done = assert.async();
 
-			require(["Unshift", "ArrayElement"], function(Unshift, ArrayElement) {
+			require([
+				"Unshift",
+				"ArrayElement",
+				"Text"
+			], function(
+				Unshift,
+				ArrayElement,
+				Text) {
 
 				var element = document.querySelector("#two");
 				var child = new ArrayElement(element.firstElementChild);
 
 				var model = [{}];
 				var elementChildren = [{ element: element, child: child }];
-				new Unshift(model, elementChildren, [], new FakePropertyType());
+				var properties = [{}];
+				new Unshift(model, elementChildren, properties, new FakePropertyType());
 
-				model.unshift({},{});
+				model.unshift(
+					new Text(function() { return "one"; }),
+					new Text(function() { return "two"; }));
 
 				assert.strictEqual(model.length, 3);
 				assert.strictEqual(element.children.length, 3);
+				assert.strictEqual(element.children[0].textContent, "one");
+				assert.strictEqual(element.children[1].textContent, "two");
 
 				done();
 			});
@@ -110,14 +122,14 @@
 			var child = new ArrayElement(element.firstElementChild);
 
 			var model = [{}];
-			var properties = [{}];
 			var elementChildren = [{ element: element, child: child }];
+			var properties = [{}];
 			new Unshift(model, elementChildren, properties, new FakePropertyType());
 
 			model.unshift(new Text(function() { return "Hello world."; }));
 
 			assert.strictEqual(properties.length, 2);
-			assert.strictEqual(element.children[1].innerHTML, "Hello world.");
+			assert.strictEqual(element.children[0].innerHTML, "Hello world.");
 
 			done();
 		});
