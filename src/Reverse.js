@@ -11,20 +11,29 @@ define([], function() {
 				var element = elementChildren[i].element;
 				var children = [].slice.call(element.children);
 
-				while (element.lastChild) {
-
-					element.removeChild(element.lastChild);
-				}
-
-				for (var j = children.length - 1; j >= 0; j--) {
-
-					element.appendChild(children[j]);
-				}
+				removeChildren(element);
+				replaceChildrenReversed(element, children);
 			}
 
 			properties.reverse();
 			originalReverse.apply(this, arguments);
 		};
+
+		function removeChildren(element) {
+
+			while (element.lastChild) {
+
+				element.removeChild(element.lastChild);
+			}
+		}
+
+		function replaceChildrenReversed(element, children) {
+
+			for (var j = children.length - 1; j >= 0; j--) {
+
+				element.appendChild(children[j]);
+			}
+		}
 	}
 
 	return Reverse;
