@@ -99,6 +99,14 @@ require(["Binding", "Click", "BindingRoot"], function(Binding, Click, BindingRoo
 			}
 		});
 
+		this.sort = new Click(function() {
+
+			this.yesnos.sort(function(a, b) {
+
+				return a.compareTo(b);
+			});
+		});
+
 		this.go = new Binding({
 
 			click: function() {
