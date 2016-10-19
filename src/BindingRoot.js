@@ -11,18 +11,9 @@ define([
 
 	function BindingRoot(model) {
 
-		if (flag) {
-
-			throw new Error(
-				"The binding root is unique and cannot be instantiated multiple times.");
-		}
-		else {
-
-			flag = true;
-		}
+		assertUniqueness();
 
 		var rootViewModel = new ViewModel(model);
-
 		rootViewModel.applyBinding();
 
 		new Rebinder().registerRebinder(function() {
@@ -36,6 +27,19 @@ define([
 
 			domWatcher.disconnect();
 		};
+	}
+
+	function assertUniqueness() {
+
+		if (flag) {
+
+			throw new Error(
+				"The binding root is unique and cannot be instantiated multiple times.");
+		}
+		else {
+
+			flag = true;
+		}
 	}
 
 	return BindingRoot;

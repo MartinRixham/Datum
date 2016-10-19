@@ -4,14 +4,16 @@ define([
 	"Push",
 	"Pop_",
 	"Shift",
-	"Unshift"
+	"Unshift",
+	"Reverse"
 ], function(
 	ArrayElement,
 	TransientProperty,
 	Push,
 	Pop,
 	Shift,
-	Unshift) {
+	Unshift,
+	Reverse) {
 
 	function ArrayBinding(model, propertyType) {
 
@@ -33,6 +35,7 @@ define([
 			new Pop(model, elementChildren, properties);
 			new Shift(model, elementChildren, properties);
 			new Unshift(model, elementChildren, properties, propertyType);
+			new Reverse(model, elementChildren, properties);
 		})();
 
 		this.setUpElement = function(parentModel, element, model) {

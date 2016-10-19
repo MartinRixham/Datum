@@ -35,9 +35,9 @@ define(["Registry", "Rebinder"], function Datum(Registry, Rebinder) {
 
 			var containsDependant = false;
 
-			for (var k = 0; k < dependants.length; k++) {
+			for (var i = 0; i < dependants.length; i++) {
 
-				if (dependants[k].equals(dependant)) {
+				if (dependants[i].equals(dependant)) {
 
 					containsDependant = true;
 				}

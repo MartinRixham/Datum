@@ -127,5 +127,58 @@
 		});
 	});
     </script>
+    <div id="three">
+      <div>one</div>
+      <div>two</div>
+      <div>three</div>
+    </div>
+    <script>
+	QUnit.test("Reverse array length three", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"Reverse",
+			"ArrayElement",
+			"Text"
+		], function(
+			Reverse,
+			ArrayElement,
+			Text) {
+
+			var element = document.querySelector("#three");
+			var child = new ArrayElement(element.firstElementChild);
+
+			var one = new Text(function() { return "one"; });
+			var two = new Text(function() { return "two"; });
+			var three = new Text(function() { return "three"; });
+			var model = [one, two, three];
+
+			var properties = ["one", "two", "three"];
+			var elementChildren = [{ element: element, child: child }];
+
+			new Reverse(model, elementChildren, properties);
+
+			model.reverse();
+
+			assert.strictEqual(model.length, 3);
+			assert.strictEqual(model[0], three);
+			assert.strictEqual(model[1], two);
+			assert.strictEqual(model[2], one);
+
+			assert.strictEqual(properties.length, 3);
+			assert.strictEqual(properties[0], "three");
+			assert.strictEqual(properties[1], "two");
+			assert.strictEqual(properties[2], "one");
+
+			assert.strictEqual(element.children.length, 3);
+			assert.strictEqual(element.children[0].textContent, "three");
+			assert.strictEqual(element.children[1].textContent, "two");
+			assert.strictEqual(element.children[2].textContent, "one");
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

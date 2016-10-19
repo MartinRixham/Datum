@@ -9,10 +9,17 @@ define([], function() {
 			for (var i = 0; i < elementChildren.length; i++) {
 
 				var element = elementChildren[i].element;
-				var firstChild = element.firstElementChild;
+				var children = [].slice.call(element.children);
 
-				element.remove(firstChild);
-				element.appendChild(firstChild);
+				while (element.lastChild) {
+
+					element.removeChild(element.lastChild);
+				}
+
+				for (var j = children.length - 1; j >= 0; j--) {
+
+					element.appendChild(children[j]);
+				}
 			}
 
 			properties.reverse();
