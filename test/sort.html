@@ -108,14 +108,7 @@
 
 		var done = assert.async();
 
-		require([
-			"Sort",
-			"ArrayElement",
-			"Text"
-		], function(
-			Sort,
-			ArrayElement,
-			Text) {
+		require(["Sort", "ArrayElement", "Text"], function(Sort, ArrayElement, Text) {
 
 			var element = document.querySelector("#two");
 			var child = new ArrayElement(element.firstElementChild);
@@ -157,14 +150,7 @@
 
 		var done = assert.async();
 
-		require([
-			"Sort",
-			"ArrayElement",
-			"Text"
-		], function(
-			Sort,
-			ArrayElement,
-			Text) {
+		require(["Sort", "ArrayElement", "Text"], function(Sort, ArrayElement, Text) {
 
 			var element = document.querySelector("#three");
 			var child = new ArrayElement(element.firstElementChild);

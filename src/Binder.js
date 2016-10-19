@@ -125,7 +125,7 @@ define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Regi
 
 			call: function(element) {
 
-				binding.call(parentModel, element);
+				return binding.call(parentModel, element);
 			}
 		};
 	}

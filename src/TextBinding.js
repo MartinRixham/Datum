@@ -16,7 +16,7 @@ define([], function() {
 
 		this.call = function(parentModel, element) {
 
-			text.call(parentModel, element);
+			return text.call(parentModel, element);
 		};
 	}
 
