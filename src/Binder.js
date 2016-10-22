@@ -16,10 +16,10 @@ define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Regi
 
 			var elements = getMatchingElements(scope, name);
 
-			removeOldBindings(elements);
+			removeOldBindings();
 			bindElements(elements, scope, model, name);
 
-			boundElements = elements;
+			[].push.apply(boundElements, elements);
 		};
 
 		function getMatchingElements(scope, key) {
@@ -34,24 +34,23 @@ define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Regi
 			}
 		}
 
-		function removeOldBindings(elements) {
+		function removeOldBindings() {
 
 			for (var i = 0; i < boundElements.length; i++) {
 
 				var boundElement = boundElements[i];
 
-				if (doesNotContain(elements, boundElement)) {
+				if (removedFromDocument(boundElement)) {
 
 					binding.resetElement(boundElement);
+					boundElements.splice(i, 1);
 				}
 			}
 		}
 
-		function doesNotContain(array, element) {
+		function removedFromDocument(element) {
 
-			var contains = array.indexOf(element) + 1;
-
-			return !contains;
+			return !document.contains(element);
 		}
 
 		function bindElements(elements, scope, model, name) {

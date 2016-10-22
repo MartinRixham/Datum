@@ -226,14 +226,15 @@
 				document.querySelector("#first-scope > div").innerHTML,
 				"Hello world.");
 
+			document.body.removeChild(firstScope);
 			var secondScope = document.querySelector("#second-scope");
 			binding.applyBinding(secondScope, "scope");
 
 			assert.strictEqual(
-				document.querySelector("#first-scope > div").innerHTML,
+				firstScope.querySelector("div").innerHTML,
 				"");
 			assert.strictEqual(
-				document.querySelector("#second-scope > div").innerHTML,
+				secondScope.querySelector("div").innerHTML,
 				"Hello world.");
 
 			done();
