@@ -153,5 +153,52 @@
 		});
 	});
     </script>
+    <div id="first" data-bind="two">
+      <span></span>
+    </div>
+    <div id="second" data-bind="two">
+      <span></span>
+    </div>
+    <script>
+	QUnit.test("Bind array to two elements", function(assert) {
+
+		var done = assert.async();
+
+		require(["Text", "ViewModel"], function(Text, ViewModel) {
+
+			function TwoArray() {
+
+				this.two =
+					[
+						new Text(function() {
+
+							return "Hello world.";
+						}),
+						new Text(function() {
+
+							return "Hello world.";
+						})
+					];
+			}
+
+			var two = new TwoArray();
+
+			var viewModel = new ViewModel(two);
+			viewModel.applyBinding();
+
+			var firstArray = document.querySelector("#first");
+			var secondArray = document.querySelector("#second");
+
+			assert.strictEqual(firstArray.children.length, 2);
+			assert.strictEqual(secondArray.children.length, 2);
+			assert.strictEqual(firstArray.children[0].innerText, "Hello world.");
+			assert.strictEqual(firstArray.children[1].innerText, "Hello world.");
+			assert.strictEqual(secondArray.children[0].innerText, "Hello world.");
+			assert.strictEqual(secondArray.children[1].innerText, "Hello world.");
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

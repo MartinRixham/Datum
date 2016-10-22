@@ -69,45 +69,45 @@
 			done();
 		});
 	});
-	</script>
-	<div id="two">
-		<div></div>
-	</div>
-	<script>
-		QUnit.test("Push two elements to array", function(assert) {
+    </script>
+    <div id="two">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Push two elements to array", function(assert) {
 
-			var done = assert.async();
+		var done = assert.async();
 
-			require([
-				"Push",
-				"ArrayElement",
-				"Text"
-			], function(
-				Push,
-				ArrayElement,
-				Text) {
+		require([
+			"Push",
+			"ArrayElement",
+			"Text"
+		], function(
+			Push,
+			ArrayElement,
+			Text) {
 
-				var element = document.querySelector("#two");
-				var child = new ArrayElement(element.firstElementChild);
+			var element = document.querySelector("#two");
+			var child = new ArrayElement(element.firstElementChild);
 
-				var model = [{}];
-				var elementChildren = [{ element: element, child: child }];
-				var properties = [{}];
-				new Push(model, elementChildren, properties, new FakePropertyType());
+			var model = [{}];
+			var elementChildren = [{ element: element, child: child }];
+			var properties = [{}];
+			new Push(model, elementChildren, properties, new FakePropertyType());
 
-				model.push(
-					new Text(function() { return "one"; }),
-					new Text(function() { return "two"; }));
+			model.push(
+				new Text(function() { return "one"; }),
+				new Text(function() { return "two"; }));
 
-				assert.strictEqual(model.length, 3);
-				assert.strictEqual(element.children.length, 3);
-				assert.strictEqual(element.children[1].textContent, "one");
-				assert.strictEqual(element.children[2].textContent, "two");
+			assert.strictEqual(model.length, 3);
+			assert.strictEqual(element.children.length, 3);
+			assert.strictEqual(element.children[1].textContent, "one");
+			assert.strictEqual(element.children[2].textContent, "two");
 
-				done();
-			});
+			done();
 		});
-	</script>
+	});
+    </script>
     <div id="bind">
       <div></div>
     </div>
