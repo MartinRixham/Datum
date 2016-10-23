@@ -249,5 +249,49 @@
 		});
 	});
 	</script>
+    <div id="negative">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Splice element with negative index", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"Splice",
+			"ArrayElement",
+			"Text",
+			"TransientProperty"
+		], function(
+			Splice,
+			ArrayElement,
+			Text,
+			TransientProperty) {
+
+			var element = document.querySelector("#negative");
+			var child = new ArrayElement(element.firstElementChild);
+			element.appendChild(child.clone());
+
+			var model = [{}, {}];
+			var elementChildren = [{ element: element, child: child }];
+			var properties = [{}, {}];
+			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			var newObject = new Text(function() { return "Hello world."; });
+			model.splice(-2, 0, newObject);
+
+			assert.strictEqual(model.length, 3);
+			assert.strictEqual(model[0], newObject);
+
+			assert.strictEqual(element.children.length, 3);
+			assert.strictEqual(element.children[0].innerText, "Hello world.");
+
+			assert.strictEqual(properties.length, 3);
+			assert.ok(properties[0] instanceof TransientProperty);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

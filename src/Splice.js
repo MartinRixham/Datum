@@ -7,14 +7,25 @@ define(["TransientProperty"], function(TransientProperty) {
 		model.splice = function(start/*, deleteCount*/) {
 
 			var newObjects = [].slice.call(arguments, 2);
-
-			start = Math.min(model.length, start);
+			start = normaliseStart(start);
 
 			insertObjects(start, newObjects);
 
 			originalSplice.apply(this, arguments);
 			model.subscribableLength = model.length;
 		};
+
+		function normaliseStart(start) {
+
+			if (start < 0) {
+
+				start = model.length + start;
+			}
+
+			start = Math.min(model.length, start);
+
+			return start;
+		}
 
 		function insertObjects(start, newObjects) {
 
