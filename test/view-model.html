@@ -457,5 +457,39 @@
 		});
 	});
 	</script>
+    <div data-bind="failBind">
+      <div data-bind="failSuper">
+        <div id="fail" data-bind="failSub"></div>
+      </div>
+    </div>
+    <script>
+	QUnit.test("Fail to bind object out of scope", function(assert) {
+
+		var done = assert.async();
+
+		require(["Text", "ViewModel"], function(Text, ViewModel) {
+
+			function TextObject() {
+
+				this.failBind = {};
+
+				this.failSuper = {
+
+					failSub: new Text(function() {
+
+						return "Hello World";
+					})
+				};
+			}
+
+			var viewModel = new ViewModel(new TextObject());
+			viewModel.applyBinding();
+
+			assert.strictEqual(document.querySelector("#fail").innerHTML, "");
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

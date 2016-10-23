@@ -27,12 +27,15 @@ define([
 
 				var element = elements[i];
 
-				createRebinder(element, scope, name);
-				callBindingCallback(element);
-				unbindOldProperties();
-				createPermanentProperties();
-				createTransientProperties();
-				bindProperties(element);
+				if (!element || isInScope(element, scope)) {
+
+					createRebinder(element, scope, name);
+					callBindingCallback(element);
+					unbindOldProperties();
+					createPermanentProperties();
+					createTransientProperties();
+					bindProperties(element);
+				}
 			}
 		}
 
@@ -47,6 +50,24 @@ define([
 			else {
 
 				return [document.body];
+			}
+		}
+
+		function isInScope(element, scope) {
+
+			element = element.parentElement;
+
+			if (!element) {
+
+				return true;
+			}
+			else if (element._rebind) {
+
+				return element == scope;
+			}
+			else {
+
+				return isInScope(element, scope);
 			}
 		}
 
