@@ -8,6 +8,8 @@ define(["TransientProperty"], function(TransientProperty) {
 
 			var newObjects = [].slice.call(arguments, 2);
 
+			start = Math.min(model.length, start);
+
 			insertObjects(start, newObjects);
 
 			originalSplice.apply(this, arguments);

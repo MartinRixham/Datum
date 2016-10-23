@@ -205,5 +205,49 @@
 		});
 	});
     </script>
+	<div id="beyond">
+		<div></div>
+	</div>
+	<script>
+	QUnit.test("Splice element beyond end of array", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"Splice",
+			"ArrayElement",
+			"Text",
+			"TransientProperty"
+		], function(
+			Splice,
+			ArrayElement,
+			Text,
+			TransientProperty) {
+
+			var element = document.querySelector("#beyond");
+			var child = new ArrayElement(element.firstElementChild);
+			element.appendChild(child.clone());
+
+			var model = [{}, {}];
+			var elementChildren = [{ element: element, child: child }];
+			var properties = [{}, {}];
+			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			var newObject = new Text(function() { return "Hello world."; });
+			model.splice(5, 0, newObject);
+
+			assert.strictEqual(model.length, 3);
+			assert.strictEqual(model[2], newObject);
+
+			assert.strictEqual(element.children.length, 3);
+			assert.strictEqual(element.children[2].innerText, "Hello world.");
+
+			assert.strictEqual(properties.length, 3);
+			assert.ok(properties[2] instanceof TransientProperty);
+
+			done();
+		});
+	});
+	</script>
   </body>
 </html>
