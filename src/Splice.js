@@ -4,11 +4,12 @@ define(["TransientProperty"], function(TransientProperty) {
 
 		var originalSplice = model.splice;
 
-		model.splice = function(start/*, deleteCount*/) {
+		model.splice = function(start, deleteCount) {
 
 			start = normaliseStart(start);
 			var newObjects = [].slice.call(arguments, 2);
 
+			removeObjects(deleteCount);
 			insertObjects(start, newObjects);
 
 			originalSplice.apply(this, arguments);
@@ -26,6 +27,21 @@ define(["TransientProperty"], function(TransientProperty) {
 			start = Math.max(0, start);
 
 			return start;
+		}
+
+		function removeObjects(deleteCount) {
+
+			if (deleteCount) {
+
+				for (var i = 0; i < elementChildren.length; i++) {
+
+					var element = elementChildren[i].element;
+
+					element.removeChild(element.firstElementChild);
+				}
+
+				properties.pop();
+			}
 		}
 
 		function insertObjects(start, newObjects) {
