@@ -4,32 +4,32 @@ define(["TransientProperty"], function(TransientProperty) {
 
 		var originalSplice = model.splice;
 
-		model.splice = function(/*start, deleteCount*/) {
+		model.splice = function(start/*, deleteCount*/) {
 
 			var newObjects = [].slice.call(arguments, 2);
 
-			insertObjects(newObjects);
+			insertObjects(start, newObjects);
 
 			originalSplice.apply(this, arguments);
 			model.subscribableLength = model.length;
 		};
 
-		function insertObjects(newObjects) {
+		function insertObjects(start, newObjects) {
 
 			for (var i = newObjects.length - 1; i >= 0; i--) {
 
 				var object = newObjects[i];
 				var property = new TransientProperty(object, propertyType);
 
-				properties.unshift(property);
+				properties.splice(start, 0, property);
 
 				for (var j = 0; j < elementChildren.length; j++) {
 
 					var element = elementChildren[j].element;
 					var child = elementChildren[j].child;
 
-					element.insertBefore(child.clone(), element.firstChild);
-					property.applyBinding(element, 0, object);
+					element.insertBefore(child.clone(), element.children[start]);
+					property.applyBinding(element, start, object);
 				}
 			}
 		}
