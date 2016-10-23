@@ -22,6 +22,7 @@ define([], function() {
 					if (elementChildren[i].element == element) {
 
 						children = elementChildren[i].children;
+						break;
 					}
 				}
 
@@ -29,7 +30,7 @@ define([], function() {
 
 					for (var j = 0; j < children.length; j++) {
 
-						element.appendChild(children[j].cloneNode(true));
+						element.appendChild(children[j]);
 					}
 				}
 			}
@@ -46,13 +47,23 @@ define([], function() {
 
 		this.resetElement = function(element) {
 
+			var children;
+
 			for (var i = 0; i < elementChildren.length; i++) {
 
-				var children = elementChildren[i];
+				if (elementChildren[i].element == element) {
 
-				if (element == children.element) {
-
+					children = elementChildren[i].children;
 					elementChildren.splice(i, 1);
+					break;
+				}
+			}
+
+			if (!element.childNodes.length) {
+
+				for (var j = 0; j < children.length; j++) {
+
+					element.appendChild(children[j]);
 				}
 			}
 		};

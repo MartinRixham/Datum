@@ -148,5 +148,33 @@
 		});
 	});
     </script>
+    <div id="reset">
+      <div></div>
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Reset element", function(assert) {
+
+		var done = assert.async();
+
+		require(["ObjectBinding"], function(ObjectBinding) {
+
+			var binding = new ObjectBinding();
+			var element = document.querySelector("#reset");
+			var model = {
+
+				notObject: null
+			};
+
+			binding.setUpElement(model, element);
+			binding.updateElement(model, element, null);
+			binding.resetElement(element);
+
+			assert.strictEqual(element.children.length, 2);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>
