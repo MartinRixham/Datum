@@ -9,7 +9,7 @@ define(["TransientProperty"], function(TransientProperty) {
 			start = normaliseStart(start);
 			var newObjects = [].slice.call(arguments, 2);
 
-			removeObjects(deleteCount);
+			removeObjects(start, deleteCount);
 			insertObjects(start, newObjects);
 
 			originalSplice.apply(this, arguments);
@@ -29,17 +29,18 @@ define(["TransientProperty"], function(TransientProperty) {
 			return start;
 		}
 
-		function removeObjects(deleteCount) {
+		function removeObjects(start, deleteCount) {
 
 			for (var i = 0; i < elementChildren.length; i++) {
 
 				var element = elementChildren[i].element;
 
-				for (var j = deleteCount - 1; j >= 0; j--) {
+				for (var j = start + deleteCount - 1; j >= start; j--) {
 
 					element.removeChild(element.children[j]);
-					properties.shift();
 				}
+
+				properties.splice(start, deleteCount);
 			}
 		}
 
