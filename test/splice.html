@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Splice Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+	<script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
+		}
+	</script>
+	<script>
+		function FakePropertyType() {
+
+			this.createViewModel = function() {
+
+				return {
+
+					applyBinding: function() {}
+				};
+			};
+
+			this.createArrayBinding = function() {
+
+				return {
+
+					applyBinding: function() {}
+				};
+			};
+		}
+	</script>
+    <div id="splice">
+      <div id="child"></div>
+    </div>
+    <script>
+	QUnit.test("Splice element to array", function(assert) {
+
+		var done = assert.async();
+
+		require(["Splice", "ArrayElement"], function(Splice, ArrayElement) {
+
+			var element = document.querySelector("#splice");
+			var child = new ArrayElement(element.firstElementChild);
+
+			var model = [{}];
+			var elementChildren = [{ element: element, child: child }];
+			new Splice(model, elementChildren, [], new FakePropertyType());
+
+			model.splice(0, 0, {});
+
+			assert.strictEqual(model.length, 2);
+			assert.strictEqual(element.children.length, 2);
+			assert.strictEqual(element.children[0].id, "child_0");
+
+			done();
+		});
+	});
+    </script>
+    <div id="two">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Splice two elements to array", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"Splice",
+			"ArrayElement",
+			"Text"
+		], function(
+			Splice,
+			ArrayElement,
+			Text) {
+
+			var element = document.querySelector("#two");
+			var child = new ArrayElement(element.firstElementChild);
+
+			var model = [{}];
+			var elementChildren = [{ element: element, child: child }];
+			var properties = [{}];
+			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			model.splice(
+				0,
+				0,
+				new Text(function() { return "one"; }),
+				new Text(function() { return "two"; }));
+
+			assert.strictEqual(model.length, 3);
+			assert.strictEqual(element.children.length, 3);
+			assert.strictEqual(element.children[0].textContent, "one");
+			assert.strictEqual(element.children[1].textContent, "two");
+
+			done();
+		});
+	});
+	</script>
+    <div id="bind">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Bind spliced element", function(assert) {
+
+		var done = assert.async();
+
+		require(["Splice", "ArrayElement", "Text"], function(Splice, ArrayElement, Text) {
+
+			var element = document.querySelector("#bind");
+			var child = new ArrayElement(element.firstElementChild);
+
+			var model = [{}];
+			var elementChildren = [{ element: element, child: child }];
+			var properties = [{}];
+			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			model.splice(0, 0, new Text(function() { return "Hello world."; }));
+
+			assert.strictEqual(properties.length, 2);
+			assert.strictEqual(element.children[0].innerHTML, "Hello world.");
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>
