@@ -82,5 +82,22 @@
 		});
 	});
     </script>
+    <div id="get"></div>
+    <script>
+	QUnit.test("Get element", function(assert) {
+
+		var done = assert.async();
+
+		require(["ArrayElement"], function(ArrayElement) {
+
+			var element = document.querySelector("#get");
+			var arrayElement = new ArrayElement(element);
+
+			assert.strictEqual(arrayElement.get(), element);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

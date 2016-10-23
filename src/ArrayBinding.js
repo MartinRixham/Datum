@@ -106,7 +106,26 @@ define([
 			}
 		};
 
-		this.resetElement = function() {};
+		this.resetElement = function(element) {
+
+			var child;
+
+			for (var i = 0; i < elementChildren.length; i++) {
+
+				if (element == elementChildren[i].element) {
+
+					child = elementChildren[i].child;
+					elementChildren.splice(i, 1);
+				}
+			}
+
+			while (element.lastChild) {
+
+				element.removeChild(element.lastChild);
+			}
+
+			element.appendChild(child.get());
+		};
 	}
 
 	return ArrayBinding;

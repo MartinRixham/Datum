@@ -98,13 +98,13 @@
 		require(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
 
 			var model =
-			{
-				two:
-					[
+				{
+					two: [
 						new Text(function() { return "Hello world."; }),
 						new Text(function() { return "Hello world."; })
 					]
-			};
+				};
+
 			var binding = new ArrayBinding(model.two);
 			var element = document.querySelector("#two");
 
@@ -265,6 +265,37 @@
 			model.subscribable.splice(0, 0, {});
 
 			assert.strictEqual(subscribableLength, 1);
+
+			done();
+		});
+	});
+    </script>
+    <div id="reset">
+      <div id="reset-child"></div>
+    </div>
+    <script>
+	QUnit.test("Reset element", function(assert) {
+
+		var done = assert.async();
+
+		require(["ArrayBinding", "Text"], function(ArrayBinding, Text) {
+
+			var model =
+				{
+					reset: [
+						new Text(function() { return "Hello world."; }),
+						new Text(function() { return "Hello world."; })
+					]
+				};
+
+			var binding = new ArrayBinding(model.reset);
+			var element = document.querySelector("#reset");
+
+			binding.setUpElement(model, element, model.reset);
+			binding.resetElement(element);
+
+			assert.strictEqual(element.children.length, 1);
+			assert.strictEqual(element.children[0].id, "reset-child");
 
 			done();
 		});

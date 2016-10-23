@@ -35,6 +35,11 @@ define([], function() {
 				}
 			}
 		}
+
+		this.get = function() {
+
+			return element;
+		};
 	}
 
 	return ArrayElement;

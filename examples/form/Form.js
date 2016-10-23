@@ -193,12 +193,14 @@ require(["Binding", "Click", "BindingRoot"], function(Binding, Click, BindingRoo
 
 		this.yesno = new Binding({
 
-			value: function(value) {
+			value: function(value, element) {
 
 				if (value) {
 
 					this.answer = value;
 				}
+
+				return element.value;
 			},
 			text: function() {
 
