@@ -31,16 +31,15 @@ define(["TransientProperty"], function(TransientProperty) {
 
 		function removeObjects(deleteCount) {
 
-			if (deleteCount) {
+			for (var i = 0; i < elementChildren.length; i++) {
 
-				for (var i = 0; i < elementChildren.length; i++) {
+				var element = elementChildren[i].element;
 
-					var element = elementChildren[i].element;
+				for (var j = deleteCount - 1; j >= 0; j--) {
 
-					element.removeChild(element.firstElementChild);
+					element.removeChild(element.children[j]);
+					properties.shift();
 				}
-
-				properties.pop();
 			}
 		}
 

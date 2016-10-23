@@ -364,6 +364,65 @@
 			done();
 		});
 	});
+    </script>
+    <div id="remove-two">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Remove two elements from array", function(assert) {
+
+		var done = assert.async();
+
+		require(["Splice", "ArrayElement"], function(Splice, ArrayElement) {
+
+			var element = document.querySelector("#remove-two");
+			var child = new ArrayElement(element.firstElementChild);
+			element.appendChild(child.clone());
+
+			var model = [{}, {}];
+			var elementChildren = [{ element: element, child: child }];
+			var properties = [{}, {}];
+			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			model.splice(0, 2);
+
+			assert.strictEqual(model.length, 0);
+			assert.strictEqual(element.children.length, 0);
+			assert.strictEqual(properties.length, 0);
+
+			done();
+		});
+	});
+    </script>
+	<div id="remove-first">
+		<div></div>
+	</div>
+	<script>
+	QUnit.test("Remove first element from array", function(assert) {
+
+		var done = assert.async();
+
+		require(["Splice", "ArrayElement"], function(Splice, ArrayElement) {
+
+			var element = document.querySelector("#remove-first");
+			var child = new ArrayElement(element.firstElementChild);
+			element.appendChild(child.clone());
+
+			var model = [{}, {}];
+			var elementChildren = [{ element: element, child: child }];
+			var properties = ["first", "second"];
+			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			model.splice(0, 1);
+
+			assert.strictEqual(model.length, 1);
+			assert.strictEqual(element.children.length, 1);
+			assert.strictEqual(properties.length, 1);
+			assert.strictEqual(properties[0], "second");
+
+			done();
+		});
+	});
 	</script>
   </body>
 </html>
