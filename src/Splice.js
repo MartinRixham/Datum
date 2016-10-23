@@ -34,8 +34,9 @@ define(["TransientProperty"], function(TransientProperty) {
 			for (var i = 0; i < elementChildren.length; i++) {
 
 				var element = elementChildren[i].element;
+				var end = Math.min(start + deleteCount, model.length) - 1;
 
-				for (var j = start + deleteCount - 1; j >= start; j--) {
+				for (var j = end; j >= start; j--) {
 
 					element.removeChild(element.children[j]);
 				}

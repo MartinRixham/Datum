@@ -457,5 +457,38 @@
 		});
 	});
     </script>
+    <div id="remove-beyond">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Remove element beyond end of array", function(assert) {
+
+		var done = assert.async();
+
+		require(["Splice", "ArrayElement"], function(Splice, ArrayElement) {
+
+			var element = document.querySelector("#remove-beyond");
+			element.firstElementChild.innerHTML = "Hello world.";
+
+			var child = new ArrayElement(element.firstElementChild);
+			element.appendChild(child.clone());
+
+			var model = [{}, {}];
+			var elementChildren = [{ element: element, child: child }];
+			var properties = ["first", "second"];
+			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			model.splice(1, 2);
+
+			assert.strictEqual(model.length, 1);
+			assert.strictEqual(element.children.length, 1);
+			assert.strictEqual(element.children[0].innerHTML, "Hello world.");
+			assert.strictEqual(properties.length, 1);
+			assert.strictEqual(properties[0], "first");
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>
