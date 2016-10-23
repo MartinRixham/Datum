@@ -7,7 +7,8 @@ define([
 	"Shift",
 	"Unshift",
 	"Reverse",
-	"Sort"
+	"Sort",
+	"Splice"
 ], function(
 	ArrayElement,
 	TransientProperty,
@@ -17,7 +18,8 @@ define([
 	Shift,
 	Unshift,
 	Reverse,
-	Sort) {
+	Sort,
+	Splice) {
 
 	function ArrayBinding(model, propertyType) {
 
@@ -41,6 +43,7 @@ define([
 			new Unshift(model, elementChildren, properties, propertyType);
 			new Reverse(model, elementChildren, properties);
 			new Sort(model, elementChildren, properties);
+			new Splice(model, elementChildren, properties, propertyType);
 		})();
 
 		(function createSubscribableLength() {

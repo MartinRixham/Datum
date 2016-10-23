@@ -262,6 +262,10 @@
 
 			assert.strictEqual(subscribableLength, 0);
 
+			model.subscribable.splice(0, 0, {});
+
+			assert.strictEqual(subscribableLength, 1);
+
 			done();
 		});
 	});
