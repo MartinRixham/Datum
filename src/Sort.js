@@ -76,18 +76,12 @@ define([], function() {
 
 					var element = elementChildren[j].element;
 
-					replaceChildren(element, modelChildrenProperties[i].children);
+					element.appendChild(modelChildrenProperties[i].children[j]);
 				}
 			}
 		}
 
-		function replaceChildren(element, children) {
 
-			for (var i = 0; i < children.length; i++) {
-
-				element.appendChild(children[i]);
-			}
-		}
 	}
 
 	return Sort;

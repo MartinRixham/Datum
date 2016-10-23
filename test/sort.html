@@ -186,5 +186,68 @@
 		});
 	});
     </script>
+    <div id="first">
+      <div>one</div>
+      <div>two</div>
+      <div>three</div>
+    </div>
+    <div id="second">
+      <div>one</div>
+      <div>two</div>
+      <div>three</div>
+    </div>
+    <script>
+	QUnit.test("Sort array bound to two elements", function(assert) {
+
+		var done = assert.async();
+
+		require(["Sort", "ArrayElement", "Text"], function(Sort, ArrayElement, Text) {
+
+			var firstElement = document.querySelector("#first");
+			var secondElement = document.querySelector("#second");
+
+			var firstChild = new ArrayElement(firstElement.firstElementChild);
+			var secondChild = new ArrayElement(secondElement.firstElementChild);
+
+			var one = new Text(function() { return "one"; });
+			var two = new Text(function() { return "two"; });
+			var three = new Text(function() { return "three"; });
+			var model = [one, two, three];
+
+			var properties = ["one", "two", "three"];
+			var elementChildren =
+				[
+					{ element: firstElement, child: firstChild },
+					{ element: secondElement, child: secondChild }
+				];
+
+			new Sort(model, elementChildren, properties);
+
+			model.sort(comparison);
+
+			assert.strictEqual(model.length, 3);
+			assert.strictEqual(model[0], one);
+			assert.strictEqual(model[1], three);
+			assert.strictEqual(model[2], two);
+
+			assert.strictEqual(properties.length, 3);
+			assert.strictEqual(properties[0], "one");
+			assert.strictEqual(properties[1], "three");
+			assert.strictEqual(properties[2], "two");
+
+			assert.strictEqual(firstElement.children.length, 3);
+			assert.strictEqual(firstElement.children[0].textContent, "one");
+			assert.strictEqual(firstElement.children[1].textContent, "three");
+			assert.strictEqual(firstElement.children[2].textContent, "two");
+
+			assert.strictEqual(secondElement.children.length, 3);
+			assert.strictEqual(secondElement.children[0].textContent, "one");
+			assert.strictEqual(secondElement.children[1].textContent, "three");
+			assert.strictEqual(secondElement.children[2].textContent, "two");
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>
