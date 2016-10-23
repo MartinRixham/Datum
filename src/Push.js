@@ -8,8 +8,8 @@ define(["TransientProperty"], function(TransientProperty) {
 
 			for (var i = 0; i < arguments.length; i++) {
 
-				var model = arguments[i];
-				var property = new TransientProperty(model, propertyType);
+				var object = arguments[i];
+				var property = new TransientProperty(object, propertyType);
 
 				properties.push(property);
 
@@ -19,11 +19,12 @@ define(["TransientProperty"], function(TransientProperty) {
 					var child = elementChildren[j].child;
 
 					element.appendChild(child.clone());
-					property.applyBinding(element, properties.length - 1, model);
+					property.applyBinding(element, properties.length - 1, object);
 				}
 			}
 
 			originalPush.apply(this, arguments);
+			model.subscribableLength = model.length;
 		};
 	}
 

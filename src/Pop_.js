@@ -24,6 +24,7 @@ define([], function() {
 			}
 
 			originalPop.apply(this, arguments);
+			model.subscribableLength = model.length;
 		};
 	}
 

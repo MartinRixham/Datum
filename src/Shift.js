@@ -24,6 +24,7 @@ define([], function() {
 			}
 
 			originalShift.apply(this, arguments);
+			model.subscribableLength = model.length;
 		};
 	}
 

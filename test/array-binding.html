@@ -23,7 +23,27 @@
 			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
     </script>
-    <div id="zero">
+    <script>
+		function FakePropertyType() {
+
+			this.createViewModel = function() {
+
+				return {
+
+					applyBinding: function() {}
+				};
+			};
+
+			this.createArrayBinding = function() {
+
+				return {
+
+					applyBinding: function() {}
+				};
+			};
+		}
+    </script>
+	<div id="zero">
       <div></div>
     </div>
     <script>
@@ -195,6 +215,52 @@
 			assert.strictEqual(firstArray.children[1].innerText, "Hello world.");
 			assert.strictEqual(secondArray.children[0].innerText, "Hello world.");
 			assert.strictEqual(secondArray.children[1].innerText, "Hello world.");
+
+			done();
+		});
+	});
+    </script>
+    <div id="subscribable" data-bind="subscribable">
+      <div></div>
+    </div>
+	<div data-bind="update"></div>
+    <script>
+	QUnit.test("Depend on subscribable length", function(assert) {
+
+		var done = assert.async();
+
+		require(["ViewModel", "Update"], function(ViewModel, Update) {
+
+			var subscribableLength = 0;
+			var model = {
+
+				subscribable: [],
+				update: new Update(function() {
+
+					subscribableLength = this.subscribable.subscribableLength;
+				})
+			};
+
+			var viewModel = new ViewModel(model);
+			viewModel.applyBinding();
+
+			assert.strictEqual(subscribableLength, 0);
+
+			model.subscribable.push({});
+
+			assert.strictEqual(subscribableLength, 1);
+
+			model.subscribable.pop();
+
+			assert.strictEqual(subscribableLength, 0);
+
+			model.subscribable.unshift({});
+
+			assert.strictEqual(subscribableLength, 1);
+
+			model.subscribable.shift();
+
+			assert.strictEqual(subscribableLength, 0);
 
 			done();
 		});

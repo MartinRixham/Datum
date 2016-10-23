@@ -1,6 +1,7 @@
 define([
 	"ArrayElement",
 	"TransientProperty",
+	"Datum",
 	"Push",
 	"Pop_",
 	"Shift",
@@ -10,6 +11,7 @@ define([
 ], function(
 	ArrayElement,
 	TransientProperty,
+	Datum,
 	Push,
 	Pop,
 	Shift,
@@ -39,6 +41,23 @@ define([
 			new Unshift(model, elementChildren, properties, propertyType);
 			new Reverse(model, elementChildren, properties);
 			new Sort(model, elementChildren, properties);
+		})();
+
+		(function createSubscribableLength() {
+
+			var length = new Datum(model.length);
+
+			Object.defineProperty(model, "subscribableLength", {
+
+				get: function() {
+
+					return length();
+				},
+				set: function(value) {
+
+					length(value);
+				}
+			});
 		})();
 
 		this.setUpElement = function(parentModel, element, model) {
