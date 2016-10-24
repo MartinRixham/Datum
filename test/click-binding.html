@@ -15,16 +15,16 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-	<script>
+    <script>
 		var i = 0;
 
 		function require(dependencies, factory) {
 
 			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
-	</script>
+    </script>
 	<div id="init"></div>
-	<script>
+    <script>
 	QUnit.test("Init click", function(assert) {
 
 		var done = assert.async();
@@ -48,9 +48,9 @@
 			done();
 		});
 	});
-	</script>
-	<input id="reset" value="Hello world." />
-	<script>
+    </script>
+    <input id="reset" value="Hello world." />
+    <script>
 	QUnit.test("Reset click", function(assert) {
 
 		var done = assert.async();
@@ -75,6 +75,6 @@
 			done();
 		});
 	});
-	</script>
- </body>
+    </script>
+  </body>
 </html>

@@ -153,7 +153,7 @@
 		});
 	});
     </script>
-	<script>
+    <script>
 	QUnit.test("Callback called from test handle", function(assert) {
 
 		var done = assert.async();
@@ -176,8 +176,8 @@
 			done();
 		});
 	});
-	</script>
-	<div id="unbind" data-bind="unbind"></div>
+    </script>
+    <div id="unbind" data-bind="unbind"></div>
   	<script>
 	QUnit.test("Unbind callback", function(assert) {
 
@@ -199,14 +199,14 @@
 			done();
 		});
 	});
-	</script>
-	<div id="first-scope">
-		<div data-bind="scope"></div>
-	</div>
-	<div id="second-scope">
-		<div data-bind="scope"></div>
-	</div>
-	<script>
+    </script>
+    <div id="first-scope">
+      <div data-bind="scope"></div>
+    </div>
+    <div id="second-scope">
+      <div data-bind="scope"></div>
+    </div>
+    <script>
 	QUnit.test("Bind to new scope", function(assert) {
 
 		var done = assert.async();
@@ -240,7 +240,7 @@
 			done();
 		});
 	});
-	</script>
+    </script>
     <div id="init" data-bind="init"></div>
     <script>
 	QUnit.test("Bind on init", function(assert) {

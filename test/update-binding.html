@@ -15,16 +15,16 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-	<script>
+    <script>
 		var i = 0;
 
 		function require(dependencies, factory) {
 
 			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
-	</script>
-	<div id="callback"></div>
-	<script>
+    </script>
+    <div id="callback"></div>
+    <script>
 	QUnit.test("Model and element passed on update", function(assert) {
 
 		var done = assert.async();
@@ -51,6 +51,6 @@
 			done();
 		});
 	});
-	</script>
- </body>
+    </script>
+  </body>
 </html>

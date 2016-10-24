@@ -15,15 +15,15 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-	<script>
+    <script>
 		var i = 0;
 
 		function require(dependencies, factory) {
 
 			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
-	</script>
-	<script>
+    </script>
+    <script>
 		function FakePropertyType() {
 
 			this.createViewModel = function() {
@@ -42,11 +42,11 @@
 				};
 			};
 		}
-	</script>
+    </script>
     <div id="unshift">
       <div id="child"></div>
     </div>
-	<script>
+    <script>
 	QUnit.test("Unshift element to array", function(assert) {
 
 		var done = assert.async();
@@ -69,45 +69,45 @@
 			done();
 		});
 	});
-	</script>
-	<div id="two">
-		<div></div>
-	</div>
-	<script>
-		QUnit.test("Unshift two elements to array", function(assert) {
+    </script>
+    <div id="two">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Unshift two elements to array", function(assert) {
 
-			var done = assert.async();
+		var done = assert.async();
 
-			require([
-				"Unshift",
-				"ArrayElement",
-				"Text"
-			], function(
-				Unshift,
-				ArrayElement,
-				Text) {
+		require([
+			"Unshift",
+			"ArrayElement",
+			"Text"
+		], function(
+			Unshift,
+			ArrayElement,
+			Text) {
 
-				var element = document.querySelector("#two");
-				var child = new ArrayElement(element.firstElementChild);
+			var element = document.querySelector("#two");
+			var child = new ArrayElement(element.firstElementChild);
 
-				var model = [{}];
-				var elementChildren = [{ element: element, child: child }];
-				var properties = [{}];
-				new Unshift(model, elementChildren, properties, new FakePropertyType());
+			var model = [{}];
+			var elementChildren = [{ element: element, child: child }];
+			var properties = [{}];
+			new Unshift(model, elementChildren, properties, new FakePropertyType());
 
-				model.unshift(
-					new Text(function() { return "one"; }),
-					new Text(function() { return "two"; }));
+			model.unshift(
+				new Text(function() { return "one"; }),
+				new Text(function() { return "two"; }));
 
-				assert.strictEqual(model.length, 3);
-				assert.strictEqual(element.children.length, 3);
-				assert.strictEqual(element.children[0].textContent, "one");
-				assert.strictEqual(element.children[1].textContent, "two");
+			assert.strictEqual(model.length, 3);
+			assert.strictEqual(element.children.length, 3);
+			assert.strictEqual(element.children[0].textContent, "one");
+			assert.strictEqual(element.children[1].textContent, "two");
 
-				done();
-			});
+			done();
 		});
-	</script>
+	});
+    </script>
     <div id="bind">
       <div></div>
     </div>
@@ -134,6 +134,6 @@
 			done();
 		});
 	});
-   </script>
- </body>
+    </script>
+  </body>
 </html>

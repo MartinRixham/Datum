@@ -15,15 +15,15 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-	<script>
+    <script>
 		var i = 0;
 
 		function require(dependencies, factory) {
 
 			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
-	</script>
-	<script>
+    </script>
+    <script>
 		function FakePropertyType() {
 
 			this.removeBindingWasCalled = false;
@@ -50,11 +50,11 @@
 				};
 			};
 		}
-	</script>
+    </script>
     <div id="shift">
       <div></div>
     </div>
-	<script>
+    <script>
 	QUnit.test("Shift element from array", function(assert) {
 
 		var done = assert.async();
@@ -88,11 +88,11 @@
 			done();
 		});
 	});
-	</script>
-	<div id="empty">
-		<div></div>
-	</div>
-	<script>
+    </script>
+    <div id="empty">
+      <div></div>
+    </div>
+    <script>
 	QUnit.test("Shift from empty array", function(assert) {
 
 		var done = assert.async();
@@ -119,11 +119,11 @@
 			done();
 		});
 	});
-	</script>
-	<div id="two">
-		<div>first</div>
-	</div>
-	<script>
+    </script>
+    <div id="two">
+      <div>first</div>
+    </div>
+    <script>
 	QUnit.test("Shift element from array length two", function(assert) {
 
 		var done = assert.async();
@@ -166,6 +166,6 @@
 			done();
 		});
 	});
-	</script>
- </body>
+    </script>
+  </body>
 </html>

@@ -15,14 +15,14 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-	<script>
+    <script>
 		var i = 0;
 
 		function require(dependencies, factory) {
 
 			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
-	</script>
+    </script>
     <div id="invisible"></div>
     <script>
 	QUnit.test("Set invisible", function(assert) {
@@ -47,32 +47,32 @@
 		});
 	});
     </script>
-	<div id="visible"></div>
-	<script>
-		QUnit.test("Set visible", function(assert) {
+    <div id="visible"></div>
+    <script>
+	QUnit.test("Set visible", function(assert) {
 
-			var done = assert.async();
+		var done = assert.async();
 
-			require(["VisibleBinding"], function(VisibleBinding) {
+		require(["VisibleBinding"], function(VisibleBinding) {
 
-				var visible =
-					new VisibleBinding(function() {
+			var visible =
+				new VisibleBinding(function() {
 
-						return true;
-					});
+					return true;
+				});
 
-				var element = document.querySelector("#visible");
-				visible.updateElement(null, element);
-				var display = document.querySelector("#visible").style.display;
+			var element = document.querySelector("#visible");
+			visible.updateElement(null, element);
+			var display = document.querySelector("#visible").style.display;
 
-				assert.strictEqual(display, "");
+			assert.strictEqual(display, "");
 
-				done();
-			});
+			done();
 		});
-	</script>
-	<div id="callback"></div>
-	<script>
+	});
+    </script>
+    <div id="callback"></div>
+    <script>
 	QUnit.test("Model and element passed on update", function(assert) {
 
 		var done = assert.async();
@@ -99,31 +99,31 @@
 			done();
 		});
 	});
-	</script>
-	<div id="reset"></div>
-	<script>
-		QUnit.test("Reset element", function(assert) {
+    </script>
+    <div id="reset"></div>
+    <script>
+	QUnit.test("Reset element", function(assert) {
 
-			var done = assert.async();
+		var done = assert.async();
 
-			require(["VisibleBinding"], function(VisibleBinding) {
+		require(["VisibleBinding"], function(VisibleBinding) {
 
-				var visible =
-					new VisibleBinding(function() {
+			var visible =
+				new VisibleBinding(function() {
 
-						return false;
-					});
+					return false;
+				});
 
-				var element = document.querySelector("#reset");
-				visible.updateElement(null, element);
-				visible.resetElement(element);
-				var display = document.querySelector("#reset").style.display;
+			var element = document.querySelector("#reset");
+			visible.updateElement(null, element);
+			visible.resetElement(element);
+			var display = document.querySelector("#reset").style.display;
 
-				assert.strictEqual(display, "");
+			assert.strictEqual(display, "");
 
-				done();
-			});
+			done();
 		});
-	</script>
+	});
+    </script>
  </body>
 </html>

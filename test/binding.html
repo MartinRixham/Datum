@@ -15,14 +15,14 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-	<script>
+    <script>
 		var i = 0;
 
 		function require(dependencies, factory) {
 
 			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
-	</script>
+    </script>
     <div id="test-div" data-bind="test"></div>
     <script>
 	QUnit.test("Bind text", function(assert) {
@@ -102,7 +102,7 @@
 		});
 	});
     </script>
-	<script>
+    <script>
 	QUnit.test("Callback called from test handle.", function(assert) {
 
 		var done = assert.async();
@@ -128,6 +128,6 @@
 			done();
 		});
 	});
-	</script>
- </body>
+    </script>
+  </body>
 </html>

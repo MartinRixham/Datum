@@ -15,15 +15,15 @@
     </style>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-	<script>
+    <script>
 		var i = 0;
 
 		function require(dependencies, factory) {
 
 			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
-	</script>
-	<script>
+    </script>
+    <script>
 		function FakePropertyType() {
 
 			this.createViewModel = function() {
@@ -46,7 +46,7 @@
     <div id="push">
       <div id="child"></div>
     </div>
-	<script>
+    <script>
 	QUnit.test("Push element to array", function(assert) {
 
 		var done = assert.async();
@@ -135,5 +135,5 @@
 		});
 	});
    </script>
- </body>
+  </body>
 </html>
