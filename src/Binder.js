@@ -122,9 +122,12 @@ define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Regi
 
 		this.test = {
 
-			call: function(element) {
+			call: function() {
 
-				return binding.call(parentModel, element);
+				var testArguments = [].slice.call(arguments);
+				testArguments.unshift(parentModel);
+
+				return binding.call.apply(binding, testArguments);
 			}
 		};
 	}

@@ -129,5 +129,40 @@
 		});
 	});
     </script>
+    <div id="test"></div>
+    <script>
+	QUnit.test("Call test handle", function(assert) {
+
+		var done = assert.async();
+
+		require(["ValueBinding"], function(ValueBinding) {
+
+			var passedModel;
+			var passedValue;
+			var passedElement;
+
+			var binding =
+				new ValueBinding(function(value, element) {
+
+					passedModel = this;
+					passedValue = value;
+					passedElement = element;
+
+					return "Hello World.";
+				});
+
+			var model = {};
+			var value = "thingy";
+			var element = document.querySelector("#test");
+
+			assert.strictEqual(binding.call(model, value, element), "Hello World.");
+			assert.strictEqual(passedModel, model);
+			assert.strictEqual(passedValue, value);
+			assert.strictEqual(passedElement, element);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

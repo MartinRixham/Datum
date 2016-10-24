@@ -39,9 +39,9 @@ define([], function() {
 			listeners.splice(i, 1);
 		};
 
-		this.call = function(parentModel, element) {
+		this.call = function(parentModel, val, element) {
 
-			value.call(parentModel, element);
+			return value.call(parentModel, val, element);
 		};
 	}
 

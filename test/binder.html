@@ -160,18 +160,24 @@
 
 		require(["TextBinding", "Binder"], function(TextBinding, Binder) {
 
-			var callCount = 0;
+			var passedModel;
+			var passedElement;
 
 			var binding =
-				new Binder(new TextBinding(function() {
+				new Binder(new TextBinding(function(element) {
 
-					callCount++;
+					passedModel = this;
+					passedElement = element;
 				}));
 
-			binding.applyBinding(document.body, "thingy", {});
-			binding.test.call(document.createElement("DIV"));
+			var model = {};
+			var element = document.createElement("DIV");
 
-			assert.strictEqual(callCount, 1);
+			binding.applyBinding(document.body, "thingy", model);
+			binding.test.call(element);
+
+			assert.strictEqual(passedModel, model);
+			assert.strictEqual(passedElement, element);
 
 			done();
 		});

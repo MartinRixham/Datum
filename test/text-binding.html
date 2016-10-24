@@ -34,13 +34,13 @@
 			var text =
 				new TextBinding(function() {
 
-					return "Hello World";
+					return "Hello World.";
 				});
 
 			var element = document.querySelector("#update");
 			text.updateElement(null, element);
 
-			assert.strictEqual(document.querySelector("#update").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#update").innerHTML, "Hello World.");
 
 			done();
 		});
@@ -86,7 +86,7 @@
 			var text =
 				new TextBinding(function() {
 
-					return "Hello World";
+					return "Hello World.";
 				});
 
 			var element = document.querySelector("#reset");
@@ -94,6 +94,37 @@
 			text.resetElement(element);
 
 			assert.strictEqual(document.querySelector("#reset").innerHTML, "");
+
+			done();
+		});
+	});
+    </script>
+    <div id="test"></div>
+    <script>
+	QUnit.test("Call test handle", function(assert) {
+
+		var done = assert.async();
+
+		require(["TextBinding"], function(TextBinding) {
+
+			var passedModel;
+			var passedElement;
+
+			var text =
+				new TextBinding(function(element) {
+
+					passedModel = this;
+					passedElement = element;
+
+					return "Hello World.";
+				});
+
+			var model = {};
+			var element = document.querySelector("#test");
+
+			assert.strictEqual(text.call(model, element), "Hello World.");
+			assert.strictEqual(passedModel, model);
+			assert.strictEqual(passedElement, element);
 
 			done();
 		});

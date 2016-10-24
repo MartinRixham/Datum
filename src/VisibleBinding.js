@@ -23,7 +23,7 @@ define([], function() {
 
 		this.call = function(parentModel, element) {
 
-			visible.call(parentModel, element);
+			return visible.call(parentModel, element);
 		};
 	}
 
