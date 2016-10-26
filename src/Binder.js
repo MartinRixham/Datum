@@ -19,8 +19,21 @@ define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Regi
 			removeOldBindings();
 			bindElements(elements, scope, model, name);
 
-			[].push.apply(boundElements, elements);
+			addElements(elements);
 		};
+
+		function addElements(elements) {
+
+			for (var i = 0; i < elements.length; i++) {
+
+				var element = elements[i];
+
+				if (boundElements.indexOf(element) < 0) {
+
+					boundElements.push(element);
+				}
+			}
+		}
 
 		function getMatchingElements(scope, key) {
 
