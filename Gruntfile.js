@@ -17,7 +17,7 @@ module.exports = function(grunt) {
 			options: {
 
 				config: ".jscsrc",
- 				esnext: false,
+				esnext: false,
 				verbose: true,
 				fix: false,
 				extract: ["test/*.html"]
@@ -31,14 +31,14 @@ module.exports = function(grunt) {
 			},
 			all: ["test/*"]
 		},
- 		mkdir: {
+		mkdir: {
 
 			all: {
 				options: {
 
 					create: ["target"]
-				},
-			},
+				}
+			}
 		},
 		"concat-define": {
 
@@ -60,6 +60,17 @@ module.exports = function(grunt) {
 					]
 				}
 			}
+		},
+		md2html: {
+
+			one_file: {
+
+				files: [{
+
+					src: ["README.md"],
+					dest: 'docs/readme.html'
+				}]
+			}
 		}
 	});
 
@@ -69,6 +80,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-mkdir");
 	grunt.loadNpmTasks("grunt-concat-define");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
+	grunt.loadNpmTasks('grunt-md2html');
 
-	grunt.registerTask("default", ["jshint", "jscs", "qunit", "mkdir", "concat-define", "uglify"]);
+	grunt.registerTask("default", ["jshint", "jscs", "qunit", "mkdir", "concat-define", "uglify", "md2html"]);
 };
