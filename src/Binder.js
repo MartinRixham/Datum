@@ -14,12 +14,15 @@ define(["Rebinder", "Dependant", "Registry"], function(Rebinder, Dependant, Regi
 
 			parentModel = model;
 
-			var elements = getMatchingElements(scope, name);
-
 			removeOldBindings();
-			bindElements(elements, scope, model, name);
 
-			addElements(elements);
+			if (scope) {
+
+				var elements = getMatchingElements(scope, name);
+
+				bindElements(elements, scope, model, name);
+				addElements(elements);
+			}
 		};
 
 		function addElements(elements) {

@@ -469,7 +469,7 @@
 
 		require(["Text", "ViewModel"], function(Text, ViewModel) {
 
-			function TextObject() {
+			function FailObject() {
 
 				this.failBind = {};
 
@@ -482,10 +482,34 @@
 				};
 			}
 
-			var viewModel = new ViewModel(new TextObject());
+			var viewModel = new ViewModel(new FailObject());
 			viewModel.applyBinding();
 
 			assert.strictEqual(document.querySelector("#fail").innerHTML, "");
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Binding attribute missing", function(assert) {
+
+		var done = assert.async();
+
+		require(["Text", "ViewModel"], function(Text, ViewModel) {
+
+			function MissingObject() {
+
+				this.missing = {
+
+					empty: {}
+				};
+			}
+
+			var viewModel = new ViewModel(new MissingObject());
+			viewModel.applyBinding();
+
+			assert.expect(0);
 
 			done();
 		});
