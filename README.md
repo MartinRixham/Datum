@@ -2,7 +2,7 @@
 
 An opinionated data binding library.
 
-## The Basics Of Data Binding With Datum
+## The Basics of Data Binding with Datum
 
 ### Initialisation
 

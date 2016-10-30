@@ -81,11 +81,19 @@ a:hover {
 	.page-header {
 		padding: 5rem 6rem;
 	}
+
+	.page-header a {
+		width: 160px;
+	}
 }
 
 @media screen and (min-width: 42em) and (max-width: 64em) {
 	.page-header {
 		padding: 3rem 4rem;
+	}
+
+	.page-header a {
+		width: 134px;
 	}
 }
 
@@ -344,4 +352,9 @@ a:hover {
 
 .readme {
 	min-height: 1000px;
+	text-align: justify;
+}
+
+.readme h1, .readme h1 + p {
+	display: none;
 }
