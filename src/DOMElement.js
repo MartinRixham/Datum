@@ -25,7 +25,7 @@ define([], function() {
 			}
 		}
 
-		this.removedFromDocument = function(element) {
+		this.removedFromDocument = function() {
 
 			return !document.contains(element);
 		};
@@ -35,12 +35,13 @@ define([], function() {
 			if (isNaN(key)) {
 
 				var elements = element.querySelectorAll("[data-bind=" + key + "]");
+				var elementsArray = [].slice.call(elements);
 
-				return [].map.call(elements, function(item) { return new DOMElement(item) });
+				return elementsArray.map(function(item) { return new DOMElement(item); });
 			}
 			else {
 
-				return [element.children[key]];
+				return [new DOMElement(element.children[key])];
 			}
 		};
 

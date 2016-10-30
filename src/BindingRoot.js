@@ -1,10 +1,10 @@
 define([
 	"ViewModel",
-	"DomWatcher",
+	"DOMWatcher",
 	"Rebinder"
 ], function BindingRoot(
 	ViewModel,
-	DomWatcher,
+	DOMWatcher,
 	Rebinder) {
 
 	var flag = false;
@@ -22,7 +22,7 @@ define([
 			rootViewModel.applyBinding();
 		});
 
-		var domWatcher = new DomWatcher(document.body);
+		var domWatcher = new DOMWatcher(document.body);
 
 		this.disconnect = function() {
 

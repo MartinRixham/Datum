@@ -1,6 +1,6 @@
 define([], function() {
 
-	function DomWatcher(scope) {
+	function DOMWatcher(scope) {
 
 		var observer = new MutationObserver(function(mutations) {
 
@@ -35,5 +35,5 @@ define([], function() {
 		};
 	}
 
-	return DomWatcher;
+	return DOMWatcher;
 });

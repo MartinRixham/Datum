@@ -2,12 +2,14 @@ define([
 	"Serialisable",
 	"TransientProperty",
 	"PermanentProperty",
-	"PropertyType"
+	"PropertyType",
+	"DOMElement"
 ], function(
 	Serialisable,
 	TransientProperty,
 	PermanentProperty,
-	PropertyType) {
+	PropertyType,
+	DOMElement) {
 
 	function ViewModel(model) {
 
@@ -27,14 +29,14 @@ define([
 
 				var element = elements[i];
 
-				if (!element || isInScope(element, scope)) {
+				if (!element.get() || element.isInScope(scope)) {
 
-					createRebinder(element, scope, name);
-					callBindingCallback(element);
+					createRebinder(element.get(), scope, name);
+					callBindingCallback(element.get());
 					unbindOldProperties();
 					createPermanentProperties();
 					createTransientProperties();
-					bindProperties(element);
+					bindProperties(element.get());
 				}
 			}
 		}
@@ -43,43 +45,13 @@ define([
 
 			if (scope) {
 
-				var elements = getMatchingElements(scope, name);
+				var elements = new DOMElement(scope).getMatchingElements(name);
 
-				return elements.length ? elements : [null];
+				return elements.length ? elements : [new DOMElement(null)];
 			}
 			else {
 
-				return [document.body];
-			}
-		}
-
-		function isInScope(element, scope) {
-
-			element = element.parentElement;
-
-			if (!element) {
-
-				return true;
-			}
-			else if (element._rebind) {
-
-				return element == scope;
-			}
-			else {
-
-				return isInScope(element, scope);
-			}
-		}
-
-		function getMatchingElements(scope, key) {
-
-			if (isNaN(key)) {
-
-				return [].slice.call(scope.querySelectorAll("[data-bind=" + key + "]"));
-			}
-			else {
-
-				return [scope.children[key]];
+				return [new DOMElement(document.body)];
 			}
 		}
 
