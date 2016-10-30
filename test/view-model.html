@@ -407,15 +407,11 @@
 
 			var viewModel = new ViewModel(onBindOnce);
 			viewModel.applyBinding();
+			viewModel.applyBinding();
 
-			onBindOnce.bindOnce.newBinding = new Binding({});
+			assert.strictEqual(count, 1);
 
-			setTimeout(function() {
-
-				assert.strictEqual(count, 1);
-
-				done();
-			});
+			done();
 		});
 	});
     </script>
