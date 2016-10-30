@@ -82,7 +82,7 @@
 	});
     </script>
     <script>
-	QUnit.test("Constructor can only be called once.", function(assert) {
+	QUnit.test("Constructor can only be called once", function(assert) {
 
 		var done = assert.async();
 
@@ -97,12 +97,10 @@
 				root = new BindingRoot({});
 				new BindingRoot({});
 			}
-			catch (ex) {
+			catch (e) {
 
-				exception = ex;
+				exception = e;
 			}
-
-			assert.ok(exception);
 
 			assert.strictEqual(
 				exception.message,
@@ -110,6 +108,136 @@
 				"cannot be instantiated multiple times.");
 
 			root.disconnect();
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Binding root cannot be an array", function(assert) {
+
+		var done = assert.async();
+
+		require(["BindingRoot"], function(BindingRoot) {
+
+			var exception = null;
+
+			try {
+
+				new BindingRoot([]);
+			}
+			catch (e) {
+
+				exception = e;
+			}
+
+			assert.strictEqual(
+				exception.message,
+				"The binding root cannot be an array.");
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Binding root cannot be a string", function(assert) {
+
+		var done = assert.async();
+
+		require(["BindingRoot"], function(BindingRoot) {
+
+			var exception = null;
+
+			try {
+
+				new BindingRoot("Hello world.");
+			}
+			catch (e) {
+
+				exception = e;
+			}
+
+			assert.strictEqual(
+				exception.message,
+				"The binding root must be an object.");
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Binding root cannot be a number", function(assert) {
+
+		var done = assert.async();
+
+		require(["BindingRoot"], function(BindingRoot) {
+
+			var exception = null;
+
+			try {
+
+				new BindingRoot(42);
+			}
+			catch (e) {
+
+				exception = e;
+			}
+
+			assert.strictEqual(
+				exception.message,
+				"The binding root must be an object.");
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Binding root cannot be a boolean", function(assert) {
+
+		var done = assert.async();
+
+		require(["BindingRoot"], function(BindingRoot) {
+
+			var exception = null;
+
+			try {
+
+				new BindingRoot(true);
+			}
+			catch (e) {
+
+				exception = e;
+			}
+
+			assert.strictEqual(
+				exception.message,
+				"The binding root must be an object.");
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Binding root cannot be a function", function(assert) {
+
+		var done = assert.async();
+
+		require(["BindingRoot"], function(BindingRoot) {
+
+			var exception = null;
+
+			try {
+
+				new BindingRoot(function() {});
+			}
+			catch (e) {
+
+				exception = e;
+			}
+
+			assert.strictEqual(
+				exception.message,
+				"The binding root must be an object.");
 
 			done();
 		});

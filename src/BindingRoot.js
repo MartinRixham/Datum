@@ -11,6 +11,7 @@ define([
 
 	function BindingRoot(model) {
 
+		checkModelType(model);
 		assertUniqueness();
 
 		var rootViewModel = new ViewModel(model);
@@ -27,6 +28,19 @@ define([
 
 			domWatcher.disconnect();
 		};
+	}
+
+	function checkModelType(model) {
+
+		if (typeof model != "object") {
+
+			throw new Error("The binding root must be an object.");
+		}
+
+		if (model instanceof Array) {
+
+			throw new Error("The binding root cannot be an array.");
+		}
 	}
 
 	function assertUniqueness() {
