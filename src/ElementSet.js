@@ -27,9 +27,9 @@ define([], function() {
 			return !isNew;
 		}
 
-		 this.removeOld = function() {
+		this.removeOld = function() {
 
-		 	var removed = [];
+			var removed = [];
 
 			for (var i = 0; i < elements.length; i++) {
 
@@ -43,7 +43,12 @@ define([], function() {
 			}
 
 			return removed;
-		}
+		};
+
+		this.get = function() {
+
+			return elements;
+		};
 	}
 
 	return ElementSet;

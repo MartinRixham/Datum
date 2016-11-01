@@ -1,8 +1,15 @@
-define(["Registry", "Rebinder"], function Datum(Registry, Rebinder) {
+define([
+	"ElementSet",
+	"Registry",
+	"Rebinder"
+], function Datum(
+	ElementSet,
+	Registry,
+	Rebinder) {
 
 	function Datum(datum) {
 
-		var dependants = [];
+		var dependants = new ElementSet();
 
 		function provider(value) {
 
@@ -25,55 +32,26 @@ define(["Registry", "Rebinder"], function Datum(Registry, Rebinder) {
 
 		function assigner(dependant) {
 
-			if (dependantNotRegistered(dependant)) {
-
-				dependants.push(dependant);
-			}
-		}
-
-		function dependantNotRegistered(dependant) {
-
-			var containsDependant = false;
-
-			for (var i = 0; i < dependants.length; i++) {
-
-				if (dependants[i].equals(dependant)) {
-
-					containsDependant = true;
-				}
-			}
-
-			return !containsDependant;
+			dependants.add(dependant);
 		}
 
 		function set(value) {
 
 			datum = value;
 
-			forgetRemovedDependants();
+			dependants.removeOld();
 			updateDependants(value);
 
 			new Rebinder().rebindDataStructure();
 		}
 
-		function forgetRemovedDependants() {
-
-			for (var i = 0; i < dependants.length; i++) {
-
-				var dependant = dependants[i];
-
-				if (dependant.removedFromDocument()) {
-
-					dependants.splice(i, 1);
-				}
-			}
-		}
-
 		function updateDependants(value) {
 
-			for (var i = 0; i < dependants.length; i++) {
+			var dependantArray = dependants.get();
 
-				dependants[i].call(value);
+			for (var i = 0; i < dependantArray.length; i++) {
+
+				dependantArray[i].call(value);
 			}
 		}
 
