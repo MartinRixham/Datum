@@ -8,7 +8,8 @@ define([
 	"Unshift",
 	"Reverse",
 	"Sort",
-	"Splice"
+	"Splice",
+	"DOMElement"
 ], function(
 	ArrayElement,
 	TransientProperty,
@@ -19,7 +20,8 @@ define([
 	Unshift,
 	Reverse,
 	Sort,
-	Splice) {
+	Splice,
+	DOMElement) {
 
 	function ArrayBinding(model, propertyType) {
 
@@ -102,7 +104,7 @@ define([
 
 			for (var i = 0; i < properties.length; i++) {
 
-				properties[i].applyBinding(element, i, value);
+				properties[i].applyBinding(new DOMElement(element), i, value);
 			}
 		};
 

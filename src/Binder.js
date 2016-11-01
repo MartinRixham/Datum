@@ -2,14 +2,12 @@ define([
 	"ElementSet",
 	"Rebinder",
 	"Dependant",
-	"Registry",
-	"DOMElement"
+	"Registry"
 ], function(
 	ElementSet,
 	Rebinder,
 	Dependant,
-	Registry,
-	DOMElement) {
+	Registry) {
 
 	function Binder(binding) {
 
@@ -27,9 +25,9 @@ define([
 
 			removeOldBindings();
 
-			if (scope) {
+			if (scope && scope.get()) {
 
-				var elements = new DOMElement(scope).getMatchingElements(name);
+				var elements = scope.getMatchingElements(name);
 
 				bindElements(elements, scope, model, name);
 				addElements(elements);
@@ -60,7 +58,7 @@ define([
 
 				var element = elements[i];
 
-				if (element.isInScope(scope)) {
+				if (element.isInScope(scope.get())) {
 
 					if (boundElements.contains(element)) {
 

@@ -1,4 +1,4 @@
-define(["TransientProperty"], function(TransientProperty) {
+define(["TransientProperty", "DOMElement"], function(TransientProperty, DOMElement) {
 
 	function Push(model, elementChildren, properties, propertyType) {
 
@@ -17,9 +17,10 @@ define(["TransientProperty"], function(TransientProperty) {
 
 					var element = elementChildren[j].element;
 					var child = elementChildren[j].child;
+					var finalIndex = properties.length - 1;
 
 					element.appendChild(child.clone());
-					property.applyBinding(element, properties.length - 1, object);
+					property.applyBinding(new DOMElement(element), finalIndex, object);
 				}
 			}
 

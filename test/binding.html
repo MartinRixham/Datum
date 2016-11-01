@@ -29,7 +29,7 @@
 
 		var done = assert.async();
 
-		require(["Binding"], function(Binding) {
+		require(["Binding", "DOMElement"], function(Binding, DOMElement) {
 
 			var test =
 				new Binding({
@@ -40,7 +40,7 @@
 					}
 				});
 
-			test.applyBinding(document.body, "test");
+			test.applyBinding(new DOMElement(document.body), "test");
 
 			assert.strictEqual(document.querySelector("#test-div").innerHTML, "Hello World");
 
@@ -54,7 +54,7 @@
 
 		var done = assert.async();
 
-		require(["Binding"], function(Binding) {
+		require(["Binding", "DOMElement"], function(Binding, DOMElement) {
 
 			var input =
 				new Binding({
@@ -65,7 +65,7 @@
 					}
 				});
 
-			input.applyBinding(document.body, "input");
+			input.applyBinding(new DOMElement(document.body), "input");
 
 			assert.strictEqual(document.querySelector("#test-input").value, "Hello World");
 
@@ -79,7 +79,14 @@
 
 		var done = assert.async();
 
-		require(["Datum", "Binding"], function(Datum, Binding) {
+		require([
+			"Datum",
+			"Binding",
+			"DOMElement"
+		], function(
+			Datum,
+			Binding,
+			DOMElement) {
 
 			var datum = new Datum();
 
@@ -89,7 +96,7 @@
 					value: function(value) { datum(value); }
 				});
 
-			valueInput.applyBinding(document.body, "valueInput");
+			valueInput.applyBinding(new DOMElement(document.body), "valueInput");
 
 			var element = document.querySelector("#value-input");
 
@@ -107,7 +114,7 @@
 
 		var done = assert.async();
 
-		require(["Binding"], function(Binding) {
+		require(["Binding", "DOMElement"], function(Binding, DOMElement) {
 
 			var callCount = 0;
 
@@ -119,7 +126,7 @@
 				}
 			});
 
-			binding.applyBinding(document.body, "sumpt", {});
+			binding.applyBinding(new DOMElement(document.body), "sumpt", {});
 
 			binding.test.thingy(document.createElement("DIV"));
 

@@ -29,7 +29,16 @@
 
 		var done = assert.async();
 
-		require(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
+		require([
+			"Datum",
+			"TextBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			Datum,
+			TextBinding,
+			Binder,
+			DOMElement) {
 
 			var datum = new Datum();
 
@@ -39,7 +48,7 @@
 					return datum();
 				}));
 
-			binding.applyBinding(document.body, "function");
+			binding.applyBinding(new DOMElement(document.body), "function");
 			datum("Hello World");
 
 			assert.strictEqual(
@@ -57,7 +66,16 @@
 
 		var done = assert.async();
 
-		require(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
+		require([
+			"Datum",
+			"TextBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			Datum,
+			TextBinding,
+			Binder,
+			DOMElement) {
 
 			var datum = new Datum();
 
@@ -67,7 +85,7 @@
 					return datum();
 				}));
 
-			binding.applyBinding(document.body, "two");
+			binding.applyBinding(new DOMElement(document.body), "two");
 			datum("Hello World");
 
 			assert.strictEqual(document.querySelector("#two").innerHTML, "Hello World");
@@ -84,7 +102,16 @@
 
 		var done = assert.async();
 
-		require(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
+		require([
+			"Datum",
+			"TextBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			Datum,
+			TextBinding,
+			Binder,
+			DOMElement) {
 
 			var count = 0;
 			var datum = new Datum();
@@ -95,7 +122,7 @@
 				return datum();
 			}));
 
-			binder.applyBinding(document.body, "single");
+			binder.applyBinding(new DOMElement(document.body), "single");
 
 			assert.strictEqual(count, 2);
 
@@ -110,7 +137,16 @@
 
 		var done = assert.async();
 
-		require(["Datum", "TextBinding", "Binder"], function(Datum, TextBinding, Binder) {
+		require([
+			"Datum",
+			"TextBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			Datum,
+			TextBinding,
+			Binder,
+			DOMElement) {
 
 			var count = 0;
 			var datum = new Datum();
@@ -122,7 +158,7 @@
 					return datum();
 				}));
 
-			binding.applyBinding(document.body, "twice");
+			binding.applyBinding(new DOMElement(document.body), "twice");
 			count = 0;
 			datum("Hello World");
 
@@ -138,7 +174,14 @@
 
 		var done = assert.async();
 
-		require(["TextBinding", "Binder"], function(TextBinding, Binder) {
+		require([
+			"TextBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			TextBinding,
+			Binder,
+			DOMElement) {
 
 			var binding =
 				new Binder(new TextBinding(function(element) {
@@ -146,7 +189,7 @@
 					return element.id;
 				}));
 
-			binding.applyBinding(document.body, "element");
+			binding.applyBinding(new DOMElement(document.body), "element");
 			assert.strictEqual(document.querySelector("#element").innerHTML, "element");
 
 			done();
@@ -158,7 +201,14 @@
 
 		var done = assert.async();
 
-		require(["TextBinding", "Binder"], function(TextBinding, Binder) {
+		require([
+			"TextBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			TextBinding,
+			Binder,
+			DOMElement) {
 
 			var passedModel;
 			var passedElement;
@@ -173,7 +223,7 @@
 			var model = {};
 			var element = document.createElement("DIV");
 
-			binding.applyBinding(document.body, "thingy", model);
+			binding.applyBinding(new DOMElement(document.body), "thingy", model);
 			binding.test.call(element);
 
 			assert.strictEqual(passedModel, model);
@@ -189,7 +239,14 @@
 
 		var done = assert.async();
 
-		require(["TextBinding", "Binder"], function(TextBinding, Binder) {
+		require([
+			"TextBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			TextBinding,
+			Binder,
+			DOMElement) {
 
 			var binding =
 				new Binder(new TextBinding(function() {
@@ -197,7 +254,7 @@
 					return "Hello world.";
 				}));
 
-			binding.applyBinding(document.body, "unbind");
+			binding.applyBinding(new DOMElement(document.body), "unbind");
 			binding.removeBinding();
 
 			assert.strictEqual(document.querySelector("#unbind").innerHTML, "");
@@ -217,7 +274,14 @@
 
 		var done = assert.async();
 
-		require(["TextBinding", "Binder"], function(TextBinding, Binder) {
+		require([
+			"TextBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			TextBinding,
+			Binder,
+			DOMElement) {
 
 			var binding =
 				new Binder(new TextBinding(function() {
@@ -225,22 +289,22 @@
 					return "Hello world.";
 				}));
 
-			var firstScope = document.querySelector("#first-scope");
+			var firstScope = new DOMElement(document.querySelector("#first-scope"));
 			binding.applyBinding(firstScope, "scope");
 
 			assert.strictEqual(
 				document.querySelector("#first-scope > div").innerHTML,
 				"Hello world.");
 
-			document.body.removeChild(firstScope);
-			var secondScope = document.querySelector("#second-scope");
+			document.body.removeChild(firstScope.get());
+			var secondScope = new DOMElement(document.querySelector("#second-scope"));
 			binding.applyBinding(secondScope, "scope");
 
 			assert.strictEqual(
-				firstScope.querySelector("div").innerHTML,
+				firstScope.get().querySelector("div").innerHTML,
 				"");
 			assert.strictEqual(
-				secondScope.querySelector("div").innerHTML,
+				secondScope.get().querySelector("div").innerHTML,
 				"Hello world.");
 
 			done();
@@ -253,7 +317,16 @@
 
 		var done = assert.async();
 
-		require(["Datum", "InitBinding", "Binder"], function(Datum, InitBinding, Binder) {
+		require([
+			"Datum",
+			"InitBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			Datum,
+			InitBinding,
+			Binder,
+			DOMElement) {
 
 			var datum = new Datum();
 			datum("Hello World");
@@ -263,7 +336,8 @@
 
 					element.textContent = datum();
 				}));
-			binding.applyBinding(document.body, "init");
+
+			binding.applyBinding(new DOMElement(document.body), "init");
 
 			assert.strictEqual(
 				document.querySelector("#init").innerHTML,
@@ -280,7 +354,16 @@
 
 		var done = assert.async();
 
-		require(["Datum", "InitBinding", "Binder"], function(Datum, InitBinding, Binder) {
+		require([
+			"Datum",
+			"InitBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			Datum,
+			InitBinding,
+			Binder,
+			DOMElement) {
 
 			var count = 0;
 			var datum = new Datum();
@@ -291,7 +374,8 @@
 					count += 1;
 					return datum();
 				}));
-			binding.applyBinding(document.body, "initOnce");
+
+			binding.applyBinding(new DOMElement(document.body), "initOnce");
 
 			assert.strictEqual(count, 2);
 
@@ -306,7 +390,16 @@
 
 		var done = assert.async();
 
-		require(["Datum", "InitBinding", "Binder"], function(Datum, InitBinding, Binder) {
+		require([
+			"Datum",
+			"InitBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			Datum,
+			InitBinding,
+			Binder,
+			DOMElement) {
 
 			var count = 0;
 			var datum = new Datum();
@@ -317,7 +410,8 @@
 					count += 1;
 					return datum();
 				}));
-			binding.applyBinding(document.body, "noUpdate");
+
+			binding.applyBinding(new DOMElement(document.body), "noUpdate");
 
 			count = 0;
 			datum("Hello World");
@@ -334,7 +428,16 @@
 
 		var done = assert.async();
 
-		require(["Datum", "ValueBinding", "Binder"], function(Datum, ValueBinding, Binder) {
+		require([
+			"Datum",
+			"ValueBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			Datum,
+			ValueBinding,
+			Binder,
+			DOMElement) {
 
 			var datum = new Datum();
 
@@ -348,7 +451,8 @@
 
 					return datum();
 				}));
-			binding.applyBinding(document.body, "valueInput");
+
+			binding.applyBinding(new DOMElement(document.body), "valueInput");
 
 			var element = document.querySelector("#value-input");
 			element.value = "Hello World";
@@ -366,7 +470,16 @@
 
 		var done = assert.async();
 
-		require(["Datum", "ValueBinding", "Binder"], function(Datum, ValueBinding, Binder) {
+		require([
+			"Datum",
+			"ValueBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			Datum,
+			ValueBinding,
+			Binder,
+			DOMElement) {
 
 			var datum = new Datum();
 
@@ -375,7 +488,8 @@
 
 					return datum();
 				}));
-			binding.applyBinding(document.body, "inputValue");
+
+			binding.applyBinding(new DOMElement(document.body), "inputValue");
 
 			datum("Hello World");
 
@@ -392,7 +506,16 @@
 
 		var done = assert.async();
 
-		require(["Datum", "ValueBinding", "Binder"], function(Datum, ValueBinding, Binder) {
+		require([
+			"Datum",
+			"ValueBinding",
+			"Binder",
+			"DOMElement"
+		], function(
+			Datum,
+			ValueBinding,
+			Binder,
+			DOMElement) {
 
 			var datum = new Datum();
 
@@ -406,7 +529,8 @@
 
 					return datum();
 				}));
-			binding.applyBinding(document.body, "sync");
+
+			binding.applyBinding(new DOMElement(document.body), "sync");
 
 			var sender = document.querySelector("#send");
 			sender.value = "Hello World";
@@ -424,7 +548,7 @@
 
 		var done = assert.async();
 
-		require(["Binder"], function(Binder) {
+		require(["Binder", "DOMElement"], function(Binder, DOMElement) {
 
 			var model = { "name": "thingy" };
 			var initialisedModel;
@@ -454,7 +578,7 @@
 					}
 				});
 
-			binding.applyBinding(document.body, "name", model);
+			binding.applyBinding(new DOMElement(document.body), "name", model);
 			binding.removeBinding();
 
 			assert.strictEqual(initialisedModel, model);

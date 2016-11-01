@@ -60,11 +60,16 @@
 
 		var done = assert.async();
 
-		require(["TransientProperty"], function(TransientProperty) {
+		require([
+			"TransientProperty",
+			"DOMElement"
+		], function(
+			TransientProperty,
+			DOMElement) {
 
 			var propertyType = new FakePropertyType();
 			var property = new TransientProperty("thingy", propertyType);
-			property.applyBinding(document.body, "key", { key: "thingy" });
+			property.applyBinding(new DOMElement(document.body), "key", { key: "thingy" });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
 			assert.ok(!propertyType.arrayBindingWasApplied);
@@ -78,11 +83,16 @@
 
 		var done = assert.async();
 
-		require(["TransientProperty"], function(TransientProperty) {
+		require([
+			"TransientProperty",
+			"DOMElement"
+		], function(
+			TransientProperty,
+			DOMElement) {
 
 			var propertyType = new FakePropertyType();
 			var property = new TransientProperty({}, propertyType);
-			property.applyBinding(document.body, "key", { key: {} });
+			property.applyBinding(new DOMElement(document.body), "key", { key: {} });
 
 			assert.ok(propertyType.viewModelBindingWasApplied);
 			assert.ok(!propertyType.arrayBindingWasApplied);
@@ -96,12 +106,19 @@
 
 		var done = assert.async();
 
-		require(["Text", "TransientProperty"], function(Text, TransientProperty) {
+		require([
+			"Text",
+			"TransientProperty",
+			"DOMElement"
+		], function(
+			Text,
+			TransientProperty,
+			DOMElement) {
 
 			var propertyType = new FakePropertyType();
 			var text = new Text(function() { return ""; });
 			var property = new TransientProperty(text, propertyType);
-			property.applyBinding(document.body, "key", { key: text });
+			property.applyBinding(new DOMElement(document.body), "key", { key: text });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
 			assert.ok(!propertyType.arrayBindingWasApplied);
@@ -115,11 +132,16 @@
 
 		var done = assert.async();
 
-		require(["TransientProperty"], function(TransientProperty) {
+		require([
+			"TransientProperty",
+			"DOMElement"
+		], function(
+			TransientProperty,
+			DOMElement) {
 
 			var propertyType = new FakePropertyType();
 			var property = new TransientProperty(function() {}, propertyType);
-			property.applyBinding(document.body, "key", { key: function() {} });
+			property.applyBinding(new DOMElement(document.body), "key", { key: function() {} });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
 			assert.ok(!propertyType.arrayBindingWasApplied);
@@ -133,11 +155,16 @@
 
 		var done = assert.async();
 
-		require(["TransientProperty"], function(TransientProperty) {
+		require([
+			"TransientProperty",
+			"DOMElement"
+		], function(
+			TransientProperty,
+			DOMElement) {
 
 			var propertyType = new FakePropertyType();
 			var property = new TransientProperty(null, propertyType);
-			property.applyBinding(document.body, "key", { key: null });
+			property.applyBinding(new DOMElement(document.body), "key", { key: null });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
 			assert.ok(!propertyType.arrayBindingWasApplied);
@@ -151,11 +178,16 @@
 
 		var done = assert.async();
 
-		require(["TransientProperty"], function(TransientProperty) {
+		require([
+			"TransientProperty",
+			"DOMElement"
+		], function(
+			TransientProperty,
+			DOMElement) {
 
 			var propertyType = new FakePropertyType();
 			var property = new TransientProperty([], propertyType);
-			property.applyBinding(document.body, "key", { key: [] });
+			property.applyBinding(new DOMElement(document.body), "key", { key: [] });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
 			assert.ok(propertyType.arrayBindingWasApplied);

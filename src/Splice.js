@@ -1,4 +1,4 @@
-define(["TransientProperty"], function(TransientProperty) {
+define(["TransientProperty", "DOMElement"], function(TransientProperty, DOMElement) {
 
 	function Splice(model, elementChildren, properties, propertyType) {
 
@@ -60,7 +60,7 @@ define(["TransientProperty"], function(TransientProperty) {
 					var child = elementChildren[j].child;
 
 					element.insertBefore(child.clone(), element.children[start]);
-					property.applyBinding(element, start, object);
+					property.applyBinding(new DOMElement(element), start, object);
 				}
 			}
 		}

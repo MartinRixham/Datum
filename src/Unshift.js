@@ -1,4 +1,4 @@
-define(["TransientProperty"], function(TransientProperty) {
+define(["TransientProperty", "DOMElement"], function(TransientProperty, DOMElement) {
 
 	function Unshift(model, elementChildren, properties, propertyType) {
 
@@ -19,7 +19,7 @@ define(["TransientProperty"], function(TransientProperty) {
 					var child = elementChildren[j].child;
 
 					element.insertBefore(child.clone(), element.firstChild);
-					property.applyBinding(element, 0, object);
+					property.applyBinding(new DOMElement(element), 0, object);
 				}
 			}
 

@@ -29,23 +29,23 @@ define([
 
 				var element = elements[i];
 
-				if (!element.get() || element.isInScope(scope)) {
+				if (!element.get() || element.isInScope(scope && scope.get())) {
 
 					createRebinder(element.get(), scope, name);
 					callBindingCallback(element.get());
 					unbindOldProperties();
 					createPermanentProperties();
 					createTransientProperties();
-					bindProperties(element.get());
+					bindProperties(element);
 				}
 			}
 		}
 
 		function getElements(scope, name) {
 
-			if (scope) {
+			if (scope && scope.get()) {
 
-				var elements = new DOMElement(scope).getMatchingElements(name);
+				var elements = scope.getMatchingElements(name);
 
 				return elements.length ? elements : [new DOMElement(null)];
 			}
