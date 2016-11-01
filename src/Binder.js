@@ -96,7 +96,7 @@ define([
 				}
 			}
 
-			new Registry().assignUpdater(new Dependant(callback, binding, element.get()));
+			new Registry().assignUpdater(new Dependant(callback, binding, element));
 		}
 
 		this.removeBinding = function() {

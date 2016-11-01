@@ -9,7 +9,7 @@ define([], function() {
 
 		this.removedFromDocument = function() {
 
-			return !document.contains(element);
+			return element.removedFromDocument();
 		};
 
 		this.equals = function(other) {
@@ -19,7 +19,7 @@ define([], function() {
 
 		this.hasEqual = function(otherBinding, otherElement) {
 
-			return binding == otherBinding && element == otherElement;
+			return binding == otherBinding && element.equals(otherElement);
 		};
 	}
 

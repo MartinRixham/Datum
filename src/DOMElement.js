@@ -45,6 +45,16 @@ define([], function() {
 			}
 		};
 
+		this.equals = function(other) {
+
+			return other.hasEqual(element);
+		};
+
+		this.hasEqual = function(otherElement) {
+
+			return element == otherElement;
+		};
+
 		this.get = function() {
 
 			return element;
