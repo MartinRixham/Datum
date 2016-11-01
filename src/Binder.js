@@ -1,9 +1,11 @@
 define([
+	"ElementSet",
 	"Rebinder",
 	"Dependant",
 	"Registry",
 	"DOMElement"
 ], function(
+	ElementSet,
 	Rebinder,
 	Dependant,
 	Registry,
@@ -13,7 +15,7 @@ define([
 
 		var parentModel;
 
-		var boundElements = [];
+		var boundElements = new ElementSet();
 
 		var running = false;
 
@@ -34,30 +36,21 @@ define([
 			}
 		};
 
+		function removeOldBindings() {
+
+			var removed = boundElements.removeOld();
+
+			for (var i = 0; i < removed.length; i++) {
+
+				binding.resetElement(removed[i].get());
+			}
+		}
+
 		function addElements(elements) {
 
 			for (var i = 0; i < elements.length; i++) {
 
-				var element = elements[i];
-
-				if (boundElements.indexOf(element) < 0) {
-
-					boundElements.push(element);
-				}
-			}
-		}
-
-		function removeOldBindings() {
-
-			for (var i = 0; i < boundElements.length; i++) {
-
-				var boundElement = boundElements[i];
-
-				if (boundElement.removedFromDocument()) {
-
-					binding.resetElement(boundElement.get());
-					boundElements.splice(i, 1);
-				}
+				boundElements.add(elements[i]);
 			}
 		}
 
@@ -69,7 +62,7 @@ define([
 
 				if (element.isInScope(scope)) {
 
-					if (boundElements.indexOf(element) + 1) {
+					if (boundElements.contains(element)) {
 
 						binding.updateElement(model, element.get(), model && model[name]);
 					}
@@ -101,12 +94,13 @@ define([
 
 		this.removeBinding = function() {
 
-			for (var i = 0; i < boundElements.length; i++) {
+			var elements = boundElements.get();
 
-				binding.resetElement(boundElements[i].get());
+			for (var i = 0; i < elements.length; i++) {
+
+				binding.resetElement(elements[i].get());
 			}
 
-			boundElements = [];
 			parentModel = null;
 		};
 

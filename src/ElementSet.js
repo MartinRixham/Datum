@@ -24,7 +24,7 @@ define([], function() {
 				}
 			}
 
-			return !isNew;
+			return isNew;
 		}
 
 		this.removeOld = function() {
@@ -43,6 +43,11 @@ define([], function() {
 			}
 
 			return removed;
+		};
+
+		this.contains = function(element) {
+
+			return elements.indexOf(element) + 1;
 		};
 
 		this.get = function() {
