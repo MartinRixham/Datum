@@ -1,4 +1,4 @@
-define([], function() {
+define(["DOMElement"], function(DOMElement) {
 
 	function RootDOMElement() {
 
@@ -19,7 +19,7 @@ define([], function() {
 
 		this.getMatchingElements = function() {
 
-			return [];
+			return [new DOMElement(document.body)];
 		};
 
 		this.createRebinder = function() {};

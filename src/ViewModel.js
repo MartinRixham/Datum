@@ -59,16 +59,9 @@ define([
 
 		function getElements(scope, name) {
 
-			if (scope && scope.get()) {
+			var elements = scope.getMatchingElements(name);
 
-				var elements = scope.getMatchingElements(name);
-
-				return elements.length ? elements : [new NullDOMElement()];
-			}
-			else {
-
-				return [new DOMElement(document.body)];
-			}
+			return elements.length ? elements : [new NullDOMElement()];
 		}
 
 		function createRebinder(element, scope, name) {
