@@ -54,11 +54,18 @@
 
 		var done = assert.async();
 
-		require(["PermanentProperty"], function(PermanentProperty) {
+		require([
+			"PermanentProperty",
+			"DOMElement"
+		], function(
+			PermanentProperty,
+			DOMElement) {
 
 			var propertyType = new FakePropertyType();
 			var property = new PermanentProperty("thingy", propertyType);
-			property.applyBinding(document.body, "key", { key: "thingy" });
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: "thingy" });
 
 			assert.ok(propertyType.injectPropertyWasCalled);
 			assert.ok(!propertyType.objectBindingWasApplied);
@@ -72,11 +79,18 @@
 
 		var done = assert.async();
 
-		require(["PermanentProperty"], function(PermanentProperty) {
+		require([
+			"PermanentProperty",
+			"DOMElement"
+		], function(
+			PermanentProperty,
+			DOMElement) {
 
 			var propertyType = new FakePropertyType();
 			var property = new PermanentProperty({}, propertyType);
-			property.applyBinding(document.body, "key", { key: {} });
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: {} });
 
 			assert.ok(propertyType.injectPropertyWasCalled);
 			assert.ok(propertyType.objectBindingWasApplied);
@@ -90,12 +104,21 @@
 
 		var done = assert.async();
 
-		require(["Text", "PermanentProperty"], function(Text, PermanentProperty) {
+		require([
+			"Text",
+			"PermanentProperty",
+			"DOMElement"
+		], function(
+			Text,
+			PermanentProperty,
+			DOMElement) {
 
 			var propertyType = new FakePropertyType();
 			var text = new Text(function() { return ""; });
 			var property = new PermanentProperty(text, propertyType);
-			property.applyBinding(document.body, "key", { key: text });
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: text });
 
 			assert.ok(!propertyType.injectPropertyWasCalled);
 			assert.ok(!propertyType.objectBindingWasApplied);
@@ -109,11 +132,18 @@
 
 		var done = assert.async();
 
-		require(["PermanentProperty"], function(PermanentProperty) {
+		require([
+			"PermanentProperty",
+			"DOMElement"
+		], function(
+			PermanentProperty,
+			DOMElement) {
 
 			var propertyType = new FakePropertyType();
 			var property = new PermanentProperty(function() {}, propertyType);
-			property.applyBinding(document.body, "key", { key: function() {} });
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: function() {} });
 
 			assert.ok(!propertyType.injectPropertyWasCalled);
 			assert.ok(!propertyType.objectBindingWasApplied);
@@ -127,11 +157,18 @@
 
 		var done = assert.async();
 
-		require(["PermanentProperty"], function(PermanentProperty) {
+		require([
+			"PermanentProperty",
+			"DOMElement"
+		], function(
+			PermanentProperty,
+			DOMElement) {
 
 			var propertyType = new FakePropertyType();
 			var property = new PermanentProperty(null, propertyType);
-			property.applyBinding(document.body, "key", { key: null });
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: null });
 
 			assert.ok(propertyType.injectPropertyWasCalled);
 			assert.ok(propertyType.objectBindingWasApplied);
@@ -145,11 +182,18 @@
 
 		var done = assert.async();
 
-		require(["PermanentProperty"], function(PermanentProperty) {
+		require([
+			"PermanentProperty",
+			"DOMElement"
+		], function(
+			PermanentProperty,
+			DOMElement) {
 
 			var propertyType = new FakePropertyType();
 			var property = new PermanentProperty([], propertyType);
-			property.applyBinding(document.body, "key", { key: [] });
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: [] });
 
 			assert.ok(propertyType.injectPropertyWasCalled);
 			assert.ok(propertyType.objectBindingWasApplied);
