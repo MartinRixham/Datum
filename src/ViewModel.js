@@ -41,7 +41,7 @@ define([
 
 		function bindElement(element, scope, name) {
 
-			if (element.isInScope(scope && scope.get())) {
+			if (scope.hasInScope(element)) {
 
 				if (!boundElements.contains(element)) {
 

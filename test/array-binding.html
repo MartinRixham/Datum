@@ -184,7 +184,14 @@
 
 		var done = assert.async();
 
-		require(["Text", "ViewModel"], function(Text, ViewModel) {
+		require([
+			"Text",
+			"ViewModel",
+			"RootDOMElement"
+		], function(
+			Text,
+			ViewModel,
+			RootDOMElement) {
 
 			function TwoArray() {
 
@@ -204,7 +211,7 @@
 			var two = new TwoArray();
 
 			var viewModel = new ViewModel(two);
-			viewModel.applyBinding();
+			viewModel.applyBinding(new RootDOMElement());
 
 			var firstArray = document.querySelector("#first");
 			var secondArray = document.querySelector("#second");
@@ -229,7 +236,14 @@
 
 		var done = assert.async();
 
-		require(["ViewModel", "Update"], function(ViewModel, Update) {
+		require([
+			"ViewModel",
+			"Update",
+			"RootDOMElement"
+		], function(
+			ViewModel,
+			Update,
+			RootDOMElement) {
 
 			var subscribableLength = 0;
 			var model = {
@@ -242,7 +256,7 @@
 			};
 
 			var viewModel = new ViewModel(model);
-			viewModel.applyBinding();
+			viewModel.applyBinding(new RootDOMElement());
 
 			assert.strictEqual(subscribableLength, 0);
 

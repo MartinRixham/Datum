@@ -1,11 +1,13 @@
 define([
 	"ViewModel",
 	"DOMWatcher",
-	"Rebinder"
+	"Rebinder",
+	"RootDOMElement"
 ], function BindingRoot(
 	ViewModel,
 	DOMWatcher,
-	Rebinder) {
+	Rebinder,
+	RootDOMElement) {
 
 	var flag = false;
 
@@ -15,11 +17,11 @@ define([
 		assertUniqueness();
 
 		var rootViewModel = new ViewModel(model);
-		rootViewModel.applyBinding();
+		rootViewModel.applyBinding(new RootDOMElement());
 
 		new Rebinder().registerRebinder(function() {
 
-			rootViewModel.applyBinding();
+			rootViewModel.applyBinding(new RootDOMElement());
 		});
 
 		var domWatcher = new DOMWatcher(document.body);

@@ -2,6 +2,11 @@ define([], function() {
 
 	function DOMElement(element) {
 
+		this.hasInScope = function(other) {
+
+			return other.isInScope(element);
+		};
+
 		this.isInScope = function(scope) {
 
 			return isInScope(element, scope);

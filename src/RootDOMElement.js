@@ -1,15 +1,15 @@
 define([], function() {
 
-	function NullDOMElement() {
+	function RootDOMElement() {
 
-		this.hasInScope = function() {
+		this.hasInScope = function(other) {
 
-			return true;
+			return other.isInScope(document.body);
 		};
 
 		this.isInScope = function() {
 
-			return true;
+			return false;
 		};
 
 		this.removedFromDocument = function() {
@@ -19,7 +19,7 @@ define([], function() {
 
 		this.getMatchingElements = function() {
 
-			return [new NullDOMElement()];
+			return [];
 		};
 
 		this.createRebinder = function() {};
@@ -28,12 +28,12 @@ define([], function() {
 
 		this.equals = function(other) {
 
-			return other instanceof NullDOMElement;
+			return other instanceof RootDOMElement;
 		};
 
 		this.hasEqual = function(other) {
 
-			return other instanceof NullDOMElement;
+			return other instanceof RootDOMElement;
 		};
 
 		this.get = function() {
@@ -42,5 +42,5 @@ define([], function() {
 		};
 	}
 
-	return NullDOMElement;
+	return RootDOMElement;
 });

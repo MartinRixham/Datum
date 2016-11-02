@@ -58,7 +58,7 @@ define([
 
 				var element = elements[i];
 
-				if (element.isInScope(scope.get())) {
+				if (scope.hasInScope(element)) {
 
 					if (boundElements.contains(element)) {
 
