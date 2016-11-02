@@ -4,14 +4,16 @@ define([
 	"TransientProperty",
 	"PermanentProperty",
 	"PropertyType",
-	"DOMElement"
+	"DOMElement",
+	"NullDOMElement"
 ], function(
 	ElementSet,
 	Serialisable,
 	TransientProperty,
 	PermanentProperty,
 	PropertyType,
-	DOMElement) {
+	DOMElement,
+	NullDOMElement) {
 
 	function ViewModel(model) {
 
@@ -39,7 +41,7 @@ define([
 
 		function bindElement(element, scope, name) {
 
-			if (!element.get() || element.isInScope(scope && scope.get())) {
+			if (element.isInScope(scope && scope.get())) {
 
 				if (!boundElements.contains(element)) {
 
@@ -61,7 +63,7 @@ define([
 
 				var elements = scope.getMatchingElements(name);
 
-				return elements.length ? elements : [new DOMElement(null)];
+				return elements.length ? elements : [new NullDOMElement()];
 			}
 			else {
 
