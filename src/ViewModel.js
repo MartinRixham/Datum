@@ -43,8 +43,8 @@ define([
 
 				if (!boundElements.contains(element)) {
 
-					createRebinder(element.get(), scope, name);
-					callBindingCallback(element.get());
+					createRebinder(element, scope, name);
+					element.callBindingCallback(model);
 				}
 
 				unbindOldProperties();
@@ -71,21 +71,10 @@ define([
 
 		function createRebinder(element, scope, name) {
 
-			if (element) {
+			element.createRebinder(function() {
 
-				element._rebind = function() {
-
-					applyBinding(scope, name);
-				};
-			}
-		}
-
-		function callBindingCallback(element) {
-
-			if (model.onBind) {
-
-				model.onBind(element);
-			}
+				applyBinding(scope, name);
+			});
 		}
 
 		function unbindOldProperties() {

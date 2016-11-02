@@ -45,6 +45,22 @@ define([], function() {
 			}
 		};
 
+		this.createRebinder = function(rebinder) {
+
+			if (element) {
+
+				element._rebind = rebinder;
+			}
+		};
+
+		this.callBindingCallback = function(model) {
+
+			if (model.onBind) {
+
+				model.onBind(element);
+			}
+		};
+
 		this.equals = function(other) {
 
 			return other.hasEqual(element);
