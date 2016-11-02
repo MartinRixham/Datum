@@ -39,6 +39,13 @@ define([
 			}
 		}
 
+		function getElements(scope, name) {
+
+			var elements = scope.getMatchingElements(name);
+
+			return elements.length ? elements : [new NullDOMElement()];
+		}
+
 		function bindElement(element, scope, name) {
 
 			if (scope.hasInScope(element)) {
@@ -55,13 +62,6 @@ define([
 				bindProperties(element);
 				boundElements.add(element);
 			}
-		}
-
-		function getElements(scope, name) {
-
-			var elements = scope.getMatchingElements(name);
-
-			return elements.length ? elements : [new NullDOMElement()];
 		}
 
 		function createRebinder(element, scope, name) {

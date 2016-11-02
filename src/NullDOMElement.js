@@ -31,11 +31,6 @@ define([], function() {
 			return other instanceof NullDOMElement;
 		};
 
-		this.hasEqual = function(other) {
-
-			return other instanceof NullDOMElement;
-		};
-
 		this.get = function() {
 
 			return null;
