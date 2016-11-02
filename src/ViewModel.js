@@ -1,10 +1,12 @@
 define([
+	"ElementSet",
 	"Serialisable",
 	"TransientProperty",
 	"PermanentProperty",
 	"PropertyType",
 	"DOMElement"
 ], function(
+	ElementSet,
 	Serialisable,
 	TransientProperty,
 	PermanentProperty,
@@ -12,6 +14,8 @@ define([
 	DOMElement) {
 
 	function ViewModel(model) {
+
+		var boundElements = new ElementSet();
 
 		var transientProperties = {};
 
@@ -23,21 +27,31 @@ define([
 
 		function applyBinding(scope, name) {
 
+			boundElements.removeOld();
+
 			var elements = getElements(scope, name);
 
 			for (var i = 0; i < elements.length; i++) {
 
-				var element = elements[i];
+				bindElement(elements[i], scope, name);
+			}
+		}
 
-				if (!element.get() || element.isInScope(scope && scope.get())) {
+		function bindElement(element, scope, name) {
+
+			if (!element.get() || element.isInScope(scope && scope.get())) {
+
+				if (!boundElements.contains(element)) {
 
 					createRebinder(element.get(), scope, name);
 					callBindingCallback(element.get());
-					unbindOldProperties();
-					createPermanentProperties();
-					createTransientProperties();
-					bindProperties(element);
 				}
+
+				unbindOldProperties();
+				createPermanentProperties();
+				createTransientProperties();
+				bindProperties(element);
+				boundElements.add(element);
 			}
 		}
 
@@ -119,9 +133,7 @@ define([
 
 			var property = transientProperties[key];
 
-			return !property ||
-				property.isOlderThan &&
-				property.isOlderThan(model[key]);
+			return !property || property.isOlderThan(model[key]);
 		}
 
 		function createPropertyType() {

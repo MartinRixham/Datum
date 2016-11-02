@@ -47,7 +47,7 @@ define([], function() {
 
 		this.contains = function(element) {
 
-			return elements.indexOf(element) + 1;
+			return !isNew(element);
 		};
 
 		this.get = function() {
