@@ -14,7 +14,7 @@ define([], function() {
 
 		this.removedFromDocument = function() {
 
-			return false;
+			return true;
 		};
 
 		this.getMatchingElements = function() {
@@ -29,6 +29,11 @@ define([], function() {
 		this.equals = function(other) {
 
 			return other instanceof NullDOMElement;
+		};
+
+		this.hasEqual = function() {
+
+			return false;
 		};
 
 		this.get = function() {

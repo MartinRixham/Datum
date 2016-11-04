@@ -306,10 +306,41 @@
 			var element = document.querySelector("#reset");
 
 			binding.setUpElement(model, element, model.reset);
+			binding.updateElement(model, element, model.bind);
 			binding.resetElement(element);
 
 			assert.strictEqual(element.children.length, 1);
 			assert.strictEqual(element.children[0].id, "reset-child");
+
+			done();
+		});
+	});
+    </script>
+    <div id="square" data-bind="square">
+      <div>
+        <div class="square"></div>
+	  </div>
+    </div>
+    <script>
+	QUnit.test("Bind square array", function(assert) {
+
+		var done = assert.async();
+
+		require(["ViewModel", "RootDOMElement"], function(ViewModel, RootDOMElement) {
+
+			function SquareArray() {
+
+				this.square = [[{}, {}], [{}, {}]];
+			}
+
+			var square = new SquareArray();
+
+			var viewModel = new ViewModel(square);
+			viewModel.applyBinding(new RootDOMElement());
+
+			var element = document.querySelector("#square");
+
+			assert.strictEqual(element.querySelectorAll(".square").length, 4);
 
 			done();
 		});
