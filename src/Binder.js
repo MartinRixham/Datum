@@ -25,13 +25,10 @@ define([
 
 			removeOldBindings();
 
-			if (scope && scope.get()) {
+			var elements = scope.getMatchingElements(name);
 
-				var elements = scope.getMatchingElements(name);
-
-				bindElements(elements, scope, model, name);
-				addElements(elements);
-			}
+			bindElements(elements, scope, model, name);
+			addElements(elements);
 		};
 
 		function removeOldBindings() {

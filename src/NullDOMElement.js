@@ -4,7 +4,7 @@ define([], function() {
 
 		this.hasInScope = function() {
 
-			return true;
+			return false;
 		};
 
 		this.isInScope = function() {
