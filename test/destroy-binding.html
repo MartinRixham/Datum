@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Destroy Binding Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+	    #qunit ~ * {
+		    display: none;
+	    }
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
+		}
+    </script>
+    <div id="init"></div>
+    <script>
+	QUnit.test("Model and element not passed on init", function(assert) {
+
+		var done = assert.async();
+
+		require(["DestroyBinding"], function(DestroyBinding) {
+
+			var receivedModel;
+			var receivedElement;
+
+			var destroy =
+				new DestroyBinding(function(element) {
+
+					receivedModel = this;
+					receivedElement = element;
+				});
+
+			var element = document.querySelector("#init");
+			var model = {};
+			destroy.setUpElement(model, element);
+
+			assert.ok(!receivedElement);
+			assert.ok(!receivedModel);
+
+			done();
+		});
+	});
+    </script>
+	<div id="update"></div>
+	<script>
+		QUnit.test("Model and element not passed on update", function(assert) {
+
+			var done = assert.async();
+
+			require(["DestroyBinding"], function(DestroyBinding) {
+
+				var receivedModel;
+				var receivedElement;
+
+				var destroy =
+					new DestroyBinding(function(element) {
+
+						receivedModel = this;
+						receivedElement = element;
+					});
+
+				var element = document.querySelector("#update");
+				var model = {};
+				destroy.updateElement(model, element);
+
+				assert.ok(!receivedElement);
+				assert.ok(!receivedModel);
+
+				done();
+			});
+		});
+	</script>
+	<div id="callback"></div>
+	<script>
+		QUnit.test("Model and element passed on reset", function(assert) {
+
+			var done = assert.async();
+
+			require(["DestroyBinding"], function(DestroyBinding) {
+
+				var receivedModel;
+				var receivedElement;
+
+				var destroy =
+					new DestroyBinding(function(element) {
+
+						receivedModel = this;
+						receivedElement = element;
+					});
+
+				var element = document.querySelector("#callback");
+				var model = {};
+
+				destroy.setUpElement(model);
+				destroy.resetElement(element);
+
+				assert.strictEqual(receivedElement, element);
+				assert.strictEqual(receivedModel, model);
+
+				done();
+			});
+		});
+	</script>
+  </body>
+</html>

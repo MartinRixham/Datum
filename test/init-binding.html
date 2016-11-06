@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Update Binding Tests</title>
+    <title>Init Binding Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../node_modules/requirejs/require.js"></script>
@@ -25,17 +25,17 @@
     </script>
     <div id="init"></div>
     <script>
-	QUnit.test("Model and element not passed on init", function(assert) {
+	QUnit.test("Model and element passed on init", function(assert) {
 
 		var done = assert.async();
 
-		require(["UpdateBinding"], function(UpdateBinding) {
+		require(["InitBinding"], function(InitBinding) {
 
 			var receivedModel;
 			var receivedElement;
 
-			var update =
-				new UpdateBinding(function(element) {
+			var init =
+				new InitBinding(function(element) {
 
 					receivedModel = this;
 					receivedElement = element;
@@ -43,39 +43,39 @@
 
 			var element = document.querySelector("#init");
 			var model = {};
-			update.setUpElement(model, element);
+			init.setUpElement(model, element);
 
-			assert.ok(!receivedElement);
-			assert.ok(!receivedModel);
+			assert.strictEqual(receivedElement, element);
+			assert.strictEqual(receivedModel, model);
 
 			done();
 		});
 	});
     </script>
-	<div id="update"></div>
-	<script>
-	QUnit.test("Model and element passed on update", function(assert) {
+    <div id="update"></div>
+    <script>
+	QUnit.test("Model and element not passed on update", function(assert) {
 
 		var done = assert.async();
 
-		require(["UpdateBinding"], function(UpdateBinding) {
+		require(["InitBinding"], function(InitBinding) {
 
 			var receivedModel;
 			var receivedElement;
 
-			var update =
-					new UpdateBinding(function(element) {
+			var init =
+				new InitBinding(function(element) {
 
-						receivedModel = this;
-						receivedElement = element;
-					});
+					receivedModel = this;
+					receivedElement = element;
+				});
 
 			var element = document.querySelector("#update");
 			var model = {};
-			update.updateElement(model, element);
+			init.updateElement(model, element);
 
-			assert.strictEqual(receivedElement, element);
-			assert.strictEqual(receivedModel, model);
+			assert.ok(!receivedElement);
+			assert.ok(!receivedModel);
 
 			done();
 		});
@@ -87,18 +87,18 @@
 
 		var done = assert.async();
 
-		require(["UpdateBinding"], function(UpdateBinding) {
+		require(["InitBinding"], function(InitBinding) {
 
 			var receivedElement;
 
-			var update =
-				new UpdateBinding(function(element) {
+			var init =
+				new InitBinding(function(element) {
 
 					receivedElement = element;
 				});
 
 			var element = document.querySelector("#reset");
-			update.setUpElement(element);
+			init.resetElement(element);
 
 			assert.ok(!receivedElement);
 
