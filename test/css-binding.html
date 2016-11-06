@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CSS Binding Tests</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+	    #qunit ~ * {
+		    display: none;
+	    }
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
+		}
+    </script>
+	<div id="update"></div>
+	<script>
+	QUnit.test("Model and element passed on update", function(assert) {
+
+		var done = assert.async();
+
+		require(["CSSBinding"], function(CSSBinding) {
+
+			var receivedModel;
+			var receivedElement;
+
+			var css =
+				new CSSBinding({
+
+					"thingy": function(element) {
+
+						receivedModel = this;
+						receivedElement = element;
+					}
+				});
+
+			var element = document.querySelector("#update");
+			var model = {};
+			css.updateElement(model, element);
+
+			assert.strictEqual(receivedElement, element);
+			assert.strictEqual(receivedModel, model);
+
+			done();
+		});
+	});
+    </script>
+    <div id="true"></div>
+    <script>
+	QUnit.test("Class added when true", function(assert) {
+
+		var done = assert.async();
+
+		require(["CSSBinding"], function(CSSBinding) {
+
+			var css =
+				new CSSBinding({
+
+					"thingy": function() {
+
+						return true;
+					}
+				});
+
+			var element = document.querySelector("#true");
+			var model = {};
+			css.updateElement(model, element);
+
+			assert.strictEqual(element.className, "thingy");
+
+			done();
+		});
+	});
+    </script>
+    <div id="false" class="thingy"></div>
+    <script>
+	QUnit.test("Class removed when false", function(assert) {
+
+		var done = assert.async();
+
+		require(["CSSBinding"], function(CSSBinding) {
+
+			var css =
+				new CSSBinding({
+
+					"thingy": function() {
+
+						return false;
+					}
+				});
+
+			var element = document.querySelector("#false");
+			var model = {};
+			css.updateElement(model, element);
+
+			assert.strictEqual(element.className, "");
+
+			done();
+		});
+	});
+    </script>
+    <div id="after" class="sumpt"></div>
+    <script>
+	QUnit.test("New class after existing class", function(assert) {
+
+		var done = assert.async();
+
+		require(["CSSBinding"], function(CSSBinding) {
+
+			var css =
+				new CSSBinding({
+
+					"thingy": function() {
+
+						return true;
+					}
+				});
+
+			var element = document.querySelector("#after");
+			var model = {};
+			css.updateElement(model, element);
+
+			assert.strictEqual(element.className, "sumpt thingy");
+
+			done();
+		});
+	});
+    </script>
+    <div id="before" class="thingy sumpt"></div>
+    <script>
+	QUnit.test("Remove class from before other class", function(assert) {
+
+		var done = assert.async();
+
+		require(["CSSBinding"], function(CSSBinding) {
+
+			var css =
+				new CSSBinding({
+
+					"thingy": function() {
+
+						return false;
+					}
+				});
+
+			var element = document.querySelector("#before");
+			var model = {};
+			css.updateElement(model, element);
+
+			assert.strictEqual(element.className, "sumpt");
+
+			done();
+		});
+	});
+    </script>
+    <div id="missing" class="sumpt"></div>
+    <script>
+	QUnit.test("Remove class that is already missing", function(assert) {
+
+		var done = assert.async();
+
+		require(["CSSBinding"], function(CSSBinding) {
+
+			var css =
+				new CSSBinding({
+
+					"thingy": function() {
+
+						return false;
+					}
+				});
+
+			var element = document.querySelector("#missing");
+			var model = {};
+			css.updateElement(model, element);
+
+			assert.strictEqual(element.className, "sumpt");
+
+			done();
+		});
+	});
+    </script>
+    <div id="present" class="thingy"></div>
+    <script>
+	QUnit.test("Add class that is already present", function(assert) {
+
+		var done = assert.async();
+
+		require(["CSSBinding"], function(CSSBinding) {
+
+			var css =
+				new CSSBinding({
+
+					"thingy": function() {
+
+						return true;
+					}
+				});
+
+			var element = document.querySelector("#present");
+			var model = {};
+			css.updateElement(model, element);
+
+			assert.strictEqual(element.className, "thingy");
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>

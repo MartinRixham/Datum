@@ -5,7 +5,9 @@ define([
 	"EventBinding",
 	"InitBinding",
 	"UpdateBinding",
-	"VisibleBinding"
+	"VisibleBinding",
+	"DestroyBinding",
+	"CSSBinding"
 ], function Binding(
 	CallbackBinder,
 	TextBinding,
@@ -13,7 +15,9 @@ define([
 	EventBinding,
 	InitBinding,
 	UpdateBinding,
-	VisibleBinding) {
+	VisibleBinding,
+	DestroyBinding,
+	CSSBinding) {
 
 	function Binding(callbacks) {
 
@@ -45,6 +49,11 @@ define([
 			bindings.push(new CallbackBinder(new UpdateBinding(callbacks.update)));
 		}
 
+		if (callbacks.destroy) {
+
+			bindings.push(new CallbackBinder(new DestroyBinding(callbacks.destroy)));
+		}
+
 		if (callbacks.visible) {
 
 			bindings.push(new CallbackBinder(new VisibleBinding(callbacks.visible)));
@@ -53,6 +62,11 @@ define([
 		if (callbacks.event) {
 
 			bindings.push(new CallbackBinder(new EventBinding(callbacks.event)));
+		}
+
+		if (callbacks.css) {
+
+			bindings.push(new CallbackBinder(new CSSBinding(callbacks.css)));
 		}
 
 		var parentModel = null;
