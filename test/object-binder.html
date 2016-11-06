@@ -23,42 +23,6 @@
 			requirejs.config({ baseUrl: "../src", context: i++ })(dependencies, factory);
 		}
 	</script>
-    <div id="function" data-bind="function"></div>
-    <script>
-	QUnit.test("Bind text", function(assert) {
-
-		var done = assert.async();
-
-		require([
-			"Datum",
-			"TextBinding",
-			"ObjectBinder",
-			"DOMElement"
-		], function(
-			Datum,
-			TextBinding,
-			ObjectBinder,
-			DOMElement) {
-
-			var datum = new Datum();
-
-			var binding =
-				new ObjectBinder(new TextBinding(function() {
-
-					return datum();
-				}));
-
-			binding.applyBinding(new DOMElement(document.body), "function");
-			datum("Hello World");
-
-			assert.strictEqual(
-				document.querySelector("#function").innerHTML,
-				"Hello World");
-
-			done();
-		});
-	});
-    </script>
     <div id="one" data-bind="two"></div>
     <div id="two" data-bind="two"></div>
     <script>
@@ -67,130 +31,33 @@
 		var done = assert.async();
 
 		require([
-			"Datum",
-			"TextBinding",
 			"ObjectBinder",
 			"DOMElement"
 		], function(
-			Datum,
-			TextBinding,
 			ObjectBinder,
 			DOMElement) {
 
-			var datum = new Datum();
+			var setUpCallCount = 0;
+			var updateCallCount = 0;
 
 			var binding =
-				new ObjectBinder(new TextBinding(function() {
+				new ObjectBinder({
 
-					return datum();
-				}));
+					setUpElement: function() {
 
-			binding.applyBinding(new DOMElement(document.body), "two");
-			datum("Hello World");
+						setUpCallCount++;
+					},
+					updateElement: function() {
 
-			assert.strictEqual(document.querySelector("#two").innerHTML, "Hello World");
-			assert.strictEqual(document.querySelector("#one").innerHTML, "Hello World");
+						updateCallCount++;
+					},
+					resetElement: function() {}
+				});
 
-			done();
-		});
-	});
-    </script>
-    <div data-bind="single"></div>
-    <div data-bind="single"></div>
-    <script>
-	QUnit.test("Object called once per element on init", function(assert) {
+			binding.applyBinding(new DOMElement(document.body), "two", {});
 
-		var done = assert.async();
-
-		require([
-			"Datum",
-			"TextBinding",
-			"ObjectBinder",
-			"DOMElement"
-		], function(
-			Datum,
-			TextBinding,
-			ObjectBinder,
-			DOMElement) {
-
-			var count = 0;
-			var datum = new Datum();
-
-			var binder = new ObjectBinder(new TextBinding(function() {
-
-				count += 1;
-				return datum();
-			}));
-
-			binder.applyBinding(new DOMElement(document.body), "single");
-
-			assert.strictEqual(count, 2);
-
-			done();
-		});
-	});
-    </script>
-    <div data-bind="twice"></div>
-    <div data-bind="twice"></div>
-    <script>
-	QUnit.test("Object called once per element on update", function(assert) {
-
-		var done = assert.async();
-
-		require([
-			"Datum",
-			"TextBinding",
-			"ObjectBinder",
-			"DOMElement"
-		], function(
-			Datum,
-			TextBinding,
-			ObjectBinder,
-			DOMElement) {
-
-			var count = 0;
-			var datum = new Datum();
-
-			var binding =
-				new ObjectBinder(new TextBinding(function() {
-
-					count += 1;
-					return datum();
-				}));
-
-			binding.applyBinding(new DOMElement(document.body), "twice");
-			count = 0;
-			datum("Hello World");
-
-			assert.strictEqual(count, 2);
-
-			done();
-		});
-	});
-    </script>
-    <div id="element" data-bind="element"></div>
-    <script>
-	QUnit.test("Access element from object", function(assert) {
-
-		var done = assert.async();
-
-		require([
-			"TextBinding",
-			"ObjectBinder",
-			"DOMElement"
-		], function(
-			TextBinding,
-			ObjectBinder,
-			DOMElement) {
-
-			var binding =
-				new ObjectBinder(new TextBinding(function(element) {
-
-					return element.id;
-				}));
-
-			binding.applyBinding(new DOMElement(document.body), "element");
-			assert.strictEqual(document.querySelector("#element").innerHTML, "element");
+			assert.strictEqual(setUpCallCount, 2);
+			assert.strictEqual(updateCallCount, 2);
 
 			done();
 		});
@@ -203,24 +70,39 @@
 		var done = assert.async();
 
 		require([
-			"TextBinding",
 			"ObjectBinder",
 			"DOMElement"
 		], function(
-			TextBinding,
 			ObjectBinder,
 			DOMElement) {
 
+			var setUpCallCount = 0;
+			var updateCallCount = 0;
+			var resetCallCount = 0;
+
 			var binding =
-				new ObjectBinder(new TextBinding(function() {
+				new ObjectBinder({
 
-					return "Hello world.";
-				}));
+					setUpElement: function() {
 
-			binding.applyBinding(new DOMElement(document.body), "unbind");
+						setUpCallCount++;
+					},
+					updateElement: function() {
+
+						updateCallCount++;
+					},
+					resetElement: function() {
+
+						resetCallCount++;
+					}
+				});
+
+			binding.applyBinding(new DOMElement(document.body), "unbind", {});
 			binding.removeBinding();
 
-			assert.strictEqual(document.querySelector("#unbind").innerHTML, "");
+			assert.strictEqual(setUpCallCount, 1);
+			assert.strictEqual(updateCallCount, 1);
+			assert.strictEqual(resetCallCount, 1);
 
 			done();
 		});
@@ -232,25 +114,40 @@
 		var done = assert.async();
 
 		require([
-			"TextBinding",
 			"ObjectBinder",
 			"NullDOMElement"
 		], function(
-			TextBinding,
 			ObjectBinder,
 			NullDOMElement) {
 
+			var setUpCallCount = 0;
+			var updateCallCount = 0;
+			var resetCallCount = 0;
+
 			var binding =
-				new ObjectBinder(new TextBinding(function() {
+				new ObjectBinder({
 
-					return "Hello world.";
-				}));
+					setUpElement: function() {
 
-			binding.applyBinding(new NullDOMElement(), "unbindNull");
-			binding.applyBinding(new NullDOMElement(), "unbindNull");
+						setUpCallCount++;
+					},
+					updateElement: function() {
+
+						updateCallCount++;
+					},
+					resetElement: function() {
+
+						resetCallCount++;
+					}
+				});
+
+			binding.applyBinding(new NullDOMElement(), "unbindNull", {});
+			binding.applyBinding(new NullDOMElement(), "unbindNull", {});
 			binding.removeBinding();
 
-			assert.expect(0);
+			assert.strictEqual(setUpCallCount, 0);
+			assert.strictEqual(updateCallCount, 0);
+			assert.strictEqual(resetCallCount, 0);
 
 			done();
 		});
@@ -268,268 +165,43 @@
 		var done = assert.async();
 
 		require([
-			"TextBinding",
 			"ObjectBinder",
 			"DOMElement"
 		], function(
-			TextBinding,
 			ObjectBinder,
 			DOMElement) {
 
-			var binding =
-				new ObjectBinder(new TextBinding(function() {
+			var setUpCallCount = 0;
+			var updateCallCount = 0;
+			var resetCallCount = 0;
 
-					return "Hello world.";
-				}));
+			var binding =
+				new ObjectBinder({
+
+					setUpElement: function() {
+
+						setUpCallCount++;
+					},
+					updateElement: function() {
+
+						updateCallCount++;
+					},
+					resetElement: function() {
+
+						resetCallCount++;
+					}
+				});
 
 			var firstScope = new DOMElement(document.querySelector("#first-scope"));
-			binding.applyBinding(firstScope, "scope");
-
-			assert.strictEqual(
-				document.querySelector("#first-scope > div").innerHTML,
-				"Hello world.");
+			binding.applyBinding(firstScope, "scope", {});
 
 			document.body.removeChild(firstScope.get());
 			var secondScope = new DOMElement(document.querySelector("#second-scope"));
-			binding.applyBinding(secondScope, "scope");
+			binding.applyBinding(secondScope, "scope", {});
 
-			assert.strictEqual(
-				firstScope.get().querySelector("div").innerHTML,
-				"");
-			assert.strictEqual(
-				secondScope.get().querySelector("div").innerHTML,
-				"Hello world.");
-
-			done();
-		});
-	});
-    </script>
-    <div id="init" data-bind="init"></div>
-    <script>
-	QUnit.test("Bind on init", function(assert) {
-
-		var done = assert.async();
-
-		require([
-			"Datum",
-			"InitBinding",
-			"ObjectBinder",
-			"DOMElement"
-		], function(
-			Datum,
-			InitBinding,
-			ObjectBinder,
-			DOMElement) {
-
-			var datum = new Datum();
-			datum("Hello World");
-
-			var binding =
-				new ObjectBinder(new InitBinding(function(element) {
-
-					element.textContent = datum();
-				}));
-
-			binding.applyBinding(new DOMElement(document.body), "init");
-
-			assert.strictEqual(
-				document.querySelector("#init").innerHTML,
-				"Hello World");
-
-			done();
-		});
-	});
-    </script>
-    <div data-bind="initOnce"></div>
-    <div data-bind="initOnce"></div>
-    <script>
-	QUnit.test("Init called once per element on init", function(assert) {
-
-		var done = assert.async();
-
-		require([
-			"Datum",
-			"InitBinding",
-			"ObjectBinder",
-			"DOMElement"
-		], function(
-			Datum,
-			InitBinding,
-			ObjectBinder,
-			DOMElement) {
-
-			var count = 0;
-			var datum = new Datum();
-
-			var binding =
-				new ObjectBinder(new InitBinding(function() {
-
-					count += 1;
-					return datum();
-				}));
-
-			binding.applyBinding(new DOMElement(document.body), "initOnce");
-
-			assert.strictEqual(count, 2);
-
-			done();
-		});
-	});
-    </script>
-    <div data-bind="noUpdate"></div>
-    <div data-bind="noUpdate"></div>
-    <script>
-	QUnit.test("Init not called on update", function(assert) {
-
-		var done = assert.async();
-
-		require([
-			"Datum",
-			"InitBinding",
-			"ObjectBinder",
-			"DOMElement"
-		], function(
-			Datum,
-			InitBinding,
-			ObjectBinder,
-			DOMElement) {
-
-			var count = 0;
-			var datum = new Datum();
-
-			var binding =
-				new ObjectBinder(new InitBinding(function() {
-
-					count += 1;
-					return datum();
-				}));
-
-			binding.applyBinding(new DOMElement(document.body), "noUpdate");
-
-			count = 0;
-			datum("Hello World");
-
-			assert.strictEqual(count, 0);
-
-			done();
-		});
-	});
-    </script>
-    <input type="text" id="value-input" data-bind="valueInput" />
-    <script>
-	QUnit.test("Update data from input", function(assert) {
-
-		var done = assert.async();
-
-		require([
-			"Datum",
-			"ValueBinding",
-			"ObjectBinder",
-			"DOMElement"
-		], function(
-			Datum,
-			ValueBinding,
-			ObjectBinder,
-			DOMElement) {
-
-			var datum = new Datum();
-
-			var binding =
-				new ObjectBinder(new ValueBinding(function(value) {
-
-					if (value) {
-
-						datum(value);
-					}
-
-					return datum();
-				}));
-
-			binding.applyBinding(new DOMElement(document.body), "valueInput");
-
-			var element = document.querySelector("#value-input");
-			element.value = "Hello World";
-			element.dispatchEvent(new Event("change"));
-
-			assert.strictEqual(datum(), "Hello World");
-
-			done();
-		});
-	});
-    </script>
-    <input type="text" id="input-value" data-bind="inputValue" />
-    <script>
-	QUnit.test("Change value after binding", function(assert) {
-
-		var done = assert.async();
-
-		require([
-			"Datum",
-			"ValueBinding",
-			"ObjectBinder",
-			"DOMElement"
-		], function(
-			Datum,
-			ValueBinding,
-			ObjectBinder,
-			DOMElement) {
-
-			var datum = new Datum();
-
-			var binding =
-				new ObjectBinder(new ValueBinding(function() {
-
-					return datum();
-				}));
-
-			binding.applyBinding(new DOMElement(document.body), "inputValue");
-
-			datum("Hello World");
-
-			assert.strictEqual(document.querySelector("#input-value").value, "Hello World");
-
-			done();
-		});
-	});
-    </script>
-    <input type="text" id="send" data-bind="sync" />
-    <input type="text" id="receive" data-bind="sync" />
-    <script>
-	QUnit.test("Synchronise inputs", function(assert) {
-
-		var done = assert.async();
-
-		require([
-			"Datum",
-			"ValueBinding",
-			"ObjectBinder",
-			"DOMElement"
-		], function(
-			Datum,
-			ValueBinding,
-			ObjectBinder,
-			DOMElement) {
-
-			var datum = new Datum();
-
-			var binding =
-				new ObjectBinder(new ValueBinding(function(value) {
-
-					if (value) {
-
-						datum(value);
-					}
-
-					return datum();
-				}));
-
-			binding.applyBinding(new DOMElement(document.body), "sync");
-
-			var sender = document.querySelector("#send");
-			sender.value = "Hello World";
-			sender.dispatchEvent(new Event("change"));
-
-			assert.strictEqual(document.querySelector("#receive").value, "Hello World");
+			assert.strictEqual(setUpCallCount, 2);
+			assert.strictEqual(updateCallCount, 2);
+			assert.strictEqual(resetCallCount, 1);
 
 			done();
 		});
@@ -546,24 +218,26 @@
 			var model = { "name": "thingy" };
 			var initialisedModel;
 			var initialisedElement;
+			var initialisedValue;
 			var updatedModel;
 			var updatedElement;
-			var updateValue;
+			var updatedValue;
 			var resetElement;
 
 			var binding =
 				new ObjectBinder({
 
-					setUpElement: function(model, element) {
+					setUpElement: function(model, element, value) {
 
 						initialisedModel = model;
 						initialisedElement = element;
+						initialisedValue = value;
 					},
 					updateElement: function(model, element, value) {
 
 						updatedModel = model;
 						updatedElement = element;
-						updateValue = value;
+						updatedValue = value;
 					},
 					resetElement: function(element) {
 
@@ -576,9 +250,10 @@
 
 			assert.strictEqual(initialisedModel, model);
 			assert.strictEqual(initialisedElement.innerHTML, "Hello world.");
+			assert.strictEqual(initialisedValue, "thingy");
 			assert.strictEqual(updatedModel, model);
 			assert.strictEqual(updatedElement.innerHTML, "Hello world.");
-			assert.strictEqual(updateValue, "thingy");
+			assert.strictEqual(updatedValue, "thingy");
 			assert.strictEqual(resetElement.innerHTML, "Hello world.");
 
 			done();
