@@ -1,8 +1,8 @@
-define(["TextBinding", "Binder"], function Text(TextBinding, Binder) {
+define(["TextBinding", "CallbackBinder"], function Text(TextBinding, CallbackBinder) {
 
 	function Text(text) {
 
-		return new Binder(new TextBinding(text));
+		return new CallbackBinder(new TextBinding(text));
 	}
 
 	return Text;

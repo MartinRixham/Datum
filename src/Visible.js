@@ -1,8 +1,13 @@
-define(["VisibleBinding", "Binder"], function Visible(VisibleBinding, Binder) {
+define([
+	"VisibleBinding",
+	"CallbackBinder"
+], function Visible(
+	VisibleBinding,
+	CallbackBinder) {
 
 	function Visible(visible) {
 
-		return new Binder(new VisibleBinding(visible));
+		return new CallbackBinder(new VisibleBinding(visible));
 	}
 
 	return Visible;

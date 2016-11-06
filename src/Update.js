@@ -1,8 +1,13 @@
-define(["UpdateBinding", "Binder"], function Update(UpdateBinding, Binder) {
+define([
+	"UpdateBinding",
+	"CallbackBinder"
+], function Update(
+	UpdateBinding,
+	CallbackBinder) {
 
 	function Update(update) {
 
-		return new Binder(new UpdateBinding(update));
+		return new CallbackBinder(new UpdateBinding(update));
 	}
 
 	return Update;

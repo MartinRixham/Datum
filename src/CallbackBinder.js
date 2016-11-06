@@ -9,7 +9,7 @@ define([
 	Dependant,
 	Registry) {
 
-	function Binder(binding) {
+	function CallbackBinder(binding) {
 
 		var parentModel;
 
@@ -121,5 +121,5 @@ define([
 		};
 	}
 
-	return Binder;
+	return CallbackBinder;
 });

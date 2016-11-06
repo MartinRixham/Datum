@@ -1,8 +1,8 @@
-define(["InitBinding", "Binder"], function Init(InitBinding, Binder) {
+define(["InitBinding", "CallbackBinder"], function Init(InitBinding, CallbackBinder) {
 
 	function Init(init) {
 
-		return new Binder(new InitBinding(init));
+		return new CallbackBinder(new InitBinding(init));
 	}
 
 	return Init;

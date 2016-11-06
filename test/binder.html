@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Binder Tests</title>
+    <title>Callback Binder Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../node_modules/requirejs/require.js"></script>
@@ -32,18 +32,18 @@
 		require([
 			"Datum",
 			"TextBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			Datum,
 			TextBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var datum = new Datum();
 
 			var binding =
-				new Binder(new TextBinding(function() {
+				new CallbackBinder(new TextBinding(function() {
 
 					return datum();
 				}));
@@ -69,18 +69,18 @@
 		require([
 			"Datum",
 			"TextBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			Datum,
 			TextBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var datum = new Datum();
 
 			var binding =
-				new Binder(new TextBinding(function() {
+				new CallbackBinder(new TextBinding(function() {
 
 					return datum();
 				}));
@@ -105,18 +105,18 @@
 		require([
 			"Datum",
 			"TextBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			Datum,
 			TextBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var count = 0;
 			var datum = new Datum();
 
-			var binder = new Binder(new TextBinding(function() {
+			var binder = new CallbackBinder(new TextBinding(function() {
 
 				count += 1;
 				return datum();
@@ -140,19 +140,19 @@
 		require([
 			"Datum",
 			"TextBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			Datum,
 			TextBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var count = 0;
 			var datum = new Datum();
 
 			var binding =
-				new Binder(new TextBinding(function() {
+				new CallbackBinder(new TextBinding(function() {
 
 					count += 1;
 					return datum();
@@ -176,15 +176,15 @@
 
 		require([
 			"TextBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			TextBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var binding =
-				new Binder(new TextBinding(function(element) {
+				new CallbackBinder(new TextBinding(function(element) {
 
 					return element.id;
 				}));
@@ -203,18 +203,18 @@
 
 		require([
 			"TextBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			TextBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var passedModel;
 			var passedElement;
 
 			var binding =
-				new Binder(new TextBinding(function(element) {
+				new CallbackBinder(new TextBinding(function(element) {
 
 					passedModel = this;
 					passedElement = element;
@@ -241,15 +241,15 @@
 
 		require([
 			"TextBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			TextBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var binding =
-				new Binder(new TextBinding(function() {
+				new CallbackBinder(new TextBinding(function() {
 
 					return "Hello world.";
 				}));
@@ -270,15 +270,15 @@
 
 		require([
 			"TextBinding",
-			"Binder",
+			"CallbackBinder",
 			"NullDOMElement"
 		], function(
 			TextBinding,
-			Binder,
+			CallbackBinder,
 			NullDOMElement) {
 
 			var binding =
-				new Binder(new TextBinding(function() {
+				new CallbackBinder(new TextBinding(function() {
 
 					return "Hello world.";
 				}));
@@ -306,15 +306,15 @@
 
 		require([
 			"TextBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			TextBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var binding =
-				new Binder(new TextBinding(function() {
+				new CallbackBinder(new TextBinding(function() {
 
 					return "Hello world.";
 				}));
@@ -350,19 +350,19 @@
 		require([
 			"Datum",
 			"InitBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			Datum,
 			InitBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var datum = new Datum();
 			datum("Hello World");
 
 			var binding =
-				new Binder(new InitBinding(function(element) {
+				new CallbackBinder(new InitBinding(function(element) {
 
 					element.textContent = datum();
 				}));
@@ -387,19 +387,19 @@
 		require([
 			"Datum",
 			"InitBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			Datum,
 			InitBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var count = 0;
 			var datum = new Datum();
 
 			var binding =
-				new Binder(new InitBinding(function() {
+				new CallbackBinder(new InitBinding(function() {
 
 					count += 1;
 					return datum();
@@ -423,19 +423,19 @@
 		require([
 			"Datum",
 			"InitBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			Datum,
 			InitBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var count = 0;
 			var datum = new Datum();
 
 			var binding =
-				new Binder(new InitBinding(function() {
+				new CallbackBinder(new InitBinding(function() {
 
 					count += 1;
 					return datum();
@@ -461,18 +461,18 @@
 		require([
 			"Datum",
 			"ValueBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			Datum,
 			ValueBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var datum = new Datum();
 
 			var binding =
-				new Binder(new ValueBinding(function(value) {
+				new CallbackBinder(new ValueBinding(function(value) {
 
 					if (value) {
 
@@ -503,18 +503,18 @@
 		require([
 			"Datum",
 			"ValueBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			Datum,
 			ValueBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var datum = new Datum();
 
 			var binding =
-				new Binder(new ValueBinding(function() {
+				new CallbackBinder(new ValueBinding(function() {
 
 					return datum();
 				}));
@@ -539,18 +539,18 @@
 		require([
 			"Datum",
 			"ValueBinding",
-			"Binder",
+			"CallbackBinder",
 			"DOMElement"
 		], function(
 			Datum,
 			ValueBinding,
-			Binder,
+			CallbackBinder,
 			DOMElement) {
 
 			var datum = new Datum();
 
 			var binding =
-				new Binder(new ValueBinding(function(value) {
+				new CallbackBinder(new ValueBinding(function(value) {
 
 					if (value) {
 
@@ -578,7 +578,7 @@
 
 		var done = assert.async();
 
-		require(["Binder", "DOMElement"], function(Binder, DOMElement) {
+		require(["CallbackBinder", "DOMElement"], function(CallbackBinder, DOMElement) {
 
 			var model = { "name": "thingy" };
 			var initialisedModel;
@@ -589,7 +589,7 @@
 			var resetElement;
 
 			var binding =
-				new Binder({
+				new CallbackBinder({
 
 					setUpElement: function(model, element) {
 

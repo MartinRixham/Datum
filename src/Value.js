@@ -1,8 +1,8 @@
-define(["ValueBinding", "Binder"], function Value(ValueBinding, Binder) {
+define(["ValueBinding", "CallbackBinder"], function Value(ValueBinding, CallbackBinder) {
 
 	function Value(value) {
 
-		return new Binder(new ValueBinding(value));
+		return new CallbackBinder(new ValueBinding(value));
 	}
 
 	return Value;

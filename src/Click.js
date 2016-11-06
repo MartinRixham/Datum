@@ -1,8 +1,8 @@
-define(["ClickBinding", "Binder"], function Click(ClickBinding, Binder) {
+define(["ClickBinding", "CallbackBinder"], function Click(ClickBinding, CallbackBinder) {
 
 	function Click(click) {
 
-		return new Binder(new ClickBinding(click));
+		return new CallbackBinder(new ClickBinding(click));
 	}
 
 	return Click;
