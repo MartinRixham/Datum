@@ -328,7 +328,7 @@
     <div data-bind="inner"></div>
     <div data-bind="outer"></div>
     <script>
-	QUnit.test("Dependencies are aggressively collected.", function(assert) {
+	QUnit.test("Dependencies are not recalled", function(assert) {
 
 		var done = assert.async();
 
@@ -360,7 +360,7 @@
 
 			only.datum = "Hello World";
 
-			assert.strictEqual(count, 2);
+			assert.strictEqual(count, 1);
 
 			root.disconnect();
 

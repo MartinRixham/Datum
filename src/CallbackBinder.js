@@ -27,7 +27,7 @@ define([
 
 			var elements = scope.getMatchingElements(name);
 
-			bindElements(elements, scope, model, name);
+			bindElements(elements, scope, model);
 			addElements(elements);
 		};
 
@@ -54,7 +54,7 @@ define([
 			}
 		}
 
-		function bindElements(elements, scope, model, name) {
+		function bindElements(elements, scope, model) {
 
 			for (var i = 0; i < elements.length; i++) {
 
@@ -62,15 +62,11 @@ define([
 
 				if (scope.hasInScope(element)) {
 
-					if (boundElements.contains(element)) {
+					if (!boundElements.contains(element)) {
 
-						binding.updateElement(model, element.get(), model && model[name]);
-					}
-					else {
-
-						binding.setUpElement(model, element.get(), model && model[name]);
+						binding.setUpElement(model, element.get());
 						new Registry().requestRegistrations();
-						binding.updateElement(model, element.get(), model && model[name]);
+						binding.updateElement(model, element.get());
 						createCallback(model, element);
 					}
 				}
