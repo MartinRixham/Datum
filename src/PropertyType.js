@@ -1,11 +1,11 @@
 define([
 	"Datum",
-	"CallbackBinder",
+	"ObjectBinder",
 	"ObjectBinding",
 	"ArrayBinding"
 ], function(
 	Datum,
-	CallbackBinder,
+	ObjectBinder,
 	ObjectBinding,
 	ArrayBinding) {
 
@@ -35,12 +35,12 @@ define([
 
 		this.createObjectBinding = function() {
 
-			return new CallbackBinder(new ObjectBinding());
+			return new ObjectBinder(new ObjectBinding());
 		};
 
 		this.createArrayBinding = function(model) {
 
-			return new CallbackBinder(new ArrayBinding(model, this));
+			return new ObjectBinder(new ArrayBinding(model, this));
 		};
 	}
 
