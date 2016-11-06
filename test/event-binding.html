@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Click Binding Tests</title>
+    <title>Event Binding Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../node_modules/requirejs/require.js"></script>
@@ -29,14 +29,17 @@
 
 		var done = assert.async();
 
-		require(["ClickBinding"], function(ClickBinding) {
+		require(["EventBinding"], function(EventBinding) {
 
 			var receivedElement;
 
 			var click =
-				new ClickBinding(function(element) {
+				new EventBinding({
 
-					receivedElement = element;
+					click: function(element) {
+
+						receivedElement = element;
+					}
 				});
 
 			var element = document.querySelector("#init");
@@ -55,14 +58,17 @@
 
 		var done = assert.async();
 
-		require(["ClickBinding"], function(ClickBinding) {
+		require(["EventBinding"], function(EventBinding) {
 
 			var clicked;
 
 			var click =
-				new ClickBinding(function() {
+				new EventBinding({
 
-					clicked = true;
+					click: function() {
+
+						clicked = true;
+					}
 				});
 
 			var element = document.querySelector("#init");
@@ -82,18 +88,21 @@
 
 		var done = assert.async();
 
-		require(["ClickBinding"], function(ClickBinding) {
+		require(["EventBinding"], function(EventBinding) {
 
 			var passedModel;
 			var passedElement;
 
 			var binding =
-				new ClickBinding(function(element) {
+				new EventBinding({
 
-					passedModel = this;
-					passedElement = element;
+					click: function(element) {
 
-					return "Hello world.";
+						passedModel = this;
+						passedElement = element;
+
+						return "Hello world.";
+					}
 				});
 
 			var model = {};

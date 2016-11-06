@@ -42,7 +42,9 @@
 
 			test.applyBinding(new DOMElement(document.body), "test");
 
-			assert.strictEqual(document.querySelector("#test-div").innerHTML, "Hello World");
+			assert.strictEqual(
+				document.querySelector("#test-div").innerHTML,
+				"Hello World");
 
 			done();
 		});
@@ -67,7 +69,9 @@
 
 			input.applyBinding(new DOMElement(document.body), "input");
 
-			assert.strictEqual(document.querySelector("#test-input").value, "Hello World");
+			assert.strictEqual(
+				document.querySelector("#test-input").value,
+				"Hello World");
 
 			done();
 		});

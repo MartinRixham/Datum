@@ -2,7 +2,7 @@ define([
 	"CallbackBinder",
 	"TextBinding",
 	"ValueBinding",
-	"ClickBinding",
+	"EventBinding",
 	"InitBinding",
 	"UpdateBinding",
 	"VisibleBinding"
@@ -10,7 +10,7 @@ define([
 	CallbackBinder,
 	TextBinding,
 	ValueBinding,
-	ClickBinding,
+	EventBinding,
 	InitBinding,
 	UpdateBinding,
 	VisibleBinding) {
@@ -31,7 +31,8 @@ define([
 
 		if (callbacks.click) {
 
-			bindings.push(new CallbackBinder(new ClickBinding(callbacks.click)));
+			bindings.push(
+				new CallbackBinder(new EventBinding({ click: callbacks.click })));
 		}
 
 		if (callbacks.init) {
@@ -47,6 +48,11 @@ define([
 		if (callbacks.visible) {
 
 			bindings.push(new CallbackBinder(new VisibleBinding(callbacks.visible)));
+		}
+
+		if (callbacks.event) {
+
+			bindings.push(new CallbackBinder(new EventBinding(callbacks.event)));
 		}
 
 		var parentModel = null;
