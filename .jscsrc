@@ -17,7 +17,7 @@
 	"disallowTrailingWhitespace": true,
 	"disallowUnusedParams": true,
 	"disallowYodaConditions": true,
-	"maximumLineLength": { "value": 90, "tabSize": 4, "allExcept": ["require"] },
+	"maximumLineLength": { "value": 90, "tabSize": 4 },
 	"maximumNumberOfLines": 200,
 	"requireCamelCaseOrUpperCaseIdentifiers": true,
 	"requireCapitalizedConstructors": true,

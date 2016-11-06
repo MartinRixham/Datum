@@ -69,7 +69,9 @@
 
 			var propertyType = new FakePropertyType();
 			var property = new TransientProperty("thingy", propertyType);
-			property.applyBinding(new DOMElement(document.body), "key", { key: "thingy" });
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: "thingy" });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
 			assert.ok(!propertyType.arrayBindingWasApplied);
@@ -92,7 +94,9 @@
 
 			var propertyType = new FakePropertyType();
 			var property = new TransientProperty({}, propertyType);
-			property.applyBinding(new DOMElement(document.body), "key", { key: {} });
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: {} });
 
 			assert.ok(propertyType.viewModelBindingWasApplied);
 			assert.ok(!propertyType.arrayBindingWasApplied);
@@ -118,7 +122,9 @@
 			var propertyType = new FakePropertyType();
 			var text = new Text(function() { return ""; });
 			var property = new TransientProperty(text, propertyType);
-			property.applyBinding(new DOMElement(document.body), "key", { key: text });
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: text });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
 			assert.ok(!propertyType.arrayBindingWasApplied);
@@ -141,7 +147,9 @@
 
 			var propertyType = new FakePropertyType();
 			var property = new TransientProperty(function() {}, propertyType);
-			property.applyBinding(new DOMElement(document.body), "key", { key: function() {} });
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: function() {} });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
 			assert.ok(!propertyType.arrayBindingWasApplied);
@@ -164,7 +172,9 @@
 
 			var propertyType = new FakePropertyType();
 			var property = new TransientProperty(null, propertyType);
-			property.applyBinding(new DOMElement(document.body), "key", { key: null });
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: null });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
 			assert.ok(!propertyType.arrayBindingWasApplied);
@@ -187,7 +197,9 @@
 
 			var propertyType = new FakePropertyType();
 			var property = new TransientProperty([], propertyType);
-			property.applyBinding(new DOMElement(document.body), "key", { key: [] });
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: [] });
 
 			assert.ok(!propertyType.viewModelBindingWasApplied);
 			assert.ok(propertyType.arrayBindingWasApplied);
