@@ -263,6 +263,36 @@
 		});
 	});
     </script>
+    <script>
+	QUnit.test("Unbind null element", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"TextBinding",
+			"Binder",
+			"NullDOMElement"
+		], function(
+			TextBinding,
+			Binder,
+			NullDOMElement) {
+
+			var binding =
+				new Binder(new TextBinding(function() {
+
+					return "Hello world.";
+				}));
+
+			binding.applyBinding(new NullDOMElement(), "unbindNull");
+			binding.applyBinding(new NullDOMElement(), "unbindNull");
+			binding.removeBinding();
+
+			assert.expect(0);
+
+			done();
+		});
+	});
+    </script>
     <div id="first-scope">
       <div data-bind="scope"></div>
     </div>

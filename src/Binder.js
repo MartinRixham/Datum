@@ -37,7 +37,12 @@ define([
 
 			for (var i = 0; i < removed.length; i++) {
 
-				binding.resetElement(removed[i].get());
+				var element = removed[i].get();
+
+				if (element) {
+
+					binding.resetElement(element);
+				}
 			}
 		}
 
@@ -93,7 +98,12 @@ define([
 
 			for (var i = 0; i < elements.length; i++) {
 
-				binding.resetElement(elements[i].get());
+				var element = elements[i].get();
+
+				if (element) {
+
+					binding.resetElement(element);
+				}
 			}
 
 			parentModel = null;
