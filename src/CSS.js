@@ -1,4 +1,4 @@
-define(["CSSBinding", "CallbackBinder"], function Update(CSSBinding, CallbackBinder) {
+define(["CSSBinding", "CallbackBinder"], function CSS(CSSBinding, CallbackBinder) {
 
 	function CSS(callbacks) {
 

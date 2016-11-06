@@ -146,20 +146,6 @@ Again the element is passed as the first paramenter and there is also a `Click` 
     
     new BindingRoot(viewModel);
 ```
-### Init
-
-The *init callback* is called when the binding is bound to an element.
-Afterwards the init callback will not be called again for that element, but will be called if the binding is bound to a new element, each time passing the bound element as the first parameter.
-If you want to manually attach event handlers to an element then this is a good place to do it.
-
-### Update
-
-The *update callback* does not react directly to any DOM event.
-It is called when the binding is first attached to an element and then again whenever one of its dependencies changes.
-
-An import thing to understand is that unlike other bindings such as text and value, the dependencies of the update callback are registered only when it is first bound.
-For further details see the section on dependency collection.
-
 ### Visible
 
 The *visible callback* can be used to hide and show elements.
@@ -196,14 +182,10 @@ An object bound to an element must contain all bindings within that element.
 No binding can be applied from outside the bound object even if the property name is that same as the binding attribute.
 
 The object binding has one more useful feature.
-If the a bound object is set to null then the element to which it is bound will be removed from the DOM.
-If the object is replaced then the element is put back too.
+If the a bound object is set to null then the child elements of the element to which it is bound will be removed from the DOM.
+If the object is replaced then the elements are put back too.
 Thus parts of the DOM can be shown only when there is data available to populate them.
 This is a more natural way to hide and show elements than the visible binding.
-
-### The Array Binding
-
-The array binding is quite like the object binding except the contents of the element to which an array is bound will be repeated for each element of the bound array.
 
 ## Advanced Topics
 
@@ -239,26 +221,6 @@ All of the binding callbacks that can be passed to the `Binding` constructor tra
 This means that you don't have to worry about updating any of the data on the page when the data in the view model changes.
 This will happen automatically.
 
-Do be aware though, that dependencies are tracked by calling the binding callback and detecting which properties are called during its execution.
-This can happen many times so you have little control over when and how often a binding callback is called.
-
-### Dependency Collection
-
-Even if the implementation of a binding callback doesn't change, the dependencies of that callback can change during runtime.
-For example some dependencies may be called inside an `if` statement so won't be detected if that `if` initially returns false.
-This means that there is a trade-off when collecting dependencies.
-Either execute the callback frequently to see if it has any new dependencies or execute it less often, perhaps only once and run the risk of a dependency being missed.
-In almost every case Datum takes the first option aggresively collecting dependencies so that none are ever missed.
-This means that you should never put expensive computation or expensively access resouces from a binding callback or call any method that would do so.
-In particuar you should never initiate network requests from a binding callback.
-
-Of course you may well want to make a network request or access an expensive resource automatically when the view model updates.
-In this case the correct tool is the *update* binding.
-In contrast to all the other binding callbacks, the update binding collects its dependencies only once when it is first bound.
-After that it is only re-executed when one of those dependencies changes.
-It is therefore safe to put expensive operations in an update binding since they will only be run when necessary.
-However you must make sure that all of it's dependencies can be found when they are initally collected.
-
 ### Serialisation
 
 It is common to want to be able to turn objects into JSON to send to the server.
@@ -280,3 +242,102 @@ Beginners are encouraged to use the default implementation of `toJSON` and not t
 
 ### The Array Binding
 
+The array binding is quite like the object binding except the contents of the element to which an array is bound will be repeated for each element of the bound array.
+
+```
+    <body>
+      <div data-bind="array">
+        <div>
+          <div data-bind="text></div>
+        </div>
+      </div>
+    </body>
+```
+```
+    var viewModel = {
+    
+        array: [
+
+            { text: new Text(function() { return "this"; }) },
+            { text: new Text(function() { return "that"; }) },
+            { text: new Text(function() { return "tother"; }) }
+        ]
+    };
+    
+    new BindingRoot(viewModel);
+```
+The above template and view model would produce the following HTML when bound.
+
+```
+    <body>
+      <div data-bind="array">
+        <div>
+          <div data-bind="text>this</div>
+        </div>
+        <div>
+          <div data-bind="text>that</div>
+        </div>
+        <div>
+          <div data-bind="text>tother</div>
+        </div>
+      </div>
+    </body>
+```
+Note that the children of the element to which the array is bound are the elements to which each of the objects in the array are bound.
+
+### CSS
+
+The *CSS binding* allows you to add and remove CSS classes from elements.
+It requires an object containing callbacks named for the classes to be added or removed.
+
+    var viewModel = {
+
+        myBinding: new Binding({
+        
+            css: {
+            
+                enabled: function() { return false; },
+                "first-item": function() { return true; }
+            }
+        });
+    };
+    
+    new BindingRoot(viewModel);
+
+### Event
+
+The *event binding* registers event handlers on an element.
+
+    var viewModel = {
+
+        myBinding: new Binding({
+        
+            event: {
+            
+                change: function() { alert("Value changed!"); },
+                keyup: function() { alert("Key was pressed!"); }
+            }
+        });
+    };
+    
+    new BindingRoot(viewModel);
+
+### The Init, Update and Destroy bindings
+
+In some cases the provided bindings will not cover all of the functionality of an application.
+When this is so the *init*, *update* and *destroy* bindings can be used to create custom bindings.
+
+The *init callback* is called when the binding is bound to an element.
+Afterwards the init callback will not be called again for that element, but will be called if the binding is bound to a new element, each time passing the bound element as the first parameter.
+The *update callback* is called when the binding is first attached to an element and then again whenever one of its dependencies changes.
+The *destroy callback* is called when the binding is removed from an element.
+
+## Bugs
+
+Bugs can be reported on [GitHub](https://github.com/MartinRixham/Datum/issues).
+
+## Examples
+
+The following websites were created with Datum:
+
+* [fifteenpuzzzle.co.uk](http://fifteenpuzzzle.co.uk)
