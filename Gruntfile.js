@@ -45,7 +45,8 @@ module.exports = function(grunt) {
 			options: {
 
 				sourceRootDirectory: "src",
-				outputFile: "target/Datum.js"
+				outputFile: "target/Datum.js",
+				main: "Datum"
 			}
 		},
 		uglify: {
