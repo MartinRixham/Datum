@@ -6,6 +6,8 @@ define([], function() {
 
 		model.reverse = function() {
 
+			originalReverse.apply(this, arguments);
+
 			for (var i = 0; i < elementChildren.length; i++) {
 
 				var element = elementChildren[i].element;
@@ -16,7 +18,6 @@ define([], function() {
 			}
 
 			properties.reverse();
-			originalReverse.apply(this, arguments);
 		};
 
 		function removeChildren(element) {

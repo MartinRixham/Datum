@@ -6,10 +6,11 @@ define(["TransientProperty", "DOMElement"], function(TransientProperty, DOMEleme
 
 		model.unshift = function() {
 
+			originalUnshift.apply(this, arguments);
+
 			for (var i = arguments.length - 1; i >= 0; i--) {
 
-				var object = arguments[i];
-				var property = new TransientProperty(object, propertyType);
+				var property = new TransientProperty(arguments[i], propertyType);
 
 				properties.unshift(property);
 
@@ -19,11 +20,10 @@ define(["TransientProperty", "DOMElement"], function(TransientProperty, DOMEleme
 					var child = elementChildren[j].child;
 
 					element.insertBefore(child.clone(), element.firstChild);
-					property.applyBinding(new DOMElement(element), 0, object);
+					property.applyBinding(new DOMElement(element), 0, model);
 				}
 			}
 
-			originalUnshift.apply(this, arguments);
 			model.subscribableLength = model.length;
 		};
 	}

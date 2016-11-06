@@ -6,10 +6,11 @@ define(["TransientProperty", "DOMElement"], function(TransientProperty, DOMEleme
 
 		model.push = function() {
 
+			originalPush.apply(this, arguments);
+
 			for (var i = 0; i < arguments.length; i++) {
 
-				var object = arguments[i];
-				var property = new TransientProperty(object, propertyType);
+				var property = new TransientProperty(arguments[i], propertyType);
 
 				properties.push(property);
 
@@ -20,11 +21,10 @@ define(["TransientProperty", "DOMElement"], function(TransientProperty, DOMEleme
 					var finalIndex = properties.length - 1;
 
 					element.appendChild(child.clone());
-					property.applyBinding(new DOMElement(element), finalIndex, object);
+					property.applyBinding(new DOMElement(element), finalIndex, model);
 				}
 			}
 
-			originalPush.apply(this, arguments);
 			model.subscribableLength = model.length;
 		};
 	}

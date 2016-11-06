@@ -49,8 +49,7 @@ define(["TransientProperty", "DOMElement"], function(TransientProperty, DOMEleme
 
 			for (var i = newObjects.length - 1; i >= 0; i--) {
 
-				var object = newObjects[i];
-				var property = new TransientProperty(object, propertyType);
+				var property = new TransientProperty(newObjects[i], propertyType);
 
 				properties.splice(start, 0, property);
 
@@ -60,7 +59,7 @@ define(["TransientProperty", "DOMElement"], function(TransientProperty, DOMEleme
 					var child = elementChildren[j].child;
 
 					element.insertBefore(child.clone(), element.children[start]);
-					property.applyBinding(new DOMElement(element), start, object);
+					property.applyBinding(new DOMElement(element), start, model);
 				}
 			}
 		}
