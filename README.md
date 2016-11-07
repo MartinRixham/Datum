@@ -332,6 +332,12 @@ Afterwards the init callback will not be called again for that element, but will
 The *update callback* is called when the binding is first attached to an element and then again whenever one of its dependencies changes.
 The *destroy callback* is called when the binding is removed from an element.
 
+## Installation
+
+Install with NPM:
+
+    npm install Datum
+
 ## Bugs
 
 Bugs can be reported on [GitHub](https://github.com/MartinRixham/Datum/issues).
