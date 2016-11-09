@@ -217,14 +217,14 @@ Beginners are encouraged to use the default implementation of <code>toJSON</code
       &lt;/div&gt;
     &lt;/body&gt;
 </code></pre><p>Note that the children of the element to which the array is bound are the elements to which each of the objects in the array are bound.</p>
-<h3 id="css">CSS</h3>
-<p>The <em>CSS binding</em> allows you to add and remove CSS classes from elements.
+<h3 id="classes">Classes</h3>
+<p>The <em>classes binding</em> allows you to add and remove CSS classes from elements.
 It requires an object containing callbacks named for the classes to be added or removed.</p>
 <pre><code>var viewModel = {
 
     myBinding: new Binding({
 
-        css: {
+        classes: {
 
             enabled: function() { return false; },
             &quot;first-item&quot;: function() { return true; }
@@ -233,13 +233,13 @@ It requires an object containing callbacks named for the classes to be added or 
 };
 
 new BindingRoot(viewModel);
-</code></pre><h3 id="event">Event</h3>
-<p>The <em>event binding</em> registers event handlers on an element.</p>
+</code></pre><h3 id="events">Events</h3>
+<p>The <em>events binding</em> registers event handlers on an element.</p>
 <pre><code>var viewModel = {
 
     myBinding: new Binding({
 
-        event: {
+        events: {
 
             change: function() { alert(&quot;Value changed!&quot;); },
             keyup: function() { alert(&quot;Key was pressed!&quot;); }

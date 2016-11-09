@@ -2,22 +2,22 @@ define([
 	"CallbackBinder",
 	"TextBinding",
 	"ValueBinding",
-	"EventBinding",
+	"EventsBinding",
 	"InitBinding",
 	"UpdateBinding",
 	"VisibleBinding",
 	"DestroyBinding",
-	"CSSBinding"
+	"ClassesBinding"
 ], function Binding(
 	CallbackBinder,
 	TextBinding,
 	ValueBinding,
-	EventBinding,
+	EventsBinding,
 	InitBinding,
 	UpdateBinding,
 	VisibleBinding,
 	DestroyBinding,
-	CSSBinding) {
+	ClassesBinding) {
 
 	function Binding(callbacks) {
 
@@ -36,7 +36,7 @@ define([
 		if (callbacks.click) {
 
 			bindings.push(
-				new CallbackBinder(new EventBinding({ click: callbacks.click })));
+				new CallbackBinder(new EventsBinding({ click: callbacks.click })));
 		}
 
 		if (callbacks.init) {
@@ -59,14 +59,14 @@ define([
 			bindings.push(new CallbackBinder(new VisibleBinding(callbacks.visible)));
 		}
 
-		if (callbacks.event) {
+		if (callbacks.events) {
 
-			bindings.push(new CallbackBinder(new EventBinding(callbacks.event)));
+			bindings.push(new CallbackBinder(new EventsBinding(callbacks.event)));
 		}
 
-		if (callbacks.css) {
+		if (callbacks.classes) {
 
-			bindings.push(new CallbackBinder(new CSSBinding(callbacks.css)));
+			bindings.push(new CallbackBinder(new ClassesBinding(callbacks.css)));
 		}
 
 		var parentModel = null;

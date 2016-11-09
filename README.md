@@ -285,16 +285,16 @@ The above template and view model would produce the following HTML when bound.
 ```
 Note that the children of the element to which the array is bound are the elements to which each of the objects in the array are bound.
 
-### CSS
+### Classes
 
-The *CSS binding* allows you to add and remove CSS classes from elements.
+The *classes binding* allows you to add and remove CSS classes from elements.
 It requires an object containing callbacks named for the classes to be added or removed.
 
     var viewModel = {
 
         myBinding: new Binding({
         
-            css: {
+            classes: {
             
                 enabled: function() { return false; },
                 "first-item": function() { return true; }
@@ -304,15 +304,15 @@ It requires an object containing callbacks named for the classes to be added or 
     
     new BindingRoot(viewModel);
 
-### Event
+### Events
 
-The *event binding* registers event handlers on an element.
+The *events binding* registers event handlers on an element.
 
     var viewModel = {
 
         myBinding: new Binding({
         
-            event: {
+            events: {
             
                 change: function() { alert("Value changed!"); },
                 keyup: function() { alert("Key was pressed!"); }

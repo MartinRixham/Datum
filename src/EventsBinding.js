@@ -1,6 +1,6 @@
 define([], function() {
 
-	function EventBinding(callbacks) {
+	function EventsBinding(callbacks) {
 
 		var listeners = [];
 
@@ -53,5 +53,5 @@ define([], function() {
 		};
 	}
 
-	return EventBinding;
+	return EventsBinding;
 });

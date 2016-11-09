@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Event Binding Tests</title>
+    <title>Events Binding Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../node_modules/requirejs/require.js"></script>
@@ -29,12 +29,12 @@
 
 		var done = assert.async();
 
-		require(["EventBinding"], function(EventBinding) {
+		require(["EventsBinding"], function(EventsBinding) {
 
 			var receivedElement;
 
 			var click =
-				new EventBinding({
+				new EventsBinding({
 
 					click: function(element) {
 
@@ -58,12 +58,12 @@
 
 		var done = assert.async();
 
-		require(["EventBinding"], function(EventBinding) {
+		require(["EventsBinding"], function(EventsBinding) {
 
 			var clicked;
 
 			var click =
-				new EventBinding({
+				new EventsBinding({
 
 					click: function() {
 
@@ -88,13 +88,13 @@
 
 		var done = assert.async();
 
-		require(["EventBinding"], function(EventBinding) {
+		require(["EventsBinding"], function(EventsBinding) {
 
 			var passedModel;
 			var passedElement;
 
 			var binding =
-				new EventBinding({
+				new EventsBinding({
 
 					click: function(element) {
 

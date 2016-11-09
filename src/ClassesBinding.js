@@ -1,6 +1,6 @@
 define([], function() {
 
-	function CSSBinding(callbacks) {
+	function ClassesBinding(callbacks) {
 
 		this.setUpElement = function() {};
 
@@ -58,5 +58,5 @@ define([], function() {
 		};
 	}
 
-	return CSSBinding;
+	return ClassesBinding;
 });

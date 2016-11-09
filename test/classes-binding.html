@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>CSS Binding Tests</title>
+    <title>Classes Binding Tests</title>
     <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
     <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../node_modules/requirejs/require.js"></script>
@@ -29,13 +29,13 @@
 
 		var done = assert.async();
 
-		require(["CSSBinding"], function(CSSBinding) {
+		require(["ClassesBinding"], function(ClassesBinding) {
 
 			var receivedModel;
 			var receivedElement;
 
 			var css =
-				new CSSBinding({
+				new ClassesBinding({
 
 					"thingy": function(element) {
 
@@ -61,10 +61,10 @@
 
 		var done = assert.async();
 
-		require(["CSSBinding"], function(CSSBinding) {
+		require(["ClassesBinding"], function(ClassesBinding) {
 
 			var css =
-				new CSSBinding({
+				new ClassesBinding({
 
 					"thingy": function() {
 
@@ -88,10 +88,10 @@
 
 		var done = assert.async();
 
-		require(["CSSBinding"], function(CSSBinding) {
+		require(["ClassesBinding"], function(ClassesBinding) {
 
 			var css =
-				new CSSBinding({
+				new ClassesBinding({
 
 					"thingy": function() {
 
@@ -115,10 +115,10 @@
 
 		var done = assert.async();
 
-		require(["CSSBinding"], function(CSSBinding) {
+		require(["ClassesBinding"], function(ClassesBinding) {
 
 			var css =
-				new CSSBinding({
+				new ClassesBinding({
 
 					"thingy": function() {
 
@@ -142,10 +142,10 @@
 
 		var done = assert.async();
 
-		require(["CSSBinding"], function(CSSBinding) {
+		require(["ClassesBinding"], function(ClassesBinding) {
 
 			var css =
-				new CSSBinding({
+				new ClassesBinding({
 
 					"thingy": function() {
 
@@ -169,10 +169,10 @@
 
 		var done = assert.async();
 
-		require(["CSSBinding"], function(CSSBinding) {
+		require(["ClassesBinding"], function(ClassesBinding) {
 
 			var css =
-				new CSSBinding({
+				new ClassesBinding({
 
 					"thingy": function() {
 
@@ -196,10 +196,10 @@
 
 		var done = assert.async();
 
-		require(["CSSBinding"], function(CSSBinding) {
+		require(["ClassesBinding"], function(ClassesBinding) {
 
 			var css =
-				new CSSBinding({
+				new ClassesBinding({
 
 					"thingy": function() {
 
