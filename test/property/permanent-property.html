@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Permanent Property Tests</title>
+    <link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../../src", context: i++ })(dependencies, factory);
+		}
+    </script>
+    <script>
+	function FakePropertyType() {
+
+		this.injectPropertyWasCalled = false;
+
+		this.objectBindingWasApplied = false;
+
+		this.injectProperty = function() {
+
+			this.injectPropertyWasCalled = true;
+		};
+
+		var self = this;
+
+		this.createObjectBinding = function() {
+
+			return {
+
+				applyBinding: function() {
+
+					self.objectBindingWasApplied = true;
+				}
+			};
+		};
+	}
+    </script>
+    <script>
+	QUnit.test("A string is a datum", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"property/PermanentProperty",
+			"element/DOMElement"
+		], function(
+			PermanentProperty,
+			DOMElement) {
+
+			var propertyType = new FakePropertyType();
+			var property = new PermanentProperty("thingy", propertyType);
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: "thingy" });
+
+			assert.ok(propertyType.injectPropertyWasCalled);
+			assert.ok(!propertyType.objectBindingWasApplied);
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("An empty object is a datum", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"property/PermanentProperty",
+			"element/DOMElement"
+		], function(
+			PermanentProperty,
+			DOMElement) {
+
+			var propertyType = new FakePropertyType();
+			var property = new PermanentProperty({}, propertyType);
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: {} });
+
+			assert.ok(propertyType.injectPropertyWasCalled);
+			assert.ok(propertyType.objectBindingWasApplied);
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("A binding is not a datum", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Text",
+			"property/PermanentProperty",
+			"element/DOMElement"
+		], function(
+			Text,
+			PermanentProperty,
+			DOMElement) {
+
+			var propertyType = new FakePropertyType();
+			var text = new Text(function() { return ""; });
+			var property = new PermanentProperty(text, propertyType);
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: text });
+
+			assert.ok(!propertyType.injectPropertyWasCalled);
+			assert.ok(!propertyType.objectBindingWasApplied);
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("A function is not anything", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"property/PermanentProperty",
+			"element/DOMElement"
+		], function(
+			PermanentProperty,
+			DOMElement) {
+
+			var propertyType = new FakePropertyType();
+			var property = new PermanentProperty(function() {}, propertyType);
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: function() {} });
+
+			assert.ok(!propertyType.injectPropertyWasCalled);
+			assert.ok(!propertyType.objectBindingWasApplied);
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("null is a datum", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"property/PermanentProperty",
+			"element/DOMElement"
+		], function(
+			PermanentProperty,
+			DOMElement) {
+
+			var propertyType = new FakePropertyType();
+			var property = new PermanentProperty(null, propertyType);
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: null });
+
+			assert.ok(propertyType.injectPropertyWasCalled);
+			assert.ok(propertyType.objectBindingWasApplied);
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("An array is a datum", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"property/PermanentProperty",
+			"element/DOMElement"
+		], function(
+			PermanentProperty,
+			DOMElement) {
+
+			var propertyType = new FakePropertyType();
+			var property = new PermanentProperty([], propertyType);
+			var element = new DOMElement(document.body);
+
+			property.applyBinding(element, "key", { key: [] });
+
+			assert.ok(propertyType.injectPropertyWasCalled);
+			assert.ok(propertyType.objectBindingWasApplied);
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>

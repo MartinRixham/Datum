@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>View Model Tests</title>
+    <link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../../src", context: i++ })(dependencies, factory);
+		}
+    </script>
+    <input type="text" id="value-input" data-bind="valueInput" />
+    <script>
+	QUnit.test("Update data from input", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/Value",
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			Datum,
+			Value,
+			ViewModel,
+			RootDOMElement) {
+
+			function InputObject() {
+
+				this.datum = new Datum();
+
+				this.valueInput = new Value(function(value) { this.datum(value); });
+			}
+
+			var input = new InputObject();
+
+			var viewModel = new ViewModel(input);
+			viewModel.applyBinding(new RootDOMElement());
+
+			var element = document.querySelector("#value-input");
+
+			element.value = "Hello World";
+			element.dispatchEvent(new Event("change"));
+
+			assert.strictEqual(input.datum(), "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <div id="super-bind" data-bind="bind"></div>
+    <div id="super" data-bind="super">
+      <div id="sub" data-bind="sub"></div>
+    </div>
+    <script>
+	QUnit.test("Bind subobject", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Text",
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			Text,
+			ViewModel,
+			RootDOMElement) {
+
+			function TextObject() {
+
+				this.bind =
+					new Text(function() {
+
+						return "Eh Up Planet";
+					});
+
+				this.super = {
+
+					sub: new Text(function() {
+
+						return "Hello World";
+					})
+				};
+			}
+
+			var viewModel = new ViewModel(new TextObject());
+			viewModel.applyBinding(new RootDOMElement());
+
+			assert.strictEqual(
+				document.querySelector("#super-bind").innerHTML,
+				"Eh Up Planet");
+
+			assert.strictEqual(document.querySelector("#sub").innerHTML, "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <div data-bind="nonSuper"></div>
+    <div id="non-sub" data-bind="nonSub"></div>
+    <script>
+	QUnit.test("Fail to bind subobject outside of scope", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Text",
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			Text,
+			ViewModel,
+			RootDOMElement) {
+
+			function TextObject() {
+
+				this.nonSuper = {
+
+					nonSub: new Text(function() {
+
+						return "Hello World";
+					})
+				};
+			}
+
+			var viewModel = new ViewModel(new TextObject());
+			viewModel.applyBinding(new RootDOMElement());
+
+			assert.notEqual(document.querySelector("#non-sub").innerHTML, "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <div id="plain" data-bind="plain"></div>
+    <script>
+	QUnit.test("Update text from plain object", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Text",
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			Text,
+			ViewModel,
+			RootDOMElement) {
+
+			function PlainObject() {
+
+				this.datum = null;
+
+				var self = this;
+
+				this.plain =
+					new Text(function() {
+
+						return self.datum;
+					});
+			}
+
+			var plainObject = new PlainObject();
+
+			var viewModel = new ViewModel(plainObject);
+			viewModel.applyBinding(new RootDOMElement());
+
+			plainObject.datum = "Hello World";
+
+			assert.strictEqual(document.querySelector("#plain").innerHTML, "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <input type="text" id="plainValue" data-bind="plainValue" />
+    <script>
+	QUnit.test("Update value from plain object", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Value",
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			Value,
+			ViewModel,
+			RootDOMElement) {
+
+			function PlainObject() {
+
+				this.datum = null;
+
+				var self = this;
+
+				this.plainValue =
+					new Value(function() {
+
+						return self.datum;
+					});
+			}
+
+			var plainObject = new PlainObject();
+
+			var viewModel = new ViewModel(plainObject);
+			viewModel.applyBinding(new RootDOMElement());
+
+			plainObject.datum = "Hello World";
+
+			assert.strictEqual(document.querySelector("#plainValue").value, "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <div id="one" data-bind="two">
+      <input type="text" data-bind="input" />
+    </div>
+    <div id="two" data-bind="two">
+      <input type="text" data-bind="input" />
+    </div>
+    <script>
+	QUnit.test("Bind view model to two elements", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Value",
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			Value,
+			ViewModel,
+			RootDOMElement) {
+
+			function TwoObject() {
+
+				this.datum = null;
+
+				var self = this;
+
+				this.two = {
+
+					input: new Value(function() {
+
+						return self.datum;
+					})
+				};
+			}
+
+			var two = new TwoObject();
+
+			var viewModel = new ViewModel(two);
+			viewModel.applyBinding(new RootDOMElement());
+
+			two.datum = "Hello World";
+
+			assert.strictEqual(document.querySelector("#one input").value, "Hello World");
+			assert.strictEqual(document.querySelector("#two input").value, "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <input type="text" id="plain-change" data-bind="plainChange" />
+    <script>
+	QUnit.test("Update plain data from input", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Value",
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			Value,
+			ViewModel,
+			RootDOMElement) {
+
+			function InputObject() {
+
+				this.datum = null;
+
+				this.plainChange =
+					new Value(function(value) {
+
+						if (value) {
+
+							this.datum = value;
+						}
+
+						return this.datum;
+					});
+			}
+
+			var input = new InputObject();
+
+			var viewModel = new ViewModel(input);
+			viewModel.applyBinding(new RootDOMElement());
+
+			var element = document.querySelector("#plain-change");
+
+			element.value = "Hello World";
+			element.dispatchEvent(new Event("change"));
+
+			assert.strictEqual(input.datum, "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <div data-bind="inner"></div>
+    <div data-bind="outer"></div>
+    <script>
+	QUnit.test("Dependencies are not recalled", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/Text", "root/BindingRoot"], function(Text, BindingRoot) {
+
+			var count = 0;
+
+			function Only() {
+
+				this.datum = null;
+
+				this.inner =
+					new Text(function() {
+
+						count += 1;
+					});
+			}
+
+			var only = new Only();
+			var root = new BindingRoot(only);
+
+			only.outer =
+				new Text(function() {
+
+					return only.datum;
+				});
+
+			assert.strictEqual(count, 1);
+
+			only.datum = "Hello World";
+
+			assert.strictEqual(count, 1);
+
+			root.disconnect();
+
+			done();
+		});
+	});
+    </script>
+    <div data-bind="scope">
+      <div data-bind="subscope">
+        <div id="scope" data-bind="text"></div>
+      </div>
+    </div>
+    <script>
+	QUnit.test("Bindings not applied in subscope", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Text",
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			Text,
+			ViewModel,
+			RootDOMElement) {
+
+			function ScopeObject() {
+
+				this.subscope = {};
+
+				this.text = new Text(function() {
+
+					return "Hello World";
+				});
+			}
+
+			var scope = new ScopeObject();
+
+			var viewModel = new ViewModel(scope);
+			viewModel.applyBinding(new RootDOMElement());
+
+			var element = document.querySelector("#scope");
+
+			assert.notEqual(element.textContent, "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <div id="on-bind" data-bind="bindOn"></div>
+    <script>
+	QUnit.test("onBind is called when object is bound", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			ViewModel,
+			RootDOMElement) {
+
+			var elementId;
+
+			function OnBindObject() {
+
+				this.bindOn = {
+
+					onBind: function(element) {
+
+						elementId = element.id;
+					}
+				};
+			}
+
+			var viewModel = new ViewModel(new OnBindObject());
+			viewModel.applyBinding(new RootDOMElement());
+
+			assert.strictEqual(elementId, "on-bind");
+
+			done();
+		});
+	});
+    </script>
+    <div data-bind="bindOnce"></div>
+    <script>
+	QUnit.test("onBind is not recalled", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Binding",
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			Binding,
+			ViewModel,
+			RootDOMElement) {
+
+			var count = 0;
+
+			function OnBindOnceObject() {
+
+				this.bindOnce = {
+
+					onBind: function() {
+
+						count++;
+					}
+				};
+			}
+
+			var onBindOnce = new OnBindOnceObject();
+
+			var viewModel = new ViewModel(onBindOnce);
+			viewModel.applyBinding(new RootDOMElement());
+			viewModel.applyBinding(new RootDOMElement());
+
+			assert.strictEqual(count, 1);
+
+			done();
+		});
+	});
+    </script>
+    <div data-bind="update"></div>
+    <script>
+	QUnit.test("Properties of unbound objects are tracked.", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Update",
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			Update,
+			ViewModel,
+			RootDOMElement) {
+
+			var count = 0;
+
+			function Subproperty() {
+
+				this.subobject = {
+
+					property: "Hello World"
+				};
+
+				this.update = new Update(function() {
+
+					var value = this.subobject.property;
+
+					count++;
+				});
+			}
+
+			var subproperty = new Subproperty();
+
+			var viewModel = new ViewModel(subproperty);
+			viewModel.applyBinding(new RootDOMElement());
+
+			subproperty.subobject.property = "Eh up planet.";
+
+			assert.strictEqual(count, 2);
+
+			done();
+		});
+	});
+	</script>
+    <div data-bind="failBind">
+      <div data-bind="failSuper">
+        <div id="fail" data-bind="failSub"></div>
+      </div>
+    </div>
+    <script>
+	QUnit.test("Fail to bind object out of scope", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Text",
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			Text,
+			ViewModel,
+			RootDOMElement) {
+
+			function FailObject() {
+
+				this.failBind = {};
+
+				this.failSuper = {
+
+					failSub: new Text(function() {
+
+						return "Hello World";
+					})
+				};
+			}
+
+			var viewModel = new ViewModel(new FailObject());
+			viewModel.applyBinding(new RootDOMElement());
+
+			assert.strictEqual(document.querySelector("#fail").innerHTML, "");
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Binding attribute missing", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Text",
+			"object/ViewModel",
+			"element/RootDOMElement"
+		], function(
+			Text,
+			ViewModel,
+			RootDOMElement) {
+
+			function MissingObject() {
+
+				this.missing = {
+
+					empty: {}
+				};
+			}
+
+			var viewModel = new ViewModel(new MissingObject());
+			viewModel.applyBinding(new RootDOMElement());
+
+			assert.expect(0);
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>

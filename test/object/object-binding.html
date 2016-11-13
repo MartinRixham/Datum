@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Object Binding Tests</title>
+    <link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../../src", context: i++ })(dependencies, factory);
+		}
+    </script>
+    <div id="notObject">
+      <div></div>
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Remove elements when object null", function(assert) {
+
+		var done = assert.async();
+
+		require(["object/ObjectBinding"], function(ObjectBinding) {
+
+			var binding = new ObjectBinding();
+			var element = document.querySelector("#notObject");
+			var model = {
+
+				notObject: null
+			};
+
+			binding.setUpElement(model, element);
+			binding.updateElement(model, element, null);
+
+			assert.strictEqual(element.children.length, 0);
+
+			done();
+		});
+	});
+    </script>
+    <div id="not-null">
+      <div></div>
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Replace elements when object not null", function(assert) {
+
+		var done = assert.async();
+
+		require(["object/ObjectBinding"], function(ObjectBinding) {
+
+			var binding = new ObjectBinding();
+			var element = document.querySelector("#not-null");
+			var model = {
+
+				notNull: null
+			};
+
+			binding.setUpElement(model, element, model.notNull);
+			binding.updateElement(model, element, model.notNull);
+
+			model.notNull = {};
+
+			binding.updateElement(model, element, model.notNull);
+
+			assert.strictEqual(element.children.length, 2);
+
+			done();
+		});
+	});
+    </script>
+    <div id="not-twice">
+      <div></div>
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Replace elements only once when object not null twice", function(assert) {
+
+		var done = assert.async();
+
+		require(["object/ObjectBinding"], function(ObjectBinding) {
+
+			var binding = new ObjectBinding();
+			var element = document.querySelector("#not-twice");
+			var model = {
+
+				notNull: null
+			};
+
+			binding.setUpElement(model, element, model.notNull);
+			binding.updateElement(model, element, model.notNull);
+
+			model.notNull = {};
+
+			binding.updateElement(model, element, model.notNull);
+			binding.updateElement(model, element, model.notNull);
+
+			assert.strictEqual(element.children.length, 2);
+
+			done();
+		});
+	});
+    </script>
+    <div id="replace-text" data-bind="replaceText">
+      <div data-bind="text"></div>
+    </div>
+    <script>
+	QUnit.test("Template replaced when new object set", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/Text", "root/BindingRoot"], function(Text, BindingRoot) {
+
+			function Replace() {
+
+				this.replaceText = null;
+			}
+
+			var replace = new Replace();
+			var root = new BindingRoot(replace);
+			var element = document.querySelector("#replace-text");
+
+			assert.strictEqual(element.children.length, 0);
+
+			replace.replaceText = {
+
+				text: new Text(function() { return "Hello world."; })
+			};
+
+			assert.strictEqual(element.children.length, 1);
+			assert.strictEqual(element.children[0].textContent, "Hello world.");
+
+			root.disconnect();
+
+			done();
+		});
+	});
+    </script>
+    <div id="reset">
+      <div></div>
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Reset element", function(assert) {
+
+		var done = assert.async();
+
+		require(["object/ObjectBinding"], function(ObjectBinding) {
+
+			var binding = new ObjectBinding();
+			var element = document.querySelector("#reset");
+			var model = {
+
+				notObject: null
+			};
+
+			binding.setUpElement(model, element);
+			binding.updateElement(model, element, null);
+			binding.resetElement(element);
+
+			assert.strictEqual(element.children.length, 2);
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>

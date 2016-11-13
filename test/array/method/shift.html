@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Shift Tests</title>
+    <link rel="stylesheet" href="../../../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../../../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../../../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../../../src", context: i++ })(dependencies, factory);
+		}
+    </script>
+    <script>
+		function FakePropertyType() {
+
+			this.removeBindingWasCalled = false;
+
+			var self = this;
+
+			this.createViewModel = function() {
+
+				return {
+
+					applyBinding: function() {},
+					removeBinding: function() {
+
+						self.removeBindingWasCalled = true;
+					}
+				};
+			};
+
+			this.createArrayBinding = function() {
+
+				return {
+
+					applyBinding: function() {}
+				};
+			};
+		}
+    </script>
+    <div id="shift">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Shift element from array", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/method/Shift",
+			"array/ArrayElement",
+			"property/TransientProperty"
+		], function(
+			Shift,
+			ArrayElement,
+			TransientProperty) {
+
+			var element = document.querySelector("#shift");
+			var child = new ArrayElement(element.firstElementChild);
+
+			var model = [{}];
+			var propertyType = new FakePropertyType();
+			var properties = [new TransientProperty(model[0], propertyType)];
+			var elementChildren = [{ element: element, child: child }];
+
+			new Shift(model, elementChildren, properties);
+
+			model.shift();
+
+			assert.strictEqual(model.length, 0);
+			assert.strictEqual(properties.length, 0);
+			assert.strictEqual(element.children.length, 0);
+			assert.ok(propertyType.removeBindingWasCalled);
+
+			done();
+		});
+	});
+    </script>
+    <div id="empty">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Shift from empty array", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/method/Shift",
+			"array/ArrayElement"
+		], function(
+			Shift,
+			ArrayElement) {
+
+			var element = document.querySelector("#empty");
+			var child = new ArrayElement(element.firstElementChild);
+
+			element.removeChild(element.firstElementChild);
+
+			var model = [];
+			var properties = [];
+			var elementChildren = [{ element: element, child: child }];
+
+			new Shift(model, elementChildren, properties);
+
+			model.shift();
+
+			assert.strictEqual(model.length, 0);
+			assert.strictEqual(properties.length, 0);
+			assert.strictEqual(element.children.length, 0);
+
+			done();
+		});
+	});
+    </script>
+    <div id="two">
+      <div>first</div>
+    </div>
+    <script>
+	QUnit.test("Shift element from array length two", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/method/Shift",
+			"array/ArrayElement",
+			"property/TransientProperty"
+		], function(
+			Shift,
+			ArrayElement,
+			TransientProperty) {
+
+			var element = document.querySelector("#two");
+			var child = new ArrayElement(element.firstElementChild);
+
+			var div = document.createElement("DIV");
+			div.textContent = "last";
+
+			element.appendChild(div);
+
+			var model = [{}, { hello: "Hello world." }];
+			var properties =
+				[
+					new TransientProperty(model[0], new FakePropertyType()),
+					new TransientProperty(model[1], new FakePropertyType())
+				];
+			var elementChildren = [{ element: element, child: child }];
+
+			new Shift(model, elementChildren, properties);
+
+			model.shift();
+
+			assert.strictEqual(model.length, 1);
+			assert.strictEqual(model[0].hello, "Hello world.");
+			assert.strictEqual(properties.length, 1);
+			assert.strictEqual(element.children.length, 1);
+			assert.strictEqual(element.children[0].innerHTML, "last");
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>

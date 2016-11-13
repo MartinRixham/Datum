@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Callback Binder Tests</title>
+    <link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+	<script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../../src", context: i++ })(dependencies, factory);
+		}
+	</script>
+    <div id="function" data-bind="function"></div>
+    <script>
+	QUnit.test("Bind text", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/binding/TextBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			Datum,
+			TextBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var datum = new Datum();
+
+			var binding =
+				new CallbackBinder(new TextBinding(function() {
+
+					return datum();
+				}));
+
+			binding.applyBinding(new DOMElement(document.body), "function");
+			datum("Hello World");
+
+			assert.strictEqual(
+				document.querySelector("#function").innerHTML,
+				"Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <div id="one" data-bind="two"></div>
+    <div id="two" data-bind="two"></div>
+    <script>
+	QUnit.test("Bind to two elements", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/binding/TextBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			Datum,
+			TextBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var datum = new Datum();
+
+			var binding =
+				new CallbackBinder(new TextBinding(function() {
+
+					return datum();
+				}));
+
+			binding.applyBinding(new DOMElement(document.body), "two");
+			datum("Hello World");
+
+			assert.strictEqual(document.querySelector("#two").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#one").innerHTML, "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <div data-bind="single"></div>
+    <div data-bind="single"></div>
+    <script>
+	QUnit.test("Callback called once per element on init", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/binding/TextBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			Datum,
+			TextBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var count = 0;
+			var datum = new Datum();
+
+			var binder = new CallbackBinder(new TextBinding(function() {
+
+				count += 1;
+				return datum();
+			}));
+
+			binder.applyBinding(new DOMElement(document.body), "single");
+
+			assert.strictEqual(count, 2);
+
+			done();
+		});
+	});
+    </script>
+    <div data-bind="twice"></div>
+    <div data-bind="twice"></div>
+    <script>
+	QUnit.test("Callback called once per element on update", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/binding/TextBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			Datum,
+			TextBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var count = 0;
+			var datum = new Datum();
+
+			var binding =
+				new CallbackBinder(new TextBinding(function() {
+
+					count += 1;
+					return datum();
+				}));
+
+			binding.applyBinding(new DOMElement(document.body), "twice");
+			count = 0;
+			datum("Hello World");
+
+			assert.strictEqual(count, 2);
+
+			done();
+		});
+	});
+    </script>
+    <div id="element" data-bind="element"></div>
+    <script>
+	QUnit.test("Access element from callback", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/binding/TextBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			TextBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var binding =
+				new CallbackBinder(new TextBinding(function(element) {
+
+					return element.id;
+				}));
+
+			binding.applyBinding(new DOMElement(document.body), "element");
+			assert.strictEqual(document.querySelector("#element").innerHTML, "element");
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Callback called from test handle", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/binding/TextBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			TextBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var passedModel;
+			var passedElement;
+
+			var binding =
+				new CallbackBinder(new TextBinding(function(element) {
+
+					passedModel = this;
+					passedElement = element;
+				}));
+
+			var model = {};
+			var element = document.createElement("DIV");
+
+			binding.applyBinding(new DOMElement(document.body), "thingy", model);
+			binding.test.call(element);
+
+			assert.strictEqual(passedModel, model);
+			assert.strictEqual(passedElement, element);
+
+			done();
+		});
+	});
+    </script>
+    <div id="unbind" data-bind="unbind"></div>
+  	<script>
+	QUnit.test("Unbind callback", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/binding/TextBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			TextBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var binding =
+				new CallbackBinder(new TextBinding(function() {
+
+					return "Hello world.";
+				}));
+
+			binding.applyBinding(new DOMElement(document.body), "unbind");
+			binding.removeBinding();
+
+			assert.strictEqual(document.querySelector("#unbind").innerHTML, "");
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Unbind null element", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/binding/TextBinding",
+			"callback/CallbackBinder",
+			"element/NullDOMElement"
+		], function(
+			TextBinding,
+			CallbackBinder,
+			NullDOMElement) {
+
+			var binding =
+				new CallbackBinder(new TextBinding(function() {
+
+					return "Hello world.";
+				}));
+
+			binding.applyBinding(new NullDOMElement(), "unbindNull");
+			binding.applyBinding(new NullDOMElement(), "unbindNull");
+			binding.removeBinding();
+
+			assert.expect(0);
+
+			done();
+		});
+	});
+    </script>
+    <div id="first-scope">
+      <div data-bind="scope"></div>
+    </div>
+    <div id="second-scope">
+      <div data-bind="scope"></div>
+    </div>
+    <script>
+	QUnit.test("Bind to new scope", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/binding/TextBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			TextBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var binding =
+				new CallbackBinder(new TextBinding(function() {
+
+					return "Hello world.";
+				}));
+
+			var firstScope = new DOMElement(document.querySelector("#first-scope"));
+			binding.applyBinding(firstScope, "scope");
+
+			assert.strictEqual(
+				document.querySelector("#first-scope > div").innerHTML,
+				"Hello world.");
+
+			document.body.removeChild(firstScope.get());
+			var secondScope = new DOMElement(document.querySelector("#second-scope"));
+			binding.applyBinding(secondScope, "scope");
+
+			assert.strictEqual(
+				firstScope.get().querySelector("div").innerHTML,
+				"");
+			assert.strictEqual(
+				secondScope.get().querySelector("div").innerHTML,
+				"Hello world.");
+
+			done();
+		});
+	});
+    </script>
+    <div id="init" data-bind="init"></div>
+    <script>
+	QUnit.test("Bind on init", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/binding/InitBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			Datum,
+			InitBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var datum = new Datum();
+			datum("Hello World");
+
+			var binding =
+				new CallbackBinder(new InitBinding(function(element) {
+
+					element.textContent = datum();
+				}));
+
+			binding.applyBinding(new DOMElement(document.body), "init");
+
+			assert.strictEqual(
+				document.querySelector("#init").innerHTML,
+				"Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <div data-bind="initOnce"></div>
+    <div data-bind="initOnce"></div>
+    <script>
+	QUnit.test("Init called once per element on init", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/binding/InitBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			Datum,
+			InitBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var count = 0;
+			var datum = new Datum();
+
+			var binding =
+				new CallbackBinder(new InitBinding(function() {
+
+					count += 1;
+					return datum();
+				}));
+
+			binding.applyBinding(new DOMElement(document.body), "initOnce");
+
+			assert.strictEqual(count, 2);
+
+			done();
+		});
+	});
+    </script>
+    <div data-bind="noUpdate"></div>
+    <div data-bind="noUpdate"></div>
+    <script>
+	QUnit.test("Init not called on update", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/binding/InitBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			Datum,
+			InitBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var count = 0;
+			var datum = new Datum();
+
+			var binding =
+				new CallbackBinder(new InitBinding(function() {
+
+					count += 1;
+					return datum();
+				}));
+
+			binding.applyBinding(new DOMElement(document.body), "noUpdate");
+
+			count = 0;
+			datum("Hello World");
+
+			assert.strictEqual(count, 0);
+
+			done();
+		});
+	});
+    </script>
+    <input type="text" id="value-input" data-bind="valueInput" />
+    <script>
+	QUnit.test("Update data from input", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/binding/ValueBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			Datum,
+			ValueBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var datum = new Datum();
+
+			var binding =
+				new CallbackBinder(new ValueBinding(function(value) {
+
+					if (value) {
+
+						datum(value);
+					}
+
+					return datum();
+				}));
+
+			binding.applyBinding(new DOMElement(document.body), "valueInput");
+
+			var element = document.querySelector("#value-input");
+			element.value = "Hello World";
+			element.dispatchEvent(new Event("change"));
+
+			assert.strictEqual(datum(), "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <input type="text" id="input-value" data-bind="inputValue" />
+    <script>
+	QUnit.test("Change value after binding", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/binding/ValueBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			Datum,
+			ValueBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var datum = new Datum();
+
+			var binding =
+				new CallbackBinder(new ValueBinding(function() {
+
+					return datum();
+				}));
+
+			binding.applyBinding(new DOMElement(document.body), "inputValue");
+
+			datum("Hello World");
+
+			assert.strictEqual(document.querySelector("#input-value").value, "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <input type="text" id="send" data-bind="sync" />
+    <input type="text" id="receive" data-bind="sync" />
+    <script>
+	QUnit.test("Synchronise inputs", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/binding/ValueBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			Datum,
+			ValueBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var datum = new Datum();
+
+			var binding =
+				new CallbackBinder(new ValueBinding(function(value) {
+
+					if (value) {
+
+						datum(value);
+					}
+
+					return datum();
+				}));
+
+			binding.applyBinding(new DOMElement(document.body), "sync");
+
+			var sender = document.querySelector("#send");
+			sender.value = "Hello World";
+			sender.dispatchEvent(new Event("change"));
+
+			assert.strictEqual(document.querySelector("#receive").value, "Hello World");
+
+			done();
+		});
+	});
+    </script>
+	<div data-bind="name">Hello world.</div>
+    <script>
+	QUnit.test("Get parameters from callbacks", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			CallbackBinder,
+			DOMElement) {
+
+			var model = { "name": "thingy" };
+			var initialisedModel;
+			var initialisedElement;
+			var updatedModel;
+			var updatedElement;
+			var resetElement;
+
+			var binding =
+				new CallbackBinder({
+
+					setUpElement: function(model, element) {
+
+						initialisedModel = model;
+						initialisedElement = element;
+					},
+					updateElement: function(model, element) {
+
+						updatedModel = model;
+						updatedElement = element;
+					},
+					resetElement: function(element) {
+
+						resetElement = element;
+					}
+				});
+
+			binding.applyBinding(new DOMElement(document.body), "name", model);
+			binding.removeBinding();
+
+			assert.strictEqual(initialisedModel, model);
+			assert.strictEqual(initialisedElement.innerHTML, "Hello world.");
+			assert.strictEqual(updatedModel, model);
+			assert.strictEqual(updatedElement.innerHTML, "Hello world.");
+			assert.strictEqual(resetElement.innerHTML, "Hello world.");
+
+			done();
+		});
+	});
+    </script>
+    <div data-bind="firstText"></div>
+    <div data-bind="secondText"></div>
+    <script>
+	QUnit.test("Dependencies don't cause infinite recursion", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Text",
+			"root/BindingRoot"
+		], function(
+			Text,
+			BindingRoot) {
+
+			function Texts() {
+
+				this.text1 = "some text";
+				this.text2 = "some more text";
+
+				this.firstText =
+					new Text(function() {
+
+						this.text1 = this.text2;
+
+						return this.text1;
+					});
+
+				this.secondText =
+					new Text(function() {
+
+						this.text2 = this.text1;
+
+						return this.text2;
+					});
+			}
+
+			var texts = new Texts();
+			new BindingRoot(texts);
+
+			assert.ok(texts);
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>

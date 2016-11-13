@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON("package.json"),
 		jshint: {
 
-			all: ["src/*.js", "test/*.html", "examples/**/*.js"],
+			all: ["src/**/*.js", "test/**/*.html", "examples/**/*.js"],
 			options: {
 
 				extract: "auto"
@@ -13,14 +13,14 @@ module.exports = function(grunt) {
 		},
 		jscs: {
 
-			src: ["src/*.js", "test", "examples/**/*.js"],
+			src: ["src/**/*.js", "test", "examples/**/*.js"],
 			options: {
 
 				config: ".jscsrc",
 				esnext: false,
 				verbose: true,
 				fix: false,
-				extract: ["test/*.html"]
+				extract: ["test/**/*.html"]
 			}
 		},
 		qunit: {
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 
 				inject: "bridge.js"
 			},
-			all: ["test/*"]
+			all: ["test/**/*.html"]
 		},
 		mkdir: {
 

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Visible Binding Tests</title>
+    <link rel="stylesheet" href="../../../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../../../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../../../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+	    #qunit ~ * {
+		    display: none;
+	    }
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../../../src", context: i++ })(dependencies, factory);
+		}
+    </script>
+    <div id="invisible"></div>
+    <script>
+	QUnit.test("Set invisible", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/binding/VisibleBinding"], function(VisibleBinding) {
+
+			var visible =
+				new VisibleBinding(function() {
+
+					return false;
+				});
+
+			var element = document.querySelector("#invisible");
+			visible.updateElement(null, element);
+			var display = document.querySelector("#invisible").style.display;
+
+			assert.strictEqual(display, "none");
+
+			done();
+		});
+	});
+    </script>
+    <div id="visible"></div>
+    <script>
+	QUnit.test("Set visible", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/binding/VisibleBinding"], function(VisibleBinding) {
+
+			var visible =
+				new VisibleBinding(function() {
+
+					return true;
+				});
+
+			var element = document.querySelector("#visible");
+			visible.updateElement(null, element);
+			var display = document.querySelector("#visible").style.display;
+
+			assert.strictEqual(display, "");
+
+			done();
+		});
+	});
+    </script>
+    <div id="callback"></div>
+    <script>
+	QUnit.test("Model and element passed on update", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/binding/VisibleBinding"], function(VisibleBinding) {
+
+			var receivedModel;
+			var receivedElement;
+
+			var visible =
+				new VisibleBinding(function(element) {
+
+					receivedModel = this;
+					receivedElement = element;
+				});
+
+			var element = document.querySelector("#callback");
+			var model = {};
+			visible.updateElement(model, element);
+
+			assert.strictEqual(receivedElement, element);
+			assert.strictEqual(receivedModel, model);
+
+			done();
+		});
+	});
+    </script>
+    <div id="reset"></div>
+    <script>
+	QUnit.test("Reset element", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/binding/VisibleBinding"], function(VisibleBinding) {
+
+			var visible =
+				new VisibleBinding(function() {
+
+					return false;
+				});
+
+			var element = document.querySelector("#reset");
+			visible.updateElement(null, element);
+			visible.resetElement(element);
+			var display = document.querySelector("#reset").style.display;
+
+			assert.strictEqual(display, "");
+
+			done();
+		});
+	});
+    </script>
+    <div id="test"></div>
+    <script>
+	QUnit.test("Call test handle", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/binding/VisibleBinding"], function(VisibleBinding) {
+
+			var passedModel;
+			var passedElement;
+
+			var binding =
+				new VisibleBinding(function(element) {
+
+					passedModel = this;
+					passedElement = element;
+
+					return "Hello World.";
+				});
+
+			var model = {};
+			var element = document.querySelector("#test");
+
+			assert.strictEqual(binding.call(model, element), "Hello World.");
+			assert.strictEqual(passedModel, model);
+			assert.strictEqual(passedElement, element);
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Value Binding Tests</title>
+    <link rel="stylesheet" href="../../../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../../../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../../../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+	    #qunit ~ * {
+		    display: none;
+	    }
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../../../src", context: i++ })(dependencies, factory);
+		}
+    </script>
+    <input id="init" value="Hello world." />
+    <script>
+	QUnit.test("Init value", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/binding/ValueBinding"], function(ValueBinding) {
+
+			var receivedValue;
+
+			var value =
+				new ValueBinding(function(value) {
+
+					receivedValue = value;
+				});
+
+			var element = document.querySelector("#init");
+			value.setUpElement(null, element);
+			element.dispatchEvent(new Event("change"));
+
+			assert.strictEqual(receivedValue, "Hello world.");
+
+			done();
+		});
+	});
+    </script>
+    <input id="update" />
+    <script>
+	QUnit.test("Update value", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/binding/ValueBinding"], function(ValueBinding) {
+
+			var value =
+				new ValueBinding(function() {
+
+					return "Hello World";
+				});
+
+			var element = document.querySelector("#update");
+			value.updateElement(null, element);
+
+			assert.strictEqual(document.querySelector("#update").value, "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <input id="reset" value="Hello world." />
+    <script>
+	QUnit.test("Reset value", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/binding/ValueBinding"], function(ValueBinding) {
+
+			var receivedValue;
+
+			var value =
+				new ValueBinding(function(value) {
+
+					receivedValue = value;
+				});
+
+			var element = document.querySelector("#reset");
+			value.setUpElement(null, element);
+			value.resetElement(element);
+			element.dispatchEvent(new Event("change"));
+
+			assert.strictEqual(document.querySelector("#reset").value, "");
+			assert.ok(!receivedValue);
+
+			done();
+		});
+	});
+    </script>
+    <div id="callback"></div>
+    <script>
+	QUnit.test("Model and element passed on update", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/binding/ValueBinding"], function(ValueBinding) {
+
+			var receivedModel;
+			var receivedElement;
+
+			var value =
+				new ValueBinding(function(value, element) {
+
+					receivedModel = this;
+					receivedElement = element;
+				});
+
+			var element = document.querySelector("#callback");
+			var model = {};
+			value.updateElement(model, element);
+
+			assert.strictEqual(receivedElement, element);
+			assert.strictEqual(receivedModel, model);
+
+			done();
+		});
+	});
+    </script>
+    <div id="test"></div>
+    <script>
+	QUnit.test("Call test handle", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/binding/ValueBinding"], function(ValueBinding) {
+
+			var passedModel;
+			var passedValue;
+			var passedElement;
+
+			var binding =
+				new ValueBinding(function(value, element) {
+
+					passedModel = this;
+					passedValue = value;
+					passedElement = element;
+
+					return "Hello World.";
+				});
+
+			var model = {};
+			var value = "thingy";
+			var element = document.querySelector("#test");
+
+			assert.strictEqual(binding.call(model, value, element), "Hello World.");
+			assert.strictEqual(passedModel, model);
+			assert.strictEqual(passedValue, value);
+			assert.strictEqual(passedElement, element);
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>

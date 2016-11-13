@@ -28,7 +28,12 @@
 
 		var done = assert.async();
 
-		require(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		require([
+			"callback/Binding",
+			"root/BindingRoot"
+		], function(
+			Binding,
+			BindingRoot) {
 
 			function TextObject() {
 
@@ -65,7 +70,12 @@
 
 		var done = assert.async();
 
-		require(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		require([
+			"callback/Binding",
+			"root/BindingRoot"
+		], function(
+			Binding,
+			BindingRoot) {
 
 			function TextObject() {
 
@@ -110,7 +120,12 @@
 
 		var done = assert.async();
 
-		require(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		require([
+			"callback/Binding",
+			"root/BindingRoot"
+		], function(
+			Binding,
+			BindingRoot) {
 
 			var firstDiv = document.createElement("div");
 			firstDiv.id = "first";
@@ -154,7 +169,12 @@
 
 		var done = assert.async();
 
-		require(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		require([
+			"callback/Binding",
+			"root/BindingRoot"
+		], function(
+			Binding,
+			BindingRoot) {
 
 			var firstInput = document.createElement("input");
 			firstInput.id = "first";
@@ -219,7 +239,12 @@
 
 		var done = assert.async();
 
-		require(["Binding", "BindingRoot"], function(Binding, BindingRoot) {
+		require([
+			"callback/Binding",
+			"root/BindingRoot"
+		], function(
+			Binding,
+			BindingRoot) {
 
 			var count = 0;
 
