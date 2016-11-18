@@ -69,15 +69,15 @@ define([
 
 			element._rebind = function() {};
 
-			checkElementHasOnlyOneChild(element);
+			checkElementHasOnlyOneChild(element.get());
 
-			var child = getChildFromDOM(element);
+			var child = getChildFromDOM(element.get());
 
-			elementChildren.push({ element: element, child: child });
+			elementChildren.push({ element: element.get(), child: child });
 
 			for (var i = 0; i < model.length; i++) {
 
-				element.appendChild(child.clone());
+				element.get().appendChild(child.clone());
 			}
 		};
 
@@ -104,7 +104,7 @@ define([
 
 			for (var i = 0; i < properties.length; i++) {
 
-				properties[i].applyBinding(new DOMElement(element), i, value);
+				properties[i].applyBinding(new DOMElement(element.get()), i, value);
 			}
 		};
 
@@ -114,19 +114,19 @@ define([
 
 			for (var i = 0; i < elementChildren.length; i++) {
 
-				if (element == elementChildren[i].element) {
+				if (element.get() == elementChildren[i].element) {
 
 					child = elementChildren[i].child;
 					elementChildren.splice(i, 1);
 				}
 			}
 
-			while (element.lastChild) {
+			while (element.get().lastChild) {
 
-				element.removeChild(element.lastChild);
+				element.get().removeChild(element.get().lastChild);
 			}
 
-			element.appendChild(child.get());
+			element.get().appendChild(child.get());
 		};
 	}
 

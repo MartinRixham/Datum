@@ -27,9 +27,9 @@ define([
 
 			for (var i = 0; i < removed.length; i++) {
 
-				var element = removed[i].get();
+				var element = removed[i];
 
-				if (element) {
+				if (element.get()) {
 
 					binding.resetElement(element);
 				}
@@ -54,13 +54,13 @@ define([
 
 					if (boundElements.contains(element)) {
 
-						binding.updateElement(model, element.get(), model && model[name]);
+						binding.updateElement(model, element, model && model[name]);
 					}
 					else {
 
-						binding.setUpElement(model, element.get(), model && model[name]);
+						binding.setUpElement(model, element, model && model[name]);
 						new Registry().requestRegistrations();
-						binding.updateElement(model, element.get(), model && model[name]);
+						binding.updateElement(model, element, model && model[name]);
 						createCallback(model, element);
 					}
 				}
@@ -71,7 +71,7 @@ define([
 
 			function callback(value) {
 
-				binding.updateElement(model, element.get(), value);
+				binding.updateElement(model, element, value);
 			}
 
 			new Registry().assignUpdater(new Dependant(callback, binding, element));
@@ -83,9 +83,9 @@ define([
 
 			for (var i = 0; i < elements.length; i++) {
 
-				var element = elements[i].get();
+				var element = elements[i];
 
-				if (element) {
+				if (element.get()) {
 
 					binding.resetElement(element);
 				}

@@ -51,15 +51,20 @@
 
 		var done = assert.async();
 
-		require(["array/ArrayBinding"], function(ArrayBinding) {
+		require([
+			"array/ArrayBinding",
+			"element/DOMElement"
+		], function(
+			ArrayBinding,
+			DOMElement) {
 
 			var model = { zero: [] };
 			var binding = new ArrayBinding(model.zero);
-			var element = document.querySelector("#zero");
+			var element = new DOMElement(document.querySelector("#zero"));
 
 			binding.setUpElement(model, element, model.zero);
 
-			assert.strictEqual(element.children.length, 0);
+			assert.strictEqual(element.get().children.length, 0);
 
 			done();
 		});
@@ -73,15 +78,22 @@
 
 		var done = assert.async();
 
-		require(["array/ArrayBinding", "callback/Text"], function(ArrayBinding, Text) {
+		require([
+			"array/ArrayBinding",
+			"callback/Text",
+			"element/DOMElement"
+		], function(
+			ArrayBinding,
+			Text,
+			DOMElement) {
 
 			var model = { one: [new Text(function() { return "Hello world."; })] };
 			var binding = new ArrayBinding(model.one);
-			var element = document.querySelector("#one");
+			var element = new DOMElement(document.querySelector("#one"));
 
 			binding.setUpElement(model, element, model.one);
 
-			assert.strictEqual(element.children.length, 1);
+			assert.strictEqual(element.get().children.length, 1);
 
 			done();
 		});
@@ -95,7 +107,14 @@
 
 		var done = assert.async();
 
-		require(["array/ArrayBinding", "callback/Text"], function(ArrayBinding, Text) {
+		require([
+			"array/ArrayBinding",
+			"callback/Text",
+			"element/DOMElement"
+		], function(
+			ArrayBinding,
+			Text,
+			DOMElement) {
 
 			var model =
 				{
@@ -106,11 +125,11 @@
 				};
 
 			var binding = new ArrayBinding(model.two);
-			var element = document.querySelector("#two");
+			var element = new DOMElement(document.querySelector("#two"));
 
 			binding.setUpElement(model, element, model.two);
 
-			assert.strictEqual(element.children.length, 2);
+			assert.strictEqual(element.get().children.length, 2);
 
 			done();
 		});
@@ -125,11 +144,16 @@
 
 		var done = assert.async();
 
-		require(["array/ArrayBinding"], function(ArrayBinding) {
+		require([
+			"array/ArrayBinding",
+			"element/DOMElement"
+		], function(
+			ArrayBinding,
+			DOMElement) {
 
 			var model = { children: [] };
 			var binding = new ArrayBinding(model.children);
-			var element = document.querySelector("#two-children");
+			var element = new DOMElement(document.querySelector("#two-children"));
 
 			var exception;
 
@@ -158,16 +182,23 @@
 
 		var done = assert.async();
 
-		require(["array/ArrayBinding", "callback/Text"], function(ArrayBinding, Text) {
+		require([
+			"array/ArrayBinding",
+			"callback/Text",
+			"element/DOMElement"
+		], function(
+			ArrayBinding,
+			Text,
+			DOMElement) {
 
 			var model = { bind: [new Text(function() { return "Hello world."; })] };
 			var binding = new ArrayBinding(model.bind);
-			var element = document.querySelector("#bind");
+			var element = new DOMElement(document.querySelector("#bind"));
 
 			binding.setUpElement(model, element, model.bind);
 			binding.updateElement(model, element, model.bind);
 
-			assert.strictEqual(element.children[0].innerHTML, "Hello world.");
+			assert.strictEqual(element.get().children[0].innerHTML, "Hello world.");
 
 			done();
 		});
@@ -292,7 +323,14 @@
 
 		var done = assert.async();
 
-		require(["array/ArrayBinding", "callback/Text"], function(ArrayBinding, Text) {
+		require([
+			"array/ArrayBinding",
+			"callback/Text",
+			"element/DOMElement"
+		], function(
+			ArrayBinding,
+			Text,
+			DOMElement) {
 
 			var model =
 				{
@@ -303,14 +341,16 @@
 				};
 
 			var binding = new ArrayBinding(model.reset);
-			var element = document.querySelector("#reset");
+			var element = new DOMElement(document.querySelector("#reset"));
 
 			binding.setUpElement(model, element, model.reset);
 			binding.updateElement(model, element, model.bind);
 			binding.resetElement(element);
 
-			assert.strictEqual(element.children.length, 1);
-			assert.strictEqual(element.children[0].id, "reset-child");
+			var children = element.get().children;
+
+			assert.strictEqual(children.length, 1);
+			assert.strictEqual(children[0].id, "reset-child");
 
 			done();
 		});

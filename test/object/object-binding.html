@@ -32,10 +32,15 @@
 
 		var done = assert.async();
 
-		require(["object/ObjectBinding"], function(ObjectBinding) {
+		require([
+			"object/ObjectBinding",
+			"element/DOMElement"
+		], function(
+			ObjectBinding,
+			DOMElement) {
 
 			var binding = new ObjectBinding();
-			var element = document.querySelector("#notObject");
+			var element = new DOMElement(document.querySelector("#notObject"));
 			var model = {
 
 				notObject: null
@@ -44,7 +49,7 @@
 			binding.setUpElement(model, element);
 			binding.updateElement(model, element, null);
 
-			assert.strictEqual(element.children.length, 0);
+			assert.strictEqual(element.get().children.length, 0);
 
 			done();
 		});
@@ -59,10 +64,15 @@
 
 		var done = assert.async();
 
-		require(["object/ObjectBinding"], function(ObjectBinding) {
+		require([
+			"object/ObjectBinding",
+			"element/DOMElement"
+		], function(
+			ObjectBinding,
+			DOMElement) {
 
 			var binding = new ObjectBinding();
-			var element = document.querySelector("#not-null");
+			var element = new DOMElement(document.querySelector("#not-null"));
 			var model = {
 
 				notNull: null
@@ -75,7 +85,7 @@
 
 			binding.updateElement(model, element, model.notNull);
 
-			assert.strictEqual(element.children.length, 2);
+			assert.strictEqual(element.get().children.length, 2);
 
 			done();
 		});
@@ -90,10 +100,15 @@
 
 		var done = assert.async();
 
-		require(["object/ObjectBinding"], function(ObjectBinding) {
+		require([
+			"object/ObjectBinding",
+			"element/DOMElement"
+		], function(
+			ObjectBinding,
+			DOMElement) {
 
 			var binding = new ObjectBinding();
-			var element = document.querySelector("#not-twice");
+			var element = new DOMElement(document.querySelector("#not-twice"));
 			var model = {
 
 				notNull: null
@@ -107,7 +122,7 @@
 			binding.updateElement(model, element, model.notNull);
 			binding.updateElement(model, element, model.notNull);
 
-			assert.strictEqual(element.children.length, 2);
+			assert.strictEqual(element.get().children.length, 2);
 
 			done();
 		});
@@ -121,7 +136,14 @@
 
 		var done = assert.async();
 
-		require(["callback/Text", "root/BindingRoot"], function(Text, BindingRoot) {
+		require([
+			"callback/Text",
+			"root/BindingRoot",
+			"element/DOMElement"
+		], function(
+			Text,
+			BindingRoot,
+			DOMElement) {
 
 			function Replace() {
 
@@ -130,17 +152,17 @@
 
 			var replace = new Replace();
 			var root = new BindingRoot(replace);
-			var element = document.querySelector("#replace-text");
-
-			assert.strictEqual(element.children.length, 0);
+			var element = new DOMElement(document.querySelector("#replace-text"));
 
 			replace.replaceText = {
 
 				text: new Text(function() { return "Hello world."; })
 			};
 
-			assert.strictEqual(element.children.length, 1);
-			assert.strictEqual(element.children[0].textContent, "Hello world.");
+			var children = element.get().children;
+
+			assert.strictEqual(children.length, 1);
+			assert.strictEqual(children[0].textContent, "Hello world.");
 
 			root.disconnect();
 
@@ -157,10 +179,15 @@
 
 		var done = assert.async();
 
-		require(["object/ObjectBinding"], function(ObjectBinding) {
+		require([
+			"object/ObjectBinding",
+			"element/DOMElement"
+		], function(
+			ObjectBinding,
+			DOMElement) {
 
 			var binding = new ObjectBinding();
-			var element = document.querySelector("#reset");
+			var element = new DOMElement(document.querySelector("#reset"));
 			var model = {
 
 				notObject: null
@@ -170,7 +197,7 @@
 			binding.updateElement(model, element, null);
 			binding.resetElement(element);
 
-			assert.strictEqual(element.children.length, 2);
+			assert.strictEqual(element.get().children.length, 2);
 
 			done();
 		});

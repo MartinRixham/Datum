@@ -6,20 +6,20 @@ define([], function() {
 
 		this.setUpElement = function(parentModel, element) {
 
-			var children = [].slice.call(element.childNodes);
+			var children = [].slice.call(element.get().childNodes);
 
-			elementChildren.push({ "element": element, "children": children });
+			elementChildren.push({ "element": element.get(), "children": children });
 		};
 
 		this.updateElement = function(parentModel, element, model) {
 
 			if (model) {
 
-				replaceChildren(element);
+				replaceChildren(element.get());
 			}
 			else {
 
-				removeChildren(element);
+				removeChildren(element.get());
 			}
 		};
 
@@ -63,7 +63,7 @@ define([], function() {
 
 			for (var i = 0; i < elementChildren.length; i++) {
 
-				if (elementChildren[i].element == element) {
+				if (elementChildren[i].element == element.get()) {
 
 					children = elementChildren[i].children;
 					elementChildren.splice(i, 1);
@@ -71,11 +71,11 @@ define([], function() {
 				}
 			}
 
-			if (!element.childNodes.length) {
+			if (!element.get().childNodes.length) {
 
 				for (var j = 0; j < children.length; j++) {
 
-					element.appendChild(children[j]);
+					element.get().appendChild(children[j]);
 				}
 			}
 		};
