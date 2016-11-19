@@ -65,7 +65,7 @@ define([
 
 		this.setUpElement = function(parentModel, element, model) {
 
-			element.get()._rebind = function() {};
+			element.createRebinder(function() {});
 
 			checkElementHasOnlyOneChild(element.get());
 

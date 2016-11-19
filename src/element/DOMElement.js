@@ -76,6 +76,21 @@ define([], function() {
 			return element == otherElement;
 		};
 
+		this.isEmpty = function() {
+
+			return !element.childNodes.length;
+		};
+
+		this.removeChildren = function() {
+
+			var children = element.childNodes;
+
+			for (var i = children.length - 1; i >= 0; i--) {
+
+				element.removeChild(children[i]);
+			}
+		};
+
 		this.get = function() {
 
 			return element;

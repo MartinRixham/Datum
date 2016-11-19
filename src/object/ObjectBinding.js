@@ -8,18 +8,18 @@ define([], function() {
 
 			var children = [].slice.call(element.get().childNodes);
 
-			elementChildren.push({ "element": element.get(), "children": children });
+			elementChildren.push({ "element": element, "children": children });
 		};
 
 		this.updateElement = function(parentModel, element, model) {
 
 			if (model) {
 
-				replaceChildren(element.get());
+				replaceChildren(element);
 			}
 			else {
 
-				removeChildren(element.get());
+				element.removeChildren();
 			}
 		};
 
@@ -27,11 +27,11 @@ define([], function() {
 
 			var children = getChildren(element);
 
-			if (!element.childNodes.length) {
+			if (element.isEmpty()) {
 
 				for (var i = 0; i < children.length; i++) {
 
-					element.appendChild(children[i]);
+					element.get().appendChild(children[i]);
 				}
 			}
 		}
@@ -40,20 +40,10 @@ define([], function() {
 
 			for (var i = 0; i < elementChildren.length; i++) {
 
-				if (elementChildren[i].element == element) {
+				if (elementChildren[i].element.equals(element)) {
 
 					return elementChildren[i].children;
 				}
-			}
-		}
-
-		function removeChildren(element) {
-
-			var children = element.childNodes;
-
-			for (var i = children.length - 1; i >= 0; i--) {
-
-				element.removeChild(children[i]);
 			}
 		}
 
@@ -63,7 +53,7 @@ define([], function() {
 
 			for (var i = 0; i < elementChildren.length; i++) {
 
-				if (elementChildren[i].element == element.get()) {
+				if (elementChildren[i].element.equals(element)) {
 
 					children = elementChildren[i].children;
 					elementChildren.splice(i, 1);
@@ -71,7 +61,7 @@ define([], function() {
 				}
 			}
 
-			if (!element.get().childNodes.length) {
+			if (element.isEmpty()) {
 
 				for (var j = 0; j < children.length; j++) {
 
