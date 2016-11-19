@@ -41,6 +41,11 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 			element.appendChild(child.clone());
 		};
 
+		this.prepend = function() {
+
+			element.insertBefore(child.clone(), element.firstChild);
+		};
+
 		this.removeFirst = function() {
 
 			if (element.firstElementChild) {

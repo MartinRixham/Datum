@@ -21,11 +21,10 @@ define([
 
 				for (var j = 0; j < elements.length; j++) {
 
-					var element = elements[j].get();
-					var child = elements[j].getChild();
+					var element = elements[j];
 
-					element.insertBefore(child.clone(), element.firstChild);
-					property.applyBinding(new DOMElement(element), 0, model);
+					element.prepend();
+					property.applyBinding(new DOMElement(element.get()), 0, model);
 				}
 			}
 
