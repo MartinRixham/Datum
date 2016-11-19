@@ -49,6 +49,26 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 			}
 		};
 
+		this.removeChildren = function() {
+
+			var children = [].slice.call(element.children);
+
+			while (element.lastChild) {
+
+				element.removeChild(element.lastChild);
+			}
+
+			return children;
+		};
+
+		this.appendChildren = function(children) {
+
+			for (var i = 0; i < children.length; i++) {
+
+				element.appendChild(children[i]);
+			}
+		};
+
 		this.reset = function() {
 
 			while (element.lastChild) {
