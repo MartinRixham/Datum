@@ -23,7 +23,7 @@ define([
 
 		var properties = [];
 
-		var arrayElements = [];
+		var elements = [];
 
 		(function createProperties() {
 
@@ -35,13 +35,13 @@ define([
 
 		(function createArrayMethods() {
 
-			new Push(model, arrayElements, properties, propertyType);
-			new Pop(model, arrayElements, properties);
-			new Shift(model, arrayElements, properties);
-			new Unshift(model, arrayElements, properties, propertyType);
-			new Reverse(model, arrayElements, properties);
-			new Sort(model, arrayElements, properties);
-			new Splice(model, arrayElements, properties, propertyType);
+			new Push(model, elements, properties, propertyType);
+			new Pop(model, elements, properties);
+			new Shift(model, elements, properties);
+			new Unshift(model, elements, properties, propertyType);
+			new Reverse(model, elements, properties);
+			new Sort(model, elements, properties);
+			new Splice(model, elements, properties, propertyType);
 		})();
 
 		(function createSubscribableLength() {
@@ -64,7 +64,7 @@ define([
 		this.setUpElement = function(parentModel, element, model) {
 
 			var arrayElement = element.toArrayElement(model.length);
-			arrayElements.push(arrayElement);
+			elements.push(arrayElement);
 		};
 
 		this.updateElement = function(parentModel, element, value) {
@@ -77,23 +77,14 @@ define([
 
 		this.resetElement = function(element) {
 
-			var child;
+			for (var i = 0; i < elements.length; i++) {
 
-			for (var i = 0; i < arrayElements.length; i++) {
+				if (elements[i].equals(element)) {
 
-				if (arrayElements[i].equals(element)) {
-
-					child = arrayElements[i].getChild();
-					arrayElements.splice(i, 1);
+					elements[i].reset();
+					elements.splice(i, 1);
 				}
 			}
-
-			while (element.get().lastChild) {
-
-				element.get().removeChild(element.get().lastChild);
-			}
-
-			element.get().appendChild(child.get());
 		};
 	}
 
