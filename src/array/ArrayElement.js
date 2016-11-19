@@ -46,6 +46,11 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 			element.insertBefore(child.clone(), element.firstChild);
 		};
 
+		this.insertAtIndex = function(index) {
+
+			element.insertBefore(child.clone(), element.children[index]);
+		};
+
 		this.removeFirst = function() {
 
 			if (element.firstElementChild) {
@@ -60,6 +65,11 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 				element.removeChild(element.lastElementChild);
 			}
+		};
+
+		this.removeAtIndex = function(index) {
+
+			element.removeChild(element.children[index]);
 		};
 
 		this.removeChildren = function() {

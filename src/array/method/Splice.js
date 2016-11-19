@@ -38,12 +38,12 @@ define([
 
 			for (var i = 0; i < elements.length; i++) {
 
-				var element = elements[i].get();
+				var element = elements[i];
 				var end = Math.min(start + deleteCount, model.length) - 1;
 
 				for (var j = end; j >= start; j--) {
 
-					element.removeChild(element.children[j]);
+					element.removeAtIndex(j);
 				}
 
 				properties.splice(start, deleteCount);
@@ -60,11 +60,10 @@ define([
 
 				for (var j = 0; j < elements.length; j++) {
 
-					var element = elements[j].get();
-					var child = elements[j].getChild();
+					var element = elements[j];
 
-					element.insertBefore(child.clone(), element.children[start]);
-					property.applyBinding(new DOMElement(element), start, model);
+					element.insertAtIndex(start);
+					property.applyBinding(new DOMElement(element.get()), start, model);
 				}
 			}
 		}
