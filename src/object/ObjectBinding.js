@@ -2,72 +2,53 @@ define([], function() {
 
 	function ObjectBinding() {
 
-		var elementChildren = [];
+		var elements = [];
 
 		this.setUpElement = function(parentModel, element) {
 
-			var children = [].slice.call(element.get().childNodes);
-
-			elementChildren.push({ "element": element, "children": children });
+			elements.push(element.toObjectElement());
 		};
 
 		this.updateElement = function(parentModel, element, model) {
 
+			var objectElement = getObjectElement(element);
+
 			if (model) {
 
-				replaceChildren(element);
+				objectElement.replaceChildren();
 			}
 			else {
 
-				element.removeChildren();
+				objectElement.removeChildren();
 			}
 		};
 
-		function replaceChildren(element) {
+		function getObjectElement(element) {
 
-			var children = getChildren(element);
+			for (var i = 0; i < elements.length; i++) {
 
-			if (element.isEmpty()) {
+				if (elements[i].equals(element)) {
 
-				for (var i = 0; i < children.length; i++) {
-
-					element.get().appendChild(children[i]);
-				}
-			}
-		}
-
-		function getChildren(element) {
-
-			for (var i = 0; i < elementChildren.length; i++) {
-
-				if (elementChildren[i].element.equals(element)) {
-
-					return elementChildren[i].children;
+					return elements[i];
 				}
 			}
 		}
 
 		this.resetElement = function(element) {
 
-			var children;
+			var objectElement;
 
-			for (var i = 0; i < elementChildren.length; i++) {
+			for (var i = 0; i < elements.length; i++) {
 
-				if (elementChildren[i].element.equals(element)) {
+				if (elements[i].equals(element)) {
 
-					children = elementChildren[i].children;
-					elementChildren.splice(i, 1);
+					objectElement = elements[i];
+					elements.splice(i, 1);
 					break;
 				}
 			}
 
-			if (element.isEmpty()) {
-
-				for (var j = 0; j < children.length; j++) {
-
-					element.get().appendChild(children[j]);
-				}
-			}
+			objectElement.replaceChildren();
 		};
 	}
 

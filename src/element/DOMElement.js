@@ -1,4 +1,4 @@
-define([], function() {
+define(["element/ObjectElement"], function(ObjectElement) {
 
 	function DOMElement(element) {
 
@@ -76,19 +76,9 @@ define([], function() {
 			return element == otherElement;
 		};
 
-		this.isEmpty = function() {
+		this.toObjectElement = function() {
 
-			return !element.childNodes.length;
-		};
-
-		this.removeChildren = function() {
-
-			var children = element.childNodes;
-
-			for (var i = children.length - 1; i >= 0; i--) {
-
-				element.removeChild(children[i]);
-			}
+			return new ObjectElement(element);
 		};
 
 		this.get = function() {
