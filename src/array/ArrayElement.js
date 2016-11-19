@@ -36,6 +36,14 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 			}
 		})();
 
+		this.removeLast = function() {
+
+			if (element.lastElementChild) {
+
+				element.removeChild(element.lastElementChild);
+			}
+		};
+
 		this.reset = function() {
 
 			while (element.lastChild) {
