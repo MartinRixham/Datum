@@ -17,12 +17,7 @@ define([], function() {
 
 			for (var i = 0; i < elements.length; i++) {
 
-				var element = elements[i].get();
-
-				if (element.firstElementChild) {
-
-					element.removeChild(element.firstElementChild);
-				}
+				elements[i].removeFirst();
 			}
 
 			model.subscribableLength = model.length;

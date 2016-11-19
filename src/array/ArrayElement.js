@@ -41,6 +41,14 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 			element.appendChild(child.clone());
 		};
 
+		this.removeFirst = function() {
+
+			if (element.firstElementChild) {
+
+				element.removeChild(element.firstElementChild);
+			}
+		};
+
 		this.removeLast = function() {
 
 			if (element.lastElementChild) {
