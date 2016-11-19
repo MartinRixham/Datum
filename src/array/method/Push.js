@@ -21,12 +21,12 @@ define([
 
 				for (var j = 0; j < elements.length; j++) {
 
-					var element = elements[j].get();
-					var child = elements[j].getChild();
+					var element = elements[j];
 					var finalIndex = properties.length - 1;
 
-					element.appendChild(child.clone());
-					property.applyBinding(new DOMElement(element), finalIndex, model);
+					element.append();
+					property.applyBinding(
+						new DOMElement(element.get()), finalIndex, model);
 				}
 			}
 

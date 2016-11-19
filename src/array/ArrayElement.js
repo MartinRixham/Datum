@@ -36,6 +36,11 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 			}
 		})();
 
+		this.append = function() {
+
+			element.appendChild(child.clone());
+		};
+
 		this.removeLast = function() {
 
 			if (element.lastElementChild) {
