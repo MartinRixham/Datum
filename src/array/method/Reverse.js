@@ -1,6 +1,6 @@
 define([], function() {
 
-	function Reverse(model, elementChildren, properties) {
+	function Reverse(model, elements, properties) {
 
 		var originalReverse = model.reverse;
 
@@ -8,9 +8,9 @@ define([], function() {
 
 			originalReverse.apply(this, arguments);
 
-			for (var i = 0; i < elementChildren.length; i++) {
+			for (var i = 0; i < elements.length; i++) {
 
-				var element = elementChildren[i].element;
+				var element = elements[i].get();
 				var children = [].slice.call(element.children);
 
 				removeChildren(element);

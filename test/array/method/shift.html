@@ -61,28 +61,26 @@
 
 		require([
 			"array/method/Shift",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"property/TransientProperty"
 		], function(
 			Shift,
-			ArrayElement,
+			DOMElement,
 			TransientProperty) {
 
-			var element = document.querySelector("#shift");
-			var child = new ArrayElement(element.firstElementChild);
-
 			var model = [{}];
+			var element = new DOMElement(document.querySelector("#shift"));
+			var elements = [element.toArrayElement(1)];
 			var propertyType = new FakePropertyType();
 			var properties = [new TransientProperty(model[0], propertyType)];
-			var elementChildren = [{ element: element, child: child }];
 
-			new Shift(model, elementChildren, properties);
+			new Shift(model, elements, properties);
 
 			model.shift();
 
 			assert.strictEqual(model.length, 0);
 			assert.strictEqual(properties.length, 0);
-			assert.strictEqual(element.children.length, 0);
+			assert.strictEqual(element.get().children.length, 0);
 			assert.ok(propertyType.removeBindingWasCalled);
 
 			done();
@@ -99,34 +97,30 @@
 
 		require([
 			"array/method/Shift",
-			"array/ArrayItemElement"
+			"element/DOMElement"
 		], function(
 			Shift,
-			ArrayElement) {
-
-			var element = document.querySelector("#empty");
-			var child = new ArrayElement(element.firstElementChild);
-
-			element.removeChild(element.firstElementChild);
+			DOMElement) {
 
 			var model = [];
+			var element = new DOMElement(document.querySelector("#empty"));
+			var elements = [element.toArrayElement(0)];
 			var properties = [];
-			var elementChildren = [{ element: element, child: child }];
 
-			new Shift(model, elementChildren, properties);
+			new Shift(model, elements, properties);
 
 			model.shift();
 
 			assert.strictEqual(model.length, 0);
 			assert.strictEqual(properties.length, 0);
-			assert.strictEqual(element.children.length, 0);
+			assert.strictEqual(element.get().children.length, 0);
 
 			done();
 		});
 	});
     </script>
     <div id="two">
-      <div>first</div>
+      <div id="two-child"></div>
     </div>
     <script>
 	QUnit.test("Shift element from array length two", function(assert) {
@@ -135,38 +129,33 @@
 
 		require([
 			"array/method/Shift",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"property/TransientProperty"
 		], function(
 			Shift,
-			ArrayElement,
+			DOMElement,
 			TransientProperty) {
 
-			var element = document.querySelector("#two");
-			var child = new ArrayElement(element.firstElementChild);
-
-			var div = document.createElement("DIV");
-			div.textContent = "last";
-
-			element.appendChild(div);
-
 			var model = [{}, { hello: "Hello world." }];
+			var element = new DOMElement(document.querySelector("#two"));
+			var elementChildren = [element.toArrayElement(2)];
 			var properties =
 				[
 					new TransientProperty(model[0], new FakePropertyType()),
 					new TransientProperty(model[1], new FakePropertyType())
 				];
-			var elementChildren = [{ element: element, child: child }];
 
 			new Shift(model, elementChildren, properties);
 
 			model.shift();
 
+			var children = element.get().children;
+
 			assert.strictEqual(model.length, 1);
 			assert.strictEqual(model[0].hello, "Hello world.");
 			assert.strictEqual(properties.length, 1);
-			assert.strictEqual(element.children.length, 1);
-			assert.strictEqual(element.children[0].innerHTML, "last");
+			assert.strictEqual(children.length, 1);
+			assert.strictEqual(children[0].id, "two-child_1");
 
 			done();
 		});

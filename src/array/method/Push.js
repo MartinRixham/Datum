@@ -5,7 +5,7 @@ define([
 	TransientProperty,
 	DOMElement) {
 
-	function Push(model, elementChildren, properties, propertyType) {
+	function Push(model, elements, properties, propertyType) {
 
 		var originalPush = model.push;
 
@@ -19,10 +19,10 @@ define([
 
 				properties.push(property);
 
-				for (var j = 0; j < elementChildren.length; j++) {
+				for (var j = 0; j < elements.length; j++) {
 
-					var element = elementChildren[j].element;
-					var child = elementChildren[j].child;
+					var element = elements[j].get();
+					var child = elements[j].getChild();
 					var finalIndex = properties.length - 1;
 
 					element.appendChild(child.clone());

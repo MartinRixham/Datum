@@ -61,28 +61,26 @@
 
 		require([
 			"array/method/Pop_",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"property/TransientProperty"
 		], function(
 			Pop,
-			ArrayElement,
+			DOMElement,
 			TransientProperty) {
 
-			var element = document.querySelector("#pop");
-			var child = new ArrayElement(element.firstElementChild);
-
 			var model = [{}];
+			var element = new DOMElement(document.querySelector("#pop"));
+			var elements = [element.toArrayElement(1)];
 			var propertyType = new FakePropertyType();
 			var properties = [new TransientProperty(model[0], propertyType)];
-			var elementChildren = [{ element: element, child: child }];
 
-			new Pop(model, elementChildren, properties);
+			new Pop(model, elements, properties);
 
 			model.pop();
 
 			assert.strictEqual(model.length, 0);
 			assert.strictEqual(properties.length, 0);
-			assert.strictEqual(element.children.length, 0);
+			assert.strictEqual(element.get().children.length, 0);
 			assert.ok(propertyType.removeBindingWasCalled);
 
 			done();
@@ -99,27 +97,23 @@
 
 		require([
 			"array/method/Pop_",
-			"array/ArrayItemElement"
+			"element/DOMElement"
 		], function(
 			Pop,
-			ArrayElement) {
-
-			var element = document.querySelector("#empty");
-			var child = new ArrayElement(element.firstElementChild);
-
-			element.removeChild(element.firstElementChild);
+			DOMElement) {
 
 			var model = [];
+			var element = new DOMElement(document.querySelector("#empty"));
+			var elements = [element.toArrayElement(0)];
 			var properties = [];
-			var elementChildren = [{ element: element, child: child }];
 
-			new Pop(model, elementChildren, properties);
+			new Pop(model, elements, properties);
 
 			model.pop();
 
 			assert.strictEqual(model.length, 0);
 			assert.strictEqual(properties.length, 0);
-			assert.strictEqual(element.children.length, 0);
+			assert.strictEqual(element.get().children.length, 0);
 
 			done();
 		});
@@ -135,36 +129,31 @@
 
 		require([
 			"array/method/Pop_",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"property/TransientProperty"
 		], function(
 			Pop,
-			ArrayElement,
+			DOMElement,
 			TransientProperty) {
 
-			var element = document.querySelector("#two");
-			var child = new ArrayElement(element.firstElementChild);
-			var div = document.createElement("DIV");
-
-			element.appendChild(div);
-
 			var model = [{ hello: "Hello world." }, {}];
+			var element = new DOMElement(document.querySelector("#two"));
+			var elements = [element.toArrayElement(2)];
 			var properties =
 				[
 					new TransientProperty(model[0], new FakePropertyType()),
 					new TransientProperty(model[1], new FakePropertyType())
 				];
-			var elementChildren = [{ element: element, child: child }];
 
-			new Pop(model, elementChildren, properties);
+			new Pop(model, elements, properties);
 
 			model.pop();
 
 			assert.strictEqual(model.length, 1);
 			assert.strictEqual(model[0].hello, "Hello world.");
 			assert.strictEqual(properties.length, 1);
-			assert.strictEqual(element.children.length, 1);
-			assert.strictEqual(element.children[0].innerHTML, "first");
+			assert.strictEqual(element.get().children.length, 1);
+			assert.strictEqual(element.get().children[0].innerHTML, "first");
 
 			done();
 		});

@@ -53,30 +53,30 @@
 
 		require([
 			"array/method/Unshift",
-			"array/ArrayItemElement"
+			"element/DOMElement"
 		], function(
 			Unshift,
-			ArrayElement) {
-
-			var element = document.querySelector("#unshift");
-			var child = new ArrayElement(element.firstElementChild);
+			DOMElement) {
 
 			var model = [{}];
-			var elementChildren = [{ element: element, child: child }];
-			new Unshift(model, elementChildren, [], new FakePropertyType());
+			var element = new DOMElement(document.querySelector("#unshift"));
+			var elements = [element.toArrayElement(1)];
+			new Unshift(model, elements, [], new FakePropertyType());
 
 			model.unshift({});
 
+			var children = element.get().children;
+
 			assert.strictEqual(model.length, 2);
-			assert.strictEqual(element.children.length, 2);
-			assert.strictEqual(element.children[0].id, "child_0");
+			assert.strictEqual(children.length, 2);
+			assert.strictEqual(children[0].id, "child_1");
 
 			done();
 		});
 	});
     </script>
     <div id="two">
-      <div></div>
+      <div id="two-child"></div>
     </div>
     <script>
 	QUnit.test("Unshift two elements to array", function(assert) {
@@ -85,29 +85,26 @@
 
 		require([
 			"array/method/Unshift",
-			"array/ArrayItemElement",
-			"callback/Text"
+			"element/DOMElement"
 		], function(
 			Unshift,
-			ArrayElement,
-			Text) {
+			DOMElement) {
 
-			var element = document.querySelector("#two");
-			var child = new ArrayElement(element.firstElementChild);
 
 			var model = [{}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#two"));
+			var elements = [element.toArrayElement(1)];
 			var properties = [{}];
-			new Unshift(model, elementChildren, properties, new FakePropertyType());
+			new Unshift(model, elements, properties, new FakePropertyType());
 
-			model.unshift(
-				new Text(function() { return "one"; }),
-				new Text(function() { return "two"; }));
+			model.unshift({}, {});
+
+			var children = element.get().children;
 
 			assert.strictEqual(model.length, 3);
-			assert.strictEqual(element.children.length, 3);
-			assert.strictEqual(element.children[0].textContent, "one");
-			assert.strictEqual(element.children[1].textContent, "two");
+			assert.strictEqual(children.length, 3);
+			assert.strictEqual(children[0].id, "two-child_2");
+			assert.strictEqual(children[1].id, "two-child_1");
 
 			done();
 		});
@@ -123,25 +120,23 @@
 
 		require([
 			"array/method/Unshift",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"callback/Text"
 		], function(
 			Unshift,
-			ArrayElement,
+			DOMElement,
 			Text) {
 
-			var element = document.querySelector("#bind");
-			var child = new ArrayElement(element.firstElementChild);
-
 			var model = [{}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#bind"));
+			var elementChildren = [element.toArrayElement(1)];
 			var properties = [{}];
 			new Unshift(model, elementChildren, properties, new FakePropertyType());
 
 			model.unshift(new Text(function() { return "Hello world."; }));
 
 			assert.strictEqual(properties.length, 2);
-			assert.strictEqual(element.children[0].innerHTML, "Hello world.");
+			assert.strictEqual(element.get().children[0].innerHTML, "Hello world.");
 
 			done();
 		});

@@ -53,24 +53,25 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement"
+			"element/DOMElement"
 		], function(
 			Splice,
-			ArrayElement) {
-
-			var element = document.querySelector("#add");
-			var child = new ArrayElement(element.firstElementChild);
+			DOMElement) {
 
 			var model = [{}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#add"));
+			var elements = [element.toArrayElement(1)];
 			var properties = [{}];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			model.splice(0, 0, {});
 
+			var children = element.get().children;
+
 			assert.strictEqual(model.length, 2);
-			assert.strictEqual(element.children.length, 2);
-			assert.strictEqual(element.children[0].id, "child_0");
+			assert.strictEqual(children.length, 2);
+			assert.strictEqual(children[0].id, "child_1");
 			assert.strictEqual(properties.length, 2);
 
 			done();
@@ -87,24 +88,22 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement"
+			"element/DOMElement"
 		], function(
 			Splice,
-			ArrayElement) {
-
-			var element = document.querySelector("#empty");
-			var child = new ArrayElement(element.firstElementChild);
-			element.innerHTML = "";
+			DOMElement) {
 
 			var model = [];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#empty"));
+			var elements = [element.toArrayElement(0)];
 			var properties = [];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			model.splice(0, 0, {});
 
 			assert.strictEqual(model.length, 1);
-			assert.strictEqual(element.children.length, 1);
+			assert.strictEqual(element.get().children.length, 1);
 			assert.strictEqual(properties.length, 1);
 
 			done();
@@ -121,27 +120,27 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"callback/Text"
 		], function(
 			Splice,
-			ArrayElement,
+			DOMElement,
 			Text) {
 
-			var element = document.querySelector("#middle");
-			var child = new ArrayElement(element.firstElementChild);
-			element.appendChild(child.clone());
-
 			var model = [{}, {}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#middle"));
+			var elements = [element.toArrayElement(2)];
 			var properties = [{}, {}];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			model.splice(1, 0, new Text(function() { return "Hello world."; }));
 
+			var children = element.get().children;
+
 			assert.strictEqual(model.length, 3);
-			assert.strictEqual(element.children.length, 3);
-			assert.strictEqual(element.children[1].innerText, "Hello world.");
+			assert.strictEqual(children.length, 3);
+			assert.strictEqual(children[1].innerText, "Hello world.");
 			assert.strictEqual(properties.length, 3);
 
 			done();
@@ -158,20 +157,19 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"callback/Text"
 		], function(
 			Splice,
-			ArrayElement,
+			DOMElement,
 			Text) {
 
-			var element = document.querySelector("#two");
-			var child = new ArrayElement(element.firstElementChild);
-
 			var model = [{}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#two"));
+			var elements = [element.toArrayElement(1)];
 			var properties = [{}];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			model.splice(
 				0,
@@ -179,10 +177,12 @@
 				new Text(function() { return "one"; }),
 				new Text(function() { return "two"; }));
 
+			var children = element.get().children;
+
 			assert.strictEqual(model.length, 3);
-			assert.strictEqual(element.children.length, 3);
-			assert.strictEqual(element.children[0].textContent, "one");
-			assert.strictEqual(element.children[1].textContent, "two");
+			assert.strictEqual(children.length, 3);
+			assert.strictEqual(children[0].textContent, "one");
+			assert.strictEqual(children[1].textContent, "two");
 
 			done();
 		});
@@ -198,25 +198,24 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"callback/Text"
 		], function(
 			Splice,
-			ArrayElement,
+			DOMElement,
 			Text) {
 
-			var element = document.querySelector("#bind");
-			var child = new ArrayElement(element.firstElementChild);
-
 			var model = [{}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#bind"));
+			var elements = [element.toArrayElement(1)];
 			var properties = [{}];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			model.splice(0, 0, new Text(function() { return "Hello world."; }));
 
 			assert.strictEqual(properties.length, 2);
-			assert.strictEqual(element.children[0].innerHTML, "Hello world.");
+			assert.strictEqual(element.get().children[0].innerHTML, "Hello world.");
 
 			done();
 		});
@@ -232,23 +231,21 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"callback/Text",
 			"property/TransientProperty"
 		], function(
 			Splice,
-			ArrayElement,
+			DOMElement,
 			Text,
 			TransientProperty) {
 
-			var element = document.querySelector("#beyond");
-			var child = new ArrayElement(element.firstElementChild);
-			element.appendChild(child.clone());
-
 			var model = [{}, {}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#beyond"));
+			var elements = [element.toArrayElement(2)];
 			var properties = [{}, {}];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			var newObject = new Text(function() { return "Hello world."; });
 			model.splice(5, 0, newObject);
@@ -256,8 +253,10 @@
 			assert.strictEqual(model.length, 3);
 			assert.strictEqual(model[2], newObject);
 
-			assert.strictEqual(element.children.length, 3);
-			assert.strictEqual(element.children[2].innerText, "Hello world.");
+			var children = element.get().children;
+
+			assert.strictEqual(children.length, 3);
+			assert.strictEqual(children[2].innerText, "Hello world.");
 
 			assert.strictEqual(properties.length, 3);
 			assert.ok(properties[2] instanceof TransientProperty);
@@ -276,23 +275,21 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"callback/Text",
 			"property/TransientProperty"
 		], function(
 			Splice,
-			ArrayElement,
+			DOMElement,
 			Text,
 			TransientProperty) {
 
-			var element = document.querySelector("#negative");
-			var child = new ArrayElement(element.firstElementChild);
-			element.appendChild(child.clone());
-
 			var model = [{}, {}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#negative"));
+			var elements = [element.toArrayElement(2)];
 			var properties = [{}, {}];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			var newObject = new Text(function() { return "Hello world."; });
 			model.splice(-2, 0, newObject);
@@ -300,8 +297,10 @@
 			assert.strictEqual(model.length, 3);
 			assert.strictEqual(model[0], newObject);
 
-			assert.strictEqual(element.children.length, 3);
-			assert.strictEqual(element.children[0].innerText, "Hello world.");
+			var children = element.get().children;
+
+			assert.strictEqual(children.length, 3);
+			assert.strictEqual(children[0].innerText, "Hello world.");
 
 			assert.strictEqual(properties.length, 3);
 			assert.ok(properties[0] instanceof TransientProperty);
@@ -320,23 +319,21 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"callback/Text",
 			"property/TransientProperty"
 		], function(
 			Splice,
-			ArrayElement,
+			DOMElement,
 			Text,
 			TransientProperty) {
 
-			var element = document.querySelector("#too-negative");
-			var child = new ArrayElement(element.firstElementChild);
-			element.appendChild(child.clone());
-
 			var model = [{}, {}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#too-negative"));
+			var elements = [element.toArrayElement(2)];
 			var properties = [{}, {}];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			var newObject = new Text(function() { return "Hello world."; });
 			model.splice(-20000000000, 0, newObject);
@@ -344,8 +341,10 @@
 			assert.strictEqual(model.length, 3);
 			assert.strictEqual(model[0], newObject);
 
-			assert.strictEqual(element.children.length, 3);
-			assert.strictEqual(element.children[0].innerText, "Hello world.");
+			var children = element.get().children;
+
+			assert.strictEqual(children.length, 3);
+			assert.strictEqual(children[0].innerText, "Hello world.");
 
 			assert.strictEqual(properties.length, 3);
 			assert.ok(properties[0] instanceof TransientProperty);
@@ -364,23 +363,22 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement"
+			"element/DOMElement"
 		], function(
 			Splice,
-			ArrayElement) {
-
-			var element = document.querySelector("#remove");
-			var child = new ArrayElement(element.firstElementChild);
+			DOMElement) {
 
 			var model = [{}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#remove"));
+			var elements = [element.toArrayElement(1)];
 			var properties = [{}];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			model.splice(0, 1);
 
 			assert.strictEqual(model.length, 0);
-			assert.strictEqual(element.children.length, 0);
+			assert.strictEqual(element.get().children.length, 0);
 			assert.strictEqual(properties.length, 0);
 
 			done();
@@ -397,24 +395,21 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement"
+			"element/DOMElement"
 		], function(
 			Splice,
-			ArrayElement) {
-
-			var element = document.querySelector("#remove-two");
-			var child = new ArrayElement(element.firstElementChild);
-			element.appendChild(child.clone());
+			DOMElement) {
 
 			var model = [{}, {}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#remove-two"));
+			var elements = [element.toArrayElement(2)];
 			var properties = [{}, {}];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			model.splice(0, 2);
 
 			assert.strictEqual(model.length, 0);
-			assert.strictEqual(element.children.length, 0);
+			assert.strictEqual(element.get().children.length, 0);
 			assert.strictEqual(properties.length, 0);
 
 			done();
@@ -431,24 +426,22 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement"
+			"element/DOMElement"
 		], function(
 			Splice,
-			ArrayElement) {
-
-			var element = document.querySelector("#remove-first");
-			var child = new ArrayElement(element.firstElementChild);
-			element.appendChild(child.clone());
+			DOMElement) {
 
 			var model = [{}, {}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#remove-first"));
+			var elements = [element.toArrayElement(2)];
 			var properties = ["first", "second"];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			model.splice(0, 1);
 
 			assert.strictEqual(model.length, 1);
-			assert.strictEqual(element.children.length, 1);
+			assert.strictEqual(element.get().children.length, 1);
 			assert.strictEqual(properties.length, 1);
 			assert.strictEqual(properties[0], "second");
 
@@ -457,7 +450,7 @@
 	});
     </script>
     <div id="remove-second">
-      <div></div>
+      <div id="second-child"></div>
     </div>
     <script>
 	QUnit.test("Remove second element from array", function(assert) {
@@ -466,27 +459,25 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement"
+			"element/DOMElement"
 		], function(
 			Splice,
-			ArrayElement) {
-
-			var element = document.querySelector("#remove-first");
-			element.firstElementChild.innerHTML = "Hello world.";
-
-			var child = new ArrayElement(element.firstElementChild);
-			element.appendChild(child.clone());
+			DOMElement) {
 
 			var model = [{}, {}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#remove-second"));
+			var elements = [element.toArrayElement(2)];
 			var properties = ["first", "second"];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			model.splice(1, 1);
 
+			var children = element.get().children;
+
 			assert.strictEqual(model.length, 1);
-			assert.strictEqual(element.children.length, 1);
-			assert.strictEqual(element.children[0].innerHTML, "Hello world.");
+			assert.strictEqual(children.length, 1);
+			assert.strictEqual(children[0].id, "second-child_0");
 			assert.strictEqual(properties.length, 1);
 			assert.strictEqual(properties[0], "first");
 
@@ -495,7 +486,7 @@
 	});
     </script>
     <div id="remove-beyond">
-      <div></div>
+      <div id="beyond-child"></div>
     </div>
     <script>
 	QUnit.test("Remove element beyond end of array", function(assert) {
@@ -504,27 +495,25 @@
 
 		require([
 			"array/method/Splice",
-			"array/ArrayItemElement"
+			"element/DOMElement"
 		], function(
 			Splice,
-			ArrayElement) {
-
-			var element = document.querySelector("#remove-beyond");
-			element.firstElementChild.innerHTML = "Hello world.";
-
-			var child = new ArrayElement(element.firstElementChild);
-			element.appendChild(child.clone());
+			DOMElement) {
 
 			var model = [{}, {}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#remove-beyond"));
+			var elements = [element.toArrayElement(2)];
 			var properties = ["first", "second"];
-			new Splice(model, elementChildren, properties, new FakePropertyType());
+
+			new Splice(model, elements, properties, new FakePropertyType());
 
 			model.splice(1, 2);
 
+			var children = element.get().children;
+
 			assert.strictEqual(model.length, 1);
-			assert.strictEqual(element.children.length, 1);
-			assert.strictEqual(element.children[0].innerHTML, "Hello world.");
+			assert.strictEqual(children.length, 1);
+			assert.strictEqual(children[0].id, "beyond-child_0");
 			assert.strictEqual(properties.length, 1);
 			assert.strictEqual(properties[0], "first");
 

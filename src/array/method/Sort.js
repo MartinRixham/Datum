@@ -1,6 +1,6 @@
 define([], function() {
 
-	function Sort(model, elementChildren, properties) {
+	function Sort(model, elements, properties) {
 
 		model.sort = function(comparison) {
 
@@ -36,9 +36,9 @@ define([], function() {
 
 			var allChildren = [];
 
-			for (var i = 0; i < elementChildren.length; i++) {
+			for (var i = 0; i < elements.length; i++) {
 
-				var element = elementChildren[i].element;
+				var element = elements[i].get();
 				var children = [].slice.call(element.children);
 
 				removeChildren(element);
@@ -72,9 +72,9 @@ define([], function() {
 				model[i] = modelChildrenProperties[i].model;
 				properties[i] = modelChildrenProperties[i].property;
 
-				for (var j = 0; j < elementChildren.length; j++) {
+				for (var j = 0; j < elements.length; j++) {
 
-					var element = elementChildren[j].element;
+					var element = elements[j].get();
 
 					element.appendChild(modelChildrenProperties[i].children[j]);
 				}

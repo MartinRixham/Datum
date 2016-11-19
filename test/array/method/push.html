@@ -53,23 +53,24 @@
 
 		require([
 			"array/method/Push",
-			"array/ArrayItemElement"
+			"element/DOMElement"
 		], function(
 			Push,
-			ArrayElement) {
-
-			var element = document.querySelector("#push");
-			var child = new ArrayElement(element.firstElementChild);
+			DOMElement) {
 
 			var model = [{}];
-			var elementChildren = [{ element: element, child: child }];
-			new Push(model, elementChildren, [], new FakePropertyType());
+			var element = new DOMElement(document.querySelector("#push"));
+			var elements = [element.toArrayElement(1)];
+
+			new Push(model, elements, [], new FakePropertyType());
 
 			model.push({});
 
+			var children = element.get().children;
+
 			assert.strictEqual(model.length, 2);
-			assert.strictEqual(element.children.length, 2);
-			assert.strictEqual(element.children[1].id, "child_0");
+			assert.strictEqual(children.length, 2);
+			assert.strictEqual(children[1].id, "child_1");
 
 			done();
 		});
@@ -85,29 +86,30 @@
 
 		require([
 			"array/method/Push",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"callback/Text"
 		], function(
 			Push,
-			ArrayElement,
+			DOMElement,
 			Text) {
 
-			var element = document.querySelector("#two");
-			var child = new ArrayElement(element.firstElementChild);
-
 			var model = [{}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#two"));
+			var elements = [element.toArrayElement(1)];
 			var properties = [{}];
-			new Push(model, elementChildren, properties, new FakePropertyType());
+
+			new Push(model, elements, properties, new FakePropertyType());
 
 			model.push(
 				new Text(function() { return "one"; }),
 				new Text(function() { return "two"; }));
 
+			var children = element.get().children;
+
 			assert.strictEqual(model.length, 3);
-			assert.strictEqual(element.children.length, 3);
-			assert.strictEqual(element.children[1].textContent, "one");
-			assert.strictEqual(element.children[2].textContent, "two");
+			assert.strictEqual(children.length, 3);
+			assert.strictEqual(children[1].textContent, "one");
+			assert.strictEqual(children[2].textContent, "two");
 
 			done();
 		});
@@ -123,25 +125,24 @@
 
 		require([
 			"array/method/Push",
-			"array/ArrayItemElement",
+			"element/DOMElement",
 			"callback/Text"
 		], function(
 			Push,
-			ArrayElement,
+			DOMElement,
 			Text) {
 
-			var element = document.querySelector("#bind");
-			var child = new ArrayElement(element.firstElementChild);
-
 			var model = [{}];
-			var elementChildren = [{ element: element, child: child }];
+			var element = new DOMElement(document.querySelector("#bind"));
+			var elements = [element.toArrayElement(1)];
 			var properties = [{}];
-			new Push(model, elementChildren, properties, new FakePropertyType());
+
+			new Push(model, elements, properties, new FakePropertyType());
 
 			model.push(new Text(function() { return "Hello world."; }));
 
 			assert.strictEqual(properties.length, 2);
-			assert.strictEqual(element.children[1].innerHTML, "Hello world.");
+			assert.strictEqual(element.get().children[1].innerHTML, "Hello world.");
 
 			done();
 		});

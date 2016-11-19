@@ -5,7 +5,7 @@ define([
 	TransientProperty,
 	DOMElement) {
 
-	function Splice(model, elementChildren, properties, propertyType) {
+	function Splice(model, elements, properties, propertyType) {
 
 		var originalSplice = model.splice;
 
@@ -36,9 +36,9 @@ define([
 
 		function removeObjects(start, deleteCount) {
 
-			for (var i = 0; i < elementChildren.length; i++) {
+			for (var i = 0; i < elements.length; i++) {
 
-				var element = elementChildren[i].element;
+				var element = elements[i].get();
 				var end = Math.min(start + deleteCount, model.length) - 1;
 
 				for (var j = end; j >= start; j--) {
@@ -58,10 +58,10 @@ define([
 
 				properties.splice(start, 0, property);
 
-				for (var j = 0; j < elementChildren.length; j++) {
+				for (var j = 0; j < elements.length; j++) {
 
-					var element = elementChildren[j].element;
-					var child = elementChildren[j].child;
+					var element = elements[j].get();
+					var child = elements[j].getChild();
 
 					element.insertBefore(child.clone(), element.children[start]);
 					property.applyBinding(new DOMElement(element), start, model);

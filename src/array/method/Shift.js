@@ -1,6 +1,6 @@
 define([], function() {
 
-	function Shift(model, elementChildren, properties) {
+	function Shift(model, elements, properties) {
 
 		var originalShift = model.shift;
 
@@ -15,9 +15,9 @@ define([], function() {
 				property.removeBinding();
 			}
 
-			for (var i = 0; i < elementChildren.length; i++) {
+			for (var i = 0; i < elements.length; i++) {
 
-				var element = elementChildren[i].element;
+				var element = elements[i].get();
 
 				if (element.firstElementChild) {
 
