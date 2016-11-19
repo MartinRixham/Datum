@@ -1,5 +1,5 @@
 // jscs:disable maximumNumberOfLines
-require(["Text", "BindingRoot"], function(Text, BindingRoot) {
+require(["callback/Text", "root/BindingRoot"], function(Text, BindingRoot) {
 
 	function Matrix() {
 

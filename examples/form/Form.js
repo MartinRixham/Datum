@@ -1,4 +1,11 @@
-require(["Binding", "Click", "BindingRoot"], function(Binding, Click, BindingRoot) {
+require([
+	"callback/Binding",
+	"callback/Click",
+	"root/BindingRoot"
+], function(
+	Binding,
+	Click,
+	BindingRoot) {
 
 	function Form() {
 
