@@ -88,7 +88,7 @@ define([
 
 		this.toArrayElement = function(initialLength) {
 
-			return new ArrayElement(element, initialLength);
+			return new ArrayElement(this, initialLength);
 		};
 
 		this.get = function() {

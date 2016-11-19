@@ -1,9 +1,4 @@
-define([
-	"property/TransientProperty",
-	"element/DOMElement"
-], function(
-	TransientProperty,
-	DOMElement) {
+define(["property/TransientProperty"], function(TransientProperty) {
 
 	function Unshift(model, elements, properties, propertyType) {
 
@@ -24,7 +19,7 @@ define([
 					var element = elements[j];
 
 					element.prepend();
-					property.applyBinding(new DOMElement(element.get()), 0, model);
+					property.applyBinding(element.get(), 0, model);
 				}
 			}
 

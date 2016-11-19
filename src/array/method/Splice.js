@@ -1,9 +1,4 @@
-define([
-	"property/TransientProperty",
-	"element/DOMElement"
-], function(
-	TransientProperty,
-	DOMElement) {
+define(["property/TransientProperty"], function(TransientProperty) {
 
 	function Splice(model, elements, properties, propertyType) {
 
@@ -63,7 +58,7 @@ define([
 					var element = elements[j];
 
 					element.insertAtIndex(start);
-					property.applyBinding(new DOMElement(element.get()), start, model);
+					property.applyBinding(element.get(), start, model);
 				}
 			}
 		}

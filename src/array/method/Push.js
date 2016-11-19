@@ -1,9 +1,4 @@
-define([
-	"property/TransientProperty",
-	"element/DOMElement"
-], function(
-	TransientProperty,
-	DOMElement) {
+define(["property/TransientProperty"], function(TransientProperty) {
 
 	function Push(model, elements, properties, propertyType) {
 
@@ -25,8 +20,7 @@ define([
 					var finalIndex = properties.length - 1;
 
 					element.append();
-					property.applyBinding(
-						new DOMElement(element.get()), finalIndex, model);
+					property.applyBinding(element.get(), finalIndex, model);
 				}
 			}
 

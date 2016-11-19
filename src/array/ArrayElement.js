@@ -1,6 +1,8 @@
 define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
-	function ArrayElement(element, initialLength) {
+	function ArrayElement(domElement, initialLength) {
+
+		var element = domElement.get();
 
 		var child;
 
@@ -92,6 +94,11 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 			}
 		};
 
+		this.appendChild = function(child) {
+
+			element.appendChild(child);
+		};
+
 		this.reset = function() {
 
 			while (element.lastChild) {
@@ -100,11 +107,6 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 			}
 
 			element.appendChild(child.get());
-		};
-
-		this.getChild = function() {
-
-			return child;
 		};
 
 		this.equals = function(other) {
@@ -119,7 +121,7 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 		this.get = function() {
 
-			return element;
+			return domElement;
 		};
 	}
 

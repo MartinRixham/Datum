@@ -38,10 +38,7 @@ define([], function() {
 
 			for (var i = 0; i < elements.length; i++) {
 
-				var element = elements[i].get();
-				var children = [].slice.call(element.children);
-
-				removeChildren(element);
+				var children = elements[i].removeChildren();
 
 				for (var j = 0; j < children.length; j++) {
 
@@ -57,14 +54,6 @@ define([], function() {
 			return allChildren;
 		}
 
-		function removeChildren(element) {
-
-			while (element.lastChild) {
-
-				element.removeChild(element.lastChild);
-			}
-		}
-
 		function replaceSortedObjects(modelChildrenProperties) {
 
 			for (var i = 0; i < model.length; i++) {
@@ -74,9 +63,7 @@ define([], function() {
 
 				for (var j = 0; j < elements.length; j++) {
 
-					var element = elements[j].get();
-
-					element.appendChild(modelChildrenProperties[i].children[j]);
+					elements[j].appendChild(modelChildrenProperties[i].children[j]);
 				}
 			}
 		}

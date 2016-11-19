@@ -1,6 +1,6 @@
 define([], function() {
 
-	 function ArrayElement(element) {
+	 function ArrayItemElement(element) {
 
 		var index = 0;
 
@@ -42,5 +42,5 @@ define([], function() {
 		};
 	}
 
-	return ArrayElement;
+	return ArrayItemElement;
 });

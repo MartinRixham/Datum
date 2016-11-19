@@ -8,7 +8,7 @@ An opinionated data binding library.
 
 The two components of a web page built with Datum.js are the *template* and the *view model*.
 The template is the HTML between the `<body> </body>` tags before Datum.js has modified it.
-You the developer are responsible for putting the tempate in the body of the DOM.
+You the developer are responsible for putting the template in the body of the DOM.
 Datum.js is agnostic about how you do this.
 (If you're having trouble jQuery's [load](https://api.jquery.com/load/) method is a good option.)
 
