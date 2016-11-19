@@ -4,7 +4,6 @@ define([
 	"property/TransientProperty",
 	"property/PermanentProperty",
 	"property/PropertyType",
-	"element/DOMElement",
 	"element/NullDOMElement"
 ], function(
 	ElementSet,
@@ -12,7 +11,6 @@ define([
 	TransientProperty,
 	PermanentProperty,
 	PropertyType,
-	DOMElement,
 	NullDOMElement) {
 
 	function ViewModel(model) {

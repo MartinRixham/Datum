@@ -8,8 +8,7 @@ define([
 	"array/method/Unshift",
 	"array/method/Reverse",
 	"array/method/Sort",
-	"array/method/Splice",
-	"element/DOMElement"
+	"array/method/Splice"
 ], function(
 	ArrayElement,
 	TransientProperty,
@@ -20,8 +19,7 @@ define([
 	Unshift,
 	Reverse,
 	Sort,
-	Splice,
-	DOMElement) {
+	Splice) {
 
 	function ArrayBinding(model, propertyType) {
 
@@ -67,7 +65,7 @@ define([
 
 		this.setUpElement = function(parentModel, element, model) {
 
-			element._rebind = function() {};
+			element.get()._rebind = function() {};
 
 			checkElementHasOnlyOneChild(element.get());
 
@@ -104,7 +102,7 @@ define([
 
 			for (var i = 0; i < properties.length; i++) {
 
-				properties[i].applyBinding(new DOMElement(element.get()), i, value);
+				properties[i].applyBinding(element, i, value);
 			}
 		};
 

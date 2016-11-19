@@ -235,18 +235,18 @@
 					setUpElement: function(model, element, value) {
 
 						initialisedModel = model;
-						initialisedElement = element;
+						initialisedElement = element.get();
 						initialisedValue = value;
 					},
 					updateElement: function(model, element, value) {
 
 						updatedModel = model;
-						updatedElement = element;
+						updatedElement = element.get();
 						updatedValue = value;
 					},
 					resetElement: function(element) {
 
-						resetElement = element;
+						resetElement = element.get();
 					}
 				});
 
