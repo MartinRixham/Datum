@@ -1,40 +1,45 @@
-define([], function() {
+define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
-	 function ArrayElement(element) {
+	function ArrayElement(element, initialLength) {
 
-		var index = 0;
+		var child;
 
-		this.clone = function() {
+		(function checkElementHasOnlyOneChild() {
 
-			var clone = element.cloneNode(true);
+			if (element.children.length != 1) {
 
-			number(clone, index++);
+				var message =
+					"An array must be bound to an element with exactly one child.";
+				throw new Error(message);
+			}
+		})();
 
-			return clone;
+		(function createRebinder() {
+
+			element._rebind = function() {};
+		})();
+
+		(function getChild() {
+
+			var childElement = element.children[0];
+
+			element.removeChild(childElement);
+
+			child = new ArrayItemElement(childElement);
+		})();
+
+		(function copyElement() {
+
+			for (var i = 0; i < initialLength; i++) {
+
+				element.appendChild(child.clone());
+			}
+		})();
+
+		this.getChild = function() {
+
+			return child;
 		};
-
-		function number(element, index) {
-
-			if (element.id) {
-
-				element.id = element.id + "_" + index;
-			}
-
-			if (element.hasAttribute && element.hasAttribute("name")) {
-
-				var name = element.getAttribute("name") + "_" + index;
-
-				element.setAttribute("name", name);
-			}
-
-			if (element.children) {
-
-				for (var i = 0; i < element.children.length; i++) {
-
-					number(element.children[i], index);
-				}
-			}
-		}
 
 		this.get = function() {
 

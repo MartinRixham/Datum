@@ -1,4 +1,9 @@
-define(["element/ObjectElement"], function(ObjectElement) {
+define([
+	"object/ObjectElement",
+	"array/ArrayElement"
+], function(
+	ObjectElement,
+	ArrayElement) {
 
 	function DOMElement(element) {
 
@@ -79,6 +84,11 @@ define(["element/ObjectElement"], function(ObjectElement) {
 		this.toObjectElement = function() {
 
 			return new ObjectElement(element);
+		};
+
+		this.toArrayElement = function(initialLength) {
+
+			return new ArrayElement(element, initialLength);
 		};
 
 		this.get = function() {

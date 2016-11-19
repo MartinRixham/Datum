@@ -61,7 +61,7 @@
 
 		require([
 			"array/method/Pop_",
-			"array/ArrayElement",
+			"array/ArrayItemElement",
 			"property/TransientProperty"
 		], function(
 			Pop,
@@ -97,7 +97,12 @@
 
 		var done = assert.async();
 
-		require(["array/method/Pop_", "array/ArrayElement"], function(Pop, ArrayElement) {
+		require([
+			"array/method/Pop_",
+			"array/ArrayItemElement"
+		], function(
+			Pop,
+			ArrayElement) {
 
 			var element = document.querySelector("#empty");
 			var child = new ArrayElement(element.firstElementChild);
@@ -130,7 +135,7 @@
 
 		require([
 			"array/method/Pop_",
-			"array/ArrayElement",
+			"array/ArrayItemElement",
 			"property/TransientProperty"
 		], function(
 			Pop,

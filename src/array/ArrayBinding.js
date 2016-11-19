@@ -1,5 +1,4 @@
 define([
-	"array/ArrayElement",
 	"property/TransientProperty",
 	"tracking/Datum",
 	"array/method/Push",
@@ -10,7 +9,6 @@ define([
 	"array/method/Sort",
 	"array/method/Splice"
 ], function(
-	ArrayElement,
 	TransientProperty,
 	Datum,
 	Push,
@@ -65,38 +63,11 @@ define([
 
 		this.setUpElement = function(parentModel, element, model) {
 
-			element.createRebinder(function() {});
-
-			checkElementHasOnlyOneChild(element.get());
-
-			var child = getChildFromDOM(element.get());
+			var arrayElement = element.toArrayElement(model.length);
+			var child = arrayElement.getChild();
 
 			elementChildren.push({ element: element.get(), child: child });
-
-			for (var i = 0; i < model.length; i++) {
-
-				element.get().appendChild(child.clone());
-			}
 		};
-
-		function checkElementHasOnlyOneChild(element) {
-
-			if (element.children.length != 1) {
-
-				var message =
-					"An array must be bound to an element with exactly one child.";
-				throw new Error(message);
-			}
-		}
-
-		function getChildFromDOM(element) {
-
-			var child = element.children[0];
-
-			element.removeChild(child);
-
-			return new ArrayElement(child);
-		}
 
 		this.updateElement = function(parentModel, element, value) {
 

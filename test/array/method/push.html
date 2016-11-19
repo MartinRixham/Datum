@@ -51,7 +51,12 @@
 
 		var done = assert.async();
 
-		require(["array/method/Push", "array/ArrayElement"], function(Push, ArrayElement) {
+		require([
+			"array/method/Push",
+			"array/ArrayItemElement"
+		], function(
+			Push,
+			ArrayElement) {
 
 			var element = document.querySelector("#push");
 			var child = new ArrayElement(element.firstElementChild);
@@ -80,7 +85,7 @@
 
 		require([
 			"array/method/Push",
-			"array/ArrayElement",
+			"array/ArrayItemElement",
 			"callback/Text"
 		], function(
 			Push,
@@ -118,7 +123,7 @@
 
 		require([
 			"array/method/Push",
-			"array/ArrayElement",
+			"array/ArrayItemElement",
 			"callback/Text"
 		], function(
 			Push,
