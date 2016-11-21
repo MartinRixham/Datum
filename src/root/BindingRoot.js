@@ -13,8 +13,32 @@ define([
 
 	function BindingRoot(model) {
 
-		checkModelType(model);
-		assertUniqueness();
+		(function checkModelType() {
+
+			if (typeof model != "object") {
+
+				throw new Error("The binding root must be an object.");
+			}
+
+			if (model instanceof Array) {
+
+				throw new Error("The binding root cannot be an array.");
+			}
+		})();
+
+		(function assertUniqueness() {
+
+			if (flag) {
+
+				throw new Error(
+					"The binding root is unique and " +
+					"cannot be instantiated multiple times.");
+			}
+			else {
+
+				flag = true;
+			}
+		})();
 
 		var rootViewModel = new ViewModel(model);
 		rootViewModel.applyBinding(new RootDOMElement());
@@ -30,32 +54,6 @@ define([
 
 			domWatcher.disconnect();
 		};
-	}
-
-	function checkModelType(model) {
-
-		if (typeof model != "object") {
-
-			throw new Error("The binding root must be an object.");
-		}
-
-		if (model instanceof Array) {
-
-			throw new Error("The binding root cannot be an array.");
-		}
-	}
-
-	function assertUniqueness() {
-
-		if (flag) {
-
-			throw new Error(
-				"The binding root is unique and cannot be instantiated multiple times.");
-		}
-		else {
-
-			flag = true;
-		}
 	}
 
 	return BindingRoot;
