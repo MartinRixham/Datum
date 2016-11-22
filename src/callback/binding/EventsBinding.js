@@ -12,7 +12,7 @@ define([], function() {
 
 				var listener = createListener(model, element, callback);
 
-				listeners.push({ key: key, "element": element, "listener": listener });
+				listeners.push({ key: key, element: element, listener: listener });
 				element.addEventListener(key, listener);
 			}
 		};
@@ -29,9 +29,7 @@ define([], function() {
 
 		this.resetElement = function(element) {
 
-			var i;
-
-			for (i = 0; i < listeners.length; i++) {
+			for (var i = 0; i < listeners.length; i++) {
 
 				var listener = listeners[i];
 

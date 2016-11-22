@@ -60,15 +60,13 @@ define([
 
 				var element = elements[i];
 
-				if (scope.hasInScope(element)) {
+				if (scope.hasInScope(element) &&
+					!boundElements.contains(element)) {
 
-					if (!boundElements.contains(element)) {
-
-						binding.setUpElement(model, element.get());
-						new Registry().requestRegistrations();
-						binding.updateElement(model, element.get());
-						createCallback(model, element);
-					}
+					binding.setUpElement(model, element.get());
+					new Registry().requestRegistrations();
+					binding.updateElement(model, element.get());
+					createCallback(model, element);
 				}
 			}
 		}

@@ -11,7 +11,7 @@ define([], function() {
 				value.call(parentModel, event.target.value, element);
 			}
 
-			listeners.push({ "element": element, "listener": listener });
+			listeners.push({ element: element, listener: listener });
 			element.addEventListener("change", listener);
 		};
 
@@ -22,9 +22,7 @@ define([], function() {
 
 		this.resetElement = function(element) {
 
-			var i;
-
-			for (i = 0; i < listeners.length; i++) {
+			for (var i = 0; i < listeners.length; i++) {
 
 				var listener = listeners[i];
 
