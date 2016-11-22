@@ -67,8 +67,6 @@ define([], function() {
 				}
 			}
 		}
-
-
 	}
 
 	return Sort;

@@ -20,19 +20,16 @@ define([], function() {
 				element.id = element.id + "_" + index;
 			}
 
-			if (element.hasAttribute && element.hasAttribute("name")) {
+			if (element.hasAttribute("name")) {
 
 				var name = element.getAttribute("name") + "_" + index;
 
 				element.setAttribute("name", name);
 			}
 
-			if (element.children) {
+			for (var i = 0; i < element.children.length; i++) {
 
-				for (var i = 0; i < element.children.length; i++) {
-
-					number(element.children[i], index);
-				}
+				number(element.children[i], index);
 			}
 		}
 
