@@ -61,12 +61,12 @@ define([
 
 		if (callbacks.events) {
 
-			bindings.push(new CallbackBinder(new EventsBinding(callbacks.event)));
+			bindings.push(new CallbackBinder(new EventsBinding(callbacks.events)));
 		}
 
 		if (callbacks.classes) {
 
-			bindings.push(new CallbackBinder(new ClassesBinding(callbacks.css)));
+			bindings.push(new CallbackBinder(new ClassesBinding(callbacks.classes)));
 		}
 
 		var parentModel = null;
