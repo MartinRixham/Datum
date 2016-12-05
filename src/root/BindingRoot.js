@@ -50,9 +50,14 @@ define([
 
 		var domWatcher = new DOMWatcher(document.body);
 
-		this.disconnect = function() {
+		function disconnect() {
 
 			domWatcher.disconnect();
+		}
+
+		return {
+
+			disconnect: disconnect
 		};
 	}
 

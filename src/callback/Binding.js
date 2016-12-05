@@ -71,7 +71,7 @@ define([
 
 		var parentModel = null;
 
-		this.applyBinding = function(scope, name, model) {
+		function applyBinding(scope, name, model) {
 
 			parentModel = model;
 
@@ -79,15 +79,15 @@ define([
 
 				bindings[i].applyBinding(scope, name, model);
 			}
-		};
+		}
 
-		this.removeBinding = function() {
+		function removeBinding() {
 
 			for (var i = 0; i < bindings.length; i++) {
 
 				bindings[i].removeBinding();
 			}
-		};
+		}
 
 		var test = {};
 
@@ -99,7 +99,12 @@ define([
 			};
 		});
 
-		this.test = test;
+		return {
+
+			applyBinding: applyBinding,
+			removeBinding: removeBinding,
+			test: test
+		};
 	}
 
 	return Binding;
