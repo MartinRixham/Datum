@@ -40,7 +40,7 @@ You can create a binding using the `Binding` constructor.
 
 Each binding property has at least one corresponding *binding attribute* on the template.
 This attribute tells Datum.js which DOM element to bind each binding to.
-A Binding attribute is always called `data-bind` and its value is the name of the binding property in the view model.
+A binding attribute is always called `data-bind` and its value is the name of the binding property in the view model.
 
     <body>
       <div data-bind="myBinding"></div>
