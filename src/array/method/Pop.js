@@ -6,7 +6,7 @@ define([], function() {
 
 		model.pop = function() {
 
-			originalPop.apply(this, arguments);
+			var popped = originalPop.apply(this, arguments);
 
 			var property = properties.pop();
 
@@ -21,6 +21,8 @@ define([], function() {
 			}
 
 			model.subscribableLength = model.length;
+
+			return popped;
 		};
 	}
 

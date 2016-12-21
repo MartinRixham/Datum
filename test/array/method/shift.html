@@ -68,7 +68,8 @@
 			DOMElement,
 			TransientProperty) {
 
-			var model = [{}];
+			var object = {};
+			var model = [object];
 			var element = new DOMElement(document.querySelector("#shift"));
 			var elements = [element.toArrayElement(1)];
 			var propertyType = new FakePropertyType();
@@ -76,9 +77,10 @@
 
 			new Shift(model, elements, properties);
 
-			model.shift();
+			var shifted = model.shift();
 
 			assert.strictEqual(model.length, 0);
+			assert.strictEqual(shifted, object);
 			assert.strictEqual(properties.length, 0);
 			assert.strictEqual(element.get().children.length, 0);
 			assert.ok(propertyType.removeBindingWasCalled);

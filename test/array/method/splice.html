@@ -368,16 +368,19 @@
 			Splice,
 			DOMElement) {
 
-			var model = [{}];
+			var object = {};
+			var model = [object];
 			var element = new DOMElement(document.querySelector("#remove"));
 			var elements = [element.toArrayElement(1)];
 			var properties = [{}];
 
 			new Splice(model, elements, properties, new FakePropertyType());
 
-			model.splice(0, 1);
+			var spliced = model.splice(0, 1);
 
 			assert.strictEqual(model.length, 0);
+			assert.strictEqual(spliced.length, 1);
+			assert.strictEqual(spliced[0], object);
 			assert.strictEqual(element.get().children.length, 0);
 			assert.strictEqual(properties.length, 0);
 

@@ -6,7 +6,7 @@ define([], function() {
 
 		model.shift = function() {
 
-			originalShift.apply(this, arguments);
+			var shifted = originalShift.apply(this, arguments);
 
 			var property = properties.shift();
 
@@ -21,6 +21,8 @@ define([], function() {
 			}
 
 			model.subscribableLength = model.length;
+
+			return shifted;
 		};
 	}
 

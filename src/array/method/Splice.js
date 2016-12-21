@@ -12,8 +12,10 @@ define(["property/TransientProperty"], function(TransientProperty) {
 			removeObjects(start, deleteCount);
 			insertObjects(start, newObjects);
 
-			originalSplice.apply(this, arguments);
+			var spliced = originalSplice.apply(this, arguments);
 			model.subscribableLength = model.length;
+
+			return spliced;
 		};
 
 		function normaliseStart(start) {
