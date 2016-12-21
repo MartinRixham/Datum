@@ -59,6 +59,39 @@
 		});
 	});
     </script>
+	<div id="datum" data-bind="datum"></div>
+	<script>
+	QUnit.test("Bind text with datum", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/binding/TextBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			Datum,
+			TextBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var datum = new Datum();
+
+			var binding =
+				new CallbackBinder(new TextBinding(datum));
+
+			binding.applyBinding(new DOMElement(document.body), "datum");
+			datum("Hello World");
+
+			assert.strictEqual(
+				document.querySelector("#datum").innerHTML,
+				"Hello World");
+
+			done();
+		});
+	});
+	</script>
     <div id="one" data-bind="two"></div>
     <div id="two" data-bind="two"></div>
     <script>

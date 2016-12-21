@@ -13,7 +13,7 @@ define([
 
 		function provider(value) {
 
-			if (typeof value == "undefined") {
+			if (typeof value == "undefined" || value instanceof Node) {
 
 				return get();
 			}
