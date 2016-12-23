@@ -1,11 +1,9 @@
 define([
 	"element/ElementSet",
-	"tracking/Registry",
-	"rebinding/Rebinder"
+	"tracking/Registry"
 ], function Datum(
 	ElementSet,
-	Registry,
-	Rebinder) {
+	Registry) {
 
 	function Datum(datum) {
 
@@ -41,8 +39,6 @@ define([
 
 			dependants.removeOld();
 			updateDependants(value);
-
-			new Rebinder().rebindDataStructure();
 		}
 
 		function updateDependants(value) {

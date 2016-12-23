@@ -17,9 +17,9 @@ define([], function() {
 
 		function rebindElement(element) {
 
-			if (element && element._rebind) {
+			if (element && element.__DATUM__REBIND) {
 
-				element._rebind();
+				element.__DATUM__REBIND();
 			}
 			else if (element) {
 

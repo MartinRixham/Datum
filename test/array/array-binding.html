@@ -118,10 +118,11 @@
 
 			var model =
 				{
-					two: [
-						new Text(function() { return "Hello world."; }),
-						new Text(function() { return "Hello world."; })
-					]
+					two:
+						[
+							new Text(function() { return "Hello world."; }),
+							new Text(function() { return "Hello world."; })
+						]
 				};
 
 			var binding = new ArrayBinding(model.two);
@@ -390,5 +391,40 @@
 		});
 	});
     </script>
+	<div id="clear" data-bind="clear">
+		<div></div>
+	</div>
+	<script>
+	QUnit.test("Clear elements from array", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"object/ViewModel",
+			"root/BindingRoot"
+		], function(
+			ViewModel,
+			BindingRoot) {
+
+			function ClearArray() {
+
+				this.clear = [{}, {}];
+			}
+
+			var model = new ClearArray();
+			var root = new BindingRoot(model);
+
+			model.clear = [];
+
+			var element = document.querySelector("#clear");
+
+			assert.strictEqual(element.children.length, 0);
+
+			done();
+
+			root.disconnect();
+		});
+	});
+	</script>
   </body>
 </html>

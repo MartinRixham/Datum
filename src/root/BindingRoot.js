@@ -1,12 +1,10 @@
 define([
 	"object/ViewModel",
 	"root/DOMWatcher",
-	"rebinding/Rebinder",
 	"element/RootDOMElement"
 ], function BindingRoot(
 	ViewModel,
 	DOMWatcher,
-	Rebinder,
 	RootDOMElement) {
 
 	var flag = false;
@@ -42,11 +40,6 @@ define([
 
 		var rootViewModel = new ViewModel(model);
 		rootViewModel.applyBinding(new RootDOMElement());
-
-		new Rebinder().registerRebinder(function() {
-
-			rootViewModel.applyBinding(new RootDOMElement());
-		});
 
 		var domWatcher = new DOMWatcher(document.body);
 

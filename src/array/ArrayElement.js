@@ -18,7 +18,7 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 		(function createRebinder() {
 
-			element._rebind = function() {};
+			domElement.createRebinder(function() {});
 		})();
 
 		(function getChild() {

@@ -61,17 +61,17 @@ define([
 						binding.setUpElement(model, element, model && model[name]);
 						new Registry().requestRegistrations();
 						binding.updateElement(model, element, model && model[name]);
-						createCallback(model, element);
+						createCallback(scope, element);
 					}
 				}
 			}
 		}
 
-		function createCallback(model, element) {
+		function createCallback(scope, element) {
 
-			function callback(value) {
+			function callback() {
 
-				binding.updateElement(model, element, value);
+				scope.rebind();
 			}
 
 			new Registry().assignUpdater(new Dependant(callback, binding, element));

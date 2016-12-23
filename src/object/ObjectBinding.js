@@ -4,6 +4,8 @@ define([], function() {
 
 		var elements = [];
 
+		var removed = false;
+
 		this.setUpElement = function(parentModel, element) {
 
 			elements.push(element.toObjectElement());
@@ -15,10 +17,15 @@ define([], function() {
 
 			if (model) {
 
-				objectElement.replaceChildren();
+				if (removed) {
+
+					removed = false;
+					objectElement.replaceChildren();
+				}
 			}
 			else {
 
+				removed = true;
 				objectElement.removeChildren();
 			}
 		};

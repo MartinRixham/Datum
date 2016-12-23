@@ -16,19 +16,11 @@ define([], function() {
 
 		this.replaceChildren = function() {
 
-			if (isEmpty()) {
+			for (var i = 0; i < children.length; i++) {
 
-				for (var i = 0; i < children.length; i++) {
-
-					element.appendChild(children[i]);
-				}
+				element.appendChild(children[i]);
 			}
 		};
-
-		function isEmpty() {
-
-			return !element.childNodes.length;
-		}
 
 		this.equals = function(other) {
 

@@ -1,11 +1,9 @@
 define([
 	"element/ElementSet",
-	"rebinding/Rebinder",
 	"tracking/Dependant",
 	"tracking/Registry"
 ], function(
 	ElementSet,
-	Rebinder,
 	Dependant,
 	Registry) {
 
@@ -16,8 +14,6 @@ define([
 		var boundElements = new ElementSet();
 
 		var running = false;
-
-		new Rebinder().requestRebind();
 
 		this.applyBinding = function(scope, name, model) {
 

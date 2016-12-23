@@ -25,7 +25,7 @@ define([
 
 				return true;
 			}
-			else if (currentElement._rebind) {
+			else if (currentElement.__DATUM__REBIND) {
 
 				return currentElement == scope;
 			}
@@ -59,8 +59,13 @@ define([
 
 			if (element) {
 
-				element._rebind = rebinder;
+				element.__DATUM__REBIND = rebinder;
 			}
+		};
+
+		this.rebind = function() {
+
+			element.__DATUM__REBIND();
 		};
 
 		this.callBindingCallback = function(model) {
