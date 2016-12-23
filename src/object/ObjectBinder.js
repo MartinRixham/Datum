@@ -13,28 +13,14 @@ define([
 
 		this.applyBinding = function(scope, name, model) {
 
-			removeOldBindings();
+			var removed = boundElements.removeOld();
+			resetElements(removed);
 
 			var elements = scope.getMatchingElements(name);
 
 			bindElements(elements, scope, model, name);
 			addElements(elements);
 		};
-
-		function removeOldBindings() {
-
-			var removed = boundElements.removeOld();
-
-			for (var i = 0; i < removed.length; i++) {
-
-				var element = removed[i];
-
-				if (element.get()) {
-
-					binding.resetElement(element);
-				}
-			}
-		}
 
 		function addElements(elements) {
 
@@ -81,6 +67,11 @@ define([
 
 			var elements = boundElements.get();
 
+			resetElements(elements);
+		};
+
+		function resetElements(elements) {
+
 			for (var i = 0; i < elements.length; i++) {
 
 				var element = elements[i];
@@ -90,7 +81,7 @@ define([
 					binding.resetElement(element);
 				}
 			}
-		};
+		}
 	}
 
 	return ObjectBinder;
