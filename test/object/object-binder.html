@@ -51,7 +51,8 @@
 
 						updateCallCount++;
 					},
-					resetElement: function() {}
+					resetElement: function() {},
+					createCallback: function() {}
 				});
 
 			binding.applyBinding(new DOMElement(document.body), "two", {});
@@ -94,7 +95,8 @@
 					resetElement: function() {
 
 						resetCallCount++;
-					}
+					},
+					createCallback: function() {}
 				});
 
 			binding.applyBinding(new DOMElement(document.body), "unbind", {});
@@ -138,7 +140,8 @@
 					resetElement: function() {
 
 						resetCallCount++;
-					}
+					},
+					createCallback: function() {}
 				});
 
 			binding.applyBinding(new NullDOMElement(), "unbindNull", {});
@@ -189,7 +192,8 @@
 					resetElement: function() {
 
 						resetCallCount++;
-					}
+					},
+					createCallback: function() {}
 				});
 
 			var firstScope = new DOMElement(document.querySelector("#first-scope"));
@@ -247,7 +251,8 @@
 					resetElement: function(element) {
 
 						resetElement = element.get();
-					}
+					},
+					createCallback: function() {}
 				});
 
 			binding.applyBinding(new DOMElement(document.body), "name", model);

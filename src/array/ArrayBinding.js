@@ -86,6 +86,8 @@ define([
 				}
 			}
 		};
+
+		this.createCallback = function() {};
 	}
 
 	return ArrayBinding;

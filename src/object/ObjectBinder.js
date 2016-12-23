@@ -1,10 +1,8 @@
 define([
 	"element/ElementSet",
-	"tracking/Dependant",
 	"tracking/Registry"
 ], function(
 	ElementSet,
-	Dependant,
 	Registry) {
 
 	function ObjectBinder(binding) {
@@ -47,20 +45,10 @@ define([
 						binding.setUpElement(model, element, model && model[name]);
 						new Registry().requestRegistrations();
 						binding.updateElement(model, element, model && model[name]);
-						createCallback(scope, element);
+						binding.createCallback(scope, element);
 					}
 				}
 			}
-		}
-
-		function createCallback(scope, element) {
-
-			function callback() {
-
-				scope.rebind();
-			}
-
-			new Registry().assignUpdater(new Dependant(callback, binding, element));
 		}
 
 		this.removeBinding = function() {

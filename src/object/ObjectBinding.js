@@ -1,4 +1,4 @@
-define([], function() {
+define(["tracking/Registry", "tracking/Dependant"], function(Registry, Dependant) {
 
 	function ObjectBinding() {
 
@@ -56,6 +56,16 @@ define([], function() {
 			}
 
 			objectElement.replaceChildren();
+		};
+
+		this.createCallback = function(scope, element) {
+
+			function callback() {
+
+				scope.rebind();
+			}
+
+			new Registry().assignUpdater(new Dependant(callback, this, element));
 		};
 	}
 
