@@ -59,8 +59,43 @@
 		});
 	});
     </script>
-	<div id="datum" data-bind="datum"></div>
-	<script>
+    <div id="top" data-bind="top"></div>
+    <script>
+	QUnit.test("Bind text to top level element", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/binding/TextBinding",
+			"callback/CallbackBinder",
+			"element/DOMElement"
+		], function(
+			Datum,
+			TextBinding,
+			CallbackBinder,
+			DOMElement) {
+
+			var datum = new Datum();
+			var element = document.querySelector("#top");
+
+			var binding =
+				new CallbackBinder(new TextBinding(function() {
+
+					return datum();
+				}));
+
+			binding.applyBinding(new DOMElement(element), "top");
+			datum("Hello World");
+
+			assert.strictEqual(element.innerHTML, "Hello World");
+
+			done();
+		});
+	});
+    </script>
+    <div id="datum" data-bind="datum"></div>
+    <script>
 	QUnit.test("Bind text with datum", function(assert) {
 
 		var done = assert.async();
@@ -91,7 +126,7 @@
 			done();
 		});
 	});
-	</script>
+    </script>
     <div id="one" data-bind="two"></div>
     <div id="two" data-bind="two"></div>
     <script>

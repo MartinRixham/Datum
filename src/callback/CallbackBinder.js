@@ -21,7 +21,7 @@ define([
 
 			removeOldBindings();
 
-			var elements = scope.getMatchingElements(name);
+			var elements = getMatchingElements(scope, name);
 
 			bindElements(elements, scope, model);
 			addElements(elements);
@@ -40,6 +40,18 @@ define([
 					binding.resetElement(element);
 				}
 			}
+		}
+
+		function getMatchingElements(scope, name){
+
+			var elements = scope.getMatchingElements(name);
+
+			if (scope.hasDataBindAttribute(name)) {
+
+				elements.push(scope);
+			}
+
+			return elements;
 		}
 
 		function addElements(elements) {

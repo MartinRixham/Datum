@@ -55,6 +55,11 @@ define([
 			}
 		};
 
+		this.hasDataBindAttribute = function(name) {
+
+			return element.dataset.bind == name;
+		};
+
 		this.createRebinder = function(rebinder) {
 
 			if (element) {

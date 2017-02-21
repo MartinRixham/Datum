@@ -22,6 +22,11 @@ define([], function() {
 			return [new NullDOMElement()];
 		};
 
+		this.hasDataBindAttribute = function() {
+
+			return false;
+		};
+
 		this.createRebinder = function() {};
 
 		this.callBindingCallback = function() {};
