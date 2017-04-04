@@ -2,7 +2,7 @@ define([
 	"property/TransientProperty",
 	"tracking/Datum",
 	"array/method/Push",
-	"array/method/Pop",
+	"array/method/Pop_",
 	"array/method/Shift",
 	"array/method/Unshift",
 	"array/method/Reverse",
