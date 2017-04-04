@@ -23,7 +23,7 @@ define([
 
 			var elements = getMatchingElements(scope, name);
 
-			bindElements(elements, scope, model);
+			bindElements(elements, model);
 			addElements(elements);
 		};
 
@@ -62,14 +62,13 @@ define([
 			}
 		}
 
-		function bindElements(elements, scope, model) {
+		function bindElements(elements, model) {
 
 			for (var i = 0; i < elements.length; i++) {
 
 				var element = elements[i];
 
-				if (scope.hasInScope(element) &&
-					!boundElements.contains(element)) {
+				if (!boundElements.contains(element)) {
 
 					binding.setUpElement(model, element.get());
 					new Registry().requestRegistrations();

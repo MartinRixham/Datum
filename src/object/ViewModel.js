@@ -16,9 +16,7 @@ define([
 	function ViewModel(model) {
 
 		var boundElements = new ElementSet();
-
 		var transientProperties = {};
-
 		var permanentProperties = {};
 
 		new Serialisable(model);
@@ -46,20 +44,17 @@ define([
 
 		function bindElement(element, scope, name) {
 
-			if (scope.hasInScope(element)) {
+			if (!boundElements.contains(element)) {
 
-				if (!boundElements.contains(element)) {
-
-					createRebinder(element, scope, name);
-					element.callBindingCallback(model);
-				}
-
-				unbindOldProperties();
-				createPermanentProperties();
-				createTransientProperties();
-				bindProperties(element);
-				boundElements.add(element);
+				createRebinder(element, scope, name);
+				element.callBindingCallback(model);
 			}
+
+			unbindOldProperties();
+			createPermanentProperties();
+			createTransientProperties();
+			bindProperties(element);
+			boundElements.add(element);
 		}
 
 		function createRebinder(element, scope, name) {

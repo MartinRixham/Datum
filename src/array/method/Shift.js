@@ -7,7 +7,6 @@ define([], function() {
 		model.shift = function() {
 
 			var shifted = originalShift.apply(this, arguments);
-
 			var property = properties.shift();
 
 			if (property) {

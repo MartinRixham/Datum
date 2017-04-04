@@ -19,7 +19,7 @@ define([], function() {
 
 		this.getMatchingElements = function() {
 
-			return [new NullDOMElement()];
+			return [];
 		};
 
 		this.hasDataBindAttribute = function() {

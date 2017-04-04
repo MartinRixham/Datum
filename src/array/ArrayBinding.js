@@ -22,7 +22,6 @@ define([
 	function ArrayBinding(model, propertyType) {
 
 		var properties = [];
-
 		var elements = [];
 
 		(function createProperties() {

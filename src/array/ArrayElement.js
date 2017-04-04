@@ -3,7 +3,6 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 	function ArrayElement(domElement, initialLength) {
 
 		var element = domElement.get();
-
 		var child;
 
 		(function checkElementHasOnlyOneChild() {

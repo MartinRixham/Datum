@@ -45,9 +45,19 @@ define([
 			if (isNaN(key)) {
 
 				var elements = element.querySelectorAll("[data-bind=" + key + "]");
-				var elementsArray = [].slice.call(elements);
+				var elementsArray = [];
 
-				return elementsArray.map(function(item) { return new DOMElement(item); });
+				for (var i = 0; i < elements.length; i++) {
+
+					var newElement = new DOMElement(elements[i]);
+
+					if (this.hasInScope(newElement)) {
+
+						elementsArray.push(newElement);
+					}
+				}
+
+				return elementsArray;
 			}
 			else {
 

@@ -34,19 +34,16 @@ define([
 
 				var element = elements[i];
 
-				if (scope.hasInScope(element)) {
+				if (boundElements.contains(element)) {
 
-					if (boundElements.contains(element)) {
+					binding.updateElement(model, element, model && model[name]);
+				}
+				else {
 
-						binding.updateElement(model, element, model && model[name]);
-					}
-					else {
-
-						binding.setUpElement(model, element, model && model[name]);
-						new Registry().requestRegistrations();
-						binding.updateElement(model, element, model && model[name]);
-						binding.createCallback(scope, element);
-					}
+					binding.setUpElement(model, element, model && model[name]);
+					new Registry().requestRegistrations();
+					binding.updateElement(model, element, model && model[name]);
+					binding.createCallback(scope, element);
 				}
 			}
 		}

@@ -7,7 +7,6 @@ define([], function() {
 		model.pop = function() {
 
 			var popped = originalPop.apply(this, arguments);
-
 			var property = properties.pop();
 
 			if (property) {

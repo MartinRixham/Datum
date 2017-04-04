@@ -3,7 +3,6 @@ define([], function() {
 	function PermanentProperty(property, propertyType) {
 
 		var objectBinding;
-
 		var propertyInjected = false;
 
 		if (typeof(property) == "object" && !isBinding(property)) {
