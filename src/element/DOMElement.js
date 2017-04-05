@@ -7,11 +7,6 @@ define([
 
 	function DOMElement(element) {
 
-		this.hasInScope = function(other) {
-
-			return other.isInScope(element);
-		};
-
 		this.isInScope = function(scope) {
 
 			return isInScope(element, scope);
@@ -23,11 +18,15 @@ define([
 
 			if (!currentElement) {
 
+				return false;
+			}
+			else if (currentElement == scope) {
+
 				return true;
 			}
 			else if (currentElement.__DATUM__REBIND) {
 
-				return currentElement == scope;
+				return false;
 			}
 			else {
 
@@ -51,7 +50,7 @@ define([
 
 					var newElement = new DOMElement(elements[i]);
 
-					if (this.hasInScope(newElement)) {
+					if (newElement.isInScope(element)) {
 
 						elementsArray.push(newElement);
 					}

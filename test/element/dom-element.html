@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>DOM Element Tests</title>
+    <link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../../src", context: i++ })(dependencies, factory);
+		}
+    </script>
+    <div id="super">
+      <div id="sub"></div>
+    </div>
+    <script>
+	QUnit.test("Subelement is in scope", function(assert) {
+
+		var done = assert.async();
+
+		require(["element/DOMElement"], function(DOMElement) {
+
+			var sup = document.querySelector("#super");
+			var sub = document.querySelector("#sub");
+
+			var element = new DOMElement(sup);
+			var subelement = new DOMElement(sub);
+
+			assert.ok(subelement.isInScope(sup));
+			assert.ok(!element.isInScope(sub));
+
+			done();
+		});
+	});
+    </script>
+    <div id="non-super"></div>
+    <div id="non-sub"></div>
+    <script>
+	QUnit.test("Fail to bind subobject outside of scope", function(assert) {
+
+		var done = assert.async();
+
+		require(["element/DOMElement"], function(DOMElement) {
+
+			var nonSuper = document.querySelector("#non-super");
+			var nonSub = document.querySelector("#non-sub");
+
+			var element = new DOMElement(nonSuper);
+			var subelement = new DOMElement(nonSub);
+
+			assert.ok(!subelement.isInScope(nonSuper));
+			assert.ok(!element.isInScope(nonSub));
+
+			done();
+		});
+	});
+    </script>
+    <div id="fail-super">
+      <div id="fail-sub">
+        <div id="fail"></div>
+      </div>
+    </div>
+    <script>
+	QUnit.test("Fail to bind object out of scope", function(assert) {
+
+		var done = assert.async();
+
+		require(["element/DOMElement"], function(DOMElement) {
+
+			var failSuper = document.querySelector("#fail-super");
+			var failSub = document.querySelector("#fail-sub");
+			var fail = document.querySelector("#fail");
+
+			failSub.__DATUM__REBIND = function() {};
+
+			var element = new DOMElement(fail);
+
+			assert.ok(!element.isInScope(failSuper));
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>
