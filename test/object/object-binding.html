@@ -203,5 +203,35 @@
 		});
 	});
     </script>
+    <div data-bind="obj"></div>
+	<div data-bind="visible"></div>
+    <script>
+	QUnit.test("Neighbouring binding not affected by object binding", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/Visible", "root/BindingRoot"], function(Visible, BindingRoot) {
+
+			function Neighbour() {
+
+				this.obj = {};
+
+				this.visible =
+					new Visible(function() {
+
+						this.obj = null;
+					});
+			}
+
+			var root = new BindingRoot(new Neighbour());
+
+			assert.expect(0);
+
+			root.disconnect();
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

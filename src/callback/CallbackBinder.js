@@ -13,8 +13,6 @@ define([
 
 		var boundElements = new ElementSet();
 
-		var running = false;
-
 		this.applyBinding = function(scope, name, model) {
 
 			parentModel = model;
@@ -79,6 +77,8 @@ define([
 		}
 
 		function createCallback(model, element) {
+
+			var running = false;
 
 			function callback(value) {
 

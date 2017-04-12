@@ -60,9 +60,16 @@ define(["tracking/Registry", "tracking/Dependant"], function(Registry, Dependant
 
 		this.createCallback = function(scope, element) {
 
+			var running = false;
+
 			function callback() {
 
-				scope.rebind();
+				if (!running) {
+
+					running = true;
+					scope.rebind();
+					running = false;
+				}
 			}
 
 			new Registry().assignUpdater(new Dependant(callback, this, element));
