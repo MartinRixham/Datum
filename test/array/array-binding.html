@@ -399,12 +399,7 @@
 
 		var done = assert.async();
 
-		require([
-			"object/ViewModel",
-			"root/BindingRoot"
-		], function(
-			ViewModel,
-			BindingRoot) {
+		require(["root/BindingRoot"], function(BindingRoot) {
 
 			function ClearArray() {
 
@@ -426,5 +421,55 @@
 		});
 	});
 	</script>
+    <div id="unshift" data-bind="unshift">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Unshift elements to beginning of array", function(assert) {
+
+		var done = assert.async();
+
+		require(["root/BindingRoot", "callback/Text"], function(BindingRoot, Text) {
+
+			function UnshiftChild() {
+
+				this.onBind = function(element) {
+
+					setTimeout(function() {
+
+						element.innerHTML = "<div data-bind=\"hello\"></div>";
+					});
+				};
+
+				this.hello = new Text(function() { return "Hello world."; });
+			}
+
+			function UnshiftArray() {
+
+				this.unshift = [];
+			}
+
+			var model = new UnshiftArray();
+			var root = new BindingRoot(model);
+
+			model.unshift.unshift(new UnshiftChild());
+			model.unshift.unshift(new UnshiftChild());
+
+			setTimeout(function() {
+
+				var element = document.querySelector("#unshift");
+				var firstText = element.children[0].firstElementChild.textContent;
+				var secondText = element.children[1].firstElementChild.textContent;
+
+				assert.strictEqual(firstText, "Hello world.");
+				assert.strictEqual(secondText, "Hello world.");
+
+				done();
+
+				root.disconnect();
+			});
+		});
+	});
+    </script>
   </body>
 </html>
