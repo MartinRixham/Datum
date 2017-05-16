@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Array Binder Tests</title>
+    <link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+	<script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../../src", context: i++ })(dependencies, factory);
+		}
+	</script>
+    <div id="one" data-bind="two"></div>
+    <div id="two" data-bind="two"></div>
+    <script>
+	QUnit.test("Bind to two elements", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinder",
+			"element/DOMElement"
+		], function(
+			ArrayBinder,
+			DOMElement) {
+
+			var setUpCallCount = 0;
+			var updateCallCount = 0;
+
+			var binding =
+				new ArrayBinder({
+
+					setUpElement: function() {
+
+						setUpCallCount++;
+					},
+					updateElement: function() {
+
+						updateCallCount++;
+					},
+					resetElement: function() {},
+					createCallback: function() {}
+				});
+
+			binding.applyBinding(new DOMElement(document.body), "two", {});
+
+			assert.strictEqual(setUpCallCount, 2);
+			assert.strictEqual(updateCallCount, 2);
+
+			done();
+		});
+	});
+    </script>
+    <div id="unbind" data-bind="unbind"></div>
+  	<script>
+	QUnit.test("Unbind object", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinder",
+			"element/DOMElement"
+		], function(
+			ArrayBinder,
+			DOMElement) {
+
+			var setUpCallCount = 0;
+			var updateCallCount = 0;
+			var resetCallCount = 0;
+
+			var binding =
+				new ArrayBinder({
+
+					setUpElement: function() {
+
+						setUpCallCount++;
+					},
+					updateElement: function() {
+
+						updateCallCount++;
+					},
+					resetElement: function() {
+
+						resetCallCount++;
+					},
+					createCallback: function() {}
+				});
+
+			binding.applyBinding(new DOMElement(document.body), "unbind", {});
+			binding.removeBinding();
+
+			assert.strictEqual(setUpCallCount, 1);
+			assert.strictEqual(updateCallCount, 1);
+			assert.strictEqual(resetCallCount, 1);
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Unbind null element", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinder",
+			"element/NullDOMElement"
+		], function(
+			ArrayBinder,
+			NullDOMElement) {
+
+			var setUpCallCount = 0;
+			var updateCallCount = 0;
+			var resetCallCount = 0;
+
+			var binding =
+				new ArrayBinder({
+
+					setUpElement: function() {
+
+						setUpCallCount++;
+					},
+					updateElement: function() {
+
+						updateCallCount++;
+					},
+					resetElement: function() {
+
+						resetCallCount++;
+					},
+					createCallback: function() {}
+				});
+
+			binding.applyBinding(new NullDOMElement(), "unbindNull", {});
+			binding.applyBinding(new NullDOMElement(), "unbindNull", {});
+			binding.removeBinding();
+
+			assert.strictEqual(setUpCallCount, 0);
+			assert.strictEqual(updateCallCount, 0);
+			assert.strictEqual(resetCallCount, 0);
+
+			done();
+		});
+	});
+    </script>
+    <div id="first-scope">
+      <div data-bind="scope"></div>
+    </div>
+    <div id="second-scope">
+      <div data-bind="scope"></div>
+    </div>
+    <script>
+	QUnit.test("Bind to new scope", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinder",
+			"element/DOMElement"
+		], function(
+			ArrayBinder,
+			DOMElement) {
+
+			var setUpCallCount = 0;
+			var updateCallCount = 0;
+			var resetCallCount = 0;
+
+			var binding =
+				new ArrayBinder({
+
+					setUpElement: function() {
+
+						setUpCallCount++;
+					},
+					updateElement: function() {
+
+						updateCallCount++;
+					},
+					resetElement: function() {
+
+						resetCallCount++;
+					},
+					createCallback: function() {}
+				});
+
+			var firstScope = new DOMElement(document.querySelector("#first-scope"));
+			binding.applyBinding(firstScope, "scope", {});
+
+			document.body.removeChild(firstScope.get());
+			var secondScope = new DOMElement(document.querySelector("#second-scope"));
+			binding.applyBinding(secondScope, "scope", {});
+
+			assert.strictEqual(setUpCallCount, 2);
+			assert.strictEqual(updateCallCount, 2);
+			assert.strictEqual(resetCallCount, 1);
+
+			done();
+		});
+	});
+    </script>
+	<div data-bind="name">Hello world.</div>
+    <script>
+	QUnit.test("Get parameters from objects", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinder",
+			"element/DOMElement"
+		], function(
+			ArrayBinder,
+			DOMElement) {
+
+			var model = { "name": "thingy" };
+			var initialisedModel;
+			var initialisedElement;
+			var initialisedValue;
+			var updatedModel;
+			var updatedElement;
+			var updatedValue;
+			var resetElement;
+
+			var binding =
+				new ArrayBinder({
+
+					setUpElement: function(model, element, value) {
+
+						initialisedModel = model;
+						initialisedElement = element.get();
+						initialisedValue = value;
+					},
+					updateElement: function(model, element, value) {
+
+						updatedModel = model;
+						updatedElement = element.get();
+						updatedValue = value;
+					},
+					resetElement: function(element) {
+
+						resetElement = element.get();
+					},
+					createCallback: function() {}
+				});
+
+			binding.applyBinding(new DOMElement(document.body), "name", model);
+			binding.removeBinding();
+
+			assert.strictEqual(initialisedModel, model);
+			assert.strictEqual(initialisedElement.innerHTML, "Hello world.");
+			assert.strictEqual(initialisedValue, "thingy");
+			assert.strictEqual(updatedModel, model);
+			assert.strictEqual(updatedElement.innerHTML, "Hello world.");
+			assert.strictEqual(updatedValue, "thingy");
+			assert.strictEqual(resetElement.innerHTML, "Hello world.");
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>
