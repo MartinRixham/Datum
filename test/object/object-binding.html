@@ -23,7 +23,7 @@
 			requirejs.config({ baseUrl: "../../src", context: i++ })(dependencies, factory);
 		}
     </script>
-    <div id="notObject">
+    <div id="notObject" data-bind="notObject">
       <div></div>
       <div></div>
     </div>
@@ -33,29 +33,31 @@
 		var done = assert.async();
 
 		require([
+			"object/ObjectBinder",
 			"object/ObjectBinding",
 			"element/DOMElement"
 		], function(
+			ObjectBinder,
 			ObjectBinding,
 			DOMElement) {
 
-			var binding = new ObjectBinding();
-			var element = new DOMElement(document.querySelector("#notObject"));
+			var binding = new ObjectBinder(new ObjectBinding());
 			var model = {
 
 				notObject: null
 			};
 
-			binding.setUpElement(model, element);
-			binding.updateElement(model, element, null);
+			binding.applyBinding(new DOMElement(document.body), "notObject", model);
 
-			assert.strictEqual(element.get().children.length, 0);
+			var element = document.querySelector("#notObject");
+
+			assert.strictEqual(element.children.length, 0);
 
 			done();
 		});
 	});
     </script>
-    <div id="not-null">
+    <div id="not-null" data-bind="notNull">
       <div></div>
       <div></div>
     </div>
@@ -65,33 +67,35 @@
 		var done = assert.async();
 
 		require([
+			"object/ObjectBinder",
 			"object/ObjectBinding",
 			"element/DOMElement"
 		], function(
+			ObjectBinder,
 			ObjectBinding,
 			DOMElement) {
 
-			var binding = new ObjectBinding();
-			var element = new DOMElement(document.querySelector("#not-null"));
+			var binding = new ObjectBinder(new ObjectBinding());
 			var model = {
 
 				notNull: null
 			};
 
-			binding.setUpElement(model, element, model.notNull);
-			binding.updateElement(model, element, model.notNull);
+			binding.applyBinding(new DOMElement(document.body), "notNull", model);
 
 			model.notNull = {};
 
-			binding.updateElement(model, element, model.notNull);
+			binding.applyBinding(new DOMElement(document.body), "notNull", model);
 
-			assert.strictEqual(element.get().children.length, 2);
+			var element = document.querySelector("#not-null");
+
+			assert.strictEqual(element.children.length, 2);
 
 			done();
 		});
 	});
     </script>
-    <div id="not-twice">
+    <div id="not-twice" data-bind="notTwice">
       <div></div>
       <div></div>
     </div>
@@ -101,28 +105,30 @@
 		var done = assert.async();
 
 		require([
+			"object/ObjectBinder",
 			"object/ObjectBinding",
 			"element/DOMElement"
 		], function(
+			ObjectBinder,
 			ObjectBinding,
 			DOMElement) {
 
-			var binding = new ObjectBinding();
-			var element = new DOMElement(document.querySelector("#not-twice"));
+			var binding = new ObjectBinder(new ObjectBinding());
 			var model = {
 
-				notNull: null
+				notTwice: null
 			};
 
-			binding.setUpElement(model, element, model.notNull);
-			binding.updateElement(model, element, model.notNull);
+			binding.applyBinding(new DOMElement(document.body), "notTwice", model);
 
-			model.notNull = {};
+			model.notTwice = {};
 
-			binding.updateElement(model, element, model.notNull);
-			binding.updateElement(model, element, model.notNull);
+			binding.applyBinding(new DOMElement(document.body), "notTwice", model);
+			binding.applyBinding(new DOMElement(document.body), "notTwice", model);
 
-			assert.strictEqual(element.get().children.length, 2);
+			var element = document.querySelector("#not-twice");
+
+			assert.strictEqual(element.children.length, 2);
 
 			done();
 		});
@@ -170,7 +176,7 @@
 		});
 	});
     </script>
-    <div id="reset">
+    <div id="reset" data-bind="reset">
       <div></div>
       <div></div>
     </div>
@@ -180,24 +186,26 @@
 		var done = assert.async();
 
 		require([
+			"object/ObjectBinder",
 			"object/ObjectBinding",
 			"element/DOMElement"
 		], function(
+			ObjectBinder,
 			ObjectBinding,
 			DOMElement) {
 
-			var binding = new ObjectBinding();
-			var element = new DOMElement(document.querySelector("#reset"));
+			var binding = new ObjectBinder(new ObjectBinding());
 			var model = {
 
-				notObject: null
+				reset: null
 			};
 
-			binding.setUpElement(model, element);
-			binding.updateElement(model, element, null);
-			binding.resetElement(element);
+			binding.applyBinding(new DOMElement(document.body), "reset", model);
+			binding.removeBinding();
 
-			assert.strictEqual(element.get().children.length, 2);
+			var element = document.querySelector("#reset");
+
+			assert.strictEqual(element.children.length, 2);
 
 			done();
 		});
