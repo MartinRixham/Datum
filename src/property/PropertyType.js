@@ -37,7 +37,7 @@ define([
 
 		this.createObjectBinding = function() {
 
-			return new ObjectBinder(new ObjectBinding());
+			return new ObjectBinder();
 		};
 
 		this.createArrayBinding = function(model) {

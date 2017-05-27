@@ -1,11 +1,15 @@
 define([
+	"object/ObjectBinding",
 	"element/ElementSet",
 	"tracking/Registry"
 ], function(
+	ObjectBinding,
 	ElementSet,
 	Registry) {
 
-	function ObjectBinder(binding) {
+	function ObjectBinder() {
+
+		var binding = new ObjectBinding();
 
 		var boundElements = new ElementSet();
 
