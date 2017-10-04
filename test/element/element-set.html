@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Element Set Tests</title>
+    <link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css">
+    <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../../node_modules/requirejs/require.js"></script>
+  </head>
+  <body>
+    <style>
+		#qunit ~ * {
+			display: none;
+		}
+    </style>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script>
+		var i = 0;
+
+		function require(dependencies, factory) {
+
+			requirejs.config({ baseUrl: "../../src", context: i++ })(dependencies, factory);
+		}
+    </script>
+    <script>
+		function FakeDOMElement(old) {
+
+			this.equals = function(other) { return this == other; };
+
+			this.removedFromDocument = function() { return old; };
+		}
+    </script>
+    <script>
+	QUnit.test("Element set with no elements", function(assert) {
+
+		var done = assert.async();
+
+		require(["element/ElementSet"], function(ElementSet) {
+
+			var elementSet = new ElementSet();
+
+			assert.strictEqual(elementSet.get().length, 0);
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Element set with one element", function(assert) {
+
+		var done = assert.async();
+
+		require(["element/ElementSet"], function(ElementSet) {
+
+			var elementSet = new ElementSet();
+			var element = new FakeDOMElement();
+
+			elementSet.add(element);
+
+			assert.ok(elementSet.contains(element));
+			assert.strictEqual(elementSet.get().length, 1);
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Element set with two elements", function(assert) {
+
+		var done = assert.async();
+
+		require(["element/ElementSet"], function(ElementSet) {
+
+			var elementSet = new ElementSet();
+			var firstElement = new FakeDOMElement();
+			var secondElement = new FakeDOMElement();
+
+			elementSet.add(firstElement);
+			elementSet.add(secondElement);
+
+			assert.ok(elementSet.contains(firstElement));
+			assert.ok(elementSet.contains(secondElement));
+			assert.strictEqual(elementSet.get().length, 2);
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Remove old element from set", function(assert) {
+
+		var done = assert.async();
+
+		require(["element/ElementSet"], function(ElementSet) {
+
+			var elementSet = new ElementSet();
+			var newElement = new FakeDOMElement();
+			var oldElement = new FakeDOMElement(true);
+
+			elementSet.add(newElement);
+			elementSet.add(oldElement);
+
+			var removed = elementSet.removeOld();
+
+			assert.strictEqual(removed.length, 1);
+			assert.ok(removed[0].equals(oldElement));
+			assert.strictEqual(elementSet.get().length, 1);
+			assert.ok(elementSet.contains(newElement));
+			assert.ok(!elementSet.contains(oldElement));
+
+			done();
+		});
+	});
+    </script>
+  </body>
+</html>
