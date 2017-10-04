@@ -1,10 +1,8 @@
 define([
-	"object/ObjectBinding",
 	"element/ElementSet",
 	"tracking/Registry",
 	"tracking/Dependant"
 ], function(
-	ObjectBinding,
 	ElementSet,
 	Registry,
 	Dependant) {
@@ -26,14 +24,6 @@ define([
 
 			bindElements(elements, scope, model, name);
 		};
-
-		function addElements(elements) {
-
-			for (var i = 0; i < elements.length; i++) {
-
-				boundElements.add(elements[i]);
-			}
-		}
 
 		function bindElements(elements, scope, model, name) {
 

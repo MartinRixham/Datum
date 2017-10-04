@@ -1,13 +1,11 @@
 define([
 	"tracking/Datum",
 	"object/ObjectBinder",
-	"object/ObjectBinding",
 	"array/ArrayBinder",
 	"array/ArrayBinding"
 ], function(
 	Datum,
 	ObjectBinder,
-	ObjectBinding,
 	ArrayBinder,
 	ArrayBinding) {
 

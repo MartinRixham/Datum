@@ -102,6 +102,183 @@
 		});
 	});
     </script>
+    <div id="notObject" data-bind="notObject">
+      <div></div>
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Remove elements when object null", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"object/ObjectBinder",
+			"element/DOMElement"
+		], function(
+			ObjectBinder,
+			DOMElement) {
+
+			var binding = new ObjectBinder();
+			var model = {
+
+				notObject: null
+			};
+
+			binding.applyBinding(new DOMElement(document.body), "notObject", model);
+
+			var element = document.querySelector("#notObject");
+
+			assert.strictEqual(element.children.length, 0);
+
+			done();
+		});
+	});
+    </script>
+    <div id="not-null" data-bind="notNull">
+      <div></div>
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Replace elements when object not null", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"object/ObjectBinder",
+			"element/DOMElement"
+		], function(
+			ObjectBinder,
+			DOMElement) {
+
+			var binding = new ObjectBinder();
+			var model = {
+
+				notNull: null
+			};
+
+			binding.applyBinding(new DOMElement(document.body), "notNull", model);
+
+			model.notNull = {};
+
+			binding.applyBinding(new DOMElement(document.body), "notNull", model);
+
+			var element = document.querySelector("#not-null");
+
+			assert.strictEqual(element.children.length, 2);
+
+			done();
+		});
+	});
+    </script>
+    <div id="not-twice" data-bind="notTwice">
+      <div></div>
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Replace elements only once when object not null twice", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"object/ObjectBinder",
+			"element/DOMElement"
+		], function(
+			ObjectBinder,
+			DOMElement) {
+
+			var binding = new ObjectBinder();
+			var model = {
+
+				notTwice: null
+			};
+
+			binding.applyBinding(new DOMElement(document.body), "notTwice", model);
+
+			model.notTwice = {};
+
+			binding.applyBinding(new DOMElement(document.body), "notTwice", model);
+			binding.applyBinding(new DOMElement(document.body), "notTwice", model);
+
+			var element = document.querySelector("#not-twice");
+
+			assert.strictEqual(element.children.length, 2);
+
+			done();
+		});
+	});
+    </script>
+    <div id="replace-text" data-bind="replaceText">
+      <div data-bind="text"></div>
+    </div>
+    <script>
+	QUnit.test("Template replaced when new object set", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Text",
+			"root/BindingRoot",
+			"element/DOMElement"
+		], function(
+			Text,
+			BindingRoot,
+			DOMElement) {
+
+			function Replace() {
+
+				this.replaceText = null;
+			}
+
+			var replace = new Replace();
+			var root = new BindingRoot(replace);
+			var element = new DOMElement(document.querySelector("#replace-text"));
+
+			replace.replaceText = {
+
+				text: new Text(function() { return "Hello world."; })
+			};
+
+			var children = element.get().children;
+
+			assert.strictEqual(children.length, 1);
+			assert.strictEqual(children[0].textContent, "Hello world.");
+
+			root.disconnect();
+
+			done();
+		});
+	});
+    </script>
+    <div data-bind="obj"></div>
+    <div data-bind="visible"></div>
+    <script>
+	QUnit.test("Neighbouring binding not affected by object binding", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/Visible", "root/BindingRoot"], function(Visible, BindingRoot) {
+
+			function Neighbour() {
+
+				this.obj = {};
+
+				this.visible =
+					new Visible(function() {
+
+						this.obj = null;
+					});
+			}
+
+			var root = new BindingRoot(new Neighbour());
+
+			assert.expect(0);
+
+			root.disconnect();
+
+			done();
+		});
+	});
+    </script>
     <div id="reset" data-bind="reset">
       <div></div>
       <div></div>
