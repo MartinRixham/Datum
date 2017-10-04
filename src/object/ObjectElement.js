@@ -22,6 +22,11 @@ define([], function() {
 			}
 		};
 
+		this.removedFromDocument = function() {
+
+			return !document.contains(element);
+		};
+
 		this.equals = function(other) {
 
 			return other.hasEqual(element);

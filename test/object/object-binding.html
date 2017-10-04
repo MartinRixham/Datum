@@ -170,39 +170,6 @@
 		});
 	});
     </script>
-    <div id="reset" data-bind="reset">
-      <div></div>
-      <div></div>
-    </div>
-    <script>
-	QUnit.test("Reset element", function(assert) {
-
-		var done = assert.async();
-
-		require([
-			"object/ObjectBinder",
-			"element/DOMElement"
-		], function(
-			ObjectBinder,
-			DOMElement) {
-
-			var binding = new ObjectBinder();
-			var model = {
-
-				reset: null
-			};
-
-			binding.applyBinding(new DOMElement(document.body), "reset", model);
-			binding.removeBinding();
-
-			var element = document.querySelector("#reset");
-
-			assert.strictEqual(element.children.length, 2);
-
-			done();
-		});
-	});
-    </script>
     <div data-bind="obj"></div>
 	<div data-bind="visible"></div>
     <script>

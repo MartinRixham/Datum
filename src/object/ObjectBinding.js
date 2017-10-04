@@ -8,7 +8,7 @@ define(["tracking/Registry", "tracking/Dependant"], function(Registry, Dependant
 
 		this.setUpElement = function(parentModel, element) {
 
-			elements.push(element.toObjectElement());
+			elements.push(element);
 		};
 
 		this.updateElement = function(parentModel, element, model) {
@@ -54,8 +54,6 @@ define(["tracking/Registry", "tracking/Dependant"], function(Registry, Dependant
 					break;
 				}
 			}
-
-			objectElement.replaceChildren();
 		};
 
 		this.createCallback = function(scope, element) {

@@ -19,9 +19,11 @@ define([
 			resetElements(removed);
 
 			var elements = scope.getMatchingElements(name);
+			var objectElements =
+				elements.map(function(item) { return item.toObjectElement(); });
 
-			bindElements(elements, scope, model, name);
-			addElements(elements);
+			bindElements(objectElements, scope, model, name);
+			addElements(objectElements);
 		};
 
 		function addElements(elements) {
@@ -65,10 +67,7 @@ define([
 
 				var element = elements[i];
 
-				if (element.get()) {
-
-					binding.resetElement(element);
-				}
+				element.replaceChildren();
 			}
 		}
 	}
