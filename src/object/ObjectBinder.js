@@ -1,15 +1,19 @@
 define([
 	"object/ObjectBinding",
 	"element/ElementSet",
-	"tracking/Registry"
+	"tracking/Registry",
+	"tracking/Dependant"
 ], function(
 	ObjectBinding,
 	ElementSet,
-	Registry) {
+	Registry,
+	Dependant) {
 
 	function ObjectBinder() {
 
-		var binding = new ObjectBinding();
+		var self = this;
+
+		var removed = false;
 
 		var boundElements = new ElementSet();
 
@@ -19,11 +23,8 @@ define([
 			resetElements(removed);
 
 			var elements = scope.getMatchingElements(name);
-			var objectElements =
-				elements.map(function(item) { return item.toObjectElement(); });
 
-			bindElements(objectElements, scope, model, name);
-			addElements(objectElements);
+			bindElements(elements, scope, model, name);
 		};
 
 		function addElements(elements) {
@@ -42,16 +43,52 @@ define([
 
 				if (boundElements.contains(element)) {
 
-					binding.updateElement(model, element, model && model[name]);
+					updateElement(model, element, model && model[name]);
 				}
 				else {
 
-					binding.setUpElement(model, element, model && model[name]);
+					boundElements.add(element.toObjectElement());
 					new Registry().requestRegistrations();
-					binding.updateElement(model, element, model && model[name]);
-					binding.createCallback(scope, element);
+					updateElement(model, element, model && model[name]);
+					createCallback(scope, element);
 				}
 			}
+		}
+
+		function updateElement(parentModel, element, model) {
+
+			var objectElement = boundElements.getElementEqualTo(element);
+
+			if (model) {
+
+				if (removed) {
+
+					removed = false;
+					objectElement.replaceChildren();
+				}
+			}
+			else {
+
+				removed = true;
+				objectElement.removeChildren();
+			}
+		}
+
+		function createCallback(scope, element) {
+
+			var running = false;
+
+			function callback() {
+
+				if (!running) {
+
+					running = true;
+					scope.rebind();
+					running = false;
+				}
+			}
+
+			new Registry().assignUpdater(new Dependant(callback, self, element));
 		}
 
 		this.removeBinding = function() {
@@ -68,6 +105,7 @@ define([
 				var element = elements[i];
 
 				element.replaceChildren();
+				boundElements.remove(element);
 			}
 		}
 	}

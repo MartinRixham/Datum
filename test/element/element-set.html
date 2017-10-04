@@ -113,5 +113,51 @@
 		});
 	});
     </script>
+    <script>
+	QUnit.test("Get matching element", function(assert) {
+
+		var done = assert.async();
+
+		require(["element/ElementSet"], function(ElementSet) {
+
+			var elementSet = new ElementSet();
+			var unequalElement = { equals: function() { return false; } };
+			var equalElement = { equals: function() { return true; } };
+
+			elementSet.add(unequalElement);
+			elementSet.add(equalElement);
+
+			var element =
+				elementSet.getElementEqualTo({
+
+					equals: function(other) { return other.equals(); }
+				});
+
+			assert.strictEqual(element, equalElement);
+
+			done();
+		});
+	});
+    </script>
+    <script>
+	QUnit.test("Remove element from set", function(assert) {
+
+		var done = assert.async();
+
+		require(["element/ElementSet"], function(ElementSet) {
+
+			var elementSet = new ElementSet();
+			var element = new FakeDOMElement();
+
+			elementSet.add(element);
+			elementSet.remove(element);
+
+			assert.ok(!elementSet.contains(element));
+			assert.strictEqual(elementSet.get().length, 0);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

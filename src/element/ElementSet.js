@@ -45,9 +45,31 @@ define([], function() {
 			return removed;
 		};
 
+		this.getElementEqualTo = function(element) {
+
+			for (var i = 0; i < elements.length; i++) {
+
+				if (elements[i].equals(element)) {
+
+					return elements[i];
+				}
+			}
+		};
+
 		this.contains = function(element) {
 
 			return !isNew(element);
+		};
+
+		this.remove = function(element) {
+
+			for (var i = 0; i < elements.length; i++) {
+
+				if (elements[i].equals(element)) {
+
+					elements.splice(i, 1);
+				}
+			}
 		};
 
 		this.get = function() {
