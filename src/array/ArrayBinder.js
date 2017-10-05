@@ -1,11 +1,15 @@
 define([
 	"element/ElementSet",
-	"tracking/Registry"
+	"tracking/Registry",
+	"array/ArrayBinding"
 ], function(
 	ElementSet,
-	Registry) {
+	Registry,
+	ArrayBinding) {
 
-	function ArrayBinder(binding) {
+	function ArrayBinder(model, propertyType) {
+
+		var binding = new ArrayBinding(model, propertyType);
 
 		var boundElements = new ElementSet();
 

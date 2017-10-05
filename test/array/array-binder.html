@@ -23,92 +23,25 @@
 			requirejs.config({ baseUrl: "../../src", context: i++ })(dependencies, factory);
 		}
 	</script>
-    <div id="one" data-bind="two"></div>
-    <div id="two" data-bind="two"></div>
     <script>
-	QUnit.test("Bind to two elements", function(assert) {
+		function FakePropertyType() {
 
-		var done = assert.async();
+			this.createViewModel = function() {
 
-		require([
-			"array/ArrayBinder",
-			"element/DOMElement"
-		], function(
-			ArrayBinder,
-			DOMElement) {
+				return {
 
-			var setUpCallCount = 0;
-			var updateCallCount = 0;
+					applyBinding: function() {}
+				};
+			};
 
-			var binding =
-				new ArrayBinder({
+			this.createArrayBinding = function() {
 
-					setUpElement: function() {
+				return {
 
-						setUpCallCount++;
-					},
-					updateElement: function() {
-
-						updateCallCount++;
-					},
-					resetElement: function() {},
-					createCallback: function() {}
-				});
-
-			binding.applyBinding(new DOMElement(document.body), "two", {});
-
-			assert.strictEqual(setUpCallCount, 2);
-			assert.strictEqual(updateCallCount, 2);
-
-			done();
-		});
-	});
-    </script>
-    <div id="unbind" data-bind="unbind"></div>
-  	<script>
-	QUnit.test("Unbind object", function(assert) {
-
-		var done = assert.async();
-
-		require([
-			"array/ArrayBinder",
-			"element/DOMElement"
-		], function(
-			ArrayBinder,
-			DOMElement) {
-
-			var setUpCallCount = 0;
-			var updateCallCount = 0;
-			var resetCallCount = 0;
-
-			var binding =
-				new ArrayBinder({
-
-					setUpElement: function() {
-
-						setUpCallCount++;
-					},
-					updateElement: function() {
-
-						updateCallCount++;
-					},
-					resetElement: function() {
-
-						resetCallCount++;
-					},
-					createCallback: function() {}
-				});
-
-			binding.applyBinding(new DOMElement(document.body), "unbind", {});
-			binding.removeBinding();
-
-			assert.strictEqual(setUpCallCount, 1);
-			assert.strictEqual(updateCallCount, 1);
-			assert.strictEqual(resetCallCount, 1);
-
-			done();
-		});
-	});
+					applyBinding: function() {}
+				};
+			};
+		}
     </script>
     <script>
 	QUnit.test("Unbind null element", function(assert) {
@@ -122,45 +55,28 @@
 			ArrayBinder,
 			NullDOMElement) {
 
-			var setUpCallCount = 0;
-			var updateCallCount = 0;
-			var resetCallCount = 0;
+			var model = { prop: [] };
+			var binding = new ArrayBinder(model.prop, new FakePropertyType());
 
-			var binding =
-				new ArrayBinder({
-
-					setUpElement: function() {
-
-						setUpCallCount++;
-					},
-					updateElement: function() {
-
-						updateCallCount++;
-					},
-					resetElement: function() {
-
-						resetCallCount++;
-					},
-					createCallback: function() {}
-				});
-
-			binding.applyBinding(new NullDOMElement(), "unbindNull", {});
-			binding.applyBinding(new NullDOMElement(), "unbindNull", {});
+			binding.applyBinding(new NullDOMElement(), "unbindNull", model);
+			binding.applyBinding(new NullDOMElement(), "unbindNull", model);
 			binding.removeBinding();
 
-			assert.strictEqual(setUpCallCount, 0);
-			assert.strictEqual(updateCallCount, 0);
-			assert.strictEqual(resetCallCount, 0);
+			assert.expect(0);
 
 			done();
 		});
 	});
     </script>
     <div id="first-scope">
-      <div data-bind="scope"></div>
+      <div data-bind="scope">
+        <div></div>
+      </div>
     </div>
     <div id="second-scope">
-      <div data-bind="scope"></div>
+      <div data-bind="scope">
+        <div></div>
+      </div>
     </div>
     <script>
 	QUnit.test("Bind to new scope", function(assert) {
@@ -174,97 +90,19 @@
 			ArrayBinder,
 			DOMElement) {
 
-			var setUpCallCount = 0;
-			var updateCallCount = 0;
-			var resetCallCount = 0;
-
+			var model = { scope: [] };
 			var binding =
-				new ArrayBinder({
-
-					setUpElement: function() {
-
-						setUpCallCount++;
-					},
-					updateElement: function() {
-
-						updateCallCount++;
-					},
-					resetElement: function() {
-
-						resetCallCount++;
-					},
-					createCallback: function() {}
-				});
-
+				new ArrayBinder(model.scope, new FakePropertyType());
 			var firstScope = new DOMElement(document.querySelector("#first-scope"));
-			binding.applyBinding(firstScope, "scope", {});
-
-			document.body.removeChild(firstScope.get());
 			var secondScope = new DOMElement(document.querySelector("#second-scope"));
-			binding.applyBinding(secondScope, "scope", {});
 
-			assert.strictEqual(setUpCallCount, 2);
-			assert.strictEqual(updateCallCount, 2);
-			assert.strictEqual(resetCallCount, 1);
+			binding.applyBinding(firstScope, "scope", model);
+			document.body.removeChild(firstScope.get());
+			binding.applyBinding(secondScope, "scope", model);
 
-			done();
-		});
-	});
-    </script>
-	<div data-bind="name">Hello world.</div>
-    <script>
-	QUnit.test("Get parameters from objects", function(assert) {
+			var element = document.querySelector("#second-scope").firstElementChild;
 
-		var done = assert.async();
-
-		require([
-			"array/ArrayBinder",
-			"element/DOMElement"
-		], function(
-			ArrayBinder,
-			DOMElement) {
-
-			var model = { "name": "thingy" };
-			var initialisedModel;
-			var initialisedElement;
-			var initialisedValue;
-			var updatedModel;
-			var updatedElement;
-			var updatedValue;
-			var resetElement;
-
-			var binding =
-				new ArrayBinder({
-
-					setUpElement: function(model, element, value) {
-
-						initialisedModel = model;
-						initialisedElement = element.get();
-						initialisedValue = value;
-					},
-					updateElement: function(model, element, value) {
-
-						updatedModel = model;
-						updatedElement = element.get();
-						updatedValue = value;
-					},
-					resetElement: function(element) {
-
-						resetElement = element.get();
-					},
-					createCallback: function() {}
-				});
-
-			binding.applyBinding(new DOMElement(document.body), "name", model);
-			binding.removeBinding();
-
-			assert.strictEqual(initialisedModel, model);
-			assert.strictEqual(initialisedElement.innerHTML, "Hello world.");
-			assert.strictEqual(initialisedValue, "thingy");
-			assert.strictEqual(updatedModel, model);
-			assert.strictEqual(updatedElement.innerHTML, "Hello world.");
-			assert.strictEqual(updatedValue, "thingy");
-			assert.strictEqual(resetElement.innerHTML, "Hello world.");
+			assert.strictEqual(element.children.length, 0);
 
 			done();
 		});

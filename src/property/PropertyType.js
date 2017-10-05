@@ -1,13 +1,11 @@
 define([
 	"tracking/Datum",
 	"object/ObjectBinder",
-	"array/ArrayBinder",
-	"array/ArrayBinding"
+	"array/ArrayBinder"
 ], function(
 	Datum,
 	ObjectBinder,
-	ArrayBinder,
-	ArrayBinding) {
+	ArrayBinder) {
 
 	function PropertyType(createViewModel) {
 
@@ -40,7 +38,7 @@ define([
 
 		this.createArrayBinding = function(model) {
 
-			return new ArrayBinder(new ArrayBinding(model, this));
+			return new ArrayBinder(model, this);
 		};
 	}
 
