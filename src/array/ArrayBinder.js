@@ -1,38 +1,82 @@
 define([
 	"element/ElementSet",
 	"tracking/Registry",
-	"array/ArrayBinding"
+	"property/TransientProperty",
+	"tracking/Datum",
+	"array/method/Push",
+	"array/method/Pop_",
+	"array/method/Shift",
+	"array/method/Unshift",
+	"array/method/Reverse",
+	"array/method/Sort",
+	"array/method/Splice"
 ], function(
 	ElementSet,
 	Registry,
-	ArrayBinding) {
+	TransientProperty,
+	Datum,
+	Push,
+	Pop,
+	Shift,
+	Unshift,
+	Reverse,
+	Sort,
+	Splice) {
 
 	function ArrayBinder(model, propertyType) {
 
-		var binding = new ArrayBinding(model, propertyType);
-
+		var properties = [];
 		var boundElements = new ElementSet();
 
-		this.applyBinding = function(scope, name, model) {
+		(function createProperties() {
+
+			for (var i = 0; i < model.length; i++) {
+
+				properties.push(new TransientProperty(model[i], propertyType));
+			}
+		})();
+
+		(function createArrayMethods() {
+
+			var elements = boundElements.get();
+
+			new Push(model, elements, properties, propertyType);
+			new Pop(model, elements, properties);
+			new Shift(model, elements, properties);
+			new Unshift(model, elements, properties, propertyType);
+			new Reverse(model, elements, properties);
+			new Sort(model, elements, properties);
+			new Splice(model, elements, properties, propertyType);
+		})();
+
+		(function createSubscribableLength() {
+
+			var length = new Datum(model.length);
+
+			Object.defineProperty(model, "subscribableLength", {
+
+				get: function() {
+
+					return length();
+				},
+				set: function(value) {
+
+					length(value);
+				}
+			});
+		})();
+
+		this.applyBinding = function(scope, name, parentModel) {
 
 			var removed = boundElements.removeOld();
 			resetElements(removed);
 
 			var elements = scope.getMatchingElements(name);
 
-			bindElements(elements, scope, model, name);
-			addElements(elements);
+			bindElements(elements, parentModel, name);
 		};
 
-		function addElements(elements) {
-
-			for (var i = 0; i < elements.length; i++) {
-
-				boundElements.add(elements[i]);
-			}
-		}
-
-		function bindElements(elements, scope, model, name) {
+		function bindElements(elements, parentModel, name) {
 
 			for (var i = 0; i < elements.length; i++) {
 
@@ -40,15 +84,22 @@ define([
 
 				if (boundElements.contains(element)) {
 
-					binding.updateElement(model, element, model && model[name]);
+					updateElement(element, parentModel && parentModel[name]);
 				}
 				else {
 
-					binding.setUpElement(model, element, model && model[name]);
+					boundElements.add(element.toArrayElement(model.length));
 					new Registry().requestRegistrations();
-					binding.updateElement(model, element, model && model[name]);
-					binding.createCallback(scope, element);
+					updateElement(element, parentModel && parentModel[name]);
 				}
+			}
+		}
+
+		function updateElement(element, value) {
+
+			for (var i = 0; i < properties.length; i++) {
+
+				properties[i].applyBinding(element, i, value);
 			}
 		}
 
@@ -67,7 +118,8 @@ define([
 
 				if (element.get()) {
 
-					binding.resetElement(element);
+					element.reset();
+					boundElements.remove(element);
 				}
 			}
 		}

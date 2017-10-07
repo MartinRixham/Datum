@@ -33,19 +33,19 @@ define([
 
 				if (boundElements.contains(element)) {
 
-					updateElement(model, element, model && model[name]);
+					updateElement(element, model && model[name]);
 				}
 				else {
 
 					boundElements.add(element.toObjectElement());
 					new Registry().requestRegistrations();
-					updateElement(model, element, model && model[name]);
+					updateElement(element, model && model[name]);
 					createCallback(scope, element);
 				}
 			}
 		}
 
-		function updateElement(parentModel, element, model) {
+		function updateElement(element, model) {
 
 			var objectElement = boundElements.getElementEqualTo(element);
 

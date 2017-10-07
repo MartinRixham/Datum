@@ -108,6 +108,11 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 			element.appendChild(child.get());
 		};
 
+		this.removedFromDocument = function() {
+
+			return domElement.removedFromDocument();
+		};
+
 		this.equals = function(other) {
 
 			return other.hasEqual(element);
