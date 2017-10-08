@@ -71,13 +71,13 @@ define([
 
 		var parentModel = null;
 
-		function applyBinding(scope, name, model) {
+		function applyBinding(element, model) {
 
 			parentModel = model;
 
 			for (var i = 0; i < bindings.length; i++) {
 
-				bindings[i].applyBinding(scope, name, model);
+				bindings[i].applyBinding(element, model);
 			}
 		}
 

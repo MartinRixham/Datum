@@ -108,6 +108,11 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 			element.appendChild(child.get());
 		};
 
+		this.getChildAtIndex = function(i) {
+
+			return domElement.createElement(element.children[i]);
+		};
+
 		this.removedFromDocument = function() {
 
 			return domElement.removedFromDocument();

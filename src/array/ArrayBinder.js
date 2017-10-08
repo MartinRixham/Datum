@@ -66,32 +66,28 @@ define([
 			});
 		})();
 
-		this.applyBinding = function(scope, name, parentModel) {
+		this.applyBinding = function(element, parentModel, name) {
 
 			var removed = boundElements.removeOld();
 			resetElements(removed);
 
-			var elements = scope.getMatchingElements(name);
+			if (element.get()) {
 
-			bindElements(elements, parentModel, name);
+				bindElements(element.toArrayElement(model.length), parentModel, name);
+			}
 		};
 
-		function bindElements(elements, parentModel, name) {
+		function bindElements(element, parentModel, name) {
 
-			for (var i = 0; i < elements.length; i++) {
+			if (boundElements.contains(element)) {
 
-				var element = elements[i];
+				updateElement(element, parentModel && parentModel[name]);
+			}
+			else {
 
-				if (boundElements.contains(element)) {
-
-					updateElement(element, parentModel && parentModel[name]);
-				}
-				else {
-
-					boundElements.add(element.toArrayElement(model.length));
-					new Registry().requestRegistrations();
-					updateElement(element, parentModel && parentModel[name]);
-				}
+				boundElements.add(element);
+				new Registry().requestRegistrations();
+				updateElement(element, parentModel && parentModel[name]);
 			}
 		}
 
@@ -99,7 +95,7 @@ define([
 
 			for (var i = 0; i < properties.length; i++) {
 
-				properties[i].applyBinding(element, i, value);
+				properties[i].applyBinding(element.getChildAtIndex(i), value);
 			}
 		}
 

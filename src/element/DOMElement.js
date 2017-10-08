@@ -41,27 +41,20 @@ define([
 
 		this.getMatchingElements = function(key) {
 
-			if (isNaN(key)) {
+			var elements = element.querySelectorAll("[data-bind=" + key + "]");
+			var elementsArray = [];
 
-				var elements = element.querySelectorAll("[data-bind=" + key + "]");
-				var elementsArray = [];
+			for (var i = 0; i < elements.length; i++) {
 
-				for (var i = 0; i < elements.length; i++) {
+				var newElement = new DOMElement(elements[i]);
 
-					var newElement = new DOMElement(elements[i]);
+				if (newElement.isInScope(element)) {
 
-					if (newElement.isInScope(element)) {
-
-						elementsArray.push(newElement);
-					}
+					elementsArray.push(newElement);
 				}
-
-				return elementsArray;
 			}
-			else {
 
-				return [new DOMElement(element.children[key])];
-			}
+			return elementsArray;
 		};
 
 		this.hasDataBindAttribute = function(name) {
@@ -71,10 +64,7 @@ define([
 
 		this.createRebinder = function(rebinder) {
 
-			if (element) {
-
-				element.__DATUM__REBIND = rebinder;
-			}
+			element.__DATUM__REBIND = rebinder;
 		};
 
 		this.rebind = function() {
@@ -113,6 +103,11 @@ define([
 		this.get = function() {
 
 			return element;
+		};
+
+		this.createElement = function(element) {
+
+			return new DOMElement(element);
 		};
 	}
 

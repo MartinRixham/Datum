@@ -1,11 +1,11 @@
 define([
 	"object/ViewModel",
 	"root/DOMWatcher",
-	"element/RootDOMElement"
+	"element/DOMElement"
 ], function BindingRoot(
 	ViewModel,
 	DOMWatcher,
-	RootDOMElement) {
+	DOMElement) {
 
 	var flag = false;
 
@@ -39,7 +39,7 @@ define([
 		})();
 
 		var rootViewModel = new ViewModel(model);
-		rootViewModel.applyBinding(new RootDOMElement());
+		rootViewModel.applyBinding(new DOMElement(document.body));
 
 		var domWatcher = new DOMWatcher(document.body);
 

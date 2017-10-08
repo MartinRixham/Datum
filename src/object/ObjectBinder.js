@@ -15,33 +15,29 @@ define([
 
 		var boundElements = new ElementSet();
 
-		this.applyBinding = function(scope, name, model) {
+		this.applyBinding = function(element, model, name, scope) {
 
 			var removed = boundElements.removeOld();
 			resetElements(removed);
 
-			var elements = scope.getMatchingElements(name);
+			if (element.get()) {
 
-			bindElements(elements, scope, model, name);
+				bindElements(element, model, name, scope);
+			}
 		};
 
-		function bindElements(elements, scope, model, name) {
+		function bindElements(element, model, name, scope) {
 
-			for (var i = 0; i < elements.length; i++) {
+			if (boundElements.contains(element)) {
 
-				var element = elements[i];
+				updateElement(element, model && model[name]);
+			}
+			else {
 
-				if (boundElements.contains(element)) {
-
-					updateElement(element, model && model[name]);
-				}
-				else {
-
-					boundElements.add(element.toObjectElement());
-					new Registry().requestRegistrations();
-					updateElement(element, model && model[name]);
-					createCallback(scope, element);
-				}
+				boundElements.add(element.toObjectElement());
+				new Registry().requestRegistrations();
+				updateElement(element, model && model[name]);
+				createCallback(scope, element);
 			}
 		}
 

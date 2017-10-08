@@ -47,10 +47,11 @@
 				two: null
 			};
 
-			binding.applyBinding(new DOMElement(document.body), "two", model);
-
 			var firstElement = document.querySelector("#one");
 			var secondElement = document.querySelector("#two");
+
+			binding.applyBinding(new DOMElement(firstElement), model, "two");
+			binding.applyBinding(new DOMElement(secondElement), model, "two");
 
 			assert.strictEqual(firstElement.children.length, 0);
 			assert.strictEqual(secondElement.children.length, 0);
@@ -59,11 +60,11 @@
 		});
 	});
     </script>
-    <div id="first-scope">
-      <div id="first" data-bind="scope"></div>
+    <div id="first" data-bind="scope">
+      <div></div>
     </div>
-    <div id="second-scope">
-      <div id="second" data-bind="scope"></div>
+    <div id="second" data-bind="scope">
+      <div></div>
     </div>
     <script>
 	QUnit.test("Bind to new scope", function(assert) {
@@ -83,20 +84,17 @@
 				scope: null
 			};
 
-			var firstScope = new DOMElement(document.querySelector("#first-scope"));
-			binding.applyBinding(firstScope, "scope", model);
+			var first = new DOMElement(document.querySelector("#first"));
+			binding.applyBinding(first, model, "scope");
 
-			var firstElement = document.querySelector("#first");
+			assert.strictEqual(first.get().children.length, 0);
 
-			assert.strictEqual(firstElement.children.length, 0);
+			document.body.removeChild(first.get());
 
-			document.body.removeChild(firstScope.get());
-			var secondScope = new DOMElement(document.querySelector("#second-scope"));
-			binding.applyBinding(secondScope, "scope", model);
+			var second = new DOMElement(document.querySelector("#second"));
+			binding.applyBinding(second, model, "scope");
 
-			var secondElement = document.querySelector("#second");
-
-			assert.strictEqual(secondElement.children.length, 0);
+			assert.strictEqual(second.get().children.length, 0);
 
 			done();
 		});
@@ -119,14 +117,13 @@
 			DOMElement) {
 
 			var binding = new ObjectBinder();
+			var element = document.querySelector("#notObject");
 			var model = {
 
 				notObject: null
 			};
 
-			binding.applyBinding(new DOMElement(document.body), "notObject", model);
-
-			var element = document.querySelector("#notObject");
+			binding.applyBinding(new DOMElement(element), model, "notObject");
 
 			assert.strictEqual(element.children.length, 0);
 
@@ -151,20 +148,19 @@
 			DOMElement) {
 
 			var binding = new ObjectBinder();
+			var element = new DOMElement(document.querySelector("#not-null"));
 			var model = {
 
 				notNull: null
 			};
 
-			binding.applyBinding(new DOMElement(document.body), "notNull", model);
+			binding.applyBinding(element, model, "notNull");
 
 			model.notNull = {};
 
-			binding.applyBinding(new DOMElement(document.body), "notNull", model);
+			binding.applyBinding(element, model, "notNull");
 
-			var element = document.querySelector("#not-null");
-
-			assert.strictEqual(element.children.length, 2);
+			assert.strictEqual(element.get().children.length, 2);
 
 			done();
 		});
@@ -187,21 +183,20 @@
 			DOMElement) {
 
 			var binding = new ObjectBinder();
+			var element = new DOMElement(document.querySelector("#not-twice"));
 			var model = {
 
 				notTwice: null
 			};
 
-			binding.applyBinding(new DOMElement(document.body), "notTwice", model);
+			binding.applyBinding(element, model, "notTwice");
 
 			model.notTwice = {};
 
-			binding.applyBinding(new DOMElement(document.body), "notTwice", model);
-			binding.applyBinding(new DOMElement(document.body), "notTwice", model);
+			binding.applyBinding(element, model, "notTwice");
+			binding.applyBinding(element, model, "notTwice");
 
-			var element = document.querySelector("#not-twice");
-
-			assert.strictEqual(element.children.length, 2);
+			assert.strictEqual(element.get().children.length, 2);
 
 			done();
 		});
@@ -215,14 +210,7 @@
 
 		var done = assert.async();
 
-		require([
-			"callback/Text",
-			"root/BindingRoot",
-			"element/DOMElement"
-		], function(
-			Text,
-			BindingRoot,
-			DOMElement) {
+		require(["callback/Text", "root/BindingRoot"], function(Text, BindingRoot) {
 
 			function Replace() {
 
@@ -231,14 +219,13 @@
 
 			var replace = new Replace();
 			var root = new BindingRoot(replace);
-			var element = new DOMElement(document.querySelector("#replace-text"));
 
 			replace.replaceText = {
 
 				text: new Text(function() { return "Hello world."; })
 			};
 
-			var children = element.get().children;
+			var children = document.querySelector("#replace-text").children;
 
 			assert.strictEqual(children.length, 1);
 			assert.strictEqual(children[0].textContent, "Hello world.");
@@ -296,17 +283,16 @@
 			DOMElement) {
 
 			var binding = new ObjectBinder();
+			var element = new DOMElement(document.querySelector("#reset"));
 			var model = {
 
 				reset: null
 			};
 
-			binding.applyBinding(new DOMElement(document.body), "reset", model);
+			binding.applyBinding(element, "reset", model);
 			binding.removeBinding();
 
-			var element = document.querySelector("#reset");
-
-			assert.strictEqual(element.children.length, 2);
+			assert.strictEqual(element.get().children.length, 2);
 
 			done();
 		});

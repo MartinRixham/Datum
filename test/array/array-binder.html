@@ -43,6 +43,432 @@
 			};
 		}
     </script>
+    <div id="zero" data-bind="zero">
+	 <div></div>
+    </div>
+    <script>
+	QUnit.test("Remove children when bound to empty array", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinder",
+			"element/DOMElement"
+		], function(
+			ArrayBinder,
+			DOMElement) {
+
+			var model = { zero: [] };
+			var binding = new ArrayBinder(model.zero, new FakePropertyType());
+			var element = new DOMElement(document.querySelector("#zero"));
+
+			binding.applyBinding(element, model, "zero");
+
+			assert.strictEqual(element.get().children.length, 0);
+
+			done();
+		});
+	});
+    </script>
+    <div id="one" data-bind="one">
+	 <div></div>
+    </div>
+    <script>
+	QUnit.test("One element when array length one", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinder",
+			"callback/Text",
+			"element/DOMElement"
+		], function(
+			ArrayBinder,
+			Text,
+			DOMElement) {
+
+			var model = { one: [new Text(function() { return "Hello world."; })] };
+			var binding = new ArrayBinder(model.one, new FakePropertyType());
+			var element = new DOMElement(document.querySelector("#one"));
+
+			binding.applyBinding(element, model, "one");
+
+			assert.strictEqual(element.get().children.length, 1);
+
+			done();
+		});
+	});
+    </script>
+    <div id="two" data-bind="two">
+	 <div></div>
+    </div>
+    <script>
+	QUnit.test("Two elements when array length two", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinder",
+			"callback/Text",
+			"element/DOMElement"
+		], function(
+			ArrayBinder,
+			Text,
+			DOMElement) {
+
+			var model =
+				{
+					two:
+						[
+							new Text(function() { return "Hello world."; }),
+							new Text(function() { return "Hello world."; })
+						]
+				};
+
+			var binding = new ArrayBinder(model.two, new FakePropertyType());
+			var element = new DOMElement(document.querySelector("#two"));
+
+			binding.applyBinding(element, model, "two");
+
+			assert.strictEqual(element.get().children.length, 2);
+
+			done();
+		});
+	});
+    </script>
+    <div id="two-children" data-bind="children">
+	 <div></div>
+	 <div></div>
+    </div>
+    <script>
+	QUnit.test("Exception when two child elements", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinder",
+			"element/DOMElement"
+		], function(
+			ArrayBinder,
+			DOMElement) {
+
+			var model = { children: [] };
+			var binding = new ArrayBinder(model.children, new FakePropertyType());
+			var element = new DOMElement(document.querySelector("#two-children"));
+
+			var exception;
+
+			try {
+
+				binding.applyBinding(element, model, "children");
+			}
+			catch (e) {
+
+				exception = e;
+			}
+
+			assert.strictEqual(
+				exception.message,
+				"An array must be bound to an element with exactly one child.");
+
+			done();
+		});
+	});
+    </script>
+    <div id="bind" data-bind="bind">
+	 <div></div>
+    </div>
+    <script>
+	QUnit.test("Bind array element", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinder",
+			"callback/Text",
+			"element/DOMElement"
+		], function(
+			ArrayBinder,
+			Text,
+			DOMElement) {
+
+			var model = { bind: [new Text(function() { return "Hello world."; })] };
+			var binding = new ArrayBinder(model.bind, new FakePropertyType());
+			var element = new DOMElement(document.querySelector("#bind"));
+
+			binding.applyBinding(element, "bind", model);
+
+			assert.strictEqual(element.get().children[0].innerHTML, "Hello world.");
+
+			done();
+		});
+	});
+    </script>
+    <div id="first" data-bind="both">
+	 <span></span>
+    </div>
+    <div id="second" data-bind="both">
+	 <span></span>
+    </div>
+    <script>
+	QUnit.test("Bind array to two elements", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/Text",
+			"array/ArrayBinder",
+			"element/DOMElement"
+		], function(
+			Text,
+			ArrayBinder,
+			DOMElement) {
+
+			function TwoArray() {
+
+				this.both =
+					[
+						new Text(function() {
+
+							return "Hello world.";
+						}),
+						new Text(function() {
+
+							return "Hello world.";
+						})
+					];
+			}
+
+			var two = new TwoArray();
+			var firstArray = document.querySelector("#first");
+			var secondArray = document.querySelector("#second");
+			var binding = new ArrayBinder(two.both, new FakePropertyType());
+
+			binding.applyBinding(new DOMElement(firstArray), two, "both");
+			binding.applyBinding(new DOMElement(secondArray), two, "both");
+
+			assert.strictEqual(firstArray.children.length, 2);
+			assert.strictEqual(secondArray.children.length, 2);
+			assert.strictEqual(firstArray.children[0].innerText, "Hello world.");
+			assert.strictEqual(firstArray.children[1].innerText, "Hello world.");
+			assert.strictEqual(secondArray.children[0].innerText, "Hello world.");
+			assert.strictEqual(secondArray.children[1].innerText, "Hello world.");
+
+			done();
+		});
+	});
+    </script>
+    <div id="subscribable" data-bind="subscribable">
+	 <div></div>
+    </div>
+    <div data-bind="update"></div>
+    <script>
+	QUnit.test("Depend on subscribable length", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"object/ViewModel",
+			"callback/Update",
+			"element/DOMElement"
+		], function(
+			ViewModel,
+			Update,
+			DOMElement) {
+
+			var subscribableLength = 0;
+			var model = {
+
+				subscribable: [],
+				update: new Update(function() {
+
+					subscribableLength = this.subscribable.subscribableLength;
+				})
+			};
+
+			var viewModel = new ViewModel(model);
+			viewModel.applyBinding(new DOMElement(document.body));
+
+			assert.strictEqual(subscribableLength, 0);
+
+			model.subscribable.push({});
+
+			assert.strictEqual(subscribableLength, 1);
+
+			model.subscribable.pop();
+
+			assert.strictEqual(subscribableLength, 0);
+
+			model.subscribable.unshift({});
+
+			assert.strictEqual(subscribableLength, 1);
+
+			model.subscribable.shift();
+
+			assert.strictEqual(subscribableLength, 0);
+
+			model.subscribable.splice(0, 0, {});
+
+			assert.strictEqual(subscribableLength, 1);
+
+			done();
+		});
+	});
+    </script>
+    <div id="reset" data-bind="reset">
+	  <div id="reset-child"></div>
+    </div>
+    <script>
+	QUnit.test("Reset element", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinder",
+			"callback/Text",
+			"element/DOMElement"
+		], function(
+			ArrayBinder,
+			Text,
+			DOMElement) {
+
+			var model =
+				{
+					reset: [
+						new Text(function() { return "Hello world."; }),
+						new Text(function() { return "Hello world."; })
+					]
+				};
+
+			var binding = new ArrayBinder(model.reset, new FakePropertyType());
+			var element = new DOMElement(document.querySelector("#reset"));
+
+			binding.applyBinding(element, model, "reset");
+			binding.removeBinding();
+
+			var children = element.get().children;
+
+			assert.strictEqual(children.length, 1);
+			assert.strictEqual(children[0].id, "reset-child");
+
+			done();
+		});
+	});
+    </script>
+    <div id="square" data-bind="square">
+	 <div>
+	   <div class="square"></div>
+	 </div>
+    </div>
+    <script>
+	QUnit.test("Bind square array", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"object/ViewModel",
+			"element/DOMElement"
+		], function(
+			ViewModel,
+			DOMElement) {
+
+			function SquareArray() {
+
+				this.square = [[{}, {}], [{}, {}]];
+			}
+
+			var square = new SquareArray();
+			var viewModel = new ViewModel(square);
+			viewModel.applyBinding(new DOMElement(document.body));
+
+			var element = document.querySelector("#square");
+
+			assert.strictEqual(element.querySelectorAll(".square").length, 4);
+
+			done();
+		});
+	});
+    </script>
+    <div id="clear" data-bind="clear">
+	 <div></div>
+    </div>
+    <script>
+	QUnit.test("Clear elements from array", function(assert) {
+
+		var done = assert.async();
+
+		require(["root/BindingRoot"], function(BindingRoot) {
+
+			function ClearArray() {
+
+				this.clear = [{}, {}];
+			}
+
+			var model = new ClearArray();
+			var root = new BindingRoot(model);
+
+			model.clear = [];
+
+			var element = document.querySelector("#clear");
+
+			assert.strictEqual(element.children.length, 0);
+
+			done();
+
+			root.disconnect();
+		});
+	});
+    </script>
+    <div id="unshift" data-bind="unshift">
+	 <div></div>
+    </div>
+    <script>
+	QUnit.test("Unshift elements to beginning of array", function(assert) {
+
+		var done = assert.async();
+
+		require(["root/BindingRoot", "callback/Text"], function(BindingRoot, Text) {
+
+			function UnshiftChild() {
+
+				this.onBind = function(element) {
+
+					setTimeout(function() {
+
+						element.innerHTML = "<div data-bind=\"hello\"></div>";
+					});
+				};
+
+				this.hello = new Text(function() { return "Hello world."; });
+			}
+
+			function UnshiftArray() {
+
+				this.unshift = [];
+			}
+
+			var model = new UnshiftArray();
+			var root = new BindingRoot(model);
+
+			model.unshift.unshift(new UnshiftChild());
+			model.unshift.unshift(new UnshiftChild());
+
+			setTimeout(function() {
+
+				var element = document.querySelector("#unshift");
+				var firstText = element.children[0].firstElementChild.textContent;
+				var secondText = element.children[1].firstElementChild.textContent;
+
+				assert.strictEqual(firstText, "Hello world.");
+				assert.strictEqual(secondText, "Hello world.");
+
+				done();
+
+				root.disconnect();
+			});
+		});
+	});
+    </script>
     <script>
 	QUnit.test("Unbind null element", function(assert) {
 
@@ -68,15 +494,11 @@
 		});
 	});
     </script>
-    <div id="first-scope">
-      <div data-bind="scope">
-        <div></div>
-      </div>
+    <div id="first-scope" data-bind="scope">
+	 <div></div>
     </div>
-    <div id="second-scope">
-      <div data-bind="scope">
-        <div></div>
-      </div>
+    <div id="second-scope" data-bind="scope">
+	 <div></div>
     </div>
     <script>
 	QUnit.test("Bind to new scope", function(assert) {
@@ -91,16 +513,15 @@
 			DOMElement) {
 
 			var model = { scope: [] };
-			var binding =
-				new ArrayBinder(model.scope, new FakePropertyType());
+			var binding = new ArrayBinder(model.scope, new FakePropertyType());
 			var firstScope = new DOMElement(document.querySelector("#first-scope"));
 			var secondScope = new DOMElement(document.querySelector("#second-scope"));
 
-			binding.applyBinding(firstScope, "scope", model);
+			binding.applyBinding(firstScope, model, "scope");
 			document.body.removeChild(firstScope.get());
-			binding.applyBinding(secondScope, "scope", model);
+			binding.applyBinding(secondScope, model, "scope");
 
-			var element = document.querySelector("#second-scope").firstElementChild;
+			var element = document.querySelector("#second-scope");
 
 			assert.strictEqual(element.children.length, 0);
 

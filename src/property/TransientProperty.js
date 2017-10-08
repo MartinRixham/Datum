@@ -17,11 +17,11 @@ define([], function() {
 			binding = propertyType.createViewModel(property);
 		}
 
-		this.applyBinding = function(scope, key, model) {
+		this.applyBinding = function(element, model, key) {
 
 			if (binding) {
 
-				binding.applyBinding(scope, key, model);
+				binding.applyBinding(element, model, key);
 			}
 		};
 

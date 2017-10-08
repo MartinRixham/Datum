@@ -33,12 +33,12 @@
 			"tracking/Datum",
 			"callback/Value",
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			Datum,
 			Value,
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			function InputObject() {
 
@@ -48,11 +48,10 @@
 			}
 
 			var input = new InputObject();
-
-			var viewModel = new ViewModel(input);
-			viewModel.applyBinding(new RootDOMElement());
-
 			var element = document.querySelector("#value-input");
+			var viewModel = new ViewModel(input);
+
+			viewModel.applyBinding(new DOMElement(document.body));
 
 			element.value = "Hello World";
 			element.dispatchEvent(new Event("change"));
@@ -75,11 +74,11 @@
 		require([
 			"callback/Text",
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			Text,
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			function TextObject() {
 
@@ -99,7 +98,7 @@
 			}
 
 			var viewModel = new ViewModel(new TextObject());
-			viewModel.applyBinding(new RootDOMElement());
+			viewModel.applyBinding(new DOMElement(document.body));
 
 			assert.strictEqual(
 				document.querySelector("#super-bind").innerHTML,
@@ -121,11 +120,11 @@
 		require([
 			"callback/Text",
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			Text,
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			function TextObject() {
 
@@ -139,7 +138,7 @@
 			}
 
 			var viewModel = new ViewModel(new TextObject());
-			viewModel.applyBinding(new RootDOMElement());
+			viewModel.applyBinding(new DOMElement(document.body));
 
 			assert.notEqual(document.querySelector("#non-sub").innerHTML, "Hello World");
 
@@ -156,11 +155,11 @@
 		require([
 			"callback/Text",
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			Text,
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			function PlainObject() {
 
@@ -178,7 +177,7 @@
 			var plainObject = new PlainObject();
 
 			var viewModel = new ViewModel(plainObject);
-			viewModel.applyBinding(new RootDOMElement());
+			viewModel.applyBinding(new DOMElement(document.body));
 
 			plainObject.datum = "Hello World";
 
@@ -197,11 +196,11 @@
 		require([
 			"callback/Value",
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			Value,
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			function PlainObject() {
 
@@ -219,7 +218,7 @@
 			var plainObject = new PlainObject();
 
 			var viewModel = new ViewModel(plainObject);
-			viewModel.applyBinding(new RootDOMElement());
+			viewModel.applyBinding(new DOMElement(document.body));
 
 			plainObject.datum = "Hello World";
 
@@ -243,11 +242,11 @@
 		require([
 			"callback/Value",
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			Value,
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			function TwoObject() {
 
@@ -267,7 +266,7 @@
 			var two = new TwoObject();
 
 			var viewModel = new ViewModel(two);
-			viewModel.applyBinding(new RootDOMElement());
+			viewModel.applyBinding(new DOMElement(document.body));
 
 			two.datum = "Hello World";
 
@@ -287,11 +286,11 @@
 		require([
 			"callback/Value",
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			Value,
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			function InputObject() {
 
@@ -312,7 +311,7 @@
 			var input = new InputObject();
 
 			var viewModel = new ViewModel(input);
-			viewModel.applyBinding(new RootDOMElement());
+			viewModel.applyBinding(new DOMElement(document.body));
 
 			var element = document.querySelector("#plain-change");
 
@@ -381,11 +380,11 @@
 		require([
 			"callback/Text",
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			Text,
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			function ScopeObject() {
 
@@ -400,7 +399,7 @@
 			var scope = new ScopeObject();
 
 			var viewModel = new ViewModel(scope);
-			viewModel.applyBinding(new RootDOMElement());
+			viewModel.applyBinding(new DOMElement(document.body));
 
 			var element = document.querySelector("#scope");
 
@@ -418,10 +417,10 @@
 
 		require([
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			var elementId;
 
@@ -437,7 +436,7 @@
 			}
 
 			var viewModel = new ViewModel(new OnBindObject());
-			viewModel.applyBinding(new RootDOMElement());
+			viewModel.applyBinding(new DOMElement(document.body));
 
 			assert.strictEqual(elementId, "on-bind");
 
@@ -454,11 +453,11 @@
 		require([
 			"callback/Binding",
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			Binding,
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			var count = 0;
 
@@ -474,10 +473,11 @@
 			}
 
 			var onBindOnce = new OnBindOnceObject();
-
 			var viewModel = new ViewModel(onBindOnce);
-			viewModel.applyBinding(new RootDOMElement());
-			viewModel.applyBinding(new RootDOMElement());
+			var body = new DOMElement(document.body);
+
+			viewModel.applyBinding(body);
+			viewModel.applyBinding(body);
 
 			assert.strictEqual(count, 1);
 
@@ -494,11 +494,11 @@
 		require([
 			"callback/Update",
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			Update,
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			var count = 0;
 
@@ -520,7 +520,7 @@
 			var subproperty = new Subproperty();
 
 			var viewModel = new ViewModel(subproperty);
-			viewModel.applyBinding(new RootDOMElement());
+			viewModel.applyBinding(new DOMElement(document.body));
 
 			subproperty.subobject.property = "Eh up planet.";
 
@@ -543,11 +543,11 @@
 		require([
 			"callback/Text",
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			Text,
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			function FailObject() {
 
@@ -563,7 +563,7 @@
 			}
 
 			var viewModel = new ViewModel(new FailObject());
-			viewModel.applyBinding(new RootDOMElement());
+			viewModel.applyBinding(new DOMElement(document.body));
 
 			assert.strictEqual(document.querySelector("#fail").innerHTML, "");
 
@@ -579,11 +579,11 @@
 		require([
 			"callback/Text",
 			"object/ViewModel",
-			"element/RootDOMElement"
+			"element/DOMElement"
 		], function(
 			Text,
 			ViewModel,
-			RootDOMElement) {
+			DOMElement) {
 
 			function MissingObject() {
 
@@ -594,7 +594,7 @@
 			}
 
 			var viewModel = new ViewModel(new MissingObject());
-			viewModel.applyBinding(new RootDOMElement());
+			viewModel.applyBinding(new DOMElement(document.body));
 
 			assert.expect(0);
 

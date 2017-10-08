@@ -13,16 +13,14 @@ define([
 
 		var boundElements = new ElementSet();
 
-		this.applyBinding = function(scope, name, model) {
+		this.applyBinding = function(element, model) {
 
 			parentModel = model;
 
 			removeOldBindings();
 
-			var elements = getMatchingElements(scope, name);
-
-			bindElements(elements, model);
-			addElements(elements);
+			bindElements(element, model);
+			boundElements.add(element);
 		};
 
 		function removeOldBindings() {
@@ -40,39 +38,14 @@ define([
 			}
 		}
 
-		function getMatchingElements(scope, name){
+		function bindElements(element, model) {
 
-			var elements = scope.getMatchingElements(name);
+			if (element.get() && !boundElements.contains(element)) {
 
-			if (scope.hasDataBindAttribute(name)) {
-
-				elements.push(scope);
-			}
-
-			return elements;
-		}
-
-		function addElements(elements) {
-
-			for (var i = 0; i < elements.length; i++) {
-
-				boundElements.add(elements[i]);
-			}
-		}
-
-		function bindElements(elements, model) {
-
-			for (var i = 0; i < elements.length; i++) {
-
-				var element = elements[i];
-
-				if (!boundElements.contains(element)) {
-
-					binding.setUpElement(model, element.get());
-					new Registry().requestRegistrations();
-					binding.updateElement(model, element.get());
-					createCallback(model, element);
-				}
+				binding.setUpElement(model, element.get());
+				new Registry().requestRegistrations();
+				binding.updateElement(model, element.get());
+				createCallback(model, element);
 			}
 		}
 

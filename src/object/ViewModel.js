@@ -23,45 +23,29 @@ define([
 
 		this.applyBinding = applyBinding;
 
-		function applyBinding(scope, name) {
+		function applyBinding(element) {
 
 			boundElements.removeOld();
 
-			var elements = getElements(scope, name);
-
-			for (var i = 0; i < elements.length; i++) {
-
-				bindElement(elements[i], scope, name);
-			}
-		}
-
-		function getElements(scope, name) {
-
-			var elements = scope.getMatchingElements(name);
-
-			return elements.length ? elements : [new NullDOMElement()];
-		}
-
-		function bindElement(element, scope, name) {
-
 			if (!boundElements.contains(element)) {
 
-				createRebinder(element, scope, name);
+				createRebinder(element);
 				element.callBindingCallback(model);
 			}
 
 			unbindOldProperties();
 			createPermanentProperties();
 			createTransientProperties();
-			bindProperties(element);
+			bindProperties(element, permanentProperties);
+			bindProperties(element, transientProperties);
 			boundElements.add(element);
 		}
 
-		function createRebinder(element, scope, name) {
+		function createRebinder(element) {
 
 			element.createRebinder(function() {
 
-				applyBinding(scope, name);
+				applyBinding(element);
 			});
 		}
 
@@ -118,19 +102,26 @@ define([
 			return new PropertyType(function(model) { return new ViewModel(model); });
 		}
 
-		function bindProperties(element) {
+		function bindProperties(scope, properties) {
 
-			var key;
+			for (var key in properties) {
 
-			for (key in permanentProperties) {
+				var elements = getElements(scope, key);
 
-				permanentProperties[key].applyBinding(element, key, model);
+				for (var i = 0; i < elements.length; i++) {
+
+					var element = elements[i];
+
+					properties[key].applyBinding(element, model, key, scope);
+				}
 			}
+		}
 
-			for (key in transientProperties) {
+		function getElements(scope, name) {
 
-				transientProperties[key].applyBinding(element, key, model);
-			}
+			var elements = scope.getMatchingElements(name);
+
+			return elements.length ? elements : [new NullDOMElement()];
 		}
 
 		this.removeBinding = function() {

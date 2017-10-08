@@ -10,7 +10,7 @@ define([], function() {
 			objectBinding = propertyType.createObjectBinding();
 		}
 
-		this.applyBinding = function(scope, key, model) {
+		this.applyBinding = function(element, model, key, scope) {
 
 			if (typeof(property) != "function" &&
 				!isBinding(property) &&
@@ -22,7 +22,7 @@ define([], function() {
 
 			if (objectBinding) {
 
-				objectBinding.applyBinding(scope, key, model);
+				objectBinding.applyBinding(element, model, key, scope);
 			}
 		};
 

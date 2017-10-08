@@ -20,7 +20,7 @@ define(["property/TransientProperty"], function(TransientProperty) {
 					var finalIndex = properties.length - 1;
 
 					element.append();
-					property.applyBinding(element.get(), finalIndex, model);
+					property.applyBinding(element.getChildAtIndex(finalIndex), model);
 				}
 			}
 

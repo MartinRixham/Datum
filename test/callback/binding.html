@@ -45,11 +45,11 @@
 					}
 				});
 
-			test.applyBinding(new DOMElement(document.body), "test");
+			var element = document.querySelector("#test-div");
 
-			assert.strictEqual(
-				document.querySelector("#test-div").innerHTML,
-				"Hello World");
+			test.applyBinding(new DOMElement(element), "test");
+
+			assert.strictEqual(element.innerHTML, "Hello World");
 
 			done();
 		});
@@ -77,11 +77,11 @@
 					}
 				});
 
-			input.applyBinding(new DOMElement(document.body), "input");
+			var element = document.querySelector("#test-input");
 
-			assert.strictEqual(
-				document.querySelector("#test-input").value,
-				"Hello World");
+			input.applyBinding(new DOMElement(element), "input");
+
+			assert.strictEqual(element.value, "Hello World");
 
 			done();
 		});
@@ -110,9 +110,9 @@
 					value: function(value) { datum(value); }
 				});
 
-			valueInput.applyBinding(new DOMElement(document.body), "valueInput");
-
 			var element = document.querySelector("#value-input");
+
+			valueInput.applyBinding(new DOMElement(element), "valueInput");
 
 			element.value = "Hello World";
 			element.dispatchEvent(new Event("change"));

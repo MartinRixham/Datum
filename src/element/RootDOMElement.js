@@ -11,6 +11,10 @@ define(["element/DOMElement"], function(DOMElement) {
 
 			return [new DOMElement(document.body)];
 		};
+
+		this.createRebinder = function() {};
+
+		this.callBindingCallback = function() {};
 	}
 
 	return RootDOMElement;
