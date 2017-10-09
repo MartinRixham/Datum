@@ -36,8 +36,7 @@ define([
 			unbindOldProperties();
 			createPermanentProperties(element);
 			createTransientProperties();
-			bindProperties(element, permanentProperties);
-			bindProperties(element, transientProperties);
+			bindProperties(element);
 			boundElements.add(element);
 		}
 
@@ -102,9 +101,9 @@ define([
 			return new PropertyType(function(model) { return new ViewModel(model); });
 		}
 
-		function bindProperties(scope, properties) {
+		function bindProperties(scope) {
 
-			for (var key in properties) {
+			for (var key in permanentProperties) {
 
 				var elements = getElements(scope, key);
 
@@ -112,7 +111,8 @@ define([
 
 					var element = elements[i];
 
-					properties[key].applyBinding(element, model, key);
+					permanentProperties[key].applyBinding(element, model, key);
+					transientProperties[key].applyBinding(element, model, key);
 				}
 			}
 		}
@@ -126,15 +126,9 @@ define([
 
 		this.removeBinding = function() {
 
-			var key;
-
-			for (key in permanentProperties) {
+			for (var key in permanentProperties) {
 
 				permanentProperties[key].removeBinding();
-			}
-
-			for (key in transientProperties) {
-
 				transientProperties[key].removeBinding();
 			}
 		};
