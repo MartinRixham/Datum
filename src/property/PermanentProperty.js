@@ -1,16 +1,16 @@
 define([], function() {
 
-	function PermanentProperty(property, propertyType) {
+	function PermanentProperty(property, propertyType, scope) {
 
 		var objectBinding;
 		var propertyInjected = false;
 
 		if (typeof(property) == "object" && !isBinding(property)) {
 
-			objectBinding = propertyType.createObjectBinding();
+			objectBinding = propertyType.createObjectBinding(scope);
 		}
 
-		this.applyBinding = function(element, model, key, scope) {
+		this.applyBinding = function(element, model, key) {
 
 			if (typeof(property) != "function" &&
 				!isBinding(property) &&
@@ -22,7 +22,7 @@ define([], function() {
 
 			if (objectBinding) {
 
-				objectBinding.applyBinding(element, model, key, scope);
+				objectBinding.applyBinding(element, model, key);
 			}
 		};
 

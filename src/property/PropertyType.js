@@ -31,9 +31,9 @@ define([
 			return createViewModel(model);
 		};
 
-		this.createObjectBinding = function() {
+		this.createObjectBinding = function(scope) {
 
-			return new ObjectBinder();
+			return new ObjectBinder(scope);
 		};
 
 		this.createArrayBinding = function(model) {

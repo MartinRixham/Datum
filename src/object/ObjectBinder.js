@@ -7,7 +7,7 @@ define([
 	Registry,
 	Dependant) {
 
-	function ObjectBinder() {
+	function ObjectBinder(scope) {
 
 		var self = this;
 
@@ -15,18 +15,18 @@ define([
 
 		var boundElements = new ElementSet();
 
-		this.applyBinding = function(element, model, name, scope) {
+		this.applyBinding = function(element, model, name) {
 
 			var removed = boundElements.removeOld();
 			resetElements(removed);
 
 			if (element.get()) {
 
-				bindElements(element, model, name, scope);
+				bindElements(element, model, name);
 			}
 		};
 
-		function bindElements(element, model, name, scope) {
+		function bindElements(element, model, name) {
 
 			if (boundElements.contains(element)) {
 

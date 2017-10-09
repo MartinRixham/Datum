@@ -34,7 +34,7 @@ define([
 			}
 
 			unbindOldProperties();
-			createPermanentProperties();
+			createPermanentProperties(element);
 			createTransientProperties();
 			bindProperties(element, permanentProperties);
 			bindProperties(element, transientProperties);
@@ -61,14 +61,14 @@ define([
 			}
 		}
 
-		function createPermanentProperties() {
+		function createPermanentProperties(element) {
 
 			for (var key in model) {
 
 				if (!permanentProperties[key]) {
 
 					permanentProperties[key] =
-						new PermanentProperty(model[key], createPropertyType());
+						new PermanentProperty(model[key], createPropertyType(), element);
 				}
 			}
 		}
@@ -112,7 +112,7 @@ define([
 
 					var element = elements[i];
 
-					properties[key].applyBinding(element, model, key, scope);
+					properties[key].applyBinding(element, model, key);
 				}
 			}
 		}
