@@ -529,5 +529,43 @@
 		});
 	});
     </script>
+    <div id="again" data-bind="agian">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Bind to same element again", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinding",
+			"callback/Text",
+			"element/DOMElement"
+		], function(
+			ArrayBinding,
+			Text,
+			DOMElement) {
+
+			var model =
+				{
+					two:
+						[
+							new Text(function() { return "Hello world."; }),
+							new Text(function() { return "Hello world."; })
+						]
+				};
+
+			var binding = new ArrayBinding(model.two, new FakePropertyType());
+			var element = new DOMElement(document.querySelector("#again"));
+
+			binding.applyBinding(element, model, "again");
+			binding.applyBinding(element, model, "again");
+
+			assert.strictEqual(element.get().children.length, 2);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

@@ -105,6 +105,7 @@
 		});
 	});
     </script>
+    <div id="key" data-bind="key"></div>
     <script>
 	QUnit.test("A binding is not a view model", function(assert) {
 
@@ -122,7 +123,7 @@
 			var propertyType = new FakePropertyType();
 			var text = new Text(function() { return ""; });
 			var property = new TransientProperty(text, propertyType);
-			var element = new DOMElement(document.body);
+			var element = new DOMElement(document.querySelector("#key"));
 
 			property.applyBinding(element, "key", { key: text });
 
