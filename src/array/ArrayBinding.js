@@ -73,29 +73,23 @@ define([
 
 			if (element.get()) {
 
-				bindElements(element.toArrayElement(model.length), parentModel, name);
+				bindElements(element, parentModel, name);
 			}
 		};
 
 		function bindElements(element, parentModel, name) {
 
-			if (boundElements.contains(element)) {
+			if (!boundElements.contains(element)) {
 
-				updateElement(element, parentModel && parentModel[name]);
+				boundElements.add(element.toArrayElement(model.length));
 			}
-			else {
 
-				boundElements.add(element);
-				new Registry().requestRegistrations();
-				updateElement(element, parentModel && parentModel[name]);
-			}
-		}
-
-		function updateElement(element, value) {
+			var arrayElement = boundElements.getElementEqualTo(element);
+			var value = parentModel[name];
 
 			for (var i = 0; i < properties.length; i++) {
 
-				properties[i].applyBinding(element.getChildAtIndex(i), value);
+				properties[i].applyBinding(arrayElement.getChildAtIndex(i), value);
 			}
 		}
 
