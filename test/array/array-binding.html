@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Array Binder Tests</title>
+    <title>Array Binding Tests</title>
     <link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css">
     <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../../node_modules/requirejs/require.js"></script>
@@ -52,14 +52,14 @@
 		var done = assert.async();
 
 		require([
-			"array/ArrayBinder",
+			"array/ArrayBinding",
 			"element/DOMElement"
 		], function(
-			ArrayBinder,
+			ArrayBinding,
 			DOMElement) {
 
 			var model = { zero: [] };
-			var binding = new ArrayBinder(model.zero, new FakePropertyType());
+			var binding = new ArrayBinding(model.zero, new FakePropertyType());
 			var element = new DOMElement(document.querySelector("#zero"));
 
 			binding.applyBinding(element, model, "zero");
@@ -79,16 +79,16 @@
 		var done = assert.async();
 
 		require([
-			"array/ArrayBinder",
+			"array/ArrayBinding",
 			"callback/Text",
 			"element/DOMElement"
 		], function(
-			ArrayBinder,
+			ArrayBinding,
 			Text,
 			DOMElement) {
 
 			var model = { one: [new Text(function() { return "Hello world."; })] };
-			var binding = new ArrayBinder(model.one, new FakePropertyType());
+			var binding = new ArrayBinding(model.one, new FakePropertyType());
 			var element = new DOMElement(document.querySelector("#one"));
 
 			binding.applyBinding(element, model, "one");
@@ -108,11 +108,11 @@
 		var done = assert.async();
 
 		require([
-			"array/ArrayBinder",
+			"array/ArrayBinding",
 			"callback/Text",
 			"element/DOMElement"
 		], function(
-			ArrayBinder,
+			ArrayBinding,
 			Text,
 			DOMElement) {
 
@@ -125,7 +125,7 @@
 						]
 				};
 
-			var binding = new ArrayBinder(model.two, new FakePropertyType());
+			var binding = new ArrayBinding(model.two, new FakePropertyType());
 			var element = new DOMElement(document.querySelector("#two"));
 
 			binding.applyBinding(element, model, "two");
@@ -146,14 +146,14 @@
 		var done = assert.async();
 
 		require([
-			"array/ArrayBinder",
+			"array/ArrayBinding",
 			"element/DOMElement"
 		], function(
-			ArrayBinder,
+			ArrayBinding,
 			DOMElement) {
 
 			var model = { children: [] };
-			var binding = new ArrayBinder(model.children, new FakePropertyType());
+			var binding = new ArrayBinding(model.children, new FakePropertyType());
 			var element = new DOMElement(document.querySelector("#two-children"));
 
 			var exception;
@@ -184,16 +184,16 @@
 		var done = assert.async();
 
 		require([
-			"array/ArrayBinder",
+			"array/ArrayBinding",
 			"callback/Text",
 			"element/DOMElement"
 		], function(
-			ArrayBinder,
+			ArrayBinding,
 			Text,
 			DOMElement) {
 
 			var model = { bind: [new Text(function() { return "Hello world."; })] };
-			var binding = new ArrayBinder(model.bind, new FakePropertyType());
+			var binding = new ArrayBinding(model.bind, new FakePropertyType());
 			var element = new DOMElement(document.querySelector("#bind"));
 
 			binding.applyBinding(element, "bind", model);
@@ -217,11 +217,11 @@
 
 		require([
 			"callback/Text",
-			"array/ArrayBinder",
+			"array/ArrayBinding",
 			"element/DOMElement"
 		], function(
 			Text,
-			ArrayBinder,
+			ArrayBinding,
 			DOMElement) {
 
 			function TwoArray() {
@@ -242,7 +242,7 @@
 			var two = new TwoArray();
 			var firstArray = document.querySelector("#first");
 			var secondArray = document.querySelector("#second");
-			var binding = new ArrayBinder(two.both, new FakePropertyType());
+			var binding = new ArrayBinding(two.both, new FakePropertyType());
 
 			binding.applyBinding(new DOMElement(firstArray), two, "both");
 			binding.applyBinding(new DOMElement(secondArray), two, "both");
@@ -324,11 +324,11 @@
 		var done = assert.async();
 
 		require([
-			"array/ArrayBinder",
+			"array/ArrayBinding",
 			"callback/Text",
 			"element/DOMElement"
 		], function(
-			ArrayBinder,
+			ArrayBinding,
 			Text,
 			DOMElement) {
 
@@ -340,7 +340,7 @@
 					]
 				};
 
-			var binding = new ArrayBinder(model.reset, new FakePropertyType());
+			var binding = new ArrayBinding(model.reset, new FakePropertyType());
 			var element = new DOMElement(document.querySelector("#reset"));
 
 			binding.applyBinding(element, model, "reset");
@@ -475,14 +475,14 @@
 		var done = assert.async();
 
 		require([
-			"array/ArrayBinder",
+			"array/ArrayBinding",
 			"element/NullDOMElement"
 		], function(
-			ArrayBinder,
+			ArrayBinding,
 			NullDOMElement) {
 
 			var model = { prop: [] };
-			var binding = new ArrayBinder(model.prop, new FakePropertyType());
+			var binding = new ArrayBinding(model.prop, new FakePropertyType());
 
 			binding.applyBinding(new NullDOMElement(), "unbindNull", model);
 			binding.applyBinding(new NullDOMElement(), "unbindNull", model);
@@ -506,14 +506,14 @@
 		var done = assert.async();
 
 		require([
-			"array/ArrayBinder",
+			"array/ArrayBinding",
 			"element/DOMElement"
 		], function(
-			ArrayBinder,
+			ArrayBinding,
 			DOMElement) {
 
 			var model = { scope: [] };
-			var binding = new ArrayBinder(model.scope, new FakePropertyType());
+			var binding = new ArrayBinding(model.scope, new FakePropertyType());
 			var firstScope = new DOMElement(document.querySelector("#first-scope"));
 			var secondScope = new DOMElement(document.querySelector("#second-scope"));
 

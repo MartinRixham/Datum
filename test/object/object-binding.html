@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Object Binder Tests</title>
+    <title>Object Binding Tests</title>
     <link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css">
     <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../../node_modules/requirejs/require.js"></script>
@@ -35,13 +35,13 @@
 		var done = assert.async();
 
 		require([
-			"object/ObjectBinder",
+			"object/ObjectBinding",
 			"element/DOMElement"
 		], function(
-			ObjectBinder,
+			ObjectBinding,
 			DOMElement) {
 
-			var binding = new ObjectBinder();
+			var binding = new ObjectBinding();
 			var model = {
 
 				two: null
@@ -72,13 +72,13 @@
 		var done = assert.async();
 
 		require([
-			"object/ObjectBinder",
+			"object/ObjectBinding",
 			"element/DOMElement"
 		], function(
-			ObjectBinder,
+			ObjectBinding,
 			DOMElement) {
 
-			var binding = new ObjectBinder();
+			var binding = new ObjectBinding();
 			var model = {
 
 				scope: null
@@ -110,13 +110,13 @@
 		var done = assert.async();
 
 		require([
-			"object/ObjectBinder",
+			"object/ObjectBinding",
 			"element/DOMElement"
 		], function(
-			ObjectBinder,
+			ObjectBinding,
 			DOMElement) {
 
-			var binding = new ObjectBinder();
+			var binding = new ObjectBinding();
 			var element = document.querySelector("#notObject");
 			var model = {
 
@@ -141,13 +141,13 @@
 		var done = assert.async();
 
 		require([
-			"object/ObjectBinder",
+			"object/ObjectBinding",
 			"element/DOMElement"
 		], function(
-			ObjectBinder,
+			ObjectBinding,
 			DOMElement) {
 
-			var binding = new ObjectBinder();
+			var binding = new ObjectBinding();
 			var element = new DOMElement(document.querySelector("#not-null"));
 			var model = {
 
@@ -176,13 +176,13 @@
 		var done = assert.async();
 
 		require([
-			"object/ObjectBinder",
+			"object/ObjectBinding",
 			"element/DOMElement"
 		], function(
-			ObjectBinder,
+			ObjectBinding,
 			DOMElement) {
 
-			var binding = new ObjectBinder();
+			var binding = new ObjectBinding();
 			var element = new DOMElement(document.querySelector("#not-twice"));
 			var model = {
 
@@ -276,13 +276,13 @@
 		var done = assert.async();
 
 		require([
-			"object/ObjectBinder",
+			"object/ObjectBinding",
 			"element/DOMElement"
 		], function(
-			ObjectBinder,
+			ObjectBinding,
 			DOMElement) {
 
-			var binding = new ObjectBinder();
+			var binding = new ObjectBinding();
 			var element = new DOMElement(document.querySelector("#reset"));
 			var model = {
 

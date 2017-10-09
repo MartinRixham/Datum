@@ -23,7 +23,7 @@ define([
 	Sort,
 	Splice) {
 
-	function ArrayBinder(model, propertyType) {
+	function ArrayBinding(model, propertyType) {
 
 		var properties = [];
 		var boundElements = new ElementSet();
@@ -121,5 +121,5 @@ define([
 		}
 	}
 
-	return ArrayBinder;
+	return ArrayBinding;
 });

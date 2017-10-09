@@ -7,7 +7,7 @@ define([
 	Registry,
 	Dependant) {
 
-	function ObjectBinder(scope) {
+	function ObjectBinding(scope) {
 
 		var self = this;
 
@@ -96,5 +96,5 @@ define([
 		}
 	}
 
-	return ObjectBinder;
+	return ObjectBinding;
 });
