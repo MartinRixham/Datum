@@ -69,7 +69,7 @@ module.exports = function(grunt) {
 				files: [{
 
 					src: ["README.md"],
-					dest: 'docs/readme.html'
+					dest: "docs/readme.html"
 				}]
 			}
 		}
@@ -81,7 +81,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-mkdir");
 	grunt.loadNpmTasks("grunt-concat-define");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
-	grunt.loadNpmTasks('grunt-md2html');
+	grunt.loadNpmTasks("grunt-md2html");
 
 	grunt.registerTask("default", ["jshint", "jscs", "qunit", "mkdir", "concat-define", "uglify", "md2html"]);
 };

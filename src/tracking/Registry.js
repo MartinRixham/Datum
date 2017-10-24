@@ -1,7 +1,6 @@
 define([], function() {
 
 	var registry = [];
-
 	var registering = false;
 
 	function Registry() {

@@ -10,7 +10,6 @@ define([
 	function CallbackBinder(binding) {
 
 		var parentModel;
-
 		var boundElements = new ElementSet();
 
 		this.applyBinding = function(element, model) {

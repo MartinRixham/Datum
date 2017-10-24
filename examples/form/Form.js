@@ -70,7 +70,6 @@ require([
 					this.date = new DatePicker();
 				}
 			},
-
 			text: function() {
 
 				if (this.date) {
