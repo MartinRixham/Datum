@@ -94,5 +94,24 @@
 		});
 	});
     </script>
+    <div id="self" data-bind="self">
+    </div>
+    <script>
+	QUnit.test("Element can match key with itself", function(assert) {
+
+		var done = assert.async();
+
+		require(["element/DOMElement"], function(DOMElement) {
+
+			var self = document.querySelector("#self");
+			var element = new DOMElement(self);
+			var matching = element.getMatchingElements("self");
+
+			assert.strictEqual(matching.length, 1);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

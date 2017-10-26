@@ -54,12 +54,12 @@ define([
 				}
 			}
 
+			if (element.dataset.bind == key) {
+
+				elementsArray.push(new DOMElement(element));
+			}
+
 			return elementsArray;
-		};
-
-		this.hasDataBindAttribute = function(name) {
-
-			return element.dataset.bind == name;
 		};
 
 		this.createRebinder = function(rebinder) {

@@ -22,11 +22,6 @@ define([], function() {
 			return [];
 		};
 
-		this.hasDataBindAttribute = function() {
-
-			return false;
-		};
-
 		this.createRebinder = function() {};
 
 		this.callBindingCallback = function() {};
