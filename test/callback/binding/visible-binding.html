@@ -142,13 +142,13 @@
 					passedModel = this;
 					passedElement = element;
 
-					return "Hello World.";
+					return "Hello world..";
 				});
 
 			var model = {};
 			var element = document.querySelector("#test");
 
-			assert.strictEqual(binding.call(model, element), "Hello World.");
+			assert.strictEqual(binding.call(model, element), "Hello world..");
 			assert.strictEqual(passedModel, model);
 			assert.strictEqual(passedElement, element);
 

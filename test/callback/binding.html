@@ -41,7 +41,7 @@
 
 					text: function() {
 
-						return "Hello World";
+						return "Hello world.";
 					}
 				});
 
@@ -49,7 +49,7 @@
 
 			test.applyBinding(new DOMElement(element), "test");
 
-			assert.strictEqual(element.innerHTML, "Hello World");
+			assert.strictEqual(element.innerHTML, "Hello world.");
 
 			done();
 		});
@@ -73,7 +73,7 @@
 
 					value: function() {
 
-						return "Hello World";
+						return "Hello world.";
 					}
 				});
 
@@ -81,7 +81,7 @@
 
 			input.applyBinding(new DOMElement(element), "input");
 
-			assert.strictEqual(element.value, "Hello World");
+			assert.strictEqual(element.value, "Hello world.");
 
 			done();
 		});
@@ -114,10 +114,10 @@
 
 			valueInput.applyBinding(new DOMElement(element), "valueInput");
 
-			element.value = "Hello World";
+			element.value = "Hello world.";
 			element.dispatchEvent(new Event("change"));
 
-			assert.strictEqual(datum(), "Hello World");
+			assert.strictEqual(datum(), "Hello world.");
 
 			done();
 		});

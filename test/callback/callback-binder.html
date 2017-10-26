@@ -49,9 +49,9 @@
 				}));
 
 			binding.applyBinding(new DOMElement(element), {});
-			datum("Hello World");
+			datum("Hello world.");
 
-			assert.strictEqual(element.innerHTML, "Hello World");
+			assert.strictEqual(element.innerHTML, "Hello world.");
 
 			done();
 		});
@@ -83,9 +83,9 @@
 				}));
 
 			binding.applyBinding(new DOMElement(element), {});
-			datum("Hello World");
+			datum("Hello world.");
 
-			assert.strictEqual(element.innerHTML, "Hello World");
+			assert.strictEqual(element.innerHTML, "Hello world.");
 
 			done();
 		});
@@ -113,9 +113,9 @@
 			var element = document.querySelector("#datum");
 
 			binding.applyBinding(new DOMElement(element), {});
-			datum("Hello World");
+			datum("Hello world.");
 
-			assert.strictEqual(element.innerHTML, "Hello World");
+			assert.strictEqual(element.innerHTML, "Hello world.");
 
 			done();
 		});
@@ -306,7 +306,7 @@
 			DOMElement) {
 
 			var datum = new Datum();
-			datum("Hello World");
+			datum("Hello world.");
 
 			var element = document.querySelector("#init");
 			var binding =
@@ -317,7 +317,7 @@
 
 			binding.applyBinding(new DOMElement(element), "init");
 
-			assert.strictEqual(element.innerHTML, "Hello World");
+			assert.strictEqual(element.innerHTML, "Hello world.");
 
 			done();
 		});
@@ -354,7 +354,7 @@
 			binding.applyBinding(new DOMElement(document.body), "noUpdate");
 
 			count = 0;
-			datum("Hello World");
+			datum("Hello world.");
 
 			assert.strictEqual(count, 0);
 
@@ -395,10 +395,10 @@
 
 			binding.applyBinding(new DOMElement(element), {});
 
-			element.value = "Hello World";
+			element.value = "Hello world.";
 			element.dispatchEvent(new Event("change"));
 
-			assert.strictEqual(datum(), "Hello World");
+			assert.strictEqual(datum(), "Hello world.");
 
 			done();
 		});
@@ -432,9 +432,9 @@
 
 			binding.applyBinding(new DOMElement(element), {});
 
-			datum("Hello World");
+			datum("Hello world.");
 
-			assert.strictEqual(element.value, "Hello World");
+			assert.strictEqual(element.value, "Hello world.");
 
 			done();
 		});
@@ -469,10 +469,10 @@
 
 			binding.applyBinding(new DOMElement(first), {});
 			binding.applyBinding(new DOMElement(second), {});
-			datum("Hello World");
+			datum("Hello world.");
 
-			assert.strictEqual(first.innerHTML, "Hello World");
-			assert.strictEqual(second.innerHTML, "Hello World");
+			assert.strictEqual(first.innerHTML, "Hello world.");
+			assert.strictEqual(second.innerHTML, "Hello world.");
 
 			done();
 		});
@@ -514,10 +514,10 @@
 			binding.applyBinding(new DOMElement(sender), {});
 			binding.applyBinding(new DOMElement(receiver), {});
 
-			sender.value = "Hello World";
+			sender.value = "Hello world.";
 			sender.dispatchEvent(new Event("change"));
 
-			assert.strictEqual(receiver.value, "Hello World");
+			assert.strictEqual(receiver.value, "Hello world.");
 
 			done();
 		});

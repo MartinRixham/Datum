@@ -42,14 +42,14 @@
 
 					text: function() {
 
-						return "Hello World";
+						return "Hello world.";
 					}
 				});
 			}
 
 			var root = new BindingRoot(new TextObject());
 
-			assert.strictEqual(document.querySelector("#test-div").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#test-div").innerHTML, "Hello world.");
 
 			root.disconnect();
 
@@ -76,14 +76,14 @@
 
 					value: function() {
 
-						return "Hello World";
+						return "Hello world.";
 					}
 				});
 			}
 
 			var root = new BindingRoot(new InputObject());
 
-			assert.strictEqual(document.querySelector("#test-input").value, "Hello World");
+			assert.strictEqual(document.querySelector("#test-input").value, "Hello world.");
 
 			root.disconnect();
 

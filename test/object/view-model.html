@@ -53,10 +53,10 @@
 
 			viewModel.applyBinding(new DOMElement(document.body));
 
-			element.value = "Hello World";
+			element.value = "Hello world.";
 			element.dispatchEvent(new Event("change"));
 
-			assert.strictEqual(input.datum(), "Hello World");
+			assert.strictEqual(input.datum(), "Hello world.");
 
 			done();
 		});
@@ -92,7 +92,7 @@
 
 					sub: new Text(function() {
 
-						return "Hello World";
+						return "Hello world.";
 					})
 				};
 			}
@@ -104,7 +104,7 @@
 				document.querySelector("#super-bind").innerHTML,
 				"Eh Up Planet");
 
-			assert.strictEqual(document.querySelector("#sub").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#sub").innerHTML, "Hello world.");
 
 			done();
 		});
@@ -132,7 +132,7 @@
 
 					nonSub: new Text(function() {
 
-						return "Hello World";
+						return "Hello world.";
 					})
 				};
 			}
@@ -140,7 +140,7 @@
 			var viewModel = new ViewModel(new TextObject());
 			viewModel.applyBinding(new DOMElement(document.body));
 
-			assert.notEqual(document.querySelector("#non-sub").innerHTML, "Hello World");
+			assert.notEqual(document.querySelector("#non-sub").innerHTML, "Hello world.");
 
 			done();
 		});
@@ -179,9 +179,9 @@
 			var viewModel = new ViewModel(plainObject);
 			viewModel.applyBinding(new DOMElement(document.body));
 
-			plainObject.datum = "Hello World";
+			plainObject.datum = "Hello world.";
 
-			assert.strictEqual(document.querySelector("#plain").innerHTML, "Hello World");
+			assert.strictEqual(document.querySelector("#plain").innerHTML, "Hello world.");
 
 			done();
 		});
@@ -220,9 +220,9 @@
 			var viewModel = new ViewModel(plainObject);
 			viewModel.applyBinding(new DOMElement(document.body));
 
-			plainObject.datum = "Hello World";
+			plainObject.datum = "Hello world.";
 
-			assert.strictEqual(document.querySelector("#plainValue").value, "Hello World");
+			assert.strictEqual(document.querySelector("#plainValue").value, "Hello world.");
 
 			done();
 		});
@@ -268,10 +268,10 @@
 			var viewModel = new ViewModel(two);
 			viewModel.applyBinding(new DOMElement(document.body));
 
-			two.datum = "Hello World";
+			two.datum = "Hello world.";
 
-			assert.strictEqual(document.querySelector("#one input").value, "Hello World");
-			assert.strictEqual(document.querySelector("#two input").value, "Hello World");
+			assert.strictEqual(document.querySelector("#one input").value, "Hello world.");
+			assert.strictEqual(document.querySelector("#two input").value, "Hello world.");
 
 			done();
 		});
@@ -315,10 +315,10 @@
 
 			var element = document.querySelector("#plain-change");
 
-			element.value = "Hello World";
+			element.value = "Hello world.";
 			element.dispatchEvent(new Event("change"));
 
-			assert.strictEqual(input.datum, "Hello World");
+			assert.strictEqual(input.datum, "Hello world.");
 
 			done();
 		});
@@ -357,7 +357,7 @@
 
 			assert.strictEqual(count, 1);
 
-			only.datum = "Hello World";
+			only.datum = "Hello world.";
 
 			assert.strictEqual(count, 1);
 
@@ -392,7 +392,7 @@
 
 				this.text = new Text(function() {
 
-					return "Hello World";
+					return "Hello world.";
 				});
 			}
 
@@ -403,7 +403,7 @@
 
 			var element = document.querySelector("#scope");
 
-			assert.notEqual(element.textContent, "Hello World");
+			assert.notEqual(element.textContent, "Hello world.");
 
 			done();
 		});
@@ -506,7 +506,7 @@
 
 				this.subobject = {
 
-					property: "Hello World"
+					property: "Hello world."
 				};
 
 				this.update = new Update(function() {
@@ -557,7 +557,7 @@
 
 					failSub: new Text(function() {
 
-						return "Hello World";
+						return "Hello world.";
 					})
 				};
 			}

@@ -34,13 +34,13 @@
 			var text =
 				new TextBinding(function() {
 
-					return "Hello World.";
+					return "Hello world..";
 				});
 
 			var element = document.querySelector("#update");
 			text.updateElement(null, element);
 
-			assert.strictEqual(document.querySelector("#update").innerHTML, "Hello World.");
+			assert.strictEqual(document.querySelector("#update").innerHTML, "Hello world..");
 
 			done();
 		});
@@ -86,7 +86,7 @@
 			var text =
 				new TextBinding(function() {
 
-					return "Hello World.";
+					return "Hello world..";
 				});
 
 			var element = document.querySelector("#reset");
@@ -116,13 +116,13 @@
 					passedModel = this;
 					passedElement = element;
 
-					return "Hello World.";
+					return "Hello world..";
 				});
 
 			var model = {};
 			var element = document.querySelector("#test");
 
-			assert.strictEqual(text.call(model, element), "Hello World.");
+			assert.strictEqual(text.call(model, element), "Hello world..");
 			assert.strictEqual(passedModel, model);
 			assert.strictEqual(passedElement, element);
 

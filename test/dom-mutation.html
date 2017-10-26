@@ -41,7 +41,7 @@
 
 					text: function() {
 
-						return "Hello World";
+						return "Hello world.";
 					}
 				});
 			}
@@ -58,7 +58,7 @@
 
 				assert.strictEqual(
 					document.querySelector("#test-div").innerHTML,
-					"Hello World");
+					"Hello world.");
 				done();
 				root.disconnect();
 			});
@@ -102,13 +102,13 @@
 
 			document.querySelector("#qunit-fixture").appendChild(div);
 
-			textObject.datum = "Hello World";
+			textObject.datum = "Hello world.";
 
 			setTimeout(function() {
 
 				assert.strictEqual(
 					document.querySelector("#test-div").innerHTML,
-					"Hello World");
+					"Hello world.");
 				done();
 				root.disconnect();
 			});
@@ -139,7 +139,7 @@
 
 					text: function() {
 
-						return "Hello World";
+						return "Hello world.";
 					}
 				});
 			}
@@ -157,7 +157,7 @@
 
 				assert.strictEqual(
 					document.querySelector("#test-div").innerHTML,
-					"Hello World");
+					"Hello world.");
 				done();
 				root.disconnect();
 			});
@@ -216,13 +216,13 @@
 			setTimeout(function() {
 
 				var element = document.querySelector("#test-div");
-				element.value = "Hello World";
+				element.value = "Hello world.";
 				element.dispatchEvent(new Event("change"));
 			});
 
 			setTimeout(function() {
 
-				assert.strictEqual(valueObject.datum, "Hello World");
+				assert.strictEqual(valueObject.datum, "Hello world.");
 
 				done();
 				root.disconnect();
@@ -256,7 +256,7 @@
 
 						count += 1;
 
-						return "Hello World";
+						return "Hello world.";
 					}
 				});
 
@@ -266,7 +266,7 @@
 
 						text: function() {
 
-							return "Hello World";
+							return "Hello world.";
 						}
 					})
 				};
@@ -287,7 +287,7 @@
 				assert.strictEqual(count, 1);
 				assert.strictEqual(
 					document.querySelector("#third").innerHTML,
-					"Hello World");
+					"Hello world.");
 				done();
 				root.disconnect();
 			});
