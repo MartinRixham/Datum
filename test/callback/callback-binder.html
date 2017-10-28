@@ -172,16 +172,19 @@
 
 					passedModel = this;
 					passedElement = element;
+
+					return "Hello world.";
 				}));
 
 			var model = {};
 			var element = document.createElement("DIV");
 
 			binding.applyBinding(new DOMElement(element), model);
-			binding.test.call(element);
+			var text = binding.test.call(element);
 
 			assert.strictEqual(passedModel, model);
 			assert.strictEqual(passedElement, element);
+			assert.strictEqual(text, "Hello world.");
 
 			done();
 		});
