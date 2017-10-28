@@ -190,6 +190,44 @@
 		});
 	});
  	</script>
+	<script>
+	QUnit.test("Test unbound bindings", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"tracking/Datum",
+			"callback/Text",
+			"callback/Click"
+		], function(
+			Datum,
+			Text,
+			Click) {
+
+			function ViewModel() {
+
+				var count = new Datum(0);
+
+				this.countLabel = new Text(count);
+
+				this.increment = new Click(function() {
+
+					count(count() + 1);
+				});
+			}
+
+			var model = new ViewModel();
+
+			model.increment.test.call();
+
+			var count = model.countLabel.test.call();
+
+			assert.strictEqual(count, 1);
+
+			done();
+		});
+	});
+	</script>
  	<div id="unbind" data-bind="unbind"></div>
  		<script>
 	QUnit.test("Unbind callback", function(assert) {
