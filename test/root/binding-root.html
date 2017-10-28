@@ -124,6 +124,25 @@
 	});
     </script>
     <script>
+	QUnit.test("Constructor can be recalled after disconnect", function(assert) {
+
+		var done = assert.async();
+
+		require(["root/BindingRoot"], function(BindingRoot) {
+
+			var root = new BindingRoot({});
+
+			root.disconnect();
+			root = new BindingRoot({});
+			root.disconnect();
+
+			assert.expect(0);
+
+			done();
+		});
+	});
+    </script>
+    <script>
 	QUnit.test("Binding root cannot be an array", function(assert) {
 
 		var done = assert.async();

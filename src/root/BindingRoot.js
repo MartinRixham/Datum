@@ -45,6 +45,7 @@ define([
 
 		function disconnect() {
 
+			flag = false;
 			domWatcher.disconnect();
 		}
 
