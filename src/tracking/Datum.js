@@ -1,13 +1,14 @@
 define([
-	"element/ElementSet",
+	"element/Elements",
 	"tracking/Registry"
 ], function Datum(
-	ElementSet,
+	Elements,
 	Registry) {
 
 	function Datum(datum) {
 
-		var dependants = new ElementSet();
+		var dependants = new Elements();
+		var registry = new Registry();
 
 		function provider(value) {
 
@@ -23,7 +24,7 @@ define([
 
 		function get() {
 
-			new Registry().registerUpdaterAssigner(assigner);
+			registry.registerUpdaterAssigner(assigner);
 
 			return datum;
 		}

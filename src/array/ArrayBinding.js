@@ -1,5 +1,5 @@
 define([
-	"element/ElementSet",
+	"element/Elements",
 	"tracking/Registry",
 	"property/TransientProperty",
 	"tracking/Datum",
@@ -11,7 +11,7 @@ define([
 	"array/method/Sort",
 	"array/method/Splice"
 ], function(
-	ElementSet,
+	Elements,
 	Registry,
 	TransientProperty,
 	Datum,
@@ -26,7 +26,7 @@ define([
 	function ArrayBinding(model, propertyType) {
 
 		var properties = [];
-		var boundElements = new ElementSet();
+		var boundElements = new Elements();
 
 		(function createProperties() {
 

@@ -1,9 +1,9 @@
 define([
-	"element/ElementSet",
+	"element/Elements",
 	"tracking/Registry",
 	"tracking/Dependant"
 ], function(
-	ElementSet,
+	Elements,
 	Registry,
 	Dependant) {
 
@@ -13,7 +13,7 @@ define([
 
 		var removed = false;
 
-		var boundElements = new ElementSet();
+		var boundElements = new Elements();
 
 		this.applyBinding = function(element, model, name) {
 

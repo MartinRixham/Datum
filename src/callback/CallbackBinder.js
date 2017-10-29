@@ -1,16 +1,16 @@
 define([
-	"element/ElementSet",
+	"element/Elements",
 	"tracking/Dependant",
 	"tracking/Registry"
 ], function(
-	ElementSet,
+	Elements,
 	Dependant,
 	Registry) {
 
 	function CallbackBinder(binding) {
 
 		var parentModel;
-		var boundElements = new ElementSet();
+		var boundElements = new Elements();
 
 		this.applyBinding = function(element, model) {
 

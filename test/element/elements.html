@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Element Set Tests</title>
+    <title>Elements Tests</title>
     <link rel="stylesheet" href="../../node_modules/qunitjs/qunit/qunit.css">
     <script src="../../node_modules/qunitjs/qunit/qunit.js"></script>
     <script src="../../node_modules/requirejs/require.js"></script>
@@ -36,9 +36,9 @@
 
 		var done = assert.async();
 
-		require(["element/ElementSet"], function(ElementSet) {
+		require(["element/Elements"], function(Elements) {
 
-			var elementSet = new ElementSet();
+			var elementSet = new Elements();
 
 			assert.strictEqual(elementSet.get().length, 0);
 
@@ -51,9 +51,9 @@
 
 		var done = assert.async();
 
-		require(["element/ElementSet"], function(ElementSet) {
+		require(["element/Elements"], function(Elements) {
 
-			var elementSet = new ElementSet();
+			var elementSet = new Elements();
 			var element = new FakeDOMElement();
 
 			elementSet.add(element);
@@ -70,9 +70,9 @@
 
 		var done = assert.async();
 
-		require(["element/ElementSet"], function(ElementSet) {
+		require(["element/Elements"], function(Elements) {
 
-			var elementSet = new ElementSet();
+			var elementSet = new Elements();
 			var firstElement = new FakeDOMElement();
 			var secondElement = new FakeDOMElement();
 
@@ -92,9 +92,9 @@
 
 		var done = assert.async();
 
-		require(["element/ElementSet"], function(ElementSet) {
+		require(["element/Elements"], function(Elements) {
 
-			var elementSet = new ElementSet();
+			var elementSet = new Elements();
 			var newElement = new FakeDOMElement();
 			var oldElement = new FakeDOMElement(true);
 
@@ -118,9 +118,9 @@
 
 		var done = assert.async();
 
-		require(["element/ElementSet"], function(ElementSet) {
+		require(["element/Elements"], function(Elements) {
 
-			var elementSet = new ElementSet();
+			var elementSet = new Elements();
 			var unequalElement = { equals: function() { return false; } };
 			var equalElement = { equals: function() { return true; } };
 
@@ -144,9 +144,9 @@
 
 		var done = assert.async();
 
-		require(["element/ElementSet"], function(ElementSet) {
+		require(["element/Elements"], function(Elements) {
 
-			var elementSet = new ElementSet();
+			var elementSet = new Elements();
 			var element = new FakeDOMElement();
 
 			elementSet.add(element);

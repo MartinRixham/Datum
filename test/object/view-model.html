@@ -324,44 +324,43 @@
 		});
 	});
     </script>
-    <div data-bind="inner"></div>
-    <div data-bind="outer"></div>
+    <div data-bind="rebind"></div>
     <script>
 	QUnit.test("Dependencies are not recalled", function(assert) {
 
 		var done = assert.async();
 
-		require(["callback/Text", "root/BindingRoot"], function(Text, BindingRoot) {
+		require([
+			"callback/Text",
+			"object/ViewModel",
+			"element/DOMElement"
+		], function(
+			Text,
+			ViewModel,
+			DOMElement) {
 
 			var count = 0;
 
-			function Only() {
+			function Rebind() {
 
 				this.datum = null;
 
-				this.inner =
+				this.rebind =
 					new Text(function() {
 
 						count += 1;
 					});
 			}
 
-			var only = new Only();
-			var root = new BindingRoot(only);
+			var rebind = new Rebind();
+			var viewModel = new ViewModel(rebind);
+			var element = new DOMElement(document.body);
 
-			only.outer =
-				new Text(function() {
+			viewModel.applyBinding(element);
 
-					return only.datum;
-				});
-
-			assert.strictEqual(count, 1);
-
-			only.datum = "Hello world.";
+			element.rebind();
 
 			assert.strictEqual(count, 1);
-
-			root.disconnect();
 
 			done();
 		});

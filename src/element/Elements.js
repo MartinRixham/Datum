@@ -1,31 +1,13 @@
 define([], function() {
 
-	function ElementSet() {
+	function Elements() {
 
 		var elements = [];
 
 		this.add = function(element) {
 
-			if (isNew(element)) {
-
-				elements.push(element);
-			}
+			elements.push(element);
 		};
-
-		function isNew(element) {
-
-			var isNew = true;
-
-			for (var i = 0; i < elements.length; i++) {
-
-				if (elements[i].equals(element)) {
-
-					isNew = false;
-				}
-			}
-
-			return isNew;
-		}
 
 		this.removeOld = function() {
 
@@ -58,7 +40,17 @@ define([], function() {
 
 		this.contains = function(element) {
 
-			return !isNew(element);
+			var contains = false;
+
+			for (var i = 0; i < elements.length; i++) {
+
+				if (elements[i].equals(element)) {
+
+					contains = true;
+				}
+			}
+
+			return contains;
 		};
 
 		this.remove = function(element) {
@@ -78,5 +70,5 @@ define([], function() {
 		};
 	}
 
-	return ElementSet;
+	return Elements;
 });

@@ -1,12 +1,12 @@
 define([
-	"element/ElementSet",
+	"element/Elements",
 	"object/Serialisable",
 	"property/TransientProperty",
 	"property/PermanentProperty",
 	"property/PropertyType",
 	"element/NullDOMElement"
 ], function(
-	ElementSet,
+	Elements,
 	Serialisable,
 	TransientProperty,
 	PermanentProperty,
@@ -15,7 +15,7 @@ define([
 
 	function ViewModel(model) {
 
-		var boundElements = new ElementSet();
+		var boundElements = new Elements();
 		var transientProperties = {};
 		var permanentProperties = {};
 
