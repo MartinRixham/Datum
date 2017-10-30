@@ -36,7 +36,7 @@ define([
 
 		this.removedFromDocument = function() {
 
-			return !document.contains(element);
+			return !document.body.contains(element);
 		};
 
 		this.getMatchingElements = function(key) {

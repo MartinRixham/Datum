@@ -36,6 +36,7 @@ define([], function() {
 				if (listener.element == element) {
 
 					element.removeEventListener(listener.key, listener.listener);
+					break;
 				}
 			}
 

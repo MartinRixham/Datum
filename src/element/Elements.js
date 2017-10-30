@@ -13,7 +13,7 @@ define([], function() {
 
 			var removed = [];
 
-			for (var i = 0; i < elements.length; i++) {
+			for (var i = elements.length - 1; i >= 0; i--) {
 
 				var element = elements[i];
 
