@@ -45,8 +45,9 @@ define([
 
 		function disconnect() {
 
-			flag = false;
+			rootViewModel.removeBinding();
 			domWatcher.disconnect();
+			flag = false;
 		}
 
 		return {

@@ -347,3 +347,4 @@ Bugs can be reported on [GitHub](https://github.com/MartinRixham/Datum/issues).
 The following websites were created with Datum:
 
 * [fifteenpuzzzle.co.uk](http://fifteenpuzzzle.co.uk)
+* [compactopenneighbourhood.com](https://compactopenneighbourhood.com)
