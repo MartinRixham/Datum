@@ -12,19 +12,24 @@ define(["property/TransientProperty"], function(TransientProperty) {
 
 				var property = new TransientProperty(arguments[i], propertyType);
 
-				properties.unshift(property);
-
-				for (var j = 0; j < elements.length; j++) {
-
-					var element = elements[j];
-
-					element.prepend();
-					property.applyBinding(element.getChildAtIndex(0), model);
-				}
+				unshift(model, elements, properties, property);
 			}
 
 			model.subscribableLength = model.length;
 		};
+	}
+
+	function unshift(model, elements, properties, property) {
+
+		properties.unshift(property);
+
+		for (var j = 0; j < elements.length; j++) {
+
+			var element = elements[j];
+
+			element.prepend();
+			property.applyBinding(element.getChildAtIndex(0), model);
+		}
 	}
 
 	return Unshift;

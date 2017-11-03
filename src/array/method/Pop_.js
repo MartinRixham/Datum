@@ -7,22 +7,28 @@ define([], function() {
 		model.pop = function() {
 
 			var popped = originalPop.apply(this, arguments);
-			var property = properties.pop();
 
-			if (property) {
-
-				property.removeBinding();
-			}
-
-			for (var i = 0; i < elements.length; i++) {
-
-				elements[i].removeLast();
-			}
-
-			model.subscribableLength = model.length;
+			pop(model, elements, properties);
 
 			return popped;
 		};
+	}
+
+	function pop(model, elements, properties) {
+
+		var property = properties.pop();
+
+		if (property) {
+
+			property.removeBinding();
+		}
+
+		for (var i = 0; i < elements.length; i++) {
+
+			elements[i].removeLast();
+		}
+
+		model.subscribableLength = model.length;
 	}
 
 	return Pop;

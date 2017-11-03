@@ -2,55 +2,57 @@ define([], function() {
 
 	function EventsBinding(callbacks) {
 
-		var listeners = [];
+		this.callbacks = callbacks;
 
-		this.setUpElement = function(model, element) {
+		this.listeners = [];
+	}
 
-			for (var key in callbacks) {
+	EventsBinding.prototype.setUpElement = function(model, element) {
 
-				var callback = callbacks[key];
+		for (var key in this.callbacks) {
 
-				var listener = createListener(model, element, callback);
+			var callback = this.callbacks[key];
 
-				listeners.push({ key: key, element: element, listener: listener });
-				element.addEventListener(key, listener);
-			}
+			var listener = this.createListener(model, element, callback);
+
+			this.listeners.push({ key: key, element: element, listener: listener });
+			element.addEventListener(key, listener);
+		}
+	};
+
+	EventsBinding.prototype.createListener = function(model, element, callback) {
+
+		return function listener() {
+
+			callback.call(model, element);
 		};
+	};
 
-		function createListener(model, element, callback) {
+	EventsBinding.prototype.updateElement = function() {};
 
-			return function listener() {
+	EventsBinding.prototype.resetElement = function(element) {
 
-				callback.call(model, element);
-			};
+		for (var i = 0; i < this.listeners.length; i++) {
+
+			var listener = this.listeners[i];
+
+			if (listener.element == element) {
+
+				element.removeEventListener(listener.key, listener.listener);
+				break;
+			}
 		}
 
-		this.updateElement = function() {};
+		this.listeners.splice(i, 1);
+	};
 
-		this.resetElement = function(element) {
+	EventsBinding.prototype.call = function(parentModel, element) {
 
-			for (var i = 0; i < listeners.length; i++) {
+		for (var key in this.callbacks) {
 
-				var listener = listeners[i];
-
-				if (listener.element == element) {
-
-					element.removeEventListener(listener.key, listener.listener);
-					break;
-				}
-			}
-
-			listeners.splice(i, 1);
-		};
-
-		this.call = function(parentModel, element) {
-
-			for (var key in callbacks) {
-
-				callbacks[key].call(parentModel, element);
-			}
-		};
-	}
+			this.callbacks[key].call(parentModel, element);
+		}
+	};
 
 	return EventsBinding;
 });

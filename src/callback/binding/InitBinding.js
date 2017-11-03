@@ -2,20 +2,22 @@ define([], function() {
 
 	function InitBinding(init) {
 
-		this.setUpElement = function(model, element) {
-
-			init.call(model, element);
-		};
-
-		this.updateElement = function() {};
-
-		this.resetElement = function() {};
-
-		this.call = function() {
-
-			init.apply(this, arguments);
-		};
+		this.init = init;
 	}
+
+	InitBinding.prototype.setUpElement = function(model, element) {
+
+		this.init.call(model, element);
+	};
+
+	InitBinding.prototype.updateElement = function() {};
+
+	InitBinding.prototype.resetElement = function() {};
+
+	InitBinding.prototype.call = function() {
+
+		this.init.apply(this, arguments);
+	};
 
 	return InitBinding;
 });

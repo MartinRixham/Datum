@@ -2,61 +2,63 @@ define([], function() {
 
 	function ClassesBinding(callbacks) {
 
-		this.setUpElement = function() {};
+		this.callbacks = callbacks;
+	}
 
-		this.updateElement = function(parentModel, element) {
+	ClassesBinding.prototype.setUpElement = function() {};
 
-			var classes = splitClasses(element);
+	ClassesBinding.prototype.updateElement = function(parentModel, element) {
 
-			for (var key in callbacks) {
+		var classes = this.splitClasses(element);
 
-				var index = classes.indexOf(key);
+		for (var key in this.callbacks) {
 
-				if (callbacks[key].call(parentModel, element)) {
+			var index = classes.indexOf(key);
 
-					if (index < 0) {
+			if (this.callbacks[key].call(parentModel, element)) {
 
-						classes.push(key);
-					}
+				if (index < 0) {
+
+					classes.push(key);
 				}
-				else {
-
-					if (index + 1) {
-
-						classes.splice(index, 1);
-					}
-				}
-			}
-
-			element.className = classes.join(" ");
-		};
-
-		function splitClasses(element) {
-
-			var classes;
-
-			if (element.className) {
-
-				classes = element.className.split(" ");
 			}
 			else {
 
-				classes = [];
-			}
+				if (index + 1) {
 
-			return classes;
+					classes.splice(index, 1);
+				}
+			}
 		}
 
-		this.resetElement = function() {};
+		element.className = classes.join(" ");
+	};
 
-		this.call = function(parentModel, element) {
+	ClassesBinding.prototype.splitClasses = function(element) {
 
-			for (var key in callbacks) {
+		var classes;
 
-				callbacks[key].call(parentModel, element);
-			}
-		};
-	}
+		if (element.className) {
+
+			classes = element.className.split(" ");
+		}
+		else {
+
+			classes = [];
+		}
+
+		return classes;
+	};
+
+	ClassesBinding.prototype.resetElement = function() {};
+
+	ClassesBinding.prototype.call = function(parentModel, element) {
+
+		for (var key in this.callbacks) {
+
+			this.callbacks[key].call(parentModel, element);
+		}
+	};
 
 	return ClassesBinding;
 });

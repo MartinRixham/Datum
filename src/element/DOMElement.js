@@ -7,109 +7,111 @@ define([
 
 	function DOMElement(element) {
 
-		this.isInScope = function(scope) {
+		this.element = element;
+	}
 
-			return isInScope(element, scope);
-		};
+	DOMElement.prototype.isInScope = function(scope) {
 
-		function isInScope(element, scope) {
+		return isInScope(this.element, scope);
+	};
 
-			var currentElement = element.parentElement;
+	function isInScope(element, scope) {
 
-			if (!currentElement) {
+		var currentElement = element.parentElement;
 
-				return false;
-			}
-			else if (currentElement == scope) {
+		if (!currentElement) {
 
-				return true;
-			}
-			else if (currentElement.__DATUM__REBIND) {
+			return false;
+		}
+		else if (currentElement == scope) {
 
-				return false;
-			}
-			else {
+			return true;
+		}
+		else if (currentElement.__DATUM__REBIND) {
 
-				return isInScope(currentElement, scope);
+			return false;
+		}
+		else {
+
+			return isInScope(currentElement, scope);
+		}
+	}
+
+	DOMElement.prototype.removedFromDocument = function() {
+
+		return !document.body.contains(this.element);
+	};
+
+	DOMElement.prototype.getMatchingElements = function(key) {
+
+		var elements = this.element.querySelectorAll("[data-bind=" + key + "]");
+		var elementsArray = [];
+
+		for (var i = 0; i < elements.length; i++) {
+
+			var newElement = new DOMElement(elements[i]);
+
+			if (newElement.isInScope(this.element)) {
+
+				elementsArray.push(newElement);
 			}
 		}
 
-		this.removedFromDocument = function() {
+		if (this.element.dataset.bind == key) {
 
-			return !document.body.contains(element);
-		};
+			elementsArray.push(new DOMElement(this.element));
+		}
 
-		this.getMatchingElements = function(key) {
+		return elementsArray;
+	};
 
-			var elements = element.querySelectorAll("[data-bind=" + key + "]");
-			var elementsArray = [];
+	DOMElement.prototype.createRebinder = function(rebinder) {
 
-			for (var i = 0; i < elements.length; i++) {
+		this.element.__DATUM__REBIND = rebinder;
+	};
 
-				var newElement = new DOMElement(elements[i]);
+	DOMElement.prototype.rebind = function() {
 
-				if (newElement.isInScope(element)) {
+		this.element.__DATUM__REBIND();
+	};
 
-					elementsArray.push(newElement);
-				}
-			}
+	DOMElement.prototype.callBindingCallback = function(model) {
 
-			if (element.dataset.bind == key) {
+		if (model.onBind) {
 
-				elementsArray.push(new DOMElement(element));
-			}
+			model.onBind(this.element);
+		}
+	};
 
-			return elementsArray;
-		};
+	DOMElement.prototype.equals = function(other) {
 
-		this.createRebinder = function(rebinder) {
+		return other.hasEqual(this.element);
+	};
 
-			element.__DATUM__REBIND = rebinder;
-		};
+	DOMElement.prototype.hasEqual = function(otherElement) {
 
-		this.rebind = function() {
+		return this.element == otherElement;
+	};
 
-			element.__DATUM__REBIND();
-		};
+	DOMElement.prototype.toObjectElement = function() {
 
-		this.callBindingCallback = function(model) {
+		return new ObjectElement(this.element);
+	};
 
-			if (model.onBind) {
+	DOMElement.prototype.toArrayElement = function(initialLength) {
 
-				model.onBind(element);
-			}
-		};
+		return new ArrayElement(this, initialLength);
+	};
 
-		this.equals = function(other) {
+	DOMElement.prototype.get = function() {
 
-			return other.hasEqual(element);
-		};
+		return this.element;
+	};
 
-		this.hasEqual = function(otherElement) {
+	DOMElement.prototype.createElement = function(element) {
 
-			return element == otherElement;
-		};
-
-		this.toObjectElement = function() {
-
-			return new ObjectElement(element);
-		};
-
-		this.toArrayElement = function(initialLength) {
-
-			return new ArrayElement(this, initialLength);
-		};
-
-		this.get = function() {
-
-			return element;
-		};
-
-		this.createElement = function(element) {
-
-			return new DOMElement(element);
-		};
-	}
+		return new DOMElement(element);
+	};
 
 	return DOMElement;
 });

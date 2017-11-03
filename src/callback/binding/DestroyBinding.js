@@ -2,25 +2,25 @@ define([], function() {
 
 	function DestroyBinding(destroy) {
 
-		var parentModel;
-
-		this.setUpElement = function(model) {
-
-			parentModel = model;
-		};
-
-		this.updateElement = function() {};
-
-		this.resetElement = function(element) {
-
-			destroy.call(parentModel, element);
-		};
-
-		this.call = function() {
-
-			init.apply(this, arguments);
-		};
+		this.destroy = destroy;
 	}
+
+	DestroyBinding.prototype.setUpElement = function(model) {
+
+		this.parentModel = model;
+	};
+
+	DestroyBinding.prototype.updateElement = function() {};
+
+	DestroyBinding.prototype.resetElement = function(element) {
+
+		this.destroy.call(this.parentModel, element);
+	};
+
+	DestroyBinding.prototype.call = function() {
+
+		init.apply(this, arguments);
+	};
 
 	return DestroyBinding;
 });

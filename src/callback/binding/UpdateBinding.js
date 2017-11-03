@@ -2,20 +2,22 @@ define([], function() {
 
 	function UpdateBinding(update) {
 
-		this.setUpElement = function() {};
-
-		this.updateElement = function(parentModel, element) {
-
-			update.call(parentModel, element);
-		};
-
-		this.resetElement = function() {};
-
-		this.call = function(parentModel, element) {
-
-			update.call(parentModel, element);
-		};
+		this.update = update;
 	}
+
+	UpdateBinding.prototype.setUpElement = function() {};
+
+	UpdateBinding.prototype.updateElement = function(parentModel, element) {
+
+		this.update.call(parentModel, element);
+	};
+
+	UpdateBinding.prototype.resetElement = function() {};
+
+	UpdateBinding.prototype.call = function(parentModel, element) {
+
+		this.update.call(parentModel, element);
+	};
 
 	return UpdateBinding;
 });

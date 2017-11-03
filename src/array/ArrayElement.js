@@ -2,12 +2,15 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 	function ArrayElement(domElement, initialLength) {
 
-		var element = domElement.get();
-		var child;
+		this.domElement = domElement;
+
+		this.element = domElement.get();
+
+		var self = this;
 
 		(function checkElementHasOnlyOneChild() {
 
-			if (element.children.length != 1) {
+			if (self.element.children.length != 1) {
 
 				var message =
 					"An array must be bound to an element with exactly one child.";
@@ -22,117 +25,117 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 		(function getChild() {
 
-			var childElement = element.children[0];
+			var childElement = self.element.children[0];
 
-			element.removeChild(childElement);
+			self.element.removeChild(childElement);
 
-			child = new ArrayItemElement(childElement);
+			self.child = new ArrayItemElement(childElement);
 		})();
 
 		(function copyElement() {
 
 			for (var i = 0; i < initialLength; i++) {
 
-				element.appendChild(child.clone());
+				self.element.appendChild(self.child.clone());
 			}
 		})();
-
-		this.append = function() {
-
-			element.appendChild(child.clone());
-		};
-
-		this.prepend = function() {
-
-			element.insertBefore(child.clone(), element.firstChild);
-		};
-
-		this.insertAtIndex = function(index) {
-
-			element.insertBefore(child.clone(), element.children[index]);
-		};
-
-		this.removeFirst = function() {
-
-			if (element.firstElementChild) {
-
-				element.removeChild(element.firstElementChild);
-			}
-		};
-
-		this.removeLast = function() {
-
-			if (element.lastElementChild) {
-
-				element.removeChild(element.lastElementChild);
-			}
-		};
-
-		this.removeAtIndex = function(index) {
-
-			element.removeChild(element.children[index]);
-		};
-
-		this.removeChildren = function() {
-
-			var children = [].slice.call(element.children);
-
-			while (element.lastChild) {
-
-				element.removeChild(element.lastChild);
-			}
-
-			return children;
-		};
-
-		this.appendChildren = function(children) {
-
-			for (var i = 0; i < children.length; i++) {
-
-				element.appendChild(children[i]);
-			}
-		};
-
-		this.appendChild = function(child) {
-
-			element.appendChild(child);
-		};
-
-		this.reset = function() {
-
-			while (element.lastChild) {
-
-				element.removeChild(element.lastChild);
-			}
-
-			element.appendChild(child.get());
-		};
-
-		this.getChildAtIndex = function(i) {
-
-			return domElement.createElement(element.children[i]);
-		};
-
-		this.removedFromDocument = function() {
-
-			return domElement.removedFromDocument();
-		};
-
-		this.equals = function(other) {
-
-			return other.hasEqual(element);
-		};
-
-		this.hasEqual = function(otherElement) {
-
-			return element == otherElement;
-		};
-
-		this.get = function() {
-
-			return domElement;
-		};
 	}
+
+	ArrayElement.prototype.append = function() {
+
+		this.element.appendChild(this.child.clone());
+	};
+
+	ArrayElement.prototype.prepend = function() {
+
+		this.element.insertBefore(this.child.clone(), this.element.firstChild);
+	};
+
+	ArrayElement.prototype.insertAtIndex = function(index) {
+
+		this.element.insertBefore(this.child.clone(), this.element.children[index]);
+	};
+
+	ArrayElement.prototype.removeFirst = function() {
+
+		if (this.element.firstElementChild) {
+
+			this.element.removeChild(this.element.firstElementChild);
+		}
+	};
+
+	ArrayElement.prototype.removeLast = function() {
+
+		if (this.element.lastElementChild) {
+
+			this.element.removeChild(this.element.lastElementChild);
+		}
+	};
+
+	ArrayElement.prototype.removeAtIndex = function(index) {
+
+		this.element.removeChild(this.element.children[index]);
+	};
+
+	ArrayElement.prototype.removeChildren = function() {
+
+		var children = [].slice.call(this.element.children);
+
+		while (this.element.lastChild) {
+
+			this.element.removeChild(this.element.lastChild);
+		}
+
+		return children;
+	};
+
+	ArrayElement.prototype.appendChildren = function(children) {
+
+		for (var i = 0; i < children.length; i++) {
+
+			this.element.appendChild(children[i]);
+		}
+	};
+
+	ArrayElement.prototype.appendChild = function(child) {
+
+		this.element.appendChild(child);
+	};
+
+	ArrayElement.prototype.reset = function() {
+
+		while (this.element.lastChild) {
+
+			this.element.removeChild(this.element.lastChild);
+		}
+
+		this.element.appendChild(this.child.get());
+	};
+
+	ArrayElement.prototype.getChildAtIndex = function(i) {
+
+		return this.domElement.createElement(this.element.children[i]);
+	};
+
+	ArrayElement.prototype.removedFromDocument = function() {
+
+		return this.domElement.removedFromDocument();
+	};
+
+	ArrayElement.prototype.equals = function(other) {
+
+		return other.hasEqual(this.element);
+	};
+
+	ArrayElement.prototype.hasEqual = function(otherElement) {
+
+		return this.element == otherElement;
+	};
+
+	ArrayElement.prototype.get = function() {
+
+		return this.domElement;
+	};
 
 	return ArrayElement;
 });

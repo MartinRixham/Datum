@@ -25,28 +25,33 @@ define([
 
 	function ArrayBinding(model, propertyType) {
 
-		var properties = [];
-		var boundElements = new Elements();
+		this.properties = [];
+
+		this.model = model;
+
+		this.boundElements = new Elements();
+
+		var self = this;
 
 		(function createProperties() {
 
 			for (var i = 0; i < model.length; i++) {
 
-				properties.push(new TransientProperty(model[i], propertyType));
+				self.properties.push(new TransientProperty(model[i], propertyType));
 			}
 		})();
 
 		(function createArrayMethods() {
 
-			var elements = boundElements.get();
+			var elements = self.boundElements.get();
 
-			new Push(model, elements, properties, propertyType);
-			new Pop(model, elements, properties);
-			new Shift(model, elements, properties);
-			new Unshift(model, elements, properties, propertyType);
-			new Reverse(model, elements, properties);
-			new Sort(model, elements, properties);
-			new Splice(model, elements, properties, propertyType);
+			new Push(model, elements, self.properties, propertyType);
+			new Pop(model, elements, self.properties);
+			new Shift(model, elements, self.properties);
+			new Unshift(model, elements, self.properties, propertyType);
+			new Reverse(model, elements, self.properties);
+			new Sort(model, elements, self.properties);
+			new Splice(model, elements, self.properties, propertyType);
 		})();
 
 		(function createSubscribableLength() {
@@ -65,55 +70,55 @@ define([
 				}
 			});
 		})();
+	}
 
-		this.applyBinding = function(element, parentModel, name) {
+	ArrayBinding.prototype.applyBinding = function(element, parentModel, name) {
 
-			var removed = boundElements.removeOld();
-			resetElements(removed);
+		var removed = this.boundElements.removeOld();
+		this.resetElements(removed);
+
+		if (element.get()) {
+
+			this.bindElements(element, parentModel, name);
+		}
+	};
+
+	ArrayBinding.prototype.bindElements = function(element, parentModel, name) {
+
+		if (!this.boundElements.contains(element)) {
+
+			this.boundElements.add(element.toArrayElement(this.model.length));
+		}
+
+		var arrayElement = this.boundElements.getElementEqualTo(element);
+		var value = parentModel[name];
+
+		for (var i = 0; i < this.properties.length; i++) {
+
+			this.properties[i].applyBinding(arrayElement.getChildAtIndex(i), value);
+		}
+	};
+
+	ArrayBinding.prototype.removeBinding = function() {
+
+		var elements = this.boundElements.get();
+
+		this.resetElements(elements);
+	};
+
+	ArrayBinding.prototype.resetElements = function(elements) {
+
+		for (var i = 0; i < elements.length; i++) {
+
+			var element = elements[i];
 
 			if (element.get()) {
 
-				bindElements(element, parentModel, name);
-			}
-		};
-
-		function bindElements(element, parentModel, name) {
-
-			if (!boundElements.contains(element)) {
-
-				boundElements.add(element.toArrayElement(model.length));
-			}
-
-			var arrayElement = boundElements.getElementEqualTo(element);
-			var value = parentModel[name];
-
-			for (var i = 0; i < properties.length; i++) {
-
-				properties[i].applyBinding(arrayElement.getChildAtIndex(i), value);
+				element.reset();
+				this.boundElements.remove(element);
 			}
 		}
-
-		this.removeBinding = function() {
-
-			var elements = boundElements.get();
-
-			resetElements(elements);
-		};
-
-		function resetElements(elements) {
-
-			for (var i = 0; i < elements.length; i++) {
-
-				var element = elements[i];
-
-				if (element.get()) {
-
-					element.reset();
-					boundElements.remove(element);
-				}
-			}
-		}
-	}
+	};
 
 	return ArrayBinding;
 });

@@ -1,46 +1,45 @@
 define([], function() {
 
-	function NullDOMElement() {
+	function NullDOMElement() {}
 
-		this.hasInScope = function() {
+	NullDOMElement.prototype.hasInScope = function() {
 
-			return false;
-		};
+		return false;
+	};
 
-		this.isInScope = function() {
+	NullDOMElement.prototype.isInScope = function() {
 
-			return true;
-		};
+		return true;
+	};
 
-		this.removedFromDocument = function() {
+	NullDOMElement.prototype.removedFromDocument = function() {
 
-			return true;
-		};
+		return true;
+	};
 
-		this.getMatchingElements = function() {
+	NullDOMElement.prototype.getMatchingElements = function() {
 
-			return [];
-		};
+		return [];
+	};
 
-		this.createRebinder = function() {};
+	NullDOMElement.prototype.createRebinder = function() {};
 
-		this.callBindingCallback = function() {};
+	NullDOMElement.prototype.callBindingCallback = function() {};
 
-		this.equals = function(other) {
+	NullDOMElement.prototype.equals = function(other) {
 
-			return other instanceof NullDOMElement;
-		};
+		return other instanceof NullDOMElement;
+	};
 
-		this.hasEqual = function() {
+	NullDOMElement.prototype.hasEqual = function() {
 
-			return false;
-		};
+		return false;
+	};
 
-		this.get = function() {
+	NullDOMElement.prototype.get = function() {
 
-			return null;
-		};
-	}
+		return null;
+	};
 
 	return NullDOMElement;
 });

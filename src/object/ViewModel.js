@@ -15,124 +15,131 @@ define([
 
 	function ViewModel(model) {
 
-		var boundElements = new Elements();
-		var transientProperties = {};
-		var permanentProperties = {};
+		this.model = model;
+
+		this.boundElements = new Elements();
+
+		this.transientProperties = {};
+
+		this.permanentProperties = {};
 
 		new Serialisable(model);
-
-		this.applyBinding = applyBinding;
-
-		function applyBinding(element) {
-
-			boundElements.removeOld();
-
-			if (!boundElements.contains(element)) {
-
-				createRebinder(element);
-				element.callBindingCallback(model);
-			}
-
-			unbindOldProperties();
-			createPermanentProperties(element);
-			createTransientProperties();
-			bindProperties(element);
-			boundElements.add(element);
-		}
-
-		function createRebinder(element) {
-
-			element.createRebinder(function() {
-
-				applyBinding(element);
-			});
-		}
-
-		function unbindOldProperties() {
-
-			for (var key in transientProperties) {
-
-				if (!model[key]) {
-
-					transientProperties[key].removeBinding();
-					delete transientProperties[key];
-				}
-			}
-		}
-
-		function createPermanentProperties(element) {
-
-			for (var key in model) {
-
-				if (!permanentProperties[key]) {
-
-					permanentProperties[key] =
-						new PermanentProperty(model[key], createPropertyType(), element);
-				}
-			}
-		}
-
-		function createTransientProperties() {
-
-			for (var key in model) {
-
-				if (isNew(key)) {
-
-					if (transientProperties[key]) {
-
-						transientProperties[key].removeBinding();
-					}
-
-					transientProperties[key] =
-						new TransientProperty(model[key], createPropertyType());
-				}
-			}
-		}
-
-		function isNew(key) {
-
-			var property = transientProperties[key];
-
-			return !property || property.isOlderThan(model[key]);
-		}
-
-		function createPropertyType() {
-
-			return new PropertyType(function(model) { return new ViewModel(model); });
-		}
-
-		function bindProperties(scope) {
-
-			for (var key in permanentProperties) {
-
-				var elements = getElements(scope, key);
-
-				for (var i = 0; i < elements.length; i++) {
-
-					var element = elements[i];
-
-					permanentProperties[key].applyBinding(element, model, key);
-					transientProperties[key].applyBinding(element, model, key);
-				}
-			}
-		}
-
-		function getElements(scope, name) {
-
-			var elements = scope.getMatchingElements(name);
-
-			return elements.length ? elements : [new NullDOMElement()];
-		}
-
-		this.removeBinding = function() {
-
-			for (var key in permanentProperties) {
-
-				permanentProperties[key].removeBinding();
-				transientProperties[key].removeBinding();
-			}
-		};
 	}
+
+	ViewModel.prototype.applyBinding = function(element) {
+
+		this.boundElements.removeOld();
+
+		if (!this.boundElements.contains(element)) {
+
+			this.createRebinder(element);
+			element.callBindingCallback(this.model);
+		}
+
+		this.unbindOldProperties();
+		this.createPermanentProperties(element);
+		this.createTransientProperties();
+		this.bindProperties(element);
+		this.boundElements.add(element);
+	};
+
+	ViewModel.prototype.createRebinder = function(element) {
+
+		var self = this;
+
+		element.createRebinder(function() {
+
+			ViewModel.prototype.applyBinding.call(self, element);
+		});
+	};
+
+	ViewModel.prototype.unbindOldProperties = function() {
+
+		for (var key in this.transientProperties) {
+
+			if (!this.model[key]) {
+
+				this.transientProperties[key].removeBinding();
+				delete this.transientProperties[key];
+			}
+		}
+	};
+
+	ViewModel.prototype.createPermanentProperties = function(element) {
+
+		for (var key in this.model) {
+
+			if (!this.permanentProperties[key]) {
+
+				this.permanentProperties[key] =
+					new PermanentProperty(
+						this.model[key],
+						this.createPropertyType(),
+						element);
+			}
+		}
+	};
+
+	ViewModel.prototype.createTransientProperties = function() {
+
+		for (var key in this.model) {
+
+			if (this.isNew(key)) {
+
+				if (this.transientProperties[key]) {
+
+					this.transientProperties[key].removeBinding();
+				}
+
+				this.transientProperties[key] =
+					new TransientProperty(this.model[key], this.createPropertyType());
+			}
+		}
+	};
+
+	ViewModel.prototype.isNew = function(key) {
+
+		var property = this.transientProperties[key];
+
+		return !property || property.isOlderThan(this.model[key]);
+	};
+
+	ViewModel.prototype.createPropertyType = function() {
+
+		return new PropertyType(function(model) { return new ViewModel(model); });
+	};
+
+	ViewModel.prototype.bindProperties = function(scope) {
+
+		for (var key in this.permanentProperties) {
+
+			var elements = this.getElements(scope, key);
+
+			for (var i = 0; i < elements.length; i++) {
+
+				var element = elements[i];
+
+				this.permanentProperties[key].applyBinding(element, this.model, key);
+				this.transientProperties[key].applyBinding(element, this.model, key);
+			}
+		}
+	};
+
+	ViewModel.prototype.getElements = function(scope, name) {
+
+		var elements = scope.getMatchingElements(name);
+
+		return elements.length ? elements : [new NullDOMElement()];
+	};
+
+	ViewModel.prototype.removeBinding = function() {
+
+		for (var key in this.permanentProperties) {
+
+			this.permanentProperties[key].removeBinding();
+			this.transientProperties[key].removeBinding();
+		}
+	};
 
 	return ViewModel;
 });

@@ -2,38 +2,45 @@ define([], function() {
 
 	function DOMWatcher(scope) {
 
-		var observer = new MutationObserver(function(mutations) {
+		var self = this;
 
-			var mutation = mutations[0];
-			var notTextMutation = mutation.target.children.length;
+		this.observer = new MutationObserver(function() {
 
-			if (notTextMutation) {
-
-				var element = mutation.target;
-
-				rebindElement(element);
-			}
+			return callback.apply(self, arguments);
 		});
 
-		function rebindElement(element) {
-
-			if (element && element.__DATUM__REBIND) {
-
-				element.__DATUM__REBIND();
-			}
-			else if (element) {
-
-				rebindElement(element.parentElement);
-			}
-		}
-
-		observer.observe(scope, { childList: true, subtree: true });
-
-		this.disconnect = function() {
-
-			observer.disconnect();
-		};
+		this.observer.observe(scope, { childList: true, subtree: true });
 	}
+
+	function callback(mutations) {
+
+		var mutation = mutations[0];
+		var notTextMutation = mutation.target.children.length;
+
+		if (notTextMutation) {
+
+			var element = mutation.target;
+
+			this.rebindElement(element);
+		}
+	}
+
+	DOMWatcher.prototype.rebindElement = function(element) {
+
+		if (element && element.__DATUM__REBIND) {
+
+			element.__DATUM__REBIND();
+		}
+		else if (element) {
+
+			this.rebindElement(element.parentElement);
+		}
+	};
+
+	DOMWatcher.prototype.disconnect = function() {
+
+		this.observer.disconnect();
+	};
 
 	return DOMWatcher;
 });

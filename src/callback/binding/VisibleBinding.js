@@ -2,30 +2,32 @@ define([], function() {
 
 	function VisibleBinding(visible) {
 
-		this.setUpElement = function() {};
+		this.visible = visible;
+	}
 
-		this.updateElement = function(parentModel, element) {
+	VisibleBinding.prototype.setUpElement = function() {};
 
-			if (visible.call(parentModel, element)) {
+	VisibleBinding.prototype.updateElement = function(parentModel, element) {
 
-				element.style.display = null;
-			}
-			else {
-
-				element.style.display = "none";
-			}
-		};
-
-		this.resetElement = function(element) {
+		if (this.visible.call(parentModel, element)) {
 
 			element.style.display = null;
-		};
+		}
+		else {
 
-		this.call = function(parentModel, element) {
+			element.style.display = "none";
+		}
+	};
 
-			return visible.call(parentModel, element);
-		};
-	}
+	VisibleBinding.prototype.resetElement = function(element) {
+
+		element.style.display = null;
+	};
+
+	VisibleBinding.prototype.call = function(parentModel, element) {
+
+		return this.visible.call(parentModel, element);
+	};
 
 	return VisibleBinding;
 });

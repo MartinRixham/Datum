@@ -2,54 +2,56 @@ define([], function() {
 
 	function TransientProperty(property, propertyType) {
 
-		var binding;
+		this.property = property;
 
-		if (property && isBinding(property)) {
+		this.propertyType = propertyType;
 
-			binding = property;
+		if (property && this.isBinding(property)) {
+
+			this.binding = property;
 		}
 		else if (property instanceof Array) {
 
-			binding = propertyType.createArrayBinding(property);
+			this.binding = propertyType.createArrayBinding(property);
 		}
 		else if (property && typeof(property) == "object") {
 
-			binding = propertyType.createViewModel(property);
+			this.binding = propertyType.createViewModel(property);
 		}
-
-		this.applyBinding = function(element, model, key) {
-
-			if (binding) {
-
-				binding.applyBinding(element, model, key);
-			}
-		};
-
-		function isBinding(object){
-
-			return object && object.applyBinding && object.removeBinding;
-		}
-
-		this.removeBinding = function() {
-
-			if (binding) {
-
-				binding.removeBinding();
-			}
-		};
-
-		this.isOlderThan = function(other) {
-
-			if (typeof property == "object" || typeof other == "object") {
-
-				return other && property != other;
-			}
-			else {
-
-				return false;
-			}
-		};
 	}
+
+	TransientProperty.prototype.isBinding = function(object) {
+
+		return object && object.applyBinding && object.removeBinding;
+	};
+
+	TransientProperty.prototype.applyBinding = function(element, model, key) {
+
+		if (this.binding) {
+
+			this.binding.applyBinding(element, model, key);
+		}
+	};
+
+	TransientProperty.prototype.removeBinding = function() {
+
+		if (this.binding) {
+
+			this.binding.removeBinding();
+		}
+	};
+
+	TransientProperty.prototype.isOlderThan = function(other) {
+
+		if (typeof this.property == "object" || typeof other == "object") {
+
+			return other && this.property != other;
+		}
+		else {
+
+			return false;
+		}
+	};
 
 	return TransientProperty;
 });

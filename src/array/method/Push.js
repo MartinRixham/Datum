@@ -12,20 +12,25 @@ define(["property/TransientProperty"], function(TransientProperty) {
 
 				var property = new TransientProperty(arguments[i], propertyType);
 
-				properties.push(property);
-
-				for (var j = 0; j < elements.length; j++) {
-
-					var element = elements[j];
-					var finalIndex = properties.length - 1;
-
-					element.append();
-					property.applyBinding(element.getChildAtIndex(finalIndex), model);
-				}
+				push(model, properties, elements, property);
 			}
 
 			model.subscribableLength = model.length;
 		};
+	}
+
+	function push(model, properties, elements, property) {
+
+		properties.push(property);
+
+		for (var j = 0; j < elements.length; j++) {
+
+			var element = elements[j];
+			var finalIndex = properties.length - 1;
+
+			element.append();
+			property.applyBinding(element.getChildAtIndex(finalIndex), model);
+		}
 	}
 
 	return Push;

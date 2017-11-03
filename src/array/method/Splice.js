@@ -6,62 +6,62 @@ define(["property/TransientProperty"], function(TransientProperty) {
 
 		model.splice = function(start, deleteCount) {
 
-			start = normaliseStart(start);
+			start = normaliseStart(model, start);
 			var newObjects = [].slice.call(arguments, 2);
 
-			removeObjects(start, deleteCount);
-			insertObjects(start, newObjects);
+			removeObjects(model, elements, properties, start, deleteCount);
+			insertObjects(model, elements, properties, propertyType, start, newObjects);
 
 			var spliced = originalSplice.apply(this, arguments);
 			model.subscribableLength = model.length;
 
 			return spliced;
 		};
+	}
 
-		function normaliseStart(start) {
+	function normaliseStart(model, start) {
 
-			if (start < 0) {
+		if (start < 0) {
 
-				start = model.length + start;
-			}
-
-			start = Math.min(model.length, start);
-			start = Math.max(0, start);
-
-			return start;
+			start = model.length + start;
 		}
 
-		function removeObjects(start, deleteCount) {
+		start = Math.min(model.length, start);
+		start = Math.max(0, start);
 
-			for (var i = 0; i < elements.length; i++) {
+		return start;
+	}
 
-				var element = elements[i];
-				var end = Math.min(start + deleteCount, model.length) - 1;
+	function removeObjects(model, elements, properties, start, deleteCount) {
 
-				for (var j = end; j >= start; j--) {
+		for (var i = 0; i < elements.length; i++) {
 
-					element.removeAtIndex(j);
-				}
+			var element = elements[i];
+			var end = Math.min(start + deleteCount, model.length) - 1;
 
-				properties.splice(start, deleteCount);
+			for (var j = end; j >= start; j--) {
+
+				element.removeAtIndex(j);
 			}
+
+			properties.splice(start, deleteCount);
 		}
+	}
 
-		function insertObjects(start, newObjects) {
+	function insertObjects(model, elements, properties, propertyType, start, newObjects) {
 
-			for (var i = newObjects.length - 1; i >= 0; i--) {
+		for (var i = newObjects.length - 1; i >= 0; i--) {
 
-				var property = new TransientProperty(newObjects[i], propertyType);
+			var property = new TransientProperty(newObjects[i], propertyType);
 
-				properties.splice(start, 0, property);
+			properties.splice(start, 0, property);
 
-				for (var j = 0; j < elements.length; j++) {
+			for (var j = 0; j < elements.length; j++) {
 
-					var element = elements[j];
+				var element = elements[j];
 
-					element.insertAtIndex(start);
-					property.applyBinding(element.getChildAtIndex(start), model);
-				}
+				element.insertAtIndex(start);
+				property.applyBinding(element.getChildAtIndex(start), model);
 			}
 		}
 	}

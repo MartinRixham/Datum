@@ -2,43 +2,46 @@ define([], function() {
 
 	function PermanentProperty(property, propertyType, scope) {
 
-		var objectBinding;
-		var propertyInjected = false;
+		this.property = property;
 
-		if (typeof(property) == "object" && !isBinding(property)) {
+		this.propertyType = propertyType;
 
-			objectBinding = propertyType.createObjectBinding(scope);
+		this.propertyInjected = false;
+
+		if (typeof(property) == "object" && !this.isBinding(property)) {
+
+			this.objectBinding = propertyType.createObjectBinding(scope);
 		}
-
-		this.applyBinding = function(element, model, key) {
-
-			if (typeof(property) != "function" &&
-				!isBinding(property) &&
-				!propertyInjected) {
-
-				propertyType.injectProperty(property, model, key);
-				propertyInjected = true;
-			}
-
-			if (objectBinding) {
-
-				objectBinding.applyBinding(element, model, key);
-			}
-		};
-
-		function isBinding(object) {
-
-			return object && object.applyBinding && object.removeBinding;
-		}
-
-		this.removeBinding = function() {
-
-			if (objectBinding) {
-
-				objectBinding.removeBinding();
-			}
-		};
 	}
+
+	PermanentProperty.prototype.applyBinding = function(element, model, key) {
+
+		if (typeof(this.property) != "function" &&
+			!this.isBinding(this.property) &&
+			!this.propertyInjected) {
+
+			this.propertyType.injectProperty(this.property, model, key);
+			this.propertyInjected = true;
+		}
+
+		if (this.objectBinding) {
+
+			this.objectBinding.applyBinding(element, model, key);
+		}
+	};
+
+	PermanentProperty.prototype.isBinding = function(object) {
+
+		return object && object.applyBinding && object.removeBinding;
+	};
+
+	PermanentProperty.prototype.removeBinding = function() {
+
+		if (this.objectBinding) {
+
+			this.objectBinding.removeBinding();
+		}
+	};
 
 	return PermanentProperty;
 });

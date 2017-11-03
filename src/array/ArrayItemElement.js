@@ -2,42 +2,44 @@ define([], function() {
 
 	 function ArrayItemElement(element) {
 
-		var index = 0;
+		this.element = element;
 
-		this.clone = function() {
+		this.index = 0;
+	}
 
-			var clone = element.cloneNode(true);
+	ArrayItemElement.prototype.clone = function() {
 
-			number(clone, index++);
+		var clone = this.element.cloneNode(true);
 
-			return clone;
-		};
+		this.number(clone, this.index++);
 
-		function number(element, index) {
+		return clone;
+	};
 
-			if (element.id) {
+	ArrayItemElement.prototype.number = function(element, index) {
 
-				element.id = element.id + "_" + index;
-			}
+		if (element.id) {
 
-			if (element.hasAttribute("name")) {
-
-				var name = element.getAttribute("name") + "_" + index;
-
-				element.setAttribute("name", name);
-			}
-
-			for (var i = 0; i < element.children.length; i++) {
-
-				number(element.children[i], index);
-			}
+			element.id = element.id + "_" + index;
 		}
 
-		this.get = function() {
+		if (element.hasAttribute("name")) {
 
-			return element;
-		};
-	}
+			var name = element.getAttribute("name") + "_" + index;
+
+			element.setAttribute("name", name);
+		}
+
+		for (var i = 0; i < element.children.length; i++) {
+
+			this.number(element.children[i], index);
+		}
+	};
+
+	ArrayItemElement.prototype.get = function() {
+
+		return this.element;
+	};
 
 	return ArrayItemElement;
 });

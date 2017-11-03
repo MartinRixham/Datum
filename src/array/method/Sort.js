@@ -4,67 +4,73 @@ define([], function() {
 
 		model.sort = function(comparison) {
 
-			var modelChildrenProperties = getModelChildrenProperties();
-
-			modelChildrenProperties.sort(function(a, b) {
-
-				return comparison(a.model, b.model);
-			});
-
-			replaceSortedObjects(modelChildrenProperties);
+			sort(model, elements, properties, comparison);
 		};
+	}
 
-		function getModelChildrenProperties() {
+	function sort(model, elements, properties, comparison) {
 
-			var allChildren = getAllChildren();
-			var modelChildrenProperties = [];
+		var modelChildrenProperties =
+			getModelChildrenProperties(model, elements, properties);
 
-			for (var i = 0; i < model.length; i++) {
+		modelChildrenProperties.sort(function(a, b) {
 
-				modelChildrenProperties.push({
+			return comparison(a.model, b.model);
+		});
 
-					model: model[i],
-					property: properties[i],
-					children: allChildren[i]
-				});
-			}
+		replaceSortedObjects(model, elements, properties, modelChildrenProperties);
+	}
 
-			return modelChildrenProperties;
+	function getModelChildrenProperties(model, elements, properties) {
+
+		var allChildren = getAllChildren(elements);
+		var modelChildrenProperties = [];
+
+		for (var i = 0; i < model.length; i++) {
+
+			modelChildrenProperties.push({
+
+				model: model[i],
+				property: properties[i],
+				children: allChildren[i]
+			});
 		}
 
-		function getAllChildren() {
+		return modelChildrenProperties;
+	}
 
-			var allChildren = [];
+	function getAllChildren(elements) {
 
-			for (var i = 0; i < elements.length; i++) {
+		var allChildren = [];
 
-				var children = elements[i].removeChildren();
+		for (var i = 0; i < elements.length; i++) {
 
-				for (var j = 0; j < children.length; j++) {
+			var children = elements[i].removeChildren();
 
-					if (!allChildren[j]) {
+			for (var j = 0; j < children.length; j++) {
 
-						allChildren[j] = [];
-					}
+				if (!allChildren[j]) {
 
-					allChildren[j][i] = children[j];
+					allChildren[j] = [];
 				}
-			}
 
-			return allChildren;
+				allChildren[j][i] = children[j];
+			}
 		}
 
-		function replaceSortedObjects(modelChildrenProperties) {
+		return allChildren;
+	}
 
-			for (var i = 0; i < model.length; i++) {
+	function replaceSortedObjects(model, elements, properties, modelChildrenProperties) {
 
-				model[i] = modelChildrenProperties[i].model;
-				properties[i] = modelChildrenProperties[i].property;
+		for (var i = 0; i < model.length; i++) {
 
-				for (var j = 0; j < elements.length; j++) {
+			model[i] = modelChildrenProperties[i].model;
+			properties[i] = modelChildrenProperties[i].property;
 
-					elements[j].appendChild(modelChildrenProperties[i].children[j]);
-				}
+			for (var j = 0; j < elements.length; j++) {
+
+				elements[j].appendChild(modelChildrenProperties[i].children[j]);
 			}
 		}
 	}
