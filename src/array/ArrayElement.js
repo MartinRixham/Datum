@@ -6,6 +6,13 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 		this.element = domElement.get();
 
+		// There is a performance advantage
+		// to keeping the children in an array
+		// instead of retrieving children from
+		// the element's children property
+		// which is not an array
+		this.children = new Array(initialLength);
+
 		var self = this;
 
 		(function checkElementHasOnlyOneChild() {
@@ -36,29 +43,47 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 			for (var i = 0; i < initialLength; i++) {
 
-				self.element.appendChild(self.child.clone());
+				var child = self.child.clone();
+
+				self.children[i] = child;
+
+				self.element.appendChild(child);
 			}
 		})();
 	}
 
 	ArrayElement.prototype.append = function() {
 
-		this.element.appendChild(this.child.clone());
+		var child = this.child.clone();
+
+		this.children.push(child);
+
+		this.element.appendChild(child);
 	};
 
 	ArrayElement.prototype.prepend = function() {
 
-		this.element.insertBefore(this.child.clone(), this.element.firstChild);
+		var child = this.child.clone();
+
+		this.children.unshift(child);
+
+		this.element.insertBefore(child, this.element.firstChild);
 	};
 
 	ArrayElement.prototype.insertAtIndex = function(index) {
 
-		this.element.insertBefore(this.child.clone(), this.element.children[index]);
+		var child = this.child.clone();
+
+		this.element.insertBefore(child, this.children[index]);
+
+		this.children.splice(index, 0, child);
 	};
 
 	ArrayElement.prototype.removeFirst = function() {
 
 		if (this.element.firstElementChild) {
+
+			this.children.shift();
 
 			this.element.removeChild(this.element.firstElementChild);
 		}
@@ -68,18 +93,24 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 		if (this.element.lastElementChild) {
 
+			this.children.pop();
+
 			this.element.removeChild(this.element.lastElementChild);
 		}
 	};
 
 	ArrayElement.prototype.removeAtIndex = function(index) {
 
-		this.element.removeChild(this.element.children[index]);
+		var removed = this.children.splice(index, 1);
+
+		this.element.removeChild(removed[0]);
 	};
 
 	ArrayElement.prototype.removeChildren = function() {
 
-		var children = [].slice.call(this.element.children);
+		var children = this.children;
+
+		this.children = [];
 
 		while (this.element.lastChild) {
 
@@ -93,16 +124,24 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 		for (var i = 0; i < children.length; i++) {
 
-			this.element.appendChild(children[i]);
+			var child = children[i];
+
+			this.children.push(child);
+
+			this.element.appendChild(child);
 		}
 	};
 
 	ArrayElement.prototype.appendChild = function(child) {
 
+		this.children.push(child);
+
 		this.element.appendChild(child);
 	};
 
 	ArrayElement.prototype.reset = function() {
+
+		this.children = [];
 
 		while (this.element.lastChild) {
 
@@ -114,7 +153,7 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 	ArrayElement.prototype.getChildAtIndex = function(i) {
 
-		return this.domElement.createElement(this.element.children[i]);
+		return this.domElement.createElement(this.children[i]);
 	};
 
 	ArrayElement.prototype.removedFromDocument = function() {

@@ -25,7 +25,7 @@ define([
 
 	function ArrayBinding(model, propertyType) {
 
-		this.properties = [];
+		this.properties = new Array(model.length);
 
 		this.model = model;
 
@@ -37,7 +37,7 @@ define([
 
 			for (var i = 0; i < model.length; i++) {
 
-				self.properties.push(new TransientProperty(model[i], propertyType));
+				self.properties[i] = new TransientProperty(model[i], propertyType);
 			}
 		})();
 
