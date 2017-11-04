@@ -34,7 +34,6 @@ define([
 		this.removeOldBindings();
 
 		this.bindElements(element, model);
-		this.boundElements.add(element);
 	};
 
 	CallbackBinder.prototype.removeOldBindings = function() {
@@ -60,6 +59,7 @@ define([
 			new Registry().requestRegistrations();
 			this.binding.updateElement(model, element.get());
 			this.createCallback(model, element);
+			this.boundElements.add(element);
 		}
 	};
 

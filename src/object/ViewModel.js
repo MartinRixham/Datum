@@ -34,13 +34,13 @@ define([
 
 			this.createRebinder(element);
 			element.callBindingCallback(this.model);
+			this.boundElements.add(element);
 		}
 
 		this.unbindOldProperties();
 		this.createPermanentProperties(element);
 		this.createTransientProperties();
 		this.bindProperties(element);
-		this.boundElements.add(element);
 	};
 
 	ViewModel.prototype.createRebinder = function(element) {
