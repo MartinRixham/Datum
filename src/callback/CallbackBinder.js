@@ -9,36 +9,40 @@ define([
 
 	function CallbackBinder(binding) {
 
-		this.binding = binding;
+		var boundElements = new Elements();
 
-		this.boundElements = new Elements();
+		var parentModel = null;
 
-		var self = this;
+		this.applyBinding = function(element, model) {
+
+			parentModel = model;
+
+			removeOldBindings(binding, boundElements);
+			bindElements(element, model, binding, boundElements);
+		};
+
+		this.removeBinding = function() {
+
+			remove(binding, boundElements);
+
+			parentModel = null;
+		};
 
 		this.test = {
 
 			call: function() {
 
 				var testArguments = [].slice.call(arguments);
-				testArguments.unshift(self.parentModel);
+				testArguments.unshift(parentModel);
 
-				return self.binding.call.apply(self.binding, testArguments);
+				return binding.call.apply(binding, testArguments);
 			}
 		};
 	}
 
-	CallbackBinder.prototype.applyBinding = function(element, model) {
+	function removeOldBindings(binding, boundElements) {
 
-		this.parentModel = model;
-
-		this.removeOldBindings();
-
-		this.bindElements(element, model);
-	};
-
-	CallbackBinder.prototype.removeOldBindings = function() {
-
-		var removed = this.boundElements.removeOld();
+		var removed = boundElements.removeOld();
 
 		for (var i = 0; i < removed.length; i++) {
 
@@ -46,45 +50,43 @@ define([
 
 			if (element) {
 
-				this.binding.resetElement(element);
+				binding.resetElement(element);
 			}
 		}
-	};
+	}
 
-	CallbackBinder.prototype.bindElements = function(element, model) {
+	function bindElements(element, model, binding, boundElements) {
 
-		if (element.get() && !this.boundElements.contains(element)) {
+		if (element.get() && !boundElements.contains(element)) {
 
-			this.binding.setUpElement(model, element.get());
+			binding.setUpElement(model, element.get());
 			new Registry().requestRegistrations();
-			this.binding.updateElement(model, element.get());
-			this.createCallback(model, element);
-			this.boundElements.add(element);
+			binding.updateElement(model, element.get());
+			createCallback(model, element, binding);
+			boundElements.add(element);
 		}
-	};
+	}
 
-	CallbackBinder.prototype.createCallback = function(model, element) {
+	function createCallback(model, element, binding) {
 
 		var running = false;
-
-		var self = this;
 
 		function callback(value) {
 
 			if (!running) {
 
 				running = true;
-				self.binding.updateElement(model, element.get(), value);
+				binding.updateElement(model, element.get(), value);
 				running = false;
 			}
 		}
 
-		new Registry().assignUpdater(new Dependant(callback, this.binding, element));
-	};
+		new Registry().assignUpdater(new Dependant(callback, binding, element));
+	}
 
-	CallbackBinder.prototype.removeBinding = function() {
+	function remove(binding, boundElements) {
 
-		var elements = this.boundElements.get();
+		var elements = boundElements.get();
 
 		for (var i = 0; i < elements.length; i++) {
 
@@ -92,12 +94,10 @@ define([
 
 			if (element) {
 
-				this.binding.resetElement(element);
+				binding.resetElement(element);
 			}
 		}
-
-		this.parentModel = null;
-	};
+	}
 
 	return CallbackBinder;
 });
