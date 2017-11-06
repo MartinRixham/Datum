@@ -19,14 +19,9 @@ define([], function() {
 
 	TextBinding.prototype.test = function(parentModel) {
 
-		var self = this;
-
 		return {
 
-			text: function(element) {
-
-				return self.text.call(parentModel, element);
-			}
+			text: this.text.bind(parentModel)
 		};
 	};
 

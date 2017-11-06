@@ -21,85 +21,93 @@ define([
 
 	function Binding(callbacks) {
 
-		var bindings = {};
+		var bindings = [];
 
 		if (callbacks.text) {
 
-			bindings.text = new CallbackBinder(new TextBinding(callbacks.text));
+			bindings.push(new CallbackBinder(new TextBinding(callbacks.text)));
 		}
 
 		if (callbacks.value) {
 
-			bindings.value = new CallbackBinder(new ValueBinding(callbacks.value));
-		}
-
-		if (callbacks.events) {
-
-			bindings.events = new CallbackBinder(new EventsBinding(callbacks.events));
+			bindings.push(new CallbackBinder(new ValueBinding(callbacks.value)));
 		}
 
 		if (callbacks.click) {
 
-			bindings.events = bindings.events || {};
+			bindings.push(
+				new CallbackBinder(new EventsBinding({ click: callbacks.click })));
+		}
 
-			bindings.events.click =
-				new CallbackBinder(new EventsBinding({ click: callbacks.click }));
+		if (callbacks.events) {
+
+			bindings.push(new CallbackBinder(new EventsBinding(callbacks.events)));
 		}
 
 		if (callbacks.init) {
 
-			bindings.init = new CallbackBinder(new InitBinding(callbacks.init));
+			bindings.push(new CallbackBinder(new InitBinding(callbacks.init)));
 		}
 
 		if (callbacks.update) {
 
-			bindings.update = new CallbackBinder(new UpdateBinding(callbacks.update));
+			bindings.push(new CallbackBinder(new UpdateBinding(callbacks.update)));
 		}
 
 		if (callbacks.destroy) {
 
-			bindings.destroy = new CallbackBinder(new DestroyBinding(callbacks.destroy));
+			bindings.push(new CallbackBinder(new DestroyBinding(callbacks.destroy)));
 		}
 
 		if (callbacks.visible) {
 
-			bindings.visible = new CallbackBinder(new VisibleBinding(callbacks.visible));
+			bindings.push(new CallbackBinder(new VisibleBinding(callbacks.visible)));
 		}
 
 		if (callbacks.classes) {
 
-			bindings.classes = new CallbackBinder(new ClassesBinding(callbacks.classes));
+			bindings.push(new CallbackBinder(new ClassesBinding(callbacks.classes)));
 		}
 
 		function provider() {
 
-			var test = {};
-
-			for (var key in bindings) {
-
-				test[key] = bindings[key].call(this)[key];
-			}
-
-			return test;
+			return mergeCallbacks(bindings, this);
 		}
 
 		provider.applyBinding = function(element, model) {
 
-			for (var key in bindings) {
+			for (var i = 0; i < bindings.length; i++) {
 
-				bindings[key].applyBinding(element, model);
+				bindings[i].applyBinding(element, model);
 			}
 		};
 
 		provider.removeBinding = function() {
 
-			for (var key in bindings) {
+			for (var i = 0; i < bindings.length; i++) {
 
-				bindings[key].removeBinding();
+				bindings[i].removeBinding();
 			}
 		};
 
 		return provider;
+	}
+
+	function mergeCallbacks(bindings, parentModel) {
+
+		var handle = {};
+
+		for (var i = 0; i < bindings.length; i++) {
+
+			var callbacks = bindings[i].call(parentModel);
+
+			for (var key in callbacks) {
+
+				handle[key] = callbacks[key];
+			}
+		}
+
+		return handle;
 	}
 
 	return Binding;

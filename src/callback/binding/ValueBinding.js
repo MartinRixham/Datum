@@ -44,14 +44,9 @@ define([], function() {
 
 	ValueBinding.prototype.test = function(parentModel) {
 
-		var self = this;
-
 		return {
 
-			value: function(value, element) {
-
-				return self.value.call(parentModel, value, element);
-			}
+			value: this.value.bind(parentModel)
 		};
 	};
 

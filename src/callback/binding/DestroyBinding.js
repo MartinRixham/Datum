@@ -17,21 +17,11 @@ define([], function() {
 		this.destroy.call(this.parentModel, element);
 	};
 
-	DestroyBinding.prototype.call = function() {
-
-		init.apply(this, arguments);
-	};
-
 	DestroyBinding.prototype.test = function(parentModel) {
-
-		var self = this;
 
 		return {
 
-			destroy: function(element) {
-
-				return self.destroy.call(parentModel, element);
-			}
+			destroy: this.destroy.bind(parentModel)
 		};
 	};
 

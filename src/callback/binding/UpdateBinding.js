@@ -16,14 +16,9 @@ define([], function() {
 
 	UpdateBinding.prototype.test = function(parentModel) {
 
-		var self = this;
-
 		return {
 
-			update: function(element) {
-
-				return self.update.call(parentModel, element);
-			}
+			update: this.update.bind(parentModel)
 		};
 	};
 

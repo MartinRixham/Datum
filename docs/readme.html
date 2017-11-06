@@ -262,7 +262,7 @@ To retrieve a test handle simply call a binding as a function.</p>
 
 var testHandle = binding();
 </code></pre><p>The test handle gives you access to the callbacks you used to construct the binding.</p>
-<pre><code>testHandle.events.click();
+<pre><code>testHandle.click();
 </code></pre><p>A typical test might look like the following.</p>
 <pre><code>var viewModel = {
 
@@ -276,7 +276,7 @@ var testHandle = binding();
 
 var testHandle = viewModel.button();
 
-testHandle.events.click();
+testHandle.click();
 
 var buttonLabel = testHandle.text();
 

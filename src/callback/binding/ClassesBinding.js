@@ -52,34 +52,16 @@ define([], function() {
 
 	ClassesBinding.prototype.resetElement = function() {};
 
-	ClassesBinding.prototype.call = function(parentModel, element) {
-
-		for (var key in this.callbacks) {
-
-			this.callbacks[key].call(parentModel, element);
-		}
-	};
-
 	ClassesBinding.prototype.test = function(parentModel) {
-
-		var self = this;
 
 		var classes = {
 
 			classes: {}
 		};
 
-		function attachCallback(key) {
-
-			classes.classes[key] = function(element) {
-
-				return self.callbacks[key].call(parentModel, element);
-			};
-		}
-
 		for (var key in this.callbacks) {
 
-			attachCallback(key);
+			classes.classes[key] = this.callbacks[key].bind(parentModel);
 		}
 
 		return classes;

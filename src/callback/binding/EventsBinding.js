@@ -48,24 +48,19 @@ define([], function() {
 
 	EventsBinding.prototype.test = function(parentModel) {
 
-		var self = this;
-
 		var events = {
 
 			events: {}
 		};
 
-		function attachCallback(key) {
-
-			events.events[key] = function(element) {
-
-				return self.callbacks[key].call(parentModel, element);
-			};
-		}
-
 		for (var key in this.callbacks) {
 
-			attachCallback(key);
+			events.events[key] = this.callbacks[key].bind(parentModel);
+		}
+
+		if (this.callbacks.click) {
+
+			events.click = this.callbacks.click.bind(parentModel);
 		}
 
 		return events;

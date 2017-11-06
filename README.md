@@ -343,7 +343,7 @@ To retrieve a test handle simply call a binding as a function.
 
 The test handle gives you access to the callbacks you used to construct the binding.
 
-    testHandle.events.click();
+    testHandle.click();
 
 A typical test might look like the following.
 
@@ -359,7 +359,7 @@ A typical test might look like the following.
 
     var testHandle = viewModel.button();
 
-    testHandle.events.click();
+    testHandle.click();
 
     var buttonLabel = testHandle.text();
 
