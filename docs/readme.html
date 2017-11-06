@@ -144,15 +144,15 @@ Thus parts of the DOM can be shown only when there is data available to populate
 This is a more natural way to hide and show elements than the visible binding.</p>
 <h2 id="advanced-topics">Advanced Topics</h2>
 <h3 id="dom-mutation">DOM Mutation</h3>
-<p>A unique feature of Datum is its ability to cope with updates to both the view model and the DOM.
+<p>A unique feature of Datum.js is its ability to cope with updates to both the view model and the DOM.
 As expected the DOM will be automatically updated to reflect changes in the view model.
 But if you manually update the DOM say by attaching a new template, the view model will simply bind to the new template poplating it with the same data, but potentially with a new layout.</p>
-<p>The best practice when using Datum is to take full advantage of this capability by incremetally biding templates to the view model only when they are need on the page.
-So although Datum only allows one view model and one template on a page it is perfectly possible to asynchronously load components onto the page at any point during the running of the application.</p>
+<p>The best practice when using Datum.js is to take full advantage of this capability by incremetally biding templates to the view model only when they are need on the page.
+So although Datum.js only allows one view model and one template on a page it is perfectly possible to asynchronously load components onto the page at any point during the running of the application.</p>
 <h3 id="the-binding-callback">The Binding Callback</h3>
 <p>Often the most convenient time to load a new template is just after binding its view model to the DOM using the object binding.
 This way the template can be placed straight inside the element to which the view model was just bound.
-To facilitate this when applying the object binding Datum will look for and call a method called <code>onBind</code> if it exists on the object being bound.
+To facilitate this when applying the object binding Datum.js will look for and call a method called <code>onBind</code> if it exists on the object being bound.
 The element to which the object was just bound is passed as the first parameter to <code>onBind</code> so a new template can be easily placed inside the element.</p>
 <pre><code>var viewModel = {
 
@@ -169,7 +169,7 @@ This means that you don&#39;t have to worry about updating any of the data on th
 This will happen automatically.</p>
 <h3 id="serialisation">Serialisation</h3>
 <p>It is common to want to be able to turn objects into JSON to send to the server.
-For this reason Datum attaches a <code>toJSON</code> method to each object in the view model.
+For this reason Datum.js attaches a <code>toJSON</code> method to each object in the view model.
 This method returns an object containing only data properties and subobjects that can be easily stringified and sent to the server.</p>
 <pre><code>var viewModel = {
 
@@ -255,6 +255,33 @@ When this is so the <em>init</em>, <em>update</em> and <em>destroy</em> bindings
 Afterwards the init callback will not be called again for that element, but will be called if the binding is bound to a new element, each time passing the bound element as the first parameter.
 The <em>update callback</em> is called when the binding is first attached to an element and then again whenever one of its dependencies changes.
 The <em>destroy callback</em> is called when the binding is removed from an element.</p>
+<h3 id="testing">Testing</h3>
+<p>In order to simulate user interaction Datum.js provides test handles that can be called programmatically.
+To retrieve a test handle simply call a binding as a function.</p>
+<pre><code>var binding = new Click(function() { alert(&quot;clicked!&quot;); });
+
+var testHandle = binding();
+</code></pre><p>The test handle gives you access to the callbacks you used to construct the binding.</p>
+<pre><code>testHandle.events.click();
+</code></pre><p>A typical test might look like the following.</p>
+<pre><code>var viewModel = {
+
+    label: &quot;click me&quot;,
+    button: new Binding({
+
+        text: function() { return this.label; },
+        click: function() { this.label = &quot;clicked!&quot;; }
+    });
+};
+
+var testHandle = viewModel.button();
+
+testHandle.events.click();
+
+var buttonLabel = testHandle.text();
+
+assertEqual(buttonLabel, &quot;clicked!&quot;);
+</code></pre><p>Since using Datum.js allows you to completely separate layout and logic, the entire functionality of an application can be tested in this way without ever binding the view model to a template.</p>
 <h2 id="installation">Installation</h2>
 <h3 id="install-with-npm">Install with NPM</h3>
 <pre><code>npm install Datum

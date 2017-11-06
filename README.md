@@ -191,18 +191,18 @@ This is a more natural way to hide and show elements than the visible binding.
 
 ### DOM Mutation
 
-A unique feature of Datum is its ability to cope with updates to both the view model and the DOM.
+A unique feature of Datum.js is its ability to cope with updates to both the view model and the DOM.
 As expected the DOM will be automatically updated to reflect changes in the view model.
 But if you manually update the DOM say by attaching a new template, the view model will simply bind to the new template poplating it with the same data, but potentially with a new layout.
 
-The best practice when using Datum is to take full advantage of this capability by incremetally biding templates to the view model only when they are need on the page.
-So although Datum only allows one view model and one template on a page it is perfectly possible to asynchronously load components onto the page at any point during the running of the application.
+The best practice when using Datum.js is to take full advantage of this capability by incremetally biding templates to the view model only when they are need on the page.
+So although Datum.js only allows one view model and one template on a page it is perfectly possible to asynchronously load components onto the page at any point during the running of the application.
 
 ### The Binding Callback
 
 Often the most convenient time to load a new template is just after binding its view model to the DOM using the object binding.
 This way the template can be placed straight inside the element to which the view model was just bound.
-To facilitate this when applying the object binding Datum will look for and call a method called `onBind` if it exists on the object being bound.
+To facilitate this when applying the object binding Datum.js will look for and call a method called `onBind` if it exists on the object being bound.
 The element to which the object was just bound is passed as the first parameter to `onBind` so a new template can be easily placed inside the element.
 
     var viewModel = {
@@ -224,7 +224,7 @@ This will happen automatically.
 ### Serialisation
 
 It is common to want to be able to turn objects into JSON to send to the server.
-For this reason Datum attaches a `toJSON` method to each object in the view model.
+For this reason Datum.js attaches a `toJSON` method to each object in the view model.
 This method returns an object containing only data properties and subobjects that can be easily stringified and sent to the server.
 
     var viewModel = {
@@ -332,6 +332,41 @@ Afterwards the init callback will not be called again for that element, but will
 The *update callback* is called when the binding is first attached to an element and then again whenever one of its dependencies changes.
 The *destroy callback* is called when the binding is removed from an element.
 
+### Testing
+
+In order to simulate user interaction Datum.js provides test handles that can be called programmatically.
+To retrieve a test handle simply call a binding as a function.
+
+    var binding = new Click(function() { alert("clicked!"); });
+
+    var testHandle = binding();
+
+The test handle gives you access to the callbacks you used to construct the binding.
+
+    testHandle.events.click();
+
+A typical test might look like the following.
+
+    var viewModel = {
+
+        label: "click me",
+        button: new Binding({
+
+            text: function() { return this.label; },
+            click: function() { this.label = "clicked!"; }
+        });
+    };
+
+    var testHandle = viewModel.button();
+
+    testHandle.events.click();
+
+    var buttonLabel = testHandle.text();
+
+    assertEqual(buttonLabel, "clicked!");
+
+Since using Datum.js allows you to completely separate layout and logic, the entire functionality of an application can be tested in this way without ever binding the view model to a template.
+
 ## Installation
 
 ### Install with NPM
@@ -347,7 +382,6 @@ Place the following dependency in your `pom.xml` file.
       <artifactId>Datum</artifactId>
       <version>0.10.0</version>
     </dependency>
-
 
 For other Java build tools check out the Maven [repository](https://mvnrepository.com/artifact/org.webjars/Datum).
 
