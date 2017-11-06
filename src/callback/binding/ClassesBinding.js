@@ -60,5 +60,30 @@ define([], function() {
 		}
 	};
 
+	ClassesBinding.prototype.test = function(parentModel) {
+
+		var self = this;
+
+		var classes = {
+
+			classes: {}
+		};
+
+		function attachCallback(key) {
+
+			classes.classes[key] = function(element) {
+
+				return self.callbacks[key].call(parentModel, element);
+			};
+		}
+
+		for (var key in this.callbacks) {
+
+			attachCallback(key);
+		}
+
+		return classes;
+	};
+
 	return ClassesBinding;
 });

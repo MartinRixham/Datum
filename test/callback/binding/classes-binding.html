@@ -217,5 +217,45 @@
 		});
 	});
     </script>
+    <div id="test"></div>
+    <script>
+	QUnit.test("Call test handle", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"callback/CallbackBinder",
+			"callback/binding/ClassesBinding"
+		], function(
+			CallbackBinder,
+			ClassesBinding) {
+
+			var passedModel;
+			var passedElement;
+
+			var binding =
+				new ClassesBinding({
+
+					danger: function(element) {
+
+						passedModel = this;
+						passedElement = element;
+
+						return "Hello world.";
+					}
+				});
+
+			var model = {};
+			var element = document.querySelector("#test");
+			var result = binding.test(model).classes.danger(element);
+
+			assert.strictEqual(result, "Hello world.");
+			assert.strictEqual(passedModel, model);
+			assert.strictEqual(passedElement, element);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

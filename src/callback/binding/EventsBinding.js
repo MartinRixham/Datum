@@ -46,14 +46,6 @@ define([], function() {
 		this.listeners.splice(i, 1);
 	};
 
-	EventsBinding.prototype.call = function(parentModel, element) {
-
-		for (var key in this.callbacks) {
-
-			this.callbacks[key].call(parentModel, element);
-		}
-	};
-
 	EventsBinding.prototype.test = function(parentModel) {
 
 		var self = this;
