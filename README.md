@@ -334,9 +334,22 @@ The *destroy callback* is called when the binding is removed from an element.
 
 ## Installation
 
-Install with NPM:
+### Install with NPM
 
     npm install Datum
+
+### Install with Maven
+
+Place the following dependency in your `pom.xml` file.
+
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>Datum</artifactId>
+      <version>0.10.0</version>
+    </dependency>
+
+
+For other Java build tools check out the Maven [repository](https://mvnrepository.com/artifact/org.webjars/Datum).
 
 ## Bugs
 
