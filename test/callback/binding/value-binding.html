@@ -154,8 +154,9 @@
 			var model = {};
 			var value = "thingy";
 			var element = document.querySelector("#test");
+			var result = binding.test(model).value(value, element);
 
-			assert.strictEqual(binding.call(model, value, element), "Hello world..");
+			assert.strictEqual(result, "Hello world..");
 			assert.strictEqual(passedModel, model);
 			assert.strictEqual(passedValue, value);
 			assert.strictEqual(passedElement, element);

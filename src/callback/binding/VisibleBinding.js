@@ -24,9 +24,17 @@ define([], function() {
 		element.style.display = null;
 	};
 
-	VisibleBinding.prototype.call = function(parentModel, element) {
+	VisibleBinding.prototype.test = function(parentModel) {
 
-		return this.visible.call(parentModel, element);
+		var self = this;
+
+		return {
+
+			visible: function(element) {
+
+				return self.visible.call(parentModel, element);
+			}
+		};
 	};
 
 	return VisibleBinding;

@@ -157,17 +157,16 @@
 
 		require([
 			"callback/binding/TextBinding",
-			"callback/CallbackBinder",
-			"element/DOMElement"
+			"callback/CallbackBinder"
 		], function(
 			TextBinding,
-			CallbackBinder,
-			DOMElement) {
+			CallbackBinder) {
 
 			var passedModel;
 			var passedElement;
+			var model = {};
 
-			var binding =
+			model.binding =
 				new CallbackBinder(new TextBinding(function(element) {
 
 					passedModel = this;
@@ -176,11 +175,8 @@
 					return "Hello world.";
 				}));
 
-			var model = {};
 			var element = document.createElement("DIV");
-
-			binding.applyBinding(new DOMElement(element), model);
-			var text = binding.test.call(element);
+			var text = model.binding().text(element);
 
 			assert.strictEqual(passedModel, model);
 			assert.strictEqual(passedElement, element);
@@ -218,9 +214,9 @@
 
 			var model = new ViewModel();
 
-			model.increment.test.call();
+			model.increment().events.click();
 
-			var count = model.countLabel.test.call();
+			var count = model.countLabel().text();
 
 			assert.strictEqual(count, 1);
 

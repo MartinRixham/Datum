@@ -14,9 +14,17 @@ define([], function() {
 
 	InitBinding.prototype.resetElement = function() {};
 
-	InitBinding.prototype.call = function() {
+	InitBinding.prototype.test = function(parentModel) {
 
-		this.init.apply(this, arguments);
+		var self = this;
+
+		return {
+
+			init: function(element) {
+
+				return self.init.call(parentModel, element);
+			}
+		};
 	};
 
 	return InitBinding;

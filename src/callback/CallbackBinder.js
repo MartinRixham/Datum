@@ -11,33 +11,23 @@ define([
 
 		var boundElements = new Elements();
 
-		var parentModel = null;
+		function provider() {
 
-		this.applyBinding = function(element, model) {
+			return binding.test(this);
+		}
 
-			parentModel = model;
+		provider.applyBinding = function(element, model) {
 
 			removeOldBindings(binding, boundElements);
 			bindElements(element, model, binding, boundElements);
 		};
 
-		this.removeBinding = function() {
+		provider.removeBinding = function() {
 
 			remove(binding, boundElements);
-
-			parentModel = null;
 		};
 
-		this.test = {
-
-			call: function() {
-
-				var testArguments = [].slice.call(arguments);
-				testArguments.unshift(parentModel);
-
-				return binding.call.apply(binding, testArguments);
-			}
-		};
+		return provider;
 	}
 
 	function removeOldBindings(binding, boundElements) {

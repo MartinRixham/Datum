@@ -17,9 +17,17 @@ define([], function() {
 		element.textContent = "";
 	};
 
-	TextBinding.prototype.call = function(parentModel, element) {
+	TextBinding.prototype.test = function(parentModel) {
 
-		return this.text.call(parentModel, element);
+		var self = this;
+
+		return {
+
+			text: function(element) {
+
+				return self.text.call(parentModel, element);
+			}
+		};
 	};
 
 	return TextBinding;

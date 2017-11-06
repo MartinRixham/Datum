@@ -21,90 +21,85 @@ define([
 
 	function Binding(callbacks) {
 
-		var bindings = [];
+		var bindings = {};
 
 		if (callbacks.text) {
 
-			bindings.push(new CallbackBinder(new TextBinding(callbacks.text)));
+			bindings.text = new CallbackBinder(new TextBinding(callbacks.text));
 		}
 
 		if (callbacks.value) {
 
-			bindings.push(new CallbackBinder(new ValueBinding(callbacks.value)));
-		}
-
-		if (callbacks.click) {
-
-			bindings.push(
-				new CallbackBinder(new EventsBinding({ click: callbacks.click })));
-		}
-
-		if (callbacks.init) {
-
-			bindings.push(new CallbackBinder(new InitBinding(callbacks.init)));
-		}
-
-		if (callbacks.update) {
-
-			bindings.push(new CallbackBinder(new UpdateBinding(callbacks.update)));
-		}
-
-		if (callbacks.destroy) {
-
-			bindings.push(new CallbackBinder(new DestroyBinding(callbacks.destroy)));
-		}
-
-		if (callbacks.visible) {
-
-			bindings.push(new CallbackBinder(new VisibleBinding(callbacks.visible)));
+			bindings.value = new CallbackBinder(new ValueBinding(callbacks.value));
 		}
 
 		if (callbacks.events) {
 
-			bindings.push(new CallbackBinder(new EventsBinding(callbacks.events)));
+			bindings.events = new CallbackBinder(new EventsBinding(callbacks.events));
+		}
+
+		if (callbacks.click) {
+
+			bindings.events = bindings.events || {};
+
+			bindings.events.click =
+				new CallbackBinder(new EventsBinding({ click: callbacks.click }));
+		}
+
+		if (callbacks.init) {
+
+			bindings.init = new CallbackBinder(new InitBinding(callbacks.init));
+		}
+
+		if (callbacks.update) {
+
+			bindings.update = new CallbackBinder(new UpdateBinding(callbacks.update));
+		}
+
+		if (callbacks.destroy) {
+
+			bindings.destroy = new CallbackBinder(new DestroyBinding(callbacks.destroy));
+		}
+
+		if (callbacks.visible) {
+
+			bindings.visible = new CallbackBinder(new VisibleBinding(callbacks.visible));
 		}
 
 		if (callbacks.classes) {
 
-			bindings.push(new CallbackBinder(new ClassesBinding(callbacks.classes)));
+			bindings.classes = new CallbackBinder(new ClassesBinding(callbacks.classes));
 		}
 
-		var parentModel = null;
+		function provider() {
 
-		function applyBinding(element, model) {
+			var test = {};
 
-			parentModel = model;
+			for (var key in bindings) {
 
-			for (var i = 0; i < bindings.length; i++) {
-
-				bindings[i].applyBinding(element, model);
+				test[key] = bindings[key].call(this)[key];
 			}
+
+			return test;
 		}
 
-		function removeBinding() {
+		provider.applyBinding = function(element, model) {
 
-			for (var i = 0; i < bindings.length; i++) {
+			for (var key in bindings) {
 
-				bindings[i].removeBinding();
+				bindings[key].applyBinding(element, model);
 			}
-		}
-
-		var test = {};
-
-		Object.keys(callbacks).forEach(function(key) {
-
-			test[key] = function(element) {
-
-				callbacks[key].call(parentModel, element);
-			};
-		});
-
-		return {
-
-			applyBinding: applyBinding,
-			removeBinding: removeBinding,
-			test: test
 		};
+
+		provider.removeBinding = function() {
+
+			for (var key in bindings) {
+
+				bindings[key].removeBinding();
+			}
+		};
+
+		return provider;
 	}
 
 	return Binding;

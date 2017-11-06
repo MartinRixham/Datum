@@ -52,65 +52,97 @@
 		});
 	});
     </script>
-	<div id="update"></div>
-	<script>
-		QUnit.test("Model and element not passed on update", function(assert) {
+    <div id="update"></div>
+    <script>
+	QUnit.test("Model and element not passed on update", function(assert) {
 
-			var done = assert.async();
+		var done = assert.async();
 
-			require(["callback/binding/DestroyBinding"], function(DestroyBinding) {
+		require(["callback/binding/DestroyBinding"], function(DestroyBinding) {
 
-				var receivedModel;
-				var receivedElement;
+			var receivedModel;
+			var receivedElement;
 
-				var destroy =
-					new DestroyBinding(function(element) {
+			var destroy =
+				new DestroyBinding(function(element) {
 
-						receivedModel = this;
-						receivedElement = element;
-					});
+					receivedModel = this;
+					receivedElement = element;
+				});
 
-				var element = document.querySelector("#update");
-				var model = {};
-				destroy.updateElement(model, element);
+			var element = document.querySelector("#update");
+			var model = {};
+			destroy.updateElement(model, element);
 
-				assert.ok(!receivedElement);
-				assert.ok(!receivedModel);
+			assert.ok(!receivedElement);
+			assert.ok(!receivedModel);
 
-				done();
-			});
+			done();
 		});
-	</script>
-	<div id="callback"></div>
-	<script>
-		QUnit.test("Model and element passed on reset", function(assert) {
+	});
+    </script>
+    <div id="callback"></div>
+    <script>
+	QUnit.test("Model and element passed on reset", function(assert) {
 
-			var done = assert.async();
+		var done = assert.async();
 
-			require(["callback/binding/DestroyBinding"], function(DestroyBinding) {
+		require(["callback/binding/DestroyBinding"], function(DestroyBinding) {
 
-				var receivedModel;
-				var receivedElement;
+			var receivedModel;
+			var receivedElement;
 
-				var destroy =
-					new DestroyBinding(function(element) {
+			var destroy =
+				new DestroyBinding(function(element) {
 
-						receivedModel = this;
-						receivedElement = element;
-					});
+					receivedModel = this;
+					receivedElement = element;
+				});
 
-				var element = document.querySelector("#callback");
-				var model = {};
+			var element = document.querySelector("#callback");
+			var model = {};
 
-				destroy.setUpElement(model);
-				destroy.resetElement(element);
+			destroy.setUpElement(model);
+			destroy.resetElement(element);
 
-				assert.strictEqual(receivedElement, element);
-				assert.strictEqual(receivedModel, model);
+			assert.strictEqual(receivedElement, element);
+			assert.strictEqual(receivedModel, model);
 
-				done();
-			});
+			done();
 		});
-	</script>
+	});
+    </script>
+    <div id="test"></div>
+    <script>
+	QUnit.test("Call test handle", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/binding/DestroyBinding"], function(DestroyBinding) {
+
+			var passedModel;
+			var passedElement;
+
+			var destroy =
+				new DestroyBinding(function(element) {
+
+					passedModel = this;
+					passedElement = element;
+
+					return "Hello world..";
+				});
+
+			var model = {};
+			var element = document.querySelector("#test");
+			var result = destroy.test(model).destroy(element);
+
+			assert.strictEqual(result, "Hello world..");
+			assert.strictEqual(passedModel, model);
+			assert.strictEqual(passedElement, element);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

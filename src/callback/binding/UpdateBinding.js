@@ -14,9 +14,17 @@ define([], function() {
 
 	UpdateBinding.prototype.resetElement = function() {};
 
-	UpdateBinding.prototype.call = function(parentModel, element) {
+	UpdateBinding.prototype.test = function(parentModel) {
 
-		this.update.call(parentModel, element);
+		var self = this;
+
+		return {
+
+			update: function(element) {
+
+				return self.update.call(parentModel, element);
+			}
+		};
 	};
 
 	return UpdateBinding;

@@ -88,7 +88,12 @@
 
 		var done = assert.async();
 
-		require(["callback/binding/EventsBinding"], function(EventsBinding) {
+		require([
+			"callback/CallbackBinder",
+			"callback/binding/EventsBinding"
+		], function(
+			CallbackBinder,
+			EventsBinding) {
 
 			var passedModel;
 			var passedElement;
@@ -107,8 +112,9 @@
 
 			var model = {};
 			var element = document.querySelector("#test");
+			var result = binding.test(model).events.click(element);
 
-			assert.ok(!binding.call(model, element));
+			assert.strictEqual(result, "Hello world.");
 			assert.strictEqual(passedModel, model);
 			assert.strictEqual(passedElement, element);
 

@@ -22,5 +22,18 @@ define([], function() {
 		init.apply(this, arguments);
 	};
 
+	DestroyBinding.prototype.test = function(parentModel) {
+
+		var self = this;
+
+		return {
+
+			destroy: function(element) {
+
+				return self.destroy.call(parentModel, element);
+			}
+		};
+	};
+
 	return DestroyBinding;
 });

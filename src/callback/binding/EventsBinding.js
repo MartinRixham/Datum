@@ -54,5 +54,30 @@ define([], function() {
 		}
 	};
 
+	EventsBinding.prototype.test = function(parentModel) {
+
+		var self = this;
+
+		var events = {
+
+			events: {}
+		};
+
+		function attachCallback(key) {
+
+			events.events[key] = function(element) {
+
+				return self.callbacks[key].call(parentModel, element);
+			};
+		}
+
+		for (var key in this.callbacks) {
+
+			attachCallback(key);
+		}
+
+		return events;
+	};
+
 	return EventsBinding;
 });

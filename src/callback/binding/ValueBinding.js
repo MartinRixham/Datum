@@ -42,9 +42,17 @@ define([], function() {
 		this.listeners.splice(i, 1);
 	};
 
-	ValueBinding.prototype.call = function(parentModel, val, element) {
+	ValueBinding.prototype.test = function(parentModel) {
 
-		return this.value.call(parentModel, val, element);
+		var self = this;
+
+		return {
+
+			value: function(value, element) {
+
+				return self.value.call(parentModel, value, element);
+			}
+		};
 	};
 
 	return ValueBinding;

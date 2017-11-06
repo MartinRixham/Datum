@@ -128,28 +128,30 @@
 
 		var done = assert.async();
 
-		require([
-			"callback/Binding",
-			"element/DOMElement"
-		], function(
-			Binding,
-			DOMElement) {
+		require(["callback/Binding"], function(Binding) {
 
 			var callCount = 0;
+			var model = {};
+			var argument = {};
 
-			var binding = new Binding({
+			var passedModel;
+			var passedArgument;
 
-				thingy: function() {
+			model.binding = new Binding({
+
+				text: function(arg) {
 
 					callCount++;
+					passedModel = this;
+					passedArgument = arg;
 				}
 			});
 
-			binding.applyBinding(new DOMElement(document.body), "sumpt", {});
-
-			binding.test.thingy(document.createElement("DIV"));
+			model.binding().text(argument);
 
 			assert.strictEqual(callCount, 1);
+			assert.strictEqual(passedModel, model);
+			assert.strictEqual(passedArgument, argument);
 
 			done();
 		});
