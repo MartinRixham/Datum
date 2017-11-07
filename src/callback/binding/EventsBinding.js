@@ -22,7 +22,7 @@ define([], function() {
 
 	EventsBinding.prototype.createListener = function(model, element, callback) {
 
-		return function listener() {
+		return function() {
 
 			callback.call(model, element);
 		};

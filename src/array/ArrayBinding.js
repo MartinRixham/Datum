@@ -1,6 +1,5 @@
 define([
 	"element/Elements",
-	"tracking/Registry",
 	"property/TransientProperty",
 	"tracking/Datum",
 	"array/method/Push",
@@ -12,7 +11,6 @@ define([
 	"array/method/Splice"
 ], function(
 	Elements,
-	Registry,
 	TransientProperty,
 	Datum,
 	Push,
