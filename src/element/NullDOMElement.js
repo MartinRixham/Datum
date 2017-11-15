@@ -2,11 +2,6 @@ define([], function() {
 
 	function NullDOMElement() {}
 
-	NullDOMElement.prototype.hasInScope = function() {
-
-		return false;
-	};
-
 	NullDOMElement.prototype.isInScope = function() {
 
 		return true;
