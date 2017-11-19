@@ -1,36 +1,39 @@
 require([
+	"tracking/Datum",
 	"callback/Binding",
+	"callback/Text",
+	"callback/Value",
 	"callback/Click",
 	"root/BindingRoot"
 ], function(
+	Datum,
 	Binding,
+	Text,
+	Value,
 	Click,
 	BindingRoot) {
 
 	function Form() {
 
-		this.first = "answer";
-
-		this.second = "another answer";
+		var firstQuestion = new Datum("answer");
+		var secondQuestion = new Datum("another answer");
+		var newQuestion = new Datum("");
 
 		this.date = new DatePicker();
 
-		this.input1 = new Binding({
+		this.firstQuestion =
+			new Binding({
 
-			value: function(value) {
+				value: firstQuestion,
+				text: firstQuestion
+			});
 
-				if (value) {
+		this.secondQuestion =
+			new Binding({
 
-					this.first = value;
-				}
-
-				return this.first;
-			},
-			text: function() {
-
-				return this.first;
-			}
-		});
+				value: secondQuestion,
+				text: secondQuestion
+			});
 
 		this.yesnos =
 			[
@@ -38,84 +41,53 @@ require([
 				new YesNoQuestion("Is this the second question?")
 			];
 
-		this.theNewQuestion = "";
+		this.hideDate =
+			new Binding({
 
-		this.input2 = new Binding({
+				click: function() {
 
-			value: function(value) {
+					if (this.date) {
 
-				if (value) {
+						this.date = null;
+					}
+					else {
 
-					this.second = value;
+						this.date = new DatePicker();
+					}
+				},
+				text: function() {
+
+					if (this.date) {
+
+						return "Hide";
+					}
+					else {
+
+						return "Show";
+					}
 				}
-
-				return this.second;
-			},
-			text: function() {
-
-				return this.second;
-			}
-		});
-
-		this.hideDate = new Binding({
-
-			click: function() {
-
-				if (this.date) {
-
-					this.date = null;
-				}
-				else {
-
-					this.date = new DatePicker();
-				}
-			},
-			text: function() {
-
-				if (this.date) {
-
-					return "Hide";
-				}
-				else {
-
-					return "Show";
-				}
-			}
-		});
-
-		this.newQuestion = new Binding({
-
-			value: function(value) {
-
-				if (value) {
-
-					this.theNewQuestion = value;
-				}
-
-				return this.theNewQuestion;
-			}
-		});
-
-		this.addQuestion = new Binding({
-
-			click: function() {
-
-				this.yesnos.push(new YesNoQuestion(this.theNewQuestion + "?"));
-				this.theNewQuestion = "";
-			}
-		});
-
-		this.sort = new Click(function() {
-
-			this.yesnos.sort(function(a, b) {
-
-				return a.compareTo(b);
 			});
-		});
 
-		this.go = new Binding({
+		this.newQuestion = new Value(newQuestion);
 
-			click: function() {
+		this.addQuestion =
+			new Click(function() {
+
+				this.yesnos.push(new YesNoQuestion(newQuestion() + "?"));
+				newQuestion("");
+			});
+
+		this.sort =
+			new Click(function() {
+
+				this.yesnos.sort(function(a, b) {
+
+					return a.compareTo(b);
+				});
+			});
+
+		this.go =
+			new Click(function() {
 
 				var request = new XMLHttpRequest();
 
@@ -125,123 +97,71 @@ require([
 					document.body.innerHTML = request.responseText;
 				};
 				request.send();
-			}
-		});
+			});
 	}
 
 	function DatePicker() {
 
 		var date = new Date();
+		var day = new Datum(date.getDate());
+		var month = new Datum(date.getMonth() + 1);
+		var year = new Datum(date.getFullYear());
 
-		this.theday = date.getDate();
+		this.day =
+			new Binding({
 
-		this.themonth = date.getMonth() + 1;
+				value: day,
+				text: day
+			});
 
-		this.theyear = date.getFullYear();
+		this.month =
+			new Binding({
 
-		this.day = new Binding({
+				value: month,
+				text: month
+			});
 
-			value: function(value) {
+		this.year =
+			new Binding({
 
-				if (value) {
-
-					this.theday = value;
-				}
-
-				return this.theday;
-			},
-			text: function() {
-
-				return this.theday;
-			}
-		});
-
-		this.month = new Binding({
-
-			value: function(value) {
-
-				if (value) {
-
-					this.themonth = value;
-				}
-
-				return this.themonth;
-			},
-			text: function() {
-
-				return this.themonth;
-			}
-		});
-
-		this.year = new Binding({
-
-			value: function(value) {
-
-				if (value) {
-
-					this.theyear = value;
-				}
-
-				return this.theyear;
-			},
-			text: function() {
-
-				return this.theyear;
-			}
-		});
+				value: year,
+				text: year
+			});
 	}
 
 	function YesNoQuestion(question) {
 
-		this.thequestion = question;
+		question = new Datum(question);
+		var answer = new Datum("no answer given");
 
-		this.answer = "no answer given";
+		this.yesno =
+			new Binding({
 
-		this.yesno = new Binding({
+				value: function(value, element) {
 
-			value: function(value, element) {
+					if (value) {
 
-				if (value) {
+						answer(value);
+					}
 
-					this.answer = value;
-				}
+					return element.value;
+				},
+				text: answer
+			});
 
-				return element.value;
-			},
-			text: function() {
-
-				return this.answer;
-			}
-		});
-
-		this.question = new Binding({
-
-			text: function() {
-
-				return this.thequestion;
-			}
-		});
+		this.question = new Text(question);
 
 		this.compareTo = function(other) {
 
-			var thisQuestion =
-				this.thequestion.toUpperCase();
+			return -other.compareQuestion(question());
+		};
 
-			var otherQuestion =
-				other.thequestion.toUpperCase();
+		this.compareQuestion = function(otherQuestion) {
 
-			if (thisQuestion > otherQuestion) {
+			var language = window.navigator.language;
+			var options = { sensitivity: "base" };
 
-				return 1;
-			}
-			else if (thisQuestion < otherQuestion) {
-
-				return -1;
-			}
-			else {
-
-				return 0;
-			}
+			return question().localeCompare(otherQuestion, language, options);
 		};
 	}
 
