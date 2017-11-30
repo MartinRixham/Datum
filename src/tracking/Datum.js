@@ -16,7 +16,7 @@ define([
 
 		function provider(value) {
 
-			if (isValue(value)) {
+			if (isNotValue(value)) {
 
 				return get.call(self);
 			}
@@ -29,7 +29,7 @@ define([
 		return provider;
 	}
 
-	function isValue(value) {
+	function isNotValue(value) {
 
 		return typeof value == "undefined" || value instanceof Node;
 	}

@@ -71,12 +71,19 @@ define([
 
 		(function createIndexOf() {
 
-			var flag = new Datum(true);
+			var flag = new Datum();
 			var original = model.indexOf;
 
 			model.indexOf = function() {
 
-				flag(!flag());
+				if (arguments.length) {
+
+					flag();
+				}
+				else {
+
+					flag(true);
+				}
 
 				return original.apply(model, arguments);
 			};
