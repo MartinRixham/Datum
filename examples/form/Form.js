@@ -35,17 +35,10 @@ require([
 				text: secondQuestion
 			});
 
-		var self = this;
-
-		function getNumber(item) {
-
-			return self.yesnos.indexOf(item) + 1 + ".";
-		}
-
 		this.yesnos =
 			[
-				new YesNoQuestion("Is this the first question?", getNumber),
-				new YesNoQuestion("Is this the second question?", getNumber)
+				new YesNoQuestion("Is this the first question?"),
+				new YesNoQuestion("Is this the second question?")
 			];
 
 		this.hideDate =
@@ -80,7 +73,7 @@ require([
 		this.addQuestion =
 			new Click(function() {
 
-				this.yesnos.push(new YesNoQuestion(newQuestion() + "?", getNumber));
+				this.yesnos.push(new YesNoQuestion(newQuestion() + "?"));
 				newQuestion("");
 			});
 
@@ -105,77 +98,85 @@ require([
 				};
 				request.send();
 			});
-	}
 
-	function DatePicker() {
+		function DatePicker() {
 
-		var date = new Date();
-		var day = new Datum(date.getDate());
-		var month = new Datum(date.getMonth() + 1);
-		var year = new Datum(date.getFullYear());
+			var date = new Date();
+			var day = new Datum(date.getDate());
+			var month = new Datum(date.getMonth() + 1);
+			var year = new Datum(date.getFullYear());
 
-		this.day =
-			new Binding({
+			this.day =
+				new Binding({
 
-				value: day,
-				text: day
-			});
+					value: day,
+					text: day
+				});
 
-		this.month =
-			new Binding({
+			this.month =
+				new Binding({
 
-				value: month,
-				text: month
-			});
+					value: month,
+					text: month
+				});
 
-		this.year =
-			new Binding({
+			this.year =
+				new Binding({
 
-				value: year,
-				text: year
-			});
-	}
+					value: year,
+					text: year
+				});
+		}
 
-	function YesNoQuestion(question, getNumber) {
+		var getNumber = (function(yesnos) {
 
-		question = new Datum(question);
-		var answer = new Datum("no answer given");
+			return function(item) {
 
-		this.number =
-			new Text(function() {
+				return yesnos.indexOf(item) + 1 + ".";
+			};
+		})(this.yesnos);
 
-				return getNumber(this);
-			});
+		function YesNoQuestion(question) {
 
-		this.question = new Text(question);
+			question = new Datum(question);
+			var answer = new Datum("no answer given");
 
-		this.yesno =
-			new Binding({
+			this.number =
+				new Text(function() {
 
-				value: function(value, element) {
+					return getNumber(this);
+				});
 
-					if (value) {
+			this.question = new Text(question);
 
-						answer(value);
-					}
+			this.yesno =
+				new Binding({
 
-					return element.value;
-				},
-				text: answer
-			});
+					value: function(value, element) {
 
-		this.compareTo = function(other) {
+						if (value) {
 
-			return -other.compareQuestion(question());
-		};
+							answer(value);
+						}
 
-		this.compareQuestion = function(otherQuestion) {
+						return element.value;
+					},
+					text: answer
+				});
 
-			var language = window.navigator.language;
-			var options = { sensitivity: "base" };
+			this.compareTo = function(other) {
 
-			return question().localeCompare(otherQuestion, language, options);
-		};
+				return -other.compareQuestion(question());
+			};
+
+			this.compareQuestion = function(otherQuestion) {
+
+				var language = window.navigator.language;
+				var options = { sensitivity: "base" };
+
+				return question().localeCompare(otherQuestion, language, options);
+			};
+		}
 	}
 
 	new BindingRoot(form = new Form());
