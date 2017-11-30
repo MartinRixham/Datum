@@ -91,7 +91,7 @@ require([
 
 				var request = new XMLHttpRequest();
 
-				request.open("GET", "form-readonly.html");
+				request.open("GET", "readonly.html");
 				request.onload = function() {
 
 					document.body.innerHTML = request.responseText;
