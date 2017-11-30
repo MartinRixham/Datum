@@ -179,5 +179,47 @@
 		});
 	});
     </script>
+    <div id="index" data-bind="index">
+      <div></div>
+    </div>
+    <div data-bind="updateIndex"></div>
+    <script>
+	QUnit.test("Depend on index of method", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"object/ViewModel",
+			"callback/Update",
+			"element/DOMElement"
+		], function(
+			ViewModel,
+			Update,
+			DOMElement) {
+
+			var ref = {};
+			var index = 0;
+			var model = {
+
+				index: [{}, ref],
+				updateIndex: new Update(function() {
+
+					index = this.index.indexOf(ref);
+				})
+			};
+
+			var viewModel = new ViewModel(model);
+			viewModel.applyBinding(new DOMElement(document.body));
+
+			assert.strictEqual(index, 1);
+
+			model.index.reverse();
+
+			assert.strictEqual(index, 0);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

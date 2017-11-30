@@ -4,8 +4,33 @@ define([], function() {
 
 		model.sort = function(comparison) {
 
-			sort(model, elements, properties, comparison);
+			if (comparison) {
+
+				sort(model, elements, properties, comparison);
+			}
+			else {
+
+				sort(model, elements, properties, defaultComparison);
+			}
+
+			model.indexOf();
 		};
+	}
+
+	function defaultComparison(a, b) {
+
+		if (a > b) {
+
+			return 1;
+		}
+		else if (b > a) {
+
+			return -1;
+		}
+		else {
+
+			return 0;
+		}
 	}
 
 	function sort(model, elements, properties, comparison) {

@@ -9,6 +9,8 @@ define([], function() {
 			originalReverse.apply(this, arguments);
 
 			reverse(elements, properties);
+
+			model.indexOf();
 		};
 	}
 
