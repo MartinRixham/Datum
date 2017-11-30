@@ -16,6 +16,7 @@ define(["property/TransientProperty"], function(TransientProperty) {
 			}
 
 			model.subscribableLength = model.length;
+			model.indexOf();
 		};
 	}
 

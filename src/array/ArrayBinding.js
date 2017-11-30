@@ -68,6 +68,19 @@ define([
 				}
 			});
 		})();
+
+		(function createIndexOf() {
+
+			var flag = new Datum(true);
+			var original = model.indexOf;
+
+			model.indexOf = function() {
+
+				flag(!flag());
+
+				return original.apply(model, arguments);
+			};
+		})();
 	}
 
 	ArrayBinding.prototype.applyBinding = function(element, parentModel, name) {

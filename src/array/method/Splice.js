@@ -14,6 +14,7 @@ define(["property/TransientProperty"], function(TransientProperty) {
 
 			var spliced = originalSplice.apply(this, arguments);
 			model.subscribableLength = model.length;
+			model.indexOf();
 
 			return spliced;
 		};

@@ -29,6 +29,7 @@ define([], function() {
 		}
 
 		model.subscribableLength = model.length;
+		model.indexOf();
 	}
 
 	return Pop;

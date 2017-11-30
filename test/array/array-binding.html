@@ -315,6 +315,63 @@
 		});
 	});
     </script>
+    <div id="index" data-bind="index">
+      <div></div>
+    </div>
+	<div data-bind="updateIndex"></div>
+	<script>
+	QUnit.test("Depend on index of method", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"object/ViewModel",
+			"callback/Update",
+			"element/DOMElement"
+		], function(
+			ViewModel,
+			Update,
+			DOMElement) {
+
+			var index = 0;
+			var model = {
+
+				index: [],
+				updateIndex: new Update(function() {
+
+					index = this.index.indexOf(this.index[this.index.length - 1]);
+				})
+			};
+
+			var viewModel = new ViewModel(model);
+			viewModel.applyBinding(new DOMElement(document.body));
+
+			assert.strictEqual(index, -1);
+
+			model.index.push({});
+
+			assert.strictEqual(index, 0);
+
+			model.index.pop();
+
+			assert.strictEqual(index, -1);
+
+			model.index.unshift({});
+
+			assert.strictEqual(index, 0);
+
+			model.index.shift();
+
+			assert.strictEqual(index, -1);
+
+			model.index.splice(0, 0, {});
+
+			assert.strictEqual(index, 0);
+
+			done();
+		});
+	});
+    </script>
     <div id="reset" data-bind="reset">
 	  <div id="reset-child"></div>
     </div>
