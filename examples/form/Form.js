@@ -35,10 +35,17 @@ require([
 				text: secondQuestion
 			});
 
+		var self = this;
+
+		function getNumber(item) {
+
+			return self.yesnos.indexOf(item) + 1 + ".";
+		}
+
 		this.yesnos =
 			[
-				new YesNoQuestion("Is this the first question?"),
-				new YesNoQuestion("Is this the second question?")
+				new YesNoQuestion("Is this the first question?", getNumber),
+				new YesNoQuestion("Is this the second question?", getNumber)
 			];
 
 		this.hideDate =
@@ -73,7 +80,7 @@ require([
 		this.addQuestion =
 			new Click(function() {
 
-				this.yesnos.push(new YesNoQuestion(newQuestion() + "?"));
+				this.yesnos.push(new YesNoQuestion(newQuestion() + "?", getNumber));
 				newQuestion("");
 			});
 
@@ -129,10 +136,18 @@ require([
 			});
 	}
 
-	function YesNoQuestion(question) {
+	function YesNoQuestion(question, getNumber) {
 
 		question = new Datum(question);
 		var answer = new Datum("no answer given");
+
+		this.number =
+			new Text(function() {
+
+				return getNumber(this);
+			});
+
+		this.question = new Text(question);
 
 		this.yesno =
 			new Binding({
@@ -148,8 +163,6 @@ require([
 				},
 				text: answer
 			});
-
-		this.question = new Text(question);
 
 		this.compareTo = function(other) {
 
