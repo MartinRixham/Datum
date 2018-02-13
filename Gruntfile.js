@@ -83,5 +83,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-md2html");
 
-	grunt.registerTask("default", ["jshint", "jscs", "qunit", "mkdir", "concat-define", "uglify", "md2html"]);
+	grunt.registerTask(
+		"default",
+		["jshint", "jscs", "qunit", "mkdir", "concat-define", "uglify", "md2html"]);
 };

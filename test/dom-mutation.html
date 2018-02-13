@@ -294,5 +294,43 @@
 		});
 	});
     </script>
+    <div id="init"></div>
+    <script>
+	QUnit.test("Bind init callback on second try", function(assert) {
+
+		var done = assert.async();
+
+		require(["callback/Init", "root/BindingRoot"], function(Init, BindingRoot) {
+
+			function InitObject() {
+
+				this.init =
+					new Init(function(element) {
+
+						element.textContent = "Hello, world.";
+					});
+			}
+
+			var root = new BindingRoot(new InitObject());
+
+			var element = document.querySelector("#init");
+
+			assert.strictEqual(element.innerHTML, "");
+
+			var child = document.createElement("DIV");
+			child.dataset.bind = "init";
+
+			element.appendChild(child);
+
+			setTimeout(function() {
+
+				assert.strictEqual(child.textContent, "Hello, world.");
+
+				done();
+				root.disconnect();
+			});
+		});
+	});
+    </script>
   </body>
 </html>

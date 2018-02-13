@@ -54,15 +54,13 @@ define([], function() {
 		return contains;
 	};
 
-	Elements.prototype.remove = function(element) {
+	Elements.prototype.empty = function() {
 
-		for (var i = 0; i < this.elements.length; i++) {
+		var elements = this.elements;
 
-			if (this.elements[i].equals(element)) {
+		this.elements = [];
 
-				this.elements.splice(i, 1);
-			}
-		}
+		return elements;
 	};
 
 	Elements.prototype.get = function() {

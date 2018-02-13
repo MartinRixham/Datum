@@ -119,7 +119,7 @@ define([
 
 	ArrayBinding.prototype.removeBinding = function() {
 
-		var elements = this.boundElements.get();
+		var elements = this.boundElements.empty();
 
 		this.resetElements(elements);
 	};
@@ -133,7 +133,6 @@ define([
 			if (element.get()) {
 
 				element.reset();
-				this.boundElements.remove(element);
 			}
 		}
 	};

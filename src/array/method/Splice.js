@@ -6,7 +6,7 @@ define(["property/TransientProperty"], function(TransientProperty) {
 
 		model.splice = function(start, deleteCount) {
 
-			start = normaliseStart(model, start);
+			start = normaliseStart(model.length, start);
 			var newObjects = [].slice.call(arguments, 2);
 
 			removeObjects(model, elements, properties, start, deleteCount);
@@ -20,14 +20,14 @@ define(["property/TransientProperty"], function(TransientProperty) {
 		};
 	}
 
-	function normaliseStart(model, start) {
+	function normaliseStart(length, start) {
 
 		if (start < 0) {
 
-			start = model.length + start;
+			start = length + start;
 		}
 
-		start = Math.min(model.length, start);
+		start = Math.min(length, start);
 		start = Math.max(0, start);
 
 		return start;

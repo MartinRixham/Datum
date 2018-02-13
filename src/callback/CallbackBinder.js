@@ -76,7 +76,7 @@ define([
 
 	function remove(binding, boundElements) {
 
-		var elements = boundElements.get();
+		var elements = boundElements.empty();
 
 		for (var i = 0; i < elements.length; i++) {
 

@@ -150,7 +150,7 @@
 			var element = new FakeDOMElement();
 
 			elementSet.add(element);
-			elementSet.remove(element);
+			elementSet.empty();
 
 			assert.ok(!elementSet.contains(element));
 			assert.strictEqual(elementSet.get().length, 0);

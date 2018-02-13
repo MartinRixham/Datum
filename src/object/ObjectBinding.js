@@ -19,7 +19,11 @@ define([
 	ObjectBinding.prototype.applyBinding = function(element, model, name) {
 
 		var removed = this.boundElements.removeOld();
-		this.resetElements(removed);
+
+		for (var i = 0; i < removed.length; i++) {
+
+			removed[i].replaceChildren();
+		}
 
 		if (element.get()) {
 
@@ -80,19 +84,11 @@ define([
 
 	ObjectBinding.prototype.removeBinding = function() {
 
-		var elements = this.boundElements.get();
-
-		this.resetElements(elements);
-	};
-
-	ObjectBinding.prototype.resetElements = function(elements) {
+		var elements = this.boundElements.empty();
 
 		for (var i = 0; i < elements.length; i++) {
 
-			var element = elements[i];
-
-			element.replaceChildren();
-			this.boundElements.remove(element);
+			elements[i].replaceChildren();
 		}
 	};
 
