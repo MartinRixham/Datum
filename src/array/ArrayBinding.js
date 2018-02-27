@@ -54,6 +54,11 @@ define([
 
 		(function createSubscribableLength() {
 
+			if (typeof model.subscribableLength != "undefined") {
+
+				return;
+			}
+
 			var length = new Datum(model.length);
 
 			Object.defineProperty(model, "subscribableLength", {
