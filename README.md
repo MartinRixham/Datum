@@ -182,7 +182,7 @@ An object bound to an element must contain all bindings within that element.
 No binding can be applied from outside the bound object even if the property name is that same as the binding attribute.
 
 The object binding has one more useful feature.
-If the a bound object is set to null then the child elements of the element to which it is bound will be removed from the DOM.
+If the bound object is set to null then the child elements of the element to which it is bound will be removed from the DOM.
 If the object is replaced then the elements are put back too.
 Thus parts of the DOM can be shown only when there is data available to populate them.
 This is a more natural way to hide and show elements than the visible binding.
