@@ -380,7 +380,7 @@ Place the following dependency in your `pom.xml` file.
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>Datum</artifactId>
-      <version>0.11.0</version>
+      <version>0.12.0</version>
     </dependency>
 
 For other Java build tools check out the Maven [repository](https://mvnrepository.com/artifact/org.webjars/Datum).
