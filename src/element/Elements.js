@@ -41,17 +41,15 @@ define([], function() {
 
 	Elements.prototype.contains = function(element) {
 
-		var contains = false;
-
 		for (var i = 0; i < this.elements.length; i++) {
 
 			if (this.elements[i].equals(element)) {
 
-				contains = true;
+				return true;
 			}
 		}
 
-		return contains;
+		return false;
 	};
 
 	Elements.prototype.empty = function() {

@@ -2,6 +2,8 @@ define([], function() {
 
 	function PermanentProperty(property, propertyType, scope) {
 
+		this.scope = scope;
+
 		this.property = property;
 
 		this.propertyType = propertyType;
@@ -41,6 +43,11 @@ define([], function() {
 
 			this.objectBinding.removeBinding();
 		}
+	};
+
+	PermanentProperty.prototype.hasScope = function(element) {
+
+		return this.scope.equals(element);
 	};
 
 	return PermanentProperty;

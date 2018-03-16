@@ -32,9 +32,9 @@ define([
 
 		if (!this.boundElements.contains(element)) {
 
+			this.boundElements.add(element);
 			this.createRebinder(element);
 			element.callBindingCallback(this.model);
-			this.boundElements.add(element);
 		}
 
 		this.unbindOldProperties();
@@ -69,7 +69,8 @@ define([
 
 		for (var key in this.model) {
 
-			if (!this.permanentProperties[key]) {
+			if (!this.permanentProperties[key] ||
+				!this.permanentProperties[key].hasScope(element)) {
 
 				this.permanentProperties[key] =
 					new PermanentProperty(

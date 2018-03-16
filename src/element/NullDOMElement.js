@@ -19,6 +19,8 @@ define([], function() {
 
 	NullDOMElement.prototype.createRebinder = function() {};
 
+	NullDOMElement.prototype.rebind = function() {};
+
 	NullDOMElement.prototype.callBindingCallback = function() {};
 
 	NullDOMElement.prototype.equals = function(other) {
