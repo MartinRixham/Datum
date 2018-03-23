@@ -93,29 +93,29 @@ In the second case `undefined` is passed.
 The second parameter is always the element to which it is bound.
 
 ```
-    <body>
-      <input type="text" data-bind="myBinding" />
-    </body>
+<body>
+  <input type="text" data-bind="myBinding" />
+</body>
 ```
 ```
-    var viewModel = {
-    
-        myDatum: "Hello world.",
-        myBinding: new Binding({
-        
-            value: function(value) { 
-            
-                if (value) {
-                
-                    this.myDatum = value;
-                }
-                
-                return this.myDatum; 
+var viewModel = {
+
+    myDatum: "Hello world.",
+    myBinding: new Binding({
+
+        value: function(value) {
+
+            if (value) {
+
+                this.myDatum = value;
             }
-        });
-    };
-    
-    new BindingRoot(viewModel);
+
+            return this.myDatum;
+        }
+    });
+};
+
+new BindingRoot(viewModel);
 ```
 A standard two way binding will have the above form, though of course you are free to experiment.
 There is also a `Value` constructor to which you can pass the callback directly.
@@ -126,25 +126,25 @@ The *click callback* is called whenever a click event is raised on an element to
 Again the element is passed as the first paramenter and there is also a `Click` constructor.
 
 ```
-    <body>
-      <button id="button-id" data-bind="myBinding"></button>
-    </body>
+<body>
+  <button id="button-id" data-bind="myBinding"></button>
+</body>
 ```
 ```
-    var viewModel = {
-    
-        myDatum: "The text on the button",
-        myBinding: new Binding({
-        
-            text: function() { return this.myDatum; },
-            click: function(element) { 
-            
-                alert("You just clicked the button with id " + element.id + ".");
-            }
-        });
-    };
-    
-    new BindingRoot(viewModel);
+var viewModel = {
+
+    myDatum: "The text on the button",
+    myBinding: new Binding({
+
+        text: function() { return this.myDatum; },
+        click: function(element) {
+
+            alert("You just clicked the button with id " + element.id + ".");
+        }
+    });
+};
+
+new BindingRoot(viewModel);
 ```
 ### Visible
 
@@ -160,22 +160,22 @@ Just like its parent view model it can have data properties, binding properties 
 Objects are bound to elements in the same way as bindings by putting a `data-bind` attribute on the element whose value is the name of object property.
 
 ```
-    <body>
-      <div data-bind="mySubobject">
-        <span data-bind="text"></span>
-      </div>
-    </body>
+<body>
+  <div data-bind="mySubobject">
+    <span data-bind="text"></span>
+  </div>
+</body>
 ```
 ```
-    var viewModel = {
-    
-        mySubobject: {
+var viewModel = {
 
-            text: new Text(function() { return "Hello world."; })
-        }
-    };
-    
-    new BindingRoot(viewModel);
+    mySubobject: {
+
+        text: new Text(function() { return "Hello world."; })
+    }
+};
+
+new BindingRoot(viewModel);
 ```
 Be careful to ensure that the structure of the view model is mirrored in the DOM hierarchy.
 An object bound to an element must contain all bindings within that element.
@@ -209,11 +209,11 @@ The element to which the object was just bound is passed as the first parameter 
 
         onBind: function(element) {
 
-			$(element).load("myTemplate.html");
-		},
+            $(element).load("myTemplate.html");
+        },
     };
 
-	new BindingRoot(viewModel);
+    new BindingRoot(viewModel);
 
 ### Dependency tracking
 
@@ -234,7 +234,7 @@ This method returns an object containing only data properties and subobjects tha
     
     new BindingRoot(viewModel);
 
-	var jsonString = JSON.stringify(viewModel);
+    var jsonString = JSON.stringify(viewModel);
 
 If an object contains data that should not be serialised then it can implement its own `toJSON` method.
 This method should return an object that contains just its serialisable data.
@@ -245,43 +245,43 @@ Beginners are encouraged to use the default implementation of `toJSON` and not t
 The array binding is quite like the object binding except the contents of the element to which an array is bound will be repeated for each element of the bound array.
 
 ```
-    <body>
-      <div data-bind="array">
-        <div>
-          <div data-bind="text></div>
-        </div>
-      </div>
-    </body>
+<body>
+  <div data-bind="array">
+    <div>
+      <div data-bind="text></div>
+    </div>
+  </div>
+</body>
 ```
 ```
-    var viewModel = {
-    
-        array: [
+var viewModel = {
 
-            { text: new Text(function() { return "this"; }) },
-            { text: new Text(function() { return "that"; }) },
-            { text: new Text(function() { return "tother"; }) }
-        ]
-    };
-    
-    new BindingRoot(viewModel);
+    array: [
+
+        { text: new Text(function() { return "this"; }) },
+        { text: new Text(function() { return "that"; }) },
+        { text: new Text(function() { return "tother"; }) }
+    ]
+};
+
+new BindingRoot(viewModel);
 ```
 The above template and view model would produce the following HTML when bound.
 
 ```
-    <body>
-      <div data-bind="array">
-        <div>
-          <div data-bind="text>this</div>
-        </div>
-        <div>
-          <div data-bind="text>that</div>
-        </div>
-        <div>
-          <div data-bind="text>tother</div>
-        </div>
-      </div>
-    </body>
+<body>
+  <div data-bind="array">
+    <div>
+      <div data-bind="text>this</div>
+    </div>
+    <div>
+      <div data-bind="text>that</div>
+    </div>
+    <div>
+      <div data-bind="text>tother</div>
+    </div>
+  </div>
+</body>
 ```
 Note that the children of the element to which the array is bound are the elements to which each of the objects in the array are bound.
 
