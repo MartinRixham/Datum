@@ -17,8 +17,6 @@ module.exports = function(grunt) {
 			options: {
 
 				config: ".jscsrc",
-				esnext: false,
-				verbose: true,
 				fix: false,
 				extract: ["test/**/*.html"]
 			}
@@ -46,7 +44,7 @@ module.exports = function(grunt) {
 
 				sourceRootDirectory: "src",
 				outputFile: "target/Datum.js",
-				main: "Datum"
+                main: "Datum"
 			}
 		},
 		uglify: {

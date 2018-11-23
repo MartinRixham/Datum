@@ -1,6 +1,6 @@
 define([], function() {
 
-	 function ArrayItemElement(element) {
+	function ArrayItemElement(element) {
 
 		this.element = element;
 
