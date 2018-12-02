@@ -21,15 +21,15 @@ define([], function() {
 
 			if (property &&
 				property.toJSON &&
-				typeof(property) == "object" &&
+				typeof(property) === "object" &&
 				(!property.applyBinding || property instanceof Array)) {
 
 				json[key] = property.toJSON();
 			}
 
 			if (!property ||
-				(typeof(property) != "object" &&
-					typeof(property) != "function")) {
+				(typeof(property) !== "object" &&
+					typeof(property) !== "function")) {
 
 				json[key] = property;
 			}

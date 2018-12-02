@@ -13,7 +13,7 @@ define([
 
 		(function checkModelType() {
 
-			if (typeof model != "object") {
+			if (typeof model !== "object") {
 
 				throw new Error("The binding root must be an object.");
 			}

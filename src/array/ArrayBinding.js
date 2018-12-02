@@ -54,7 +54,7 @@ define([
 
 		(function createSubscribableLength() {
 
-			if (typeof model.subscribableLength != "undefined") {
+			if (typeof model.subscribableLength !== "undefined") {
 
 				return;
 			}

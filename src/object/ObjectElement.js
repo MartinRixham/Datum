@@ -37,7 +37,7 @@ define([], function() {
 
 	ObjectElement.prototype.hasEqual = function(otherElement) {
 
-		return this.element == otherElement;
+		return this.element === otherElement;
 	};
 
 	return ObjectElement;

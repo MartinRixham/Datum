@@ -10,7 +10,7 @@ define([], function() {
 
 		this.propertyInjected = false;
 
-		if (typeof(property) == "object" && !this.isBinding(property)) {
+		if (typeof(property) === "object" && !this.isBinding(property)) {
 
 			this.objectBinding = propertyType.createObjectBinding(scope);
 		}
@@ -18,7 +18,7 @@ define([], function() {
 
 	PermanentProperty.prototype.applyBinding = function(element, model, key) {
 
-		if (typeof(this.property) != "function" &&
+		if (typeof(this.property) !== "function" &&
 			!this.isBinding(this.property) &&
 			!this.propertyInjected) {
 

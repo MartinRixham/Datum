@@ -14,7 +14,7 @@ define([], function() {
 
 			this.binding = propertyType.createArrayBinding(property);
 		}
-		else if (property && typeof(property) == "object") {
+		else if (property && typeof(property) === "object") {
 
 			this.binding = propertyType.createViewModel(property);
 		}
@@ -43,9 +43,9 @@ define([], function() {
 
 	TransientProperty.prototype.isOlderThan = function(other) {
 
-		if (typeof this.property == "object" || typeof other == "object") {
+		if (typeof this.property === "object" || typeof other === "object") {
 
-			return other && this.property != other;
+			return other && this.property !== other;
 		}
 		else {
 

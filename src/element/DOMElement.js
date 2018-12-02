@@ -23,7 +23,7 @@ define([
 
 			return false;
 		}
-		else if (currentElement == scope) {
+		else if (currentElement === scope) {
 
 			return true;
 		}
@@ -57,7 +57,7 @@ define([
 			}
 		}
 
-		if (this.element.dataset.bind == key) {
+		if (this.element.dataset.bind === key) {
 
 			elementsArray.push(new DOMElement(this.element));
 		}
@@ -90,7 +90,7 @@ define([
 
 	DOMElement.prototype.hasEqual = function(otherElement) {
 
-		return this.element == otherElement;
+		return this.element === otherElement;
 	};
 
 	DOMElement.prototype.toObjectElement = function() {

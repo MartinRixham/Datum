@@ -26,7 +26,7 @@ define([], function() {
 
 	Dependant.prototype.hasEqual = function(otherBinding, otherElement) {
 
-		return this.binding == otherBinding && this.element.equals(otherElement);
+		return this.binding === otherBinding && this.element.equals(otherElement);
 	};
 
 	return Dependant;

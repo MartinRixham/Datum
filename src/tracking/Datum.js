@@ -31,7 +31,7 @@ define([
 
 	function isNotValue(value) {
 
-		return typeof value == "undefined" || value instanceof Node;
+		return typeof value === "undefined" || value instanceof Node;
 	}
 
 	function get() {

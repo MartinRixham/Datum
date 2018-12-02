@@ -17,7 +17,7 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 		(function checkElementHasOnlyOneChild() {
 
-			if (self.element.children.length != 1) {
+			if (self.element.children.length !== 1) {
 
 				var message =
 					"An array must be bound to an element with exactly one child.";
@@ -168,7 +168,7 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 	ArrayElement.prototype.hasEqual = function(otherElement) {
 
-		return this.element == otherElement;
+		return this.element === otherElement;
 	};
 
 	ArrayElement.prototype.get = function() {

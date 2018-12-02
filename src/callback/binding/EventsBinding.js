@@ -36,7 +36,7 @@ define([], function() {
 
 			var listener = this.listeners[i];
 
-			if (listener.element == element) {
+			if (listener.element === element) {
 
 				element.removeEventListener(listener.key, listener.listener);
 				break;
