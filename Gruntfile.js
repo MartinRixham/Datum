@@ -1,5 +1,13 @@
 module.exports = function(grunt) {
 
+	grunt.loadNpmTasks("grunt-contrib-jshint");
+	grunt.loadNpmTasks("grunt-jscs");
+	grunt.loadNpmTasks("grunt-contrib-qunit");
+	grunt.loadNpmTasks("grunt-mkdir");
+	grunt.loadNpmTasks("grunt-concat-define");
+	grunt.loadNpmTasks("grunt-contrib-uglify");
+	grunt.loadNpmTasks("grunt-md2html");
+
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON("package.json"),
@@ -72,14 +80,6 @@ module.exports = function(grunt) {
 			}
 		}
 	});
-
-	grunt.loadNpmTasks("grunt-contrib-jshint");
-	grunt.loadNpmTasks("grunt-jscs");
-	grunt.loadNpmTasks("grunt-contrib-qunit");
-	grunt.loadNpmTasks("grunt-mkdir");
-	grunt.loadNpmTasks("grunt-concat-define");
-	grunt.loadNpmTasks("grunt-contrib-uglify");
-	grunt.loadNpmTasks("grunt-md2html");
 
 	grunt.registerTask(
 		"default",

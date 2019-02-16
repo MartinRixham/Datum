@@ -195,7 +195,7 @@ A unique feature of Datum.js is its ability to cope with updates to both the vie
 As expected the DOM will be automatically updated to reflect changes in the view model.
 But if you manually update the DOM say by attaching a new template, the view model will simply bind to the new template poplating it with the same data, but potentially with a new layout.
 
-The best practice when using Datum.js is to take full advantage of this capability by incremetally biding templates to the view model only when they are need on the page.
+The best practice when using Datum.js is to take full advantage of this capability by incremetally biding templates to the view model only when they are needed on the page.
 So although Datum.js only allows one view model and one template on a page it is perfectly possible to asynchronously load components onto the page at any point during the running of the application.
 
 ### The Binding Callback
@@ -225,7 +225,7 @@ This will happen automatically.
 
 It is common to want to be able to turn objects into JSON to send to the server.
 For this reason Datum.js attaches a `toJSON` method to each object in the view model.
-This method returns an object containing only data properties and subobjects that can be easily stringified and sent to the server.
+This method returns an object containing only data properties that can be easily stringified and sent to the server.
 
     var viewModel = {
     
@@ -393,5 +393,4 @@ Bugs can be reported on [GitHub](https://github.com/MartinRixham/Datum/issues).
 
 The following websites were created with Datum:
 
-* [fifteenpuzzzle.co.uk](http://fifteenpuzzzle.co.uk)
-* [compactopenneighbourhood.com](https://compactopenneighbourhood.com)
+* [piecesofdata.com](https://piecesofdata.com)
