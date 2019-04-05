@@ -22,12 +22,9 @@ define([], function() {
 					classes.push(key);
 				}
 			}
-			else {
+			else if (index + 1) {
 
-				if (index + 1) {
-
-					classes.splice(index, 1);
-				}
+				classes.splice(index, 1);
 			}
 		}
 

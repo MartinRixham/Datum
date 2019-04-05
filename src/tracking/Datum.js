@@ -7,7 +7,7 @@ define([
 
 	function Datum(datum) {
 
-		var self = {
+		var properties = {
 
 			datum: datum,
 			dependants: new Elements(),
@@ -18,11 +18,11 @@ define([
 
 			if (isNotValue(value)) {
 
-				return get.call(self);
+				return get.call(properties);
 			}
 			else {
 
-				set.call(self, value);
+				set.call(properties, value);
 			}
 		}
 

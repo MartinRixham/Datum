@@ -1,4 +1,4 @@
-// jscs:disable maximumNumberOfLines
+/* eslint-disable max-lines */
 require(["callback/Text", "root/BindingRoot"], function(Text, BindingRoot) {
 
 	function Matrix() {
@@ -2244,7 +2244,7 @@ require(["callback/Text", "root/BindingRoot"], function(Text, BindingRoot) {
 			];
 	}
 
-	new BindingRoot(matrix = new Matrix());
+	new BindingRoot(new Matrix());
 
 	var div = document.createElement("DIV");
 	var row = document.createElement("SPAN");

@@ -2,8 +2,10 @@ define([], function() {
 
 	function Serialisable(model) {
 
-		if (!model.toJSON)
-		model.toJSON = function() { return toJSON(model); };
+		if (!model.toJSON) {
+
+			model.toJSON = function() { return toJSON(model); };
+		}
 	}
 
 	function toJSON(model) {

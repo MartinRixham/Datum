@@ -179,5 +179,5 @@ require([
 		}
 	}
 
-	new BindingRoot(form = new Form());
+	new BindingRoot(new Form());
 });
