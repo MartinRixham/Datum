@@ -1,14 +1,14 @@
 /*
  * grunt-contrib-qunit
- * http://gruntjs.com/
+ * https://gruntjs.com/
  *
  * Copyright (c) 2016 "Cowboy" Ben Alman, contributors
  * Licensed under the MIT license.
  */
 
-/*global QUnit:true, alert:true*/
+/* global QUnit:true */
 (function (factory) {
-  if (false/*typeof define === 'function' && define.amd*/) {
+  if (false /*typeof define === 'function' && define.amd*/) {
     require(['qunit'], factory);
   } else {
     factory(QUnit);
@@ -18,35 +18,31 @@
 
   // Don't re-order tests.
   QUnit.config.reorder = false;
-  // Run tests serially, not in parallel.
-  QUnit.config.autorun = false;
 
-  // Send messages to the parent PhantomJS process via alert! Good times!!
+  // Send messages to the Node process
   function sendMessage() {
-    var args = [].slice.call(arguments);
-    alert(JSON.stringify(args));
+    self.__grunt_contrib_qunit__.apply(self, [].slice.call(arguments));
   }
 
-  // These methods connect QUnit to PhantomJS.
+  // These methods connect QUnit to Headless Chrome.
   QUnit.log(function(obj) {
     // What is this I don’t even
-    if (obj.message === '[object Object], undefined:undefined') { return; }
+    if (obj.message === '[object Object], undefined:undefined') {
+      return;
+    }
 
     // Parse some stuff before sending it.
-    var actual, expected, dump;
-    if (!obj.result) {
-      // In order to maintain backwards compatibility with `QUnit <1.15.0`
-      // Older versions of QUnit (`<1.15.0`) use `QUnit.jsDump`, but this poperty was
-      // deprecated and moved to `QUnit.dump` and will be removed in `QUnit 2.0`.
-      dump = QUnit.dump || QUnit.jsDump;
+    var actual;
+    var expected;
 
+    if (!obj.result) {
       // Dumping large objects can be very slow, and the dump isn't used for
       // passing tests, so only dump if the test failed.
-      actual = dump.parse(obj.actual);
-      expected = dump.parse(obj.expected);
+      actual = QUnit.dump.parse(obj.actual);
+      expected = QUnit.dump.parse(obj.expected);
     }
     // Send it.
-    sendMessage('qunit.log', obj.result, actual, expected, obj.message, obj.source);
+    sendMessage('qunit.log', obj.result, actual, expected, obj.message, obj.source, obj.todo);
   });
 
   QUnit.testStart(function(obj) {
@@ -54,7 +50,7 @@
   });
 
   QUnit.testDone(function(obj) {
-    sendMessage('qunit.testDone', obj.name, obj.failed, obj.passed, obj.total, obj.duration);
+    sendMessage('qunit.testDone', obj.name, obj.failed, obj.passed, obj.total, obj.runtime, obj.skipped, obj.todo);
   });
 
   QUnit.moduleStart(function(obj) {
@@ -73,3 +69,4 @@
     sendMessage('qunit.done', obj.failed, obj.passed, obj.total, obj.runtime);
   });
 }));
+

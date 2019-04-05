@@ -6,20 +6,20 @@
     "email": "martin.rixham@gmail.com"
   },
   "license": "LGPL-3.0",
-  "homepage": "http://datumjs.com",
+  "homepage": "https://datumjs.com",
   "main": "target/Datum.js",
   "dependencies": {},
   "devDependencies": {
-    "grunt": "^1.0.3",
+    "grunt": "1.0.4",
     "grunt-concat-define": "0.8.2",
-    "grunt-contrib-jshint": "1.0.0",
-    "grunt-contrib-qunit": "1.2.0",
-    "grunt-contrib-uglify": "1.0.1",
-    "grunt-jscs": "^3.0.1",
+    "grunt-contrib-jshint": "2.1.0",
+    "grunt-contrib-qunit": "3.1.0",
+    "grunt-contrib-uglify": "4.0.1",
+    "grunt-jscs": "3.0.1",
     "grunt-md2html": "0.3.1",
     "grunt-mkdir": "1.0.0",
-    "qunitjs": "1.23.0",
-    "requirejs": "2.3.2"
+    "qunit": "2.9.2",
+    "requirejs": "2.3.6"
   },
   "repository": {
     "type": "git",
