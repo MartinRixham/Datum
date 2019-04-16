@@ -123,7 +123,7 @@ There is also a `Value` constructor to which you can pass the callback directly.
 ### Click
 
 The *click callback* is called whenever a click event is raised on an element to which it is bound.
-Again the element is passed as the first paramenter and there is also a `Click` constructor.
+Again the element is passed as the first parameter and there is also a `Click` constructor.
 
 ```
 <body>
@@ -193,9 +193,9 @@ This is a more natural way to hide and show elements than the visible binding.
 
 A unique feature of Datum.js is its ability to cope with updates to both the view model and the DOM.
 As expected the DOM will be automatically updated to reflect changes in the view model.
-But if you manually update the DOM say by attaching a new template, the view model will simply bind to the new template poplating it with the same data, but potentially with a new layout.
+But if you manually update the DOM say by attaching a new template, the view model will simply bind to the new template populating it with the same data, but potentially with a new layout.
 
-The best practice when using Datum.js is to take full advantage of this capability by incremetally biding templates to the view model only when they are needed on the page.
+The best practice when using Datum.js is to take full advantage of this capability by incrementally binding templates to the view model only when they are needed on the page.
 So although Datum.js only allows one view model and one template on a page it is perfectly possible to asynchronously load components onto the page at any point during the running of the application.
 
 ### The Binding Callback
