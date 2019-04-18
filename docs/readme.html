@@ -21,7 +21,7 @@ You can create a binding using the <code>Binding</code> constructor.</p>
 <pre><code>var viewModel = {
 
     myDatum: &quot;Hello world.&quot;,
-    myBinding: new Binding();
+    myBinding: new Binding()
 };
 
 new BindingRoot(viewModel);
@@ -43,7 +43,7 @@ The one called <code>text</code> is used to put text on the page.</p>
     myBinding: new Binding({
 
         text: function() { return this.myDatum; }
-    });
+    })
 };
 
 new BindingRoot(viewModel);
@@ -58,7 +58,7 @@ You can also create a text binding using the <code>Text</code> constructor, but 
 <pre><code>var viewModel = {
 
     myDatum: &quot;Hello world.&quot;,
-    myBinding: new Text(function(element) { return this.myDatum; });
+    myBinding: new Text(function(element) { return this.myDatum; })
 };
 
 new BindingRoot(viewModel);
@@ -85,7 +85,7 @@ The second parameter is always the element to which it is bound.</p>
 
             return this.myDatum;
         }
-    });
+    })
 };
 
 new BindingRoot(viewModel);
@@ -107,7 +107,7 @@ Again the element is passed as the first parameter and there is also a <code>Cli
 
             alert(&quot;You just clicked the button with id &quot; + element.id + &quot;.&quot;);
         }
-    });
+    })
 };
 
 new BindingRoot(viewModel);
@@ -159,7 +159,7 @@ The element to which the object was just bound is passed as the first parameter 
     onBind: function(element) {
 
         $(element).load(&quot;myTemplate.html&quot;);
-    },
+    }
 };
 
 new BindingRoot(viewModel);
@@ -229,7 +229,7 @@ It requires an object containing callbacks named for the classes to be added or 
             enabled: function() { return false; },
             &quot;first-item&quot;: function() { return true; }
         }
-    });
+    })
 };
 
 new BindingRoot(viewModel);
@@ -244,7 +244,7 @@ new BindingRoot(viewModel);
             change: function() { alert(&quot;Value changed!&quot;); },
             keyup: function() { alert(&quot;Key was pressed!&quot;); }
         }
-    });
+    })
 };
 
 new BindingRoot(viewModel);
@@ -271,7 +271,7 @@ var testHandle = binding();
 
         text: function() { return this.label; },
         click: function() { this.label = &quot;clicked!&quot;; }
-    });
+    })
 };
 
 var testHandle = viewModel.button();

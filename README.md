@@ -31,7 +31,7 @@ You can create a binding using the `Binding` constructor.
     var viewModel = {
     
         myDatum: "Hello world.",
-        myBinding: new Binding();
+        myBinding: new Binding()
     };
     
     new BindingRoot(viewModel);
@@ -59,7 +59,7 @@ The one called `text` is used to put text on the page.
         myBinding: new Binding({
         
             text: function() { return this.myDatum; }
-        });
+        })
     };
     
     new BindingRoot(viewModel);
@@ -79,7 +79,7 @@ You can also create a text binding using the `Text` constructor, but generally i
     var viewModel = {
     
         myDatum: "Hello world.",
-        myBinding: new Text(function(element) { return this.myDatum; });
+        myBinding: new Text(function(element) { return this.myDatum; })
     };
     
     new BindingRoot(viewModel);
@@ -112,7 +112,7 @@ var viewModel = {
 
             return this.myDatum;
         }
-    });
+    })
 };
 
 new BindingRoot(viewModel);
@@ -141,7 +141,7 @@ var viewModel = {
 
             alert("You just clicked the button with id " + element.id + ".");
         }
-    });
+    })
 };
 
 new BindingRoot(viewModel);
@@ -210,7 +210,7 @@ The element to which the object was just bound is passed as the first parameter 
         onBind: function(element) {
 
             $(element).load("myTemplate.html");
-        },
+        }
     };
 
     new BindingRoot(viewModel);
@@ -299,7 +299,7 @@ It requires an object containing callbacks named for the classes to be added or 
                 enabled: function() { return false; },
                 "first-item": function() { return true; }
             }
-        });
+        })
     };
     
     new BindingRoot(viewModel);
@@ -317,7 +317,7 @@ The *events binding* registers event handlers on an element.
                 change: function() { alert("Value changed!"); },
                 keyup: function() { alert("Key was pressed!"); }
             }
-        });
+        })
     };
     
     new BindingRoot(viewModel);
@@ -354,7 +354,7 @@ A typical test might look like the following.
 
             text: function() { return this.label; },
             click: function() { this.label = "clicked!"; }
-        });
+        })
     };
 
     var testHandle = viewModel.button();
