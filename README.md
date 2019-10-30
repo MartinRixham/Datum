@@ -69,7 +69,7 @@ The one called `text` is used to put text on the page.
 As seen above, the *text callback* sets the text content of the elements to which it is bound.
 The callback can contain any logic so long as it returns the value which is to be displayed.
 If any of the data properties used in the body of the callback changes, the text callback will be reevaluated and the text on the page updated.
-In the example above you can change the text on the page by assigning to the `myDatum` proprety.
+In the example above you can change the text on the page by assigning to the `myDatum` property.
 
     viewModel.myDatum = "Eh up planet.";
     

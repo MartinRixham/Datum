@@ -51,7 +51,7 @@ new BindingRoot(viewModel);
 <p>As seen above, the <em>text callback</em> sets the text content of the elements to which it is bound.
 The callback can contain any logic so long as it returns the value which is to be displayed.
 If any of the data properties used in the body of the callback changes, the text callback will be reevaluated and the text on the page updated.
-In the example above you can change the text on the page by assigning to the <code>myDatum</code> proprety.</p>
+In the example above you can change the text on the page by assigning to the <code>myDatum</code> property.</p>
 <pre><code>viewModel.myDatum = &quot;Eh up planet.&quot;;
 </code></pre><p>The text callback has a parameter which is the element to which it is bound.
 You can also create a text binding using the <code>Text</code> constructor, but generally it is more useful to use the <code>Binding</code> constructor so you can also pass it some of the callbacks described below.</p>
