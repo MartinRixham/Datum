@@ -12,7 +12,7 @@
   "devDependencies": {
     "eslint-plugin-html": "5.0.3",
     "grunt": "1.0.4",
-    "grunt-concat-define": "0.8.2",
+    "grunt-concat-define": "0.9.1",
     "grunt-contrib-qunit": "3.1.0",
     "grunt-contrib-uglify": "4.0.1",
     "grunt-eslint": "21.0.0",
