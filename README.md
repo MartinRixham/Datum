@@ -373,6 +373,10 @@ Since using Datum.js allows you to completely separate layout and logic, the ent
 
     npm install Datum
 
+or
+
+    npm install @datumjs/datum
+
 ### Install with Maven
 
 Place the following dependency in your `pom.xml` file.
