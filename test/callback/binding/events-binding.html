@@ -31,13 +31,15 @@
 
 		require(["callback/binding/EventsBinding"], function(EventsBinding) {
 
+			var receivedEvent;
 			var receivedElement;
 
 			var click =
 				new EventsBinding({
 
-					click: function(element) {
+					click: function(event, element) {
 
+						receivedEvent = event;
 						receivedElement = element;
 					}
 				});
@@ -46,7 +48,8 @@
 			click.setUpElement(null, element);
 			element.dispatchEvent(new Event("click"));
 
-			assert.strictEqual(element, receivedElement);
+			assert.strictEqual(receivedEvent.type, "click");
+			assert.strictEqual(receivedElement, element);
 
 			done();
 		});

@@ -321,6 +321,8 @@ The *events binding* registers event handlers on an element.
     };
     
     new BindingRoot(viewModel);
+    
+The event object is passed as the callback's first parameter.
 
 ### The Init, Update and Destroy bindings
 
