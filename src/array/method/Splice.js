@@ -60,9 +60,9 @@ define(["property/TransientProperty"], function(TransientProperty) {
 			for (var j = 0; j < elements.length; j++) {
 
 				var element = elements[j];
+				var child = element.insertAtIndex(start);
 
-				element.insertAtIndex(start);
-				property.applyBinding(element.getChildAtIndex(start), model);
+				property.applyBinding(child, model);
 			}
 		}
 	}

@@ -27,9 +27,9 @@ define(["property/TransientProperty"], function(TransientProperty) {
 		for (var j = 0; j < elements.length; j++) {
 
 			var element = elements[j];
+			var child = element.prepend();
 
-			element.prepend();
-			property.applyBinding(element.getChildAtIndex(0), model);
+			property.applyBinding(child, model);
 		}
 	}
 

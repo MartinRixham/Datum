@@ -624,5 +624,55 @@
 		});
 	});
     </script>
+    <div id="rebuild" data-bind="currentPage">
+      <div data-bind="pages">
+        <div></div>
+      </div>
+    </div>
+    <script>
+	QUnit.test("Bind to rebuilt array", function(assert) {
+
+		var done = assert.async();
+
+		require(["root/BindingRoot"], function(BindingRoot) {
+
+			var firstPage =	{
+
+				pages: [],
+				onBind: function() {
+
+					this.pages.push({});
+				}
+			};
+
+			function RebuildObject() {
+
+				this.currentPage = firstPage;
+			}
+
+			var model = new RebuildObject();
+
+			var root = new BindingRoot(model);
+
+			setTimeout(function() {
+
+				model.currentPage = {};
+
+				setTimeout(function() {
+
+					model.currentPage = firstPage;
+
+					var element = document.querySelector("#rebuild");
+
+					assert.strictEqual(element.firstElementChild.children.length, 1);
+
+					done();
+
+					root.disconnect();
+				});
+			});
+		});
+	});
+    </script>
   </body>
 </html>

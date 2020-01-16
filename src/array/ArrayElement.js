@@ -59,6 +59,8 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 		this.children.push(child);
 
 		this.element.appendChild(child);
+
+		return this.domElement.createElement(child);
 	};
 
 	ArrayElement.prototype.prepend = function() {
@@ -68,6 +70,8 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 		this.children.unshift(child);
 
 		this.element.insertBefore(child, this.element.firstChild);
+
+		return this.domElement.createElement(child);
 	};
 
 	ArrayElement.prototype.insertAtIndex = function(index) {
@@ -77,6 +81,8 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 		this.element.insertBefore(child, this.children[index]);
 
 		this.children.splice(index, 0, child);
+
+		return this.domElement.createElement(child);
 	};
 
 	ArrayElement.prototype.removeFirst = function() {
