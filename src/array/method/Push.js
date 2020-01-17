@@ -2,11 +2,15 @@ define(["property/TransientProperty"], function(TransientProperty) {
 
 	function Push(model, elements, properties, propertyType) {
 
-		var originalPush = model.push;
+		this.model = model;
+
+		this.originalPush = model.push;
+
+		var self = this;
 
 		model.push = function() {
 
-			originalPush.apply(this, arguments);
+			self.originalPush.apply(this, arguments);
 
 			for (var i = 0; i < arguments.length; i++) {
 
@@ -32,6 +36,11 @@ define(["property/TransientProperty"], function(TransientProperty) {
 			property.applyBinding(child, model);
 		}
 	}
+
+	Push.prototype.unbind = function() {
+
+		this.model.push = this.originalPush;
+	};
 
 	return Push;
 });

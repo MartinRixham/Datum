@@ -2,7 +2,11 @@ define(["property/TransientProperty"], function(TransientProperty) {
 
 	function Splice(model, elements, properties, propertyType) {
 
-		var originalSplice = model.splice;
+		this.model = model;
+
+		this.originalSplice = model.splice;
+
+		var self = this;
 
 		model.splice = function(start, deleteCount) {
 
@@ -12,7 +16,7 @@ define(["property/TransientProperty"], function(TransientProperty) {
 			removeObjects(model, elements, properties, start, deleteCount);
 			insertObjects(model, elements, properties, propertyType, start, newObjects);
 
-			var spliced = originalSplice.apply(this, arguments);
+			var spliced = self.originalSplice.apply(this, arguments);
 			model.subscribableLength = model.length;
 			model.indexOf();
 
@@ -66,6 +70,11 @@ define(["property/TransientProperty"], function(TransientProperty) {
 			}
 		}
 	}
+
+	Splice.prototype.unbind = function() {
+
+		this.model.splice = this.originalSplice;
+	};
 
 	return Splice;
 });

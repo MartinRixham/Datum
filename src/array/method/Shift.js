@@ -2,11 +2,15 @@ define([], function() {
 
 	function Shift(model, elements, properties) {
 
-		var originalShift = model.shift;
+		this.model = model;
+
+		this.originalShift = model.shift;
+
+		var self = this;
 
 		model.shift = function() {
 
-			var shifted = originalShift.apply(this, arguments);
+			var shifted = self.originalShift.apply(this, arguments);
 
 			shift(model, elements, properties);
 
@@ -31,6 +35,11 @@ define([], function() {
 		model.subscribableLength = model.length;
 		model.indexOf();
 	}
+
+	Shift.prototype.unbind = function() {
+
+		this.model.shift = this.originalShift;
+	};
 
 	return Shift;
 });

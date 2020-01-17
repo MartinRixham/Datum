@@ -2,6 +2,10 @@ define([], function() {
 
 	function Sort(model, elements, properties) {
 
+		this.model = model;
+
+		this.originalSort = model.sort;
+
 		model.sort = function(comparison) {
 
 			if (comparison) {
@@ -99,6 +103,11 @@ define([], function() {
 			}
 		}
 	}
+
+	Sort.prototype.unbind = function() {
+
+		this.model.sort = this.originalSort;
+	};
 
 	return Sort;
 });

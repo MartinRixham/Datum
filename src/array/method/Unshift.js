@@ -2,11 +2,15 @@ define(["property/TransientProperty"], function(TransientProperty) {
 
 	function Unshift(model, elements, properties, propertyType) {
 
-		var originalUnshift = model.unshift;
+		this.model = model;
+
+		this.originalUnshift = model.unshift;
+
+		var self = this;
 
 		model.unshift = function() {
 
-			originalUnshift.apply(this, arguments);
+			self.originalUnshift.apply(this, arguments);
 
 			for (var i = arguments.length - 1; i >= 0; i--) {
 
@@ -32,6 +36,11 @@ define(["property/TransientProperty"], function(TransientProperty) {
 			property.applyBinding(child, model);
 		}
 	}
+
+	Unshift.prototype.unbind = function() {
+
+		this.model.unshift = this.originalUnshift;
+	};
 
 	return Unshift;
 });

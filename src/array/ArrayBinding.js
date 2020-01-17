@@ -27,30 +27,19 @@ define([
 
 		this.model = model;
 
+		this.propertyType = propertyType;
+
 		this.boundElements = new Elements();
 
-		var self = this;
+		this.methods = [];
 
-		(function createProperties() {
+		(function createProperties(self) {
 
 			for (var i = 0; i < model.length; i++) {
 
 				self.properties[i] = new TransientProperty(model[i], propertyType);
 			}
-		})();
-
-		(function createArrayMethods() {
-
-			var elements = self.boundElements.get();
-
-			new Push(model, elements, self.properties, propertyType);
-			new Pop(model, elements, self.properties);
-			new Shift(model, elements, self.properties);
-			new Unshift(model, elements, self.properties, propertyType);
-			new Reverse(model, elements, self.properties);
-			new Sort(model, elements, self.properties);
-			new Splice(model, elements, self.properties, propertyType);
-		})();
+		})(this);
 
 		(function createSubscribableLength() {
 
@@ -100,10 +89,30 @@ define([
 		var removed = this.boundElements.removeOld();
 		this.resetElements(removed);
 
+		if (!this.methods.length) {
+
+			this.methods = this.createArrayMethods();
+		}
+
 		if (element.get()) {
 
 			this.bindElements(element, parentModel, name);
 		}
+	};
+
+	ArrayBinding.prototype.createArrayMethods = function() {
+
+		var elements = this.boundElements.get();
+
+		return [
+			new Push(this.model, elements, this.properties, this.propertyType),
+			new Pop(this.model, elements, this.properties),
+			new Shift(this.model, elements, this.properties),
+			new Unshift(this.model, elements, this.properties, this.propertyType),
+			new Reverse(this.model, elements, this.properties),
+			new Sort(this.model, elements, this.properties),
+			new Splice(this.model, elements, this.properties, this.propertyType)
+		];
 	};
 
 	ArrayBinding.prototype.bindElements = function(element, parentModel, name) {
@@ -124,6 +133,13 @@ define([
 
 	ArrayBinding.prototype.removeBinding = function() {
 
+		for (var i = 0; i < this.methods.length; i++) {
+
+			this.methods[i].unbind();
+		}
+
+		this.methods = [];
+
 		var elements = this.boundElements.empty();
 
 		this.resetElements(elements);
@@ -133,12 +149,7 @@ define([
 
 		for (var i = 0; i < elements.length; i++) {
 
-			var element = elements[i];
-
-			if (element.get()) {
-
-				element.reset();
-			}
+			elements[i].reset();
 		}
 	};
 

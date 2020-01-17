@@ -2,11 +2,15 @@ define([], function() {
 
 	function Pop(model, elements, properties) {
 
-		var originalPop = model.pop;
+		this.model = model;
+
+		this.originalPop = model.pop;
+
+		var self = this;
 
 		model.pop = function() {
 
-			var popped = originalPop.apply(this, arguments);
+			var popped = self.originalPop.apply(this, arguments);
 
 			pop(model, elements, properties);
 
@@ -31,6 +35,11 @@ define([], function() {
 		model.subscribableLength = model.length;
 		model.indexOf();
 	}
+
+	Pop.prototype.unbind = function() {
+
+		this.model.pop = this.originalPop;
+	};
 
 	return Pop;
 });

@@ -2,11 +2,15 @@ define([], function() {
 
 	function Reverse(model, elements, properties) {
 
-		var originalReverse = model.reverse;
+		this.model = model;
+
+		this.originalReverse = model.reverse;
+
+		var self = this;
 
 		model.reverse = function() {
 
-			originalReverse.apply(this, arguments);
+			self.originalReverse.apply(this, arguments);
 
 			reverse(elements, properties);
 
@@ -26,6 +30,11 @@ define([], function() {
 
 		properties.reverse();
 	}
+
+	Reverse.prototype.unbind = function() {
+
+		this.model.reverse = this.originalReverse;
+	};
 
 	return Reverse;
 });
