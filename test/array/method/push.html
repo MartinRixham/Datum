@@ -148,5 +148,39 @@
 		});
 	});
    </script>
+    <div id="unbind">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Push element when unbound", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/method/Push",
+			"element/DOMElement"
+		], function(
+			Push,
+			DOMElement) {
+
+			var model = [{}];
+			var element = new DOMElement(document.querySelector("#unbind"));
+			var elements = [element.toArrayElement(1)];
+
+			var push = new Push(model, elements, [], new FakePropertyType());
+
+			push.unbind();
+
+			model.push({});
+
+			var children = element.get().children;
+
+			assert.strictEqual(model.length, 2);
+			assert.strictEqual(children.length, 1);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

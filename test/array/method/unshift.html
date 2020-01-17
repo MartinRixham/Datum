@@ -143,5 +143,39 @@
 		});
 	});
     </script>
+    <div id="unbind">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Unshift element when unbound", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/method/Unshift",
+			"element/DOMElement"
+		], function(
+			Unshift,
+			DOMElement) {
+
+			var model = [{}];
+			var element = new DOMElement(document.querySelector("#unbind"));
+			var elements = [element.toArrayElement(1)];
+
+			var unshift = new Unshift(model, elements, [], new FakePropertyType());
+
+			unshift.unbind();
+
+			model.unshift({});
+
+			var children = element.get().children;
+
+			assert.strictEqual(model.length, 2);
+			assert.strictEqual(children.length, 1);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

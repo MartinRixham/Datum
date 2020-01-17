@@ -119,10 +119,10 @@
 			Sort,
 			DOMElement) {
 
-			var model = ["one", "two"];
+			var model = ["two", "one"];
 			var element = new DOMElement(document.querySelector("#two"));
 			var elements = [element.toArrayElement(2)];
-			var properties = ["one", "two"];
+			var properties = ["two", "one"];
 
 			new Sort(model, elements, properties);
 
@@ -139,8 +139,8 @@
 			var children = element.get().children;
 
 			assert.strictEqual(children.length, 2);
-			assert.strictEqual(children[0].id, "two-child_0");
-			assert.strictEqual(children[1].id, "two-child_1");
+			assert.strictEqual(children[0].id, "two-child_1");
+			assert.strictEqual(children[1].id, "two-child_0");
 
 			done();
 		});
@@ -283,5 +283,49 @@
 		});
 	});
 	</script>
+    <div id="unbind">
+      <div id="unbind-child"></div>
+    </div>
+    <script>
+	QUnit.test("Sort array when unbound", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/method/Sort",
+			"element/DOMElement"
+		], function(
+			Sort,
+			DOMElement) {
+
+			var model = ["two", "one"];
+			var element = new DOMElement(document.querySelector("#unbind"));
+			var elements = [element.toArrayElement(2)];
+			var properties = ["two", "one"];
+
+			var sort = new Sort(model, elements, properties);
+
+			sort.unbind();
+
+			model.sort();
+
+			assert.strictEqual(model.length, 2);
+			assert.strictEqual(model[0], "one");
+			assert.strictEqual(model[1], "two");
+
+			assert.strictEqual(properties.length, 2);
+			assert.strictEqual(properties[0], "two");
+			assert.strictEqual(properties[1], "one");
+
+			var children = element.get().children;
+
+			assert.strictEqual(children.length, 2);
+			assert.strictEqual(children[0].id, "unbind-child_0");
+			assert.strictEqual(children[1].id, "unbind-child_1");
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

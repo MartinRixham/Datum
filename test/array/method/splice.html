@@ -524,5 +524,41 @@
 		});
 	});
     </script>
+    <div id="unbind">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Splice element when unbound", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/method/Splice",
+			"element/DOMElement"
+		], function(
+			Splice,
+			DOMElement) {
+
+			var model = [{}];
+			var element = new DOMElement(document.querySelector("#unbind"));
+			var elements = [element.toArrayElement(1)];
+			var properties = [{}];
+
+			var splice = new Splice(model, elements, properties, new FakePropertyType());
+
+			splice.unbind();
+
+			model.splice(0, 0, {});
+
+			var children = element.get().children;
+
+			assert.strictEqual(model.length, 2);
+			assert.strictEqual(children.length, 1);
+			assert.strictEqual(properties.length, 1);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

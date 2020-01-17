@@ -221,5 +221,51 @@
 		});
 	});
     </script>
+    <div id="unbind">
+      <div id="unbind-child"></div>
+    </div>
+    <script>
+	QUnit.test("Reverse array when unbound", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/method/Reverse",
+			"element/DOMElement"
+		], function(
+			Reverse,
+			DOMElement) {
+
+			var one = {};
+			var two = {};
+			var model = [one, two];
+			var element = new DOMElement(document.querySelector("#unbind"));
+			var elements = [element.toArrayElement(2)];
+			var properties = ["one", "two"];
+
+			var reverse = new Reverse(model, elements, properties);
+
+			reverse.unbind();
+
+			model.reverse();
+
+			assert.strictEqual(model.length, 2);
+			assert.strictEqual(model[0], two);
+			assert.strictEqual(model[1], one);
+
+			assert.strictEqual(properties.length, 2);
+			assert.strictEqual(properties[0], "one");
+			assert.strictEqual(properties[1], "two");
+
+			var children = element.get().children;
+
+			assert.strictEqual(children.length, 2);
+			assert.strictEqual(children[0].id, "unbind-child_0");
+			assert.strictEqual(children[1].id, "unbind-child_1");
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

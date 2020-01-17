@@ -13,9 +13,7 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 		// which is not an array
 		this.children = new Array(initialLength);
 
-		var self = this;
-
-		(function checkElementHasOnlyOneChild() {
+		(function checkElementHasOnlyOneChild(self) {
 
 			if (self.element.children.length !== 1) {
 
@@ -23,23 +21,23 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 					"An array must be bound to an element with exactly one child.";
 				throw new Error(message);
 			}
-		})();
+		})(this);
 
 		(function createRebinder() {
 
 			domElement.createRebinder(function() {});
 		})();
 
-		(function getChild() {
+		(function getChild(self) {
 
 			var childElement = self.element.children[0];
 
 			self.element.removeChild(childElement);
 
 			self.child = new ArrayItemElement(childElement);
-		})();
+		})(this);
 
-		(function copyElement() {
+		(function copyElement(self) {
 
 			for (var i = 0; i < initialLength; i++) {
 
@@ -49,7 +47,7 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 				self.element.appendChild(child);
 			}
-		})();
+		})(this);
 	}
 
 	ArrayElement.prototype.append = function() {

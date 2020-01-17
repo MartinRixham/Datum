@@ -161,5 +161,45 @@
 		});
 	});
     </script>
+    <div id="unbind">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Pop element when unbound", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/method/Pop",
+			"element/DOMElement",
+			"property/TransientProperty"
+		], function(
+			Pop,
+			DOMElement,
+			TransientProperty) {
+
+			var object = {};
+			var model = [object];
+			var element = new DOMElement(document.querySelector("#unbind"));
+			var elements = [element.toArrayElement(1)];
+			var propertyType = new FakePropertyType();
+			var properties = [new TransientProperty(model[0], propertyType)];
+
+			var pop = new Pop(model, elements, properties);
+
+			pop.unbind();
+
+			var popped = model.pop();
+
+			assert.strictEqual(model.length, 0);
+			assert.strictEqual(popped, object);
+			assert.strictEqual(properties.length, 1);
+			assert.strictEqual(element.get().children.length, 1);
+			assert.ok(!propertyType.removeBindingWasCalled);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>

@@ -163,5 +163,45 @@
 		});
 	});
     </script>
+    <div id="unbind">
+      <div></div>
+    </div>
+    <script>
+	QUnit.test("Shift element when unbound", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/method/Shift",
+			"element/DOMElement",
+			"property/TransientProperty"
+		], function(
+			Shift,
+			DOMElement,
+			TransientProperty) {
+
+			var object = {};
+			var model = [object];
+			var element = new DOMElement(document.querySelector("#unbind"));
+			var elements = [element.toArrayElement(1)];
+			var propertyType = new FakePropertyType();
+			var properties = [new TransientProperty(model[0], propertyType)];
+
+			var shift = new Shift(model, elements, properties);
+
+			shift.unbind();
+
+			var shifted = model.shift();
+
+			assert.strictEqual(model.length, 0);
+			assert.strictEqual(shifted, object);
+			assert.strictEqual(properties.length, 1);
+			assert.strictEqual(element.get().children.length, 1);
+			assert.ok(!propertyType.removeBindingWasCalled);
+
+			done();
+		});
+	});
+    </script>
   </body>
 </html>
