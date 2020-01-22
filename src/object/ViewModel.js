@@ -29,6 +29,7 @@ define([
 	ViewModel.prototype.applyBinding = function(element) {
 
 		this.boundElements.removeOld();
+		this.unbindOldProperties();
 
 		if (!this.boundElements.contains(element)) {
 
@@ -37,7 +38,6 @@ define([
 			element.callBindingCallback(this.model);
 		}
 
-		this.unbindOldProperties();
 		this.createPermanentProperties(element);
 		this.createTransientProperties();
 		this.bindProperties(element);
