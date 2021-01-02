@@ -393,7 +393,7 @@ For other Java build tools check out the Maven [repository](https://mvnrepositor
 
 ## Bugs
 
-Bugs can be reported on [GitHub](https://github.com/MartinRixham/Datum/issues).
+Bugs can be reported on [GitHub](https://github.com/MartinRixham/Datum/issues), though at this point Datum is very stable and most work continues in library repositories such as [Pieces](https://github.com/martinrixham/pieces).
 
 ## Examples
 
