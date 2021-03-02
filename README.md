@@ -179,7 +179,7 @@ new BindingRoot(viewModel);
 ```
 Be careful to ensure that the structure of the view model is mirrored in the DOM hierarchy.
 An object bound to an element must contain all bindings within that element.
-No binding can be applied from outside the bound object even if the property name is that same as the binding attribute.
+No binding can be applied from outside the bound object even if the property name is the same as that binding attribute.
 
 The object binding has one more useful feature.
 If the bound object is set to null then the child elements of the element to which it is bound will be removed from the DOM.
