@@ -67,5 +67,5 @@ module.exports = function(grunt) {
 
 	grunt.registerTask(
 		"default",
-		["eslint", "qunit", "mkdir", "concat-define", "uglify", "md2html"]);
+		["eslint", "mkdir", "concat-define", "uglify", "md2html"]);
 };

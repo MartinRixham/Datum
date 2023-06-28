@@ -22,7 +22,12 @@ define([], function() {
 
 	ValueBinding.prototype.updateElement = function(parentModel, element) {
 
-		element.value = this.value.call(parentModel, undefined, element);
+		var value = this.value.call(parentModel, undefined, element);
+
+		if (value !== undefined) {
+
+			element.value = value;
+		}
 	};
 
 	ValueBinding.prototype.resetElement = function(element) {
