@@ -2,6 +2,11 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 
 	function ArrayElement(domElement, initialLength) {
 
+		(function createRebinder() {
+
+			domElement.createRebinder(function() {});
+		})();
+
 		this.domElement = domElement;
 
 		this.element = domElement.get();
@@ -13,39 +18,43 @@ define(["array/ArrayItemElement"], function(ArrayItemElement) {
 		// which is not an array
 		this.children = new Array(initialLength);
 
-		(function checkElementHasOnlyOneChild(self) {
+		(function createChildElements(self) {
 
-			if (self.element.children.length !== 1) {
+			var childCount = self.element.children.length;
+
+			if (childCount == 1) {
+
+				var childElement = self.element.children[0];
+
+				self.element.removeChild(childElement);
+
+				self.child = new ArrayItemElement(childElement);
+
+				for (var i = 0; i < initialLength; i++) {
+
+					var child = self.child.clone();
+
+					self.children[i] = child;
+
+					self.element.appendChild(child);
+				}
+			}
+			else if (childCount == initialLength) {
+
+				self.child = new ArrayItemElement(self.element.children[0]);
+
+				for (var j = 0; j < initialLength; j++) {
+
+					self.children[j] = self.child.clone();
+					self.element.children[j].__DATUM__REBIND = function() {};
+				}
+			}
+			else {
 
 				var message =
-					"An array must be bound to an element with exactly one child.";
+					"Cannot bind array of length " + initialLength +
+					" to " + childCount + " elements.";
 				throw new Error(message);
-			}
-		})(this);
-
-		(function createRebinder() {
-
-			domElement.createRebinder(function() {});
-		})();
-
-		(function getChild(self) {
-
-			var childElement = self.element.children[0];
-
-			self.element.removeChild(childElement);
-
-			self.child = new ArrayItemElement(childElement);
-		})(this);
-
-		(function copyElement(self) {
-
-			for (var i = 0; i < initialLength; i++) {
-
-				var child = self.child.clone();
-
-				self.children[i] = child;
-
-				self.element.appendChild(child);
 			}
 		})(this);
 	}

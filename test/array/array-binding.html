@@ -169,7 +169,35 @@
 
 			assert.strictEqual(
 				exception.message,
-				"An array must be bound to an element with exactly one child.");
+				"Cannot bind array of length 0 to 2 elements.");
+
+			done();
+		});
+	});
+    </script>
+    <div id="child-per-element" data-bind="sameLength">
+	 <div></div>
+	 <div></div>
+    </div>
+    <script>
+	QUnit.test("Bind array length two to two elements", function(assert) {
+
+		var done = assert.async();
+
+		require([
+			"array/ArrayBinding",
+			"element/DOMElement"
+		], function(
+			ArrayBinding,
+			DOMElement) {
+
+			var model = { children: [{}, {}] };
+			var binding = new ArrayBinding(model.children, new FakePropertyType());
+			var element = new DOMElement(document.querySelector("#child-per-element"));
+
+			binding.applyBinding(element, model, "sameLength");
+
+			assert.strictEqual(element.get().children.length, 2);
 
 			done();
 		});
