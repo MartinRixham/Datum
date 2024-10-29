@@ -14,14 +14,17 @@ define([], function() {
 
 	function callback(mutations) {
 
-		var mutation = mutations[0];
-		var notTextMutation = mutation.target.children.length;
+		for (var i = 0; i < mutations.length; i++) {
 
-		if (notTextMutation) {
+			var mutation = mutations[i];
+			var notTextMutation = mutation.target.children.length;
 
-			var element = mutation.target;
+			if (notTextMutation) {
 
-			this.rebindElement(element);
+				var element = mutation.target;
+
+				this.rebindElement(element);
+			}
 		}
 	}
 
