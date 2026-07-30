@@ -31,8 +31,16 @@ define([
 
 	function isNotValue(value) {
 
-		return typeof value === "undefined" || value instanceof Node;
+		return typeof value === "undefined" || isNode(value);
 	}
+
+	function isNode(value) {
+
+		return value != null &&
+			typeof value == "object" &&
+			typeof value.nodeType == "number" &&
+			typeof value.nodeName == "string";
+  }
 
 	function get() {
 
