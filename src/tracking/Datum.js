@@ -40,7 +40,7 @@ define([
 			typeof value == "object" &&
 			typeof value.nodeType == "number" &&
 			typeof value.nodeName == "string";
-  }
+	}
 
 	function get() {
 
